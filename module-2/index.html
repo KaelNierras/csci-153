@@ -208,7 +208,7 @@
     <span class="rail__spacer"></span>
     <span class="rail__course">CSci 153 · Web Systems &amp; Technologies</span>
     <span class="rail__sep">/</span>
-    <span class="rail__count"><b id="count-now">01</b> <span class="dim">of</span> <span id="count-all">50</span></span>
+    <span class="rail__count"><b id="count-now">01</b> <span class="dim">of</span> <span id="count-all">51</span></span>
   </header>
 
   <!-- ============ stage ============ -->
@@ -391,11 +391,17 @@ git checkout -b <b>feature/12-student-card</b></pre></div>
           <div class="grid grid--sidebar">
             <div class="panel"><div class="panel__head">Commit as you go</div>
               <pre>git add src/components/StudentCard.tsx
-git commit -m "<b>Add StudentCard with loading and empty states</b>"</pre></div>
-            <div class="panel"><div class="panel__head">A commit message names the change</div>
-              <ul class="list list--cross"><li>"update"</li><li>"fix"</li><li>"asdf"</li><li>"final na talaga"</li></ul>
-              <ul class="list list--check"><li>"Add StudentCard with loading and empty states"</li><li>"Fix contrast on the disabled button variant"</li></ul>
-              <p class="small">Rule of thumb: if the message would not help someone bisecting a bug in November, rewrite it.</p></div>
+git commit -m "<b>feat(student-card): add loading and empty states</b>"</pre>
+              <p class="small">This project uses <b>Conventional Commits</b>: a type, an optional scope, then what changed. Required in the Final Activity Project.</p></div>
+            <div class="panel"><div class="panel__head">The shape</div>
+              <pre><b>type</b>(<i>scope</i>): <b>what changed</b>
+
+<b>feat</b>(auth): add SessionContext and route guard
+<b>fix</b>(checklist): correct unit total on repeated subjects
+<b>docs</b>(contract): document the 409 response
+<b>refactor</b>(api): extract the error normaliser
+<b>test</b>(rsvp): cover the party-size ceiling
+<b>chore</b>(deps): bump vite to 5.4</pre></div>
           </div>
         </div>
 
@@ -433,6 +439,73 @@ git branch -d feature/12-student-card</pre></div>
               <p class="body">Every task is one trip round this loop. Small branches merge easily; a branch that lives for two weeks becomes a conflict you will dread.</p>
               <p class="body"><b>Merge early, merge often</b> is not a slogan — it is conflict avoidance.</p></div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="2.0" data-label="Commit messages" data-rail="Git & GitHub">
+      <span class="eyebrow">A convention, not a preference</span>
+      <h2 class="h2">Conventional Commits</h2>
+      <div class="grid grid--rsidebar">
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Every commit message in this course</div>
+            <pre style="font-size:0.9rem"><b>type</b>(<i>optional scope</i>): <b>imperative description</b></pre>
+            <div class="table-wrap" style="margin-top:var(--s3)">
+              <table>
+                <thead><tr><th style="width:6rem">Type</th><th style="width:16rem">Use it when</th><th>Example</th></tr></thead>
+                <tbody>
+                  <tr><td class="mono" style="color:var(--pass)"><b>feat</b></td><td>New behaviour a user could notice</td><td class="mono">feat(rsvp): add headcount request form</td></tr>
+                  <tr><td class="mono" style="color:var(--fail)"><b>fix</b></td><td>Corrects broken behaviour</td><td class="mono">fix(checklist): count repeated units once</td></tr>
+                  <tr><td class="mono"><b>docs</b></td><td>Documentation or the contract's descriptions</td><td class="mono">docs(contract): document the 409 response</td></tr>
+                  <tr><td class="mono"><b>refactor</b></td><td>Restructuring with no behaviour change</td><td class="mono">refactor(api): extract error normaliser</td></tr>
+                  <tr><td class="mono"><b>test</b></td><td>Adding or fixing tests</td><td class="mono">test(auth): cover the signed-out guard</td></tr>
+                  <tr><td class="mono"><b>style</b></td><td>Formatting only — no logic touched</td><td class="mono">style(ui): run prettier on components</td></tr>
+                  <tr><td class="mono"><b>chore</b></td><td>Dependencies, config, tooling</td><td class="mono">chore(deps): bump vite to 5.4</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="compare" style="grid-template-columns:1fr">
+            <div class="compare__side compare__side--bad">
+              <div class="compare__head">Rejected in review</div>
+              <div class="compare__body">
+                <p class="mono">update</p>
+                <p class="mono">fix bug</p>
+                <p class="mono">asdf</p>
+                <p class="mono">final na talaga</p>
+                <p class="mono">feat: changes</p>
+              </div>
+            </div>
+            <div class="compare__side compare__side--good">
+              <div class="compare__head">Accepted</div>
+              <div class="compare__body">
+                <p class="mono">feat(student-card): add loading and empty states</p>
+                <p class="mono">fix(contrast): darken disabled button label to pass AA</p>
+                <p class="mono">docs(contract): add the 429 rate-limit response</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">Why bother</div>
+          <ul class="list">
+            <li><b>The log becomes searchable.</b> <code>git log --oneline --grep="^feat"</code> is every feature your group shipped.</li>
+            <li><b>Review gets faster.</b> The type tells a reviewer what kind of scrutiny the diff needs before they open it.</li>
+            <li><b>It forces one change per commit.</b> If you cannot pick a type, the commit is doing two things and should be two commits.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <div class="panel__head">Two rules that catch most mistakes</div>
+          <ul class="list list--check">
+            <li><b>Imperative mood</b> — "add", not "added" or "adds". Read it as <em>"this commit will…&nbsp;add loading states"</em>.</li>
+            <li><b>Lower case, no full stop</b>, and keep the first line under about 70 characters. Detail goes in the body, after a blank line.</li>
+          </ul>
+          <p class="callout" style="margin-top:var(--s3)"><b>A breaking change</b> gets a <code>!</code> before the colon &mdash; <code>feat(contract)!: rename load to subjects</code>. You will need this in Lesson 2.3.</p>
         </div>
       </div>
     </section>

@@ -42,6 +42,15 @@ npm install
 npm run dev
 ```
 
+**Commit messages follow [Conventional Commits](https://www.conventionalcommits.org)**,
+as taught in Lesson 2.0 — `type(scope): imperative description`:
+
+```
+feat(student-card): add loading and empty states
+fix(session): handle the resolving branch in the route guard
+refactor(api): extract the error normaliser
+```
+
 If your group has not scaffolded the project yet, the first person to reach this step
 does it and pushes to `main`: Vite + React + TypeScript, Tailwind, React Router,
 TanStack Query. Everyone else pulls. **Do not create four separate projects.**
@@ -144,6 +153,7 @@ referred to the integrity policy.
 - A guard with no loading branch (bounces a signed-in user to `/login` on refresh) — **−8**
 - Server data copied from a query into context — **−10**
 - Pull request merged without a groupmate's approval — **−10**
+- Commit messages not in Conventional Commits form — **−2 each**, maximum −10
 
 ---
 
@@ -168,5 +178,6 @@ referred to the integrity policy.
 - [ ] All four data states reachable in the running app
 - [ ] Checked at Slow 3G — loading visible, no layout jump
 - [ ] Checked at 320px and 200% zoom
+- [ ] Every commit message is `type(scope): description`, imperative mood
 - [ ] Pull request references its issue and has one approval
 - [ ] Prompt log contains a real correction you made

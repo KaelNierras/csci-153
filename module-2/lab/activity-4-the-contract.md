@@ -155,6 +155,7 @@ the evidence of thinking**, so write down what the losing option was.
 - `redocly lint` errors — **−10**
 - A contract-touching pull request merged without approval from the other side — **−10**
 - A member with no commits in the contract's history — **−15 for that member**
+- Commit messages not in Conventional Commits form — **−2 each**, maximum −10
 - Only the happy path specified for an operation the UI calls — **−5 each**, maximum −15
 
 ---
@@ -183,4 +184,6 @@ the evidence of thinking**, so write down what the losing option was.
 - [ ] At least one mutation invalidates exactly the right keys
 - [ ] Redoc reachable by the whole group
 - [ ] `DECISIONS.md` records three real disagreements
+- [ ] Every commit message is `type(scope): description`, imperative mood
+- [ ] A contract change that breaks clients is marked `feat(contract)!:` or `fix(contract)!:`
 - [ ] **Every member has commits in the contract's history**
