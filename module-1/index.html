@@ -1,0 +1,1289 @@
+<title>UI/UX Design Bench</title>
+<link rel="stylesheet" href="../shared/deck.css">
+
+<div id="deck" data-sec="0">
+
+  <!-- ============ top rail ============ -->
+  <header class="rail rail--top">
+    <span class="rail__mark"><i class="rail__dot"></i> Module 01</span>
+    <span class="rail__sep">/</span>
+    <span id="rail-lesson">Orientation</span>
+    <span class="rail__spacer"></span>
+    <span class="rail__course">CSci 153 · Web Systems &amp; Technologies</span>
+    <span class="rail__sep">/</span>
+    <span class="rail__count"><b id="count-now">01</b> <span class="dim">of</span> <span id="count-all">49</span></span>
+  </header>
+
+  <!-- ============ stage ============ -->
+  <main id="stage">
+
+    <!-- ======================================================
+         ORIENTATION
+         ====================================================== -->
+
+    <section class="slide slide--center" data-sec="0" data-label="Cover" data-rail="Orientation">
+      <div class="col" style="gap:var(--s5);align-items:center">
+        <span class="eyebrow eyebrow--plain">Visayas State University · DCST · Module 01 · Weeks 2–3</span>
+        <h1 class="h1" style="max-width:22ch">Interface design,<br>done with an agent</h1>
+        <p class="lede" style="text-align:center;margin-inline:auto">
+          UI/UX practice you can defend, and the agentic workflow that turns it into
+          working screens — without either of us typing every line.
+        </p>
+        <div class="row" style="justify-content:center;margin-top:var(--s4)">
+          <span class="chip">CO1 · Design intuitive UI/UX</span>
+          <span class="chip">LO 1.1 · Wireframes &amp; mockups</span>
+          <span class="chip">LO 1.2 · Extract HTML/CSS</span>
+        </div>
+        <p class="small mono" style="margin-top:var(--s5);letter-spacing:0.12em">
+          PRESS <kbd style="border:1px solid var(--line);padding:0.1em 0.4em">→</kbd> TO START ·
+          <kbd style="border:1px solid var(--line);padding:0.1em 0.4em">O</kbd> FOR THE SLIDE MAP ·
+          <kbd style="border:1px solid var(--line);padding:0.1em 0.4em">?</kbd> FOR KEYS
+        </p>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="0" data-label="Where this sits" data-rail="Orientation">
+      <span class="eyebrow">The semester, in five moves</span>
+      <h2 class="h2">You are here</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th style="width:5rem">Weeks</th><th style="width:9rem">Module</th><th>What you walk out able to do</th><th style="width:8rem">Outcome</th></tr>
+          </thead>
+          <tbody>
+            <tr style="background:color-mix(in oklab, var(--brass) 8%, transparent)">
+              <td class="num" style="color:var(--brass)">2 – 3</td>
+              <td><b>01 · UI/UX Design</b></td>
+              <td><b>Design a screen a stranger can use, and drive an agent to build it.</b></td>
+              <td class="num">CO1</td>
+            </tr>
+            <tr><td class="num">3 – 5</td><td>02 · Frontend</td><td>Reusable components in Next.js + Tailwind, responsive across devices.</td><td class="num">CO2</td></tr>
+            <tr><td class="num">5 – 8</td><td>03 · JavaScript</td><td>Types, scoping, modules, JSON, DOM, libraries.</td><td class="num">CO3</td></tr>
+            <tr><td class="num">10 – 12</td><td>04 · Backend</td><td>Schema modeling and CRUD endpoints over a real database.</td><td class="num">CO4</td></tr>
+            <tr><td class="num">13 – 17</td><td>05 · Integration</td><td>Validation, API consumption, deployment to the cloud.</td><td class="num">CO5</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="callout">
+        Everything downstream inherits what you decide in these two weeks. A schema can be migrated and an
+        endpoint can be rewritten, but <b>a bad information hierarchy gets rebuilt from zero.</b>
+      </p>
+    </section>
+
+    <section class="slide" data-sec="0" data-label="The bargain" data-rail="Orientation">
+      <span class="eyebrow">The premise of this course</span>
+      <h2 class="h2" style="max-width:20ch">The agent writes the code.<br>You own the judgment.</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">What the agent is good at</div>
+          <ul class="list list--check">
+            <li>Producing a lot of correct-ish markup fast</li>
+            <li>Remembering syntax you would look up</li>
+            <li>Refactoring on instruction</li>
+            <li>Boilerplate: forms, tables, layouts, config</li>
+            <li>Explaining unfamiliar code back to you</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <div class="panel__head">What stays yours</div>
+          <ul class="list list--cross">
+            <li>Deciding what the screen is <em>for</em></li>
+            <li>Knowing when the output is quietly wrong</li>
+            <li>Accessibility, states, and edge cases it skipped</li>
+            <li>Naming the fix precisely enough to be actioned</li>
+            <li>Taking responsibility for what ships</li>
+          </ul>
+        </div>
+      </div>
+      <p class="callout">
+        This is why the module leads with design principles, not with prompts. <b>You cannot review output you
+        cannot evaluate.</b> Everything in Lesson 1.1 exists so that Lesson 1.2 is not guesswork.
+      </p>
+    </section>
+
+    <section class="slide" data-sec="0" data-label="Module outcomes" data-rail="Orientation">
+      <span class="eyebrow">Learning outcomes · CO1</span>
+      <h2 class="h2">By the end of week 3 you can…</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head" style="color:var(--brass)">LO 1.1 · Design wireframes and mockups</div>
+          <ul class="list">
+            <li>Explain a layout using <b>hierarchy, spacing, alignment, and contrast</b> — not "it looks nice"</li>
+            <li>Build a screen on a <b>spacing and type scale</b> instead of arbitrary numbers</li>
+            <li>Design the <b>seven states</b> of a component, not just the happy path</li>
+            <li>Meet <b>WCAG AA contrast</b> and keyboard-operability minimums</li>
+            <li>Run a design critique that names <b>which principle</b> is violated</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <div class="panel__head" style="color:var(--cyan)">LO 1.2 · Extract usable HTML/CSS</div>
+          <ul class="list">
+            <li>Write a <b>design brief</b> an agent can execute without follow-up questions</li>
+            <li>Generate a <b>token set first</b>, then screens that consume it</li>
+            <li>Run the <b>agentic loop</b>: context → plan → generate → review → iterate</li>
+            <li>Apply an <b>8-point design QA</b> pass to any generated screen</li>
+            <li>Convert a mockup into <b>component-ready markup</b> for Module 02</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="0" data-label="How sessions run" data-rail="Orientation">
+      <span class="eyebrow">Ground rules</span>
+      <h2 class="h2">How these two weeks run</h2>
+      <div class="steps">
+        <div class="step">
+          <div>
+            <div class="step__t">The deck is the instrument, not a slideshow</div>
+            <div class="step__b">Every principle here has a live control you can move. When I say "contrast fails," I will move a slider until it fails. Nothing is claimed without being shown.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <div class="step__t">No manual live coding</div>
+            <div class="step__b">Watching someone type is the least efficient way to learn. We look at the principle, then at the agent producing it, then you do it in the laboratory activity.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <div class="step__t">You bring a laptop and an account</div>
+            <div class="step__b">Claude (browser) for design exploration, Claude Code or your editor for the build. Free tiers are enough for this module.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <div class="step__t">Two graded activities</div>
+            <div class="step__b">Activity 1 — UI audit and redesign. Activity 2 — brief to prototype. Both graded on judgment, not on how pretty the agent's first attempt was.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         LESSON 1.1 — UI/UX PRACTICE
+         ====================================================== -->
+
+    <section class="slide slide--center" data-sec="1.1" data-label="Lesson 1.1 opens" data-rail="Lesson 1.1 — UI/UX practice">
+      <div class="col" style="align-items:center;gap:var(--s4)">
+        <span class="eyebrow eyebrow--plain">Lesson 1.1</span>
+        <h1 class="h1">The part you<br>cannot delegate</h1>
+        <p class="lede" style="text-align:center">
+          Twenty-two slides of practice you will use in every code review for the rest of your career.
+        </p>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="1.1" data-label="Why devs need this" data-rail="Lesson 1.1 — UI/UX practice">
+      <span class="eyebrow">Motivation</span>
+      <h2 class="h2">"I'm a backend person" is no longer a defense</h2>
+      <div class="grid grid--3">
+        <div class="card"><span class="card__k">Cost</span><div class="card__t">Rework is design debt</div><p class="card__b">A misplaced hierarchy is discovered in user testing, after the components, the API shape, and the routes are already built around it.</p></div>
+        <div class="card"><span class="card__k">Speed</span><div class="card__t">The agent needs a target</div><p class="card__b">Generation is cheap now. The bottleneck moved to specifying what good looks like — that specification is design vocabulary.</p></div>
+        <div class="card"><span class="card__k">Trust</span><div class="card__t">Users judge correctness by look</div><p class="card__b">Research repeatedly finds people rate the credibility of a system by its interface before they ever test whether it works.</p></div>
+      </div>
+      <p class="callout">
+        Practical version for this class: <b>your final web project (20% of your grade) will be used by someone who
+        was not in the room while you built it.</b> That is the whole test.
+      </p>
+    </section>
+
+    <section class="slide" data-sec="1.1" data-label="UX vs UI" data-rail="Lesson 1.1 — UI/UX practice">
+      <span class="eyebrow">Vocabulary that actually differs</span>
+      <h2 class="h2">Four words people use interchangeably, wrongly</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th style="width:11rem">Term</th><th>The question it answers</th><th>Failure looks like</th></tr></thead>
+          <tbody>
+            <tr><td><b>UX</b> — user experience</td><td>Can a person accomplish their goal here at all?</td><td>Enrollment takes 11 steps because that is how the database is shaped.</td></tr>
+            <tr><td><b>IxD</b> — interaction design</td><td>What happens when I do this, and how do I know?</td><td>You press Submit and nothing visibly changes for four seconds.</td></tr>
+            <tr><td><b>UI</b> — user interface</td><td>What are the controls, and are they legible and reachable?</td><td>Grey 40% text on white; a 22-pixel tap target on mobile.</td></tr>
+            <tr><td><b>Visual design</b></td><td>Does it read as one coherent, deliberate system?</td><td>Six shades of blue, four corner radii, three fonts, one page.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="body">
+        In a code review you will be more useful if you say <span class="hl">"this is an interaction-feedback problem, not a color problem"</span>
+        than if you say "it feels off."
+      </p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="1.1" data-label="Hierarchy — live" data-rail="Lesson 1.1 — UI/UX practice">
+      <span class="eyebrow">Principle 01 · Visual hierarchy</span>
+      <h2 class="h2">Same content, same components, same colors</h2>
+      <div class="grid grid--rsidebar">
+        <div data-widget="ba" data-a="Flat — everything equal" data-b="Layered — one thing wins" id="w-hierarchy">
+          <div class="ba__pane" data-pane="a"><div id="hier-flat"></div></div>
+          <div class="ba__pane" data-pane="b"><div id="hier-good"></div></div>
+        </div>
+        <div class="panel">
+          <div class="panel__head">What changed</div>
+          <ul class="list" id="hier-notes"></ul>
+          <p class="small">Nothing was added. No new color, no illustration, no shadow. Only <b>relative</b> size, weight, spacing, and one accent moved.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="1.1" data-label="Four forces" data-rail="Lesson 1.1 — UI/UX practice">
+      <span class="eyebrow">Principle 01 · continued</span>
+      <h2 class="h2">You have exactly four levers</h2>
+      <div class="grid grid--4">
+        <div class="card"><span class="card__k">Size</span><div class="card__t">Biggest reads first</div><p class="card__b">Strongest and bluntest lever. Use it once per screen. If three things are huge, nothing is.</p></div>
+        <div class="card"><span class="card__k">Weight</span><div class="card__t">Heavier reads sooner</div><p class="card__b">Cheaper than size. Two weights is a system; five weights is noise.</p></div>
+        <div class="card"><span class="card__k">Color</span><div class="card__t">Saturation pulls the eye</div><p class="card__b">Your accent is a spotlight. Point it at the one action you want taken.</p></div>
+        <div class="card"><span class="card__k">Space</span><div class="card__t">Isolation implies importance</div><p class="card__b">The most underused lever. Whitespace around an element is a claim about its rank.</p></div>
+      </div>
+      <p class="callout">
+        The rule that fixes most student work: <b>decide the single most important element on the screen, then make
+        every other decision relative to it.</b> If you cannot name that element, the screen is not designed yet.
+      </p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="1.1" data-label="Spacing scale — live" data-rail="Lesson 1.1 — UI/UX practice">
+      <span class="eyebrow">Principle 02 · Space</span>
+      <h2 class="h2">Spacing is a system, not a vibe</h2>
+      <div class="grid grid--rsidebar" id="w-spacing">
+        <div class="panel panel--sunk">
+          <div class="panel__head">
+            <span>Preview</span><span class="spacer"></span>
+            <label class="switch"><input type="checkbox" id="sp-grid"><span class="switch__track"></span>Grid overlay</label>
+          </div>
+          <div id="sp-preview"></div>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Spacing source</div>
+            <div class="seg" id="sp-mode">
+              <button type="button" data-mode="vibes" aria-pressed="true">Eyeballed</button>
+              <button type="button" data-mode="4pt" aria-pressed="false">4pt scale</button>
+              <button type="button" data-mode="8pt" aria-pressed="false">8pt scale</button>
+            </div>
+            <div class="ctl">
+              <span class="ctl__label">Density <span class="ctl__val" id="sp-density-v">comfortable</span></span>
+              <input type="range" id="sp-density" min="0" max="2" step="1" value="1">
+            </div>
+            <div id="sp-values" class="small mono"></div>
+          </div>
+          <p class="small">
+            <b>Why it matters:</b> arbitrary values look almost-aligned, which reads as sloppy without the viewer
+            knowing why. A scale makes "wrong" impossible to produce by accident — and gives the agent a rule to follow.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="1.1" data-label="Alignment" data-rail="Lesson 1.1 — UI/UX practice">
+      <span class="eyebrow">Principle 03 · Alignment</span>
+      <h2 class="h2">Every element lines up with something on purpose</h2>
+      <div class="compare">
+        <div class="compare__side compare__side--bad">
+          <div class="compare__head">✕ Common student output</div>
+          <div class="compare__body">
+            <ul class="list">
+              <li>Centered headings over left-aligned body text</li>
+              <li>Cards with different internal padding per card</li>
+              <li>Labels centered, values left, in the same table</li>
+              <li>A "close enough" 14px next to a 16px gutter</li>
+            </ul>
+            <p class="small">The eye has no edge to follow, so the page feels unstable even though nothing is technically broken.</p>
+          </div>
+        </div>
+        <div class="compare__side compare__side--good">
+          <div class="compare__head">✓ What to do instead</div>
+          <div class="compare__body">
+            <ul class="list">
+              <li>Pick <b>one</b> alignment edge per region and hold it</li>
+              <li>Center only short, isolated content — a hero, an empty state</li>
+              <li>Numbers align right with <code>tabular-nums</code></li>
+              <li>Let the grid produce gaps; do not hand-place margins</li>
+            </ul>
+            <p class="small">Practical rule: if you are typing a margin value on an individual element, ask whether the parent should own that spacing instead.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="1.1" data-label="Type scale — live" data-rail="Lesson 1.1 — UI/UX practice">
+      <span class="eyebrow">Principle 04 · Typography</span>
+      <h2 class="h2">Pick a ratio, then never invent a size again</h2>
+      <div class="grid grid--rsidebar" id="w-type">
+        <div class="panel panel--sunk">
+          <div class="panel__head"><span>Scale preview</span><span class="spacer"></span><span class="small mono" id="ty-readout"></span></div>
+          <div id="ty-preview"></div>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Controls</div>
+            <div class="ctl">
+              <span class="ctl__label">Base size <span class="ctl__val" id="ty-base-v">16px</span></span>
+              <input type="range" id="ty-base" min="13" max="20" step="1" value="16">
+            </div>
+            <div class="ctl">
+              <span class="ctl__label">Ratio</span>
+              <select id="ty-ratio">
+                <option value="1.125">1.125 — Major second (dense UI, dashboards)</option>
+                <option value="1.2" selected>1.200 — Minor third (default for apps)</option>
+                <option value="1.25">1.250 — Major third (marketing pages)</option>
+                <option value="1.333">1.333 — Perfect fourth (editorial)</option>
+                <option value="1.5">1.500 — Perfect fifth (dramatic, few levels)</option>
+              </select>
+            </div>
+          </div>
+          <ul class="list">
+            <li><b>Three sizes</b> is usually enough for one screen</li>
+            <li>Body text lives at <b>65 characters</b> per line, give or take 10</li>
+            <li>Line-height moves <b>opposite</b> to size: 1.5 for body, 1.05 for display</li>
+            <li>Big text gets <b>negative</b> letter-spacing; small caps get positive</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="1.1" data-label="Color budget" data-rail="Lesson 1.1 — UI/UX practice">
+      <span class="eyebrow">Principle 05 · Color</span>
+      <h2 class="h2">You need far fewer colors than you think</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">The working budget for one product</div>
+          <div class="steps">
+            <div class="step"><div><div class="step__t">One neutral ramp — 5 to 7 steps</div><div class="step__b">Background, surface, border, muted text, body text. This is 90% of every screen you will ever build.</div></div></div>
+            <div class="step"><div><div class="step__t">One accent</div><div class="step__b">Primary action, active state, focus. One. If everything is emphasized, nothing is.</div></div></div>
+            <div class="step"><div><div class="step__t">Semantic colors — success, warning, danger</div><div class="step__b">These are <em>meaning</em>, not decoration. Never reuse your accent as your success color.</div></div></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Bias your neutrals</div>
+            <div id="neutral-demo"></div>
+            <p class="small">A pure <code>#808080</code> grey reads as un-chosen. Tint the neutral ramp a few percent toward your accent's hue and the whole page reads as one deliberate system.</p>
+          </div>
+          <p class="callout"><b>Dark mode is not an inversion.</b> Pure white text on pure black vibrates; pure black surfaces flatten depth. Lift the ground to a near-black and drop the text off pure white.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="1.1" data-label="Contrast lab — live" data-rail="Lesson 1.1 — UI/UX practice">
+      <span class="eyebrow">Principle 06 · Contrast &amp; WCAG</span>
+      <h2 class="h2">The one metric that is not a matter of taste</h2>
+      <div class="grid grid--rsidebar" id="w-contrast">
+        <div class="panel panel--flush">
+          <div id="ct-preview" style="padding:var(--s6);display:flex;flex-direction:column;gap:var(--s4);min-height:15rem;justify-content:center">
+            <div id="ct-t1" style="font-size:2rem;font-weight:600;letter-spacing:-0.02em">Enrollment confirmed</div>
+            <div id="ct-t2" style="font-size:0.95rem;max-width:44ch">Your slots for the first semester are reserved. You will receive an email once the registrar validates your load.</div>
+            <div id="ct-t3" style="font-size:0.78rem">Reference no. 2026-08-15-4471</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Sample pair</div>
+            <div class="row" style="gap:var(--s5)">
+              <div class="ctl" style="flex:1"><span class="ctl__label">Text</span><div class="row" style="gap:var(--s2);flex-wrap:nowrap"><input type="color" id="ct-fg" value="#8A93A3"><input type="text" id="ct-fg-hex" value="#8A93A3" spellcheck="false"></div></div>
+              <div class="ctl" style="flex:1"><span class="ctl__label">Background</span><div class="row" style="gap:var(--s2);flex-wrap:nowrap"><input type="color" id="ct-bg" value="#FFFFFF"><input type="text" id="ct-bg-hex" value="#FFFFFF" spellcheck="false"></div></div>
+            </div>
+            <div class="row" style="align-items:baseline;gap:var(--s3)">
+              <span id="ct-ratio" class="num" style="font-size:2.6rem;line-height:1">3.21</span>
+              <span class="small mono" style="letter-spacing:0.14em">: 1 CONTRAST RATIO</span>
+            </div>
+            <div class="row" id="ct-badges" style="gap:var(--s2)"></div>
+          </div>
+          <div class="panel">
+            <div class="panel__head">Try these</div>
+            <div class="row" style="gap:var(--s2)" id="ct-presets"></div>
+            <p class="small">The first preset is the single most common accessibility failure in student projects: <b>light grey placeholder-looking text used for real content.</b></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="1.1" data-label="Accessibility floor" data-rail="Lesson 1.1 — UI/UX practice">
+      <span class="eyebrow">Principle 07 · Accessibility</span>
+      <h2 class="h2">The non-negotiable floor</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">Costs you nothing if you do it from the start</div>
+          <ul class="list list--check">
+            <li><b>4.5:1</b> contrast for body text, <b>3:1</b> for large text and UI borders</li>
+            <li>A <b>visible focus ring</b> — never <code>outline: none</code> without a replacement</li>
+            <li>Touch targets <b>≥ 44 × 44 px</b>, with spacing between them</li>
+            <li>Every input has a <b>persistent label</b>, not just a placeholder</li>
+            <li>Real semantic elements: <code>button</code> for actions, <code>a</code> for navigation</li>
+            <li>Never encode meaning in <b>color alone</b> — pair it with text or an icon</li>
+            <li>Honor <code>prefers-reduced-motion</code></li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">The 30-second audit you can run on any screen</div>
+            <div class="steps">
+              <div class="step"><div><div class="step__t">Unplug the mouse</div><div class="step__b">Tab through the whole flow. If you get lost or trapped, so does a keyboard user.</div></div></div>
+              <div class="step"><div><div class="step__t">Zoom to 200%</div><div class="step__b">Ctrl/Cmd +. Text should reflow, not clip or overlap.</div></div></div>
+              <div class="step"><div><div class="step__t">Grayscale it</div><div class="step__b">Is the primary action still obvious? If not, you encoded meaning in hue alone.</div></div></div>
+            </div>
+          </div>
+          <p class="callout">This is also the fastest way to catch agent output. <b>Generated UI is confidently inaccessible</b> — it will hand you placeholder-only inputs and removed focus rings all day.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="1.1" data-label="Seven states — live" data-rail="Lesson 1.1 — UI/UX practice">
+      <span class="eyebrow">Principle 08 · States</span>
+      <h2 class="h2">A component is not one thing. It is seven.</h2>
+      <div class="grid grid--rsidebar" id="w-states">
+        <div class="panel panel--sunk">
+          <div class="panel__head"><span>Live preview</span><span class="spacer"></span><span class="small mono" id="st-name">DEFAULT</span></div>
+          <div id="st-preview" style="min-height:11rem;display:flex;align-items:center;justify-content:center;padding:var(--s5)"></div>
+          <p class="small" id="st-note"></p>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Pick a state</div>
+            <div class="col col--tight" id="st-buttons"></div>
+          </div>
+          <p class="callout">Students design state 1. Products live in states 2 – 7. <b>Every mark in the laboratory rubric for "states" is about the six you did not think about.</b></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="1.1" data-label="Loading & empty" data-rail="Lesson 1.1 — UI/UX practice">
+      <span class="eyebrow">Principle 08 · continued</span>
+      <h2 class="h2">The two states that decide whether your app feels fast</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">Loading</div>
+          <ul class="list">
+            <li><b>Under 100ms</b> — show nothing. A flash of spinner is worse than a pause.</li>
+            <li><b>100ms – 1s</b> — show the target's shape: a skeleton, not a spinner.</li>
+            <li><b>Over 1s</b> — show progress and what is happening in words.</li>
+            <li>Keep layout <b>stable</b>: the skeleton occupies the same box the content will.</li>
+            <li>Consider <b>optimistic UI</b>: apply the change instantly, roll back on failure.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <div class="panel__head">Empty</div>
+          <ul class="list">
+            <li>An empty state is your best <b>onboarding surface</b> — it is the first thing a new user sees.</li>
+            <li>Say what goes here, why it is empty, and <b>give the action</b> that fills it.</li>
+            <li>Distinguish <b>never had any</b> from <b>search returned nothing</b> from <b>failed to load</b>. Three different states, three different messages.</li>
+            <li>Never ship the bare string "No data."</li>
+          </ul>
+        </div>
+      </div>
+      <p class="callout"><b>Ask the agent for these explicitly.</b> "Include loading, empty, and error states for this list" is one clause that doubles the usefulness of the output.</p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="1.1" data-label="Forms — live" data-rail="Lesson 1.1 — UI/UX practice">
+      <span class="eyebrow">Principle 09 · Forms</span>
+      <h2 class="h2">Where most academic projects lose their users</h2>
+      <div class="grid grid--rsidebar">
+        <div data-widget="ba" data-a="Typical" data-b="Fixed" id="w-forms">
+          <div class="ba__pane" data-pane="a"><div id="form-bad"></div></div>
+          <div class="ba__pane" data-pane="b"><div id="form-good"></div></div>
+        </div>
+        <div class="panel">
+          <div class="panel__head">Seven fixes, in order of payoff</div>
+          <ul class="list" id="form-notes"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="1.1" data-label="Microcopy" data-rail="Lesson 1.1 — UI/UX practice">
+      <span class="eyebrow">Principle 10 · Words</span>
+      <h2 class="h2">Copy is design material</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">Buttons say what happens</div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Instead of</th><th>Write</th></tr></thead>
+              <tbody>
+                <tr><td class="mono dim">Submit</td><td class="mono" style="color:var(--pass)">Enroll in 3 subjects</td></tr>
+                <tr><td class="mono dim">OK</td><td class="mono" style="color:var(--pass)">Delete draft</td></tr>
+                <tr><td class="mono dim">Yes / No</td><td class="mono" style="color:var(--pass)">Discard changes / Keep editing</td></tr>
+                <tr><td class="mono dim">Click here</td><td class="mono" style="color:var(--pass)">View your schedule</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small">Then the confirmation echoes the verb: press <b>Publish</b>, see <b>Published</b>.</p>
+        </div>
+        <div class="panel">
+          <div class="panel__head">The error message formula</div>
+          <pre><i>[what went wrong]</i> + <i>[why]</i> + <i>[the exact next action]</i></pre>
+          <div class="compare" style="gap:var(--s3)">
+            <div class="compare__side compare__side--bad"><div class="compare__body"><p class="mono small">"Error: invalid input"</p></div></div>
+            <div class="compare__side compare__side--good"><div class="compare__body"><p class="mono small">"That student number is 8 digits. Yours has 7 — check for a missing leading zero."</p></div></div>
+          </div>
+          <ul class="list">
+            <li>No apologies, no "Oops!", no blame</li>
+            <li>Name the field, not the exception class</li>
+            <li>Speak the user's vocabulary: <b>notifications</b>, not <b>webhook config</b></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="1.1" data-label="Heuristics" data-rail="Lesson 1.1 — UI/UX practice">
+      <span class="eyebrow">Principle 11 · Nielsen's ten</span>
+      <h2 class="h2">The industry's shared vocabulary for "this is broken"</h2>
+      <div class="grid grid--2">
+        <ul class="list">
+          <li><b>Visibility of system status</b> — always tell the user what is happening</li>
+          <li><b>Match to the real world</b> — their words, their concepts, their order</li>
+          <li><b>User control &amp; freedom</b> — a clearly marked exit, undo, cancel</li>
+          <li><b>Consistency &amp; standards</b> — same thing, same name, same place</li>
+          <li><b>Error prevention</b> — better than any error message</li>
+        </ul>
+        <ul class="list">
+          <li><b>Recognition over recall</b> — show options, don't demand memory</li>
+          <li><b>Flexibility &amp; efficiency</b> — shortcuts for the experienced</li>
+          <li><b>Aesthetic &amp; minimalist design</b> — every extra element dilutes the rest</li>
+          <li><b>Help users recover from errors</b> — plain language, a way out</li>
+          <li><b>Help &amp; documentation</b> — findable, task-focused, concrete</li>
+        </ul>
+      </div>
+      <p class="callout">Memorize these ten. In the laboratory activity, <b>a critique that names the heuristic scores; "it looks bad" does not.</b></p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="1.1" data-label="Heuristics quiz" data-rail="Lesson 1.1 — UI/UX practice">
+      <span class="eyebrow">Checkpoint · call the violation</span>
+      <h2 class="h2">Five screens. Name what is wrong.</h2>
+      <div data-widget="quiz" data-src="quiz-heuristics" style="max-width:60rem"></div>
+      <script type="application/json" id="quiz-heuristics">
+[
+  {
+    "scenario": "A student presses <b>Enroll</b>. The button stays exactly as it was. Six seconds later the page reloads onto a schedule screen.",
+    "q": "Which heuristic is violated?",
+    "options": ["Visibility of system status", "Aesthetic and minimalist design", "Help and documentation", "Flexibility and efficiency of use"],
+    "answer": 0,
+    "why": "Nothing acknowledged the press, so the user has no idea whether it registered. The predictable consequence is double submission. Fix: disable the button, swap the label to <code>Enrolling…</code>, and keep the layout stable."
+  },
+  {
+    "scenario": "A grade encoding table has no <b>Cancel</b>. Once you open a row for editing, the only path forward is <b>Save</b>.",
+    "q": "Which heuristic is violated?",
+    "options": ["Consistency and standards", "User control and freedom", "Match between system and the real world", "Error prevention"],
+    "answer": 1,
+    "why": "Users enter modes by accident constantly. Every mode needs a clearly marked exit that discards changes. Bonus: pair it with undo instead of a confirmation dialog where you can."
+  },
+  {
+    "scenario": "A form field is labeled <b>Trans. Ref. No. (SIS-gen)</b> — the exact column name from the database.",
+    "q": "Which heuristic is violated?",
+    "options": ["Error prevention", "Recognition rather than recall", "Match between system and the real world", "Visibility of system status"],
+    "answer": 2,
+    "why": "The interface is speaking the schema's language instead of the user's. Label it <b>Reference number</b> and add hint text showing the format. Your table name is not the user's problem."
+  },
+  {
+    "scenario": "The primary action is called <b>Save</b> on one page, <b>Update</b> on another, and <b>Apply</b> on a third — all three do the identical thing.",
+    "q": "Which heuristic is violated?",
+    "options": ["Consistency and standards", "Aesthetic and minimalist design", "User control and freedom", "Help and documentation"],
+    "answer": 0,
+    "why": "Same action, same word, same position, every time. Inconsistent naming forces the user to re-learn your app on every screen — and it is a dead giveaway that different screens were generated in different sessions without a shared component."
+  },
+  {
+    "scenario": "A <b>Delete section</b> button sits 8 pixels from <b>Save section</b>, same size, same grey, no confirmation and no undo.",
+    "q": "Which heuristic is most directly violated?",
+    "options": ["Recognition rather than recall", "Flexibility and efficiency of use", "Error prevention", "Help and documentation"],
+    "answer": 2,
+    "why": "Design the mistake out before you write the error message. Separate destructive actions spatially, style them differently, and prefer an undo window over a confirm dialog — people click through confirmations without reading them."
+  }
+]
+      </script>
+    </section>
+
+    <section class="slide" data-sec="1.1" data-label="UX laws" data-rail="Lesson 1.1 — UI/UX practice">
+      <span class="eyebrow">Principle 12 · Predictable human behavior</span>
+      <h2 class="h2">Four laws you can design against</h2>
+      <div class="grid grid--4">
+        <div class="card"><span class="card__k">Hick's law</span><div class="card__t">More options, slower decisions</div><p class="card__b">Decision time grows with the number of choices. Group, default, and progressively disclose — a 14-item nav is a design failure.</p></div>
+        <div class="card"><span class="card__k">Fitts's law</span><div class="card__t">Big and near is fast</div><p class="card__b">Time to hit a target depends on its size and distance. Primary actions get to be large and close to where the eye already is.</p></div>
+        <div class="card"><span class="card__k">Jakob's law</span><div class="card__t">They expect your app to work like the others</div><p class="card__b">Users spend most of their time on other sites. Novel navigation is a tax you charge your user, not a feature.</p></div>
+        <div class="card"><span class="card__k">Miller's law</span><div class="card__t">About 7 items in working memory</div><p class="card__b">Chunk long forms and long lists. This is why phone numbers are grouped and why your 20-field form needs sections.</p></div>
+      </div>
+      <p class="callout">These are the load-bearing arguments in a design review. <b>"Hick's law — we have eleven top-level items and three of them do the same thing"</b> is a sentence that wins meetings.</p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="1.1" data-label="Responsive — live" data-rail="Lesson 1.1 — UI/UX practice">
+      <span class="eyebrow">Principle 13 · Responsive</span>
+      <h2 class="h2">Breakpoints come from the content, not from device names</h2>
+      <div class="col" id="w-viewport">
+        <div class="panel">
+          <div class="panel__head">
+            <span>Drag to resize the container</span><span class="spacer"></span>
+            <span class="small mono" id="vp-readout">1024px · desktop</span>
+          </div>
+          <input type="range" id="vp-range" min="320" max="1200" step="8" value="1024">
+        </div>
+        <div class="panel panel--sunk" style="align-items:center">
+          <div id="vp-frame" style="width:1024px;max-width:100%;transition:width .12s linear"></div>
+        </div>
+      </div>
+      <p class="callout">
+        Design the <b>narrow</b> layout first — it forces you to rank content, and that ranking is your hierarchy.
+        Widening a good mobile layout is easy; cramming a desktop layout into a phone is a rewrite.
+      </p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="1.1" data-label="Tokens — live" data-rail="Lesson 1.1 — UI/UX practice">
+      <span class="eyebrow">Principle 14 · Design tokens</span>
+      <h2 class="h2">Primitive → semantic → component</h2>
+      <div class="grid grid--rsidebar" id="w-tokens">
+        <div class="panel panel--sunk">
+          <div class="panel__head">Mini product, driven entirely by the tokens on the right</div>
+          <div id="tk-preview"></div>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Tokens</div>
+            <div class="row" style="gap:var(--s4)">
+              <div class="ctl" style="flex:1"><span class="ctl__label">Brand</span><input type="color" id="tk-brand" value="#D9A441" style="width:100%"></div>
+              <div class="ctl" style="flex:1"><span class="ctl__label">Surface</span><input type="color" id="tk-surface" value="#141A24" style="width:100%"></div>
+            </div>
+            <div class="ctl"><span class="ctl__label">Radius <span class="ctl__val" id="tk-radius-v">2px</span></span><input type="range" id="tk-radius" min="0" max="16" step="1" value="2"></div>
+            <div class="ctl"><span class="ctl__label">Density <span class="ctl__val" id="tk-density-v">1.0×</span></span><input type="range" id="tk-density" min="6" max="16" step="1" value="10"></div>
+          </div>
+          <div class="panel panel--flush">
+            <div class="panel__head" style="padding:var(--s3) var(--s4);border-bottom:1px solid var(--line)">Generated CSS</div>
+            <pre id="tk-code" style="border:0;max-height:11rem"></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="1.1" data-label="Token layers" data-rail="Lesson 1.1 — UI/UX practice">
+      <span class="eyebrow">Principle 14 · continued</span>
+      <h2 class="h2">Why three layers instead of one</h2>
+      <div class="steps">
+        <div class="step">
+          <div>
+            <div class="step__t">Primitive — the raw value has no opinion</div>
+            <div class="step__b"><code>--amber-500: #D9A441</code>. Never referenced by a component directly.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <div class="step__t">Semantic — the value gets a job</div>
+            <div class="step__b"><code>--color-action: var(--amber-500)</code>. This is the layer you swap for dark mode, for a rebrand, or for a second client.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <div class="step__t">Component — the job gets a location</div>
+            <div class="step__b"><code>--button-primary-bg: var(--color-action)</code>. Lets one component deviate without forking the whole system.</div>
+          </div>
+        </div>
+      </div>
+      <p class="callout">
+        This is the single highest-leverage thing you can hand an agent. <b>Give it the token file and it stops
+        inventing colors</b> — every screen it generates afterwards is automatically consistent with every other one.
+        You will feel this immediately in Module 02 with Tailwind's <code>theme</code> config.
+      </p>
+    </section>
+
+    <section class="slide" data-sec="1.1" data-label="Fidelity ladder" data-rail="Lesson 1.1 — UI/UX practice">
+      <span class="eyebrow">Process</span>
+      <h2 class="h2">Wireframe → mockup → build: know when to stop</h2>
+      <div class="grid grid--3">
+        <div class="card">
+          <span class="card__k">Low fidelity · minutes</span>
+          <div class="card__t">Wireframe</div>
+          <p class="card__b">Boxes, labels, and ranking. Greyscale only — <b>deliberately ugly so people critique structure instead of color.</b></p>
+          <p class="small dim">Answer: what is on this screen, and in what order?</p>
+        </div>
+        <div class="card">
+          <span class="card__k">Mid fidelity · an hour</span>
+          <div class="card__t">Mockup</div>
+          <p class="card__b">Real type scale, real tokens, real copy. Still no interaction. This is where design is actually decided.</p>
+          <p class="small dim">Answer: does this read correctly at a glance?</p>
+        </div>
+        <div class="card">
+          <span class="card__k">High fidelity · a session</span>
+          <div class="card__t">Prototype in code</div>
+          <p class="card__b">Real HTML/CSS, real states, real keyboard behavior. With an agent, this is now cheaper than a clickable Figma prototype.</p>
+          <p class="small dim">Answer: does it hold up when a human uses it?</p>
+        </div>
+      </div>
+      <p class="callout">
+        <b>The agent collapses the last two steps.</b> That is the actual shift in this course: mid-fidelity used to be
+        where you stopped because building was expensive. It is not expensive anymore — so your wireframe thinking has to be sharper, not looser.
+      </p>
+    </section>
+
+    <section class="slide" data-sec="1.1" data-label="Common mistakes" data-rail="Lesson 1.1 — UI/UX practice">
+      <span class="eyebrow">From grading past projects</span>
+      <h2 class="h2">The nine I mark every semester</h2>
+      <div class="grid grid--3">
+        <div class="card"><span class="card__k">01</span><div class="card__t">Everything is bold</div><p class="card__b">Emphasis used on every heading, so the eye has no entry point.</p></div>
+        <div class="card"><span class="card__k">02</span><div class="card__t">Grey text on white</div><p class="card__b">Looks refined on a retina laptop, illegible on the projector and on a phone outdoors.</p></div>
+        <div class="card"><span class="card__k">03</span><div class="card__t">Placeholder as label</div><p class="card__b">The label vanishes the moment the user starts typing, exactly when it is needed.</p></div>
+        <div class="card"><span class="card__k">04</span><div class="card__t">No empty state</div><p class="card__b">A blank white rectangle on first login. The most important screen, left undesigned.</p></div>
+        <div class="card"><span class="card__k">05</span><div class="card__t">Inconsistent spacing</div><p class="card__b">17px here, 20px there. Reads as careless even to people who cannot name the problem.</p></div>
+        <div class="card"><span class="card__k">06</span><div class="card__t">Six accent colors</div><p class="card__b">Usually from copying three different tutorials into one project.</p></div>
+        <div class="card"><span class="card__k">07</span><div class="card__t">Tables that don't fit</div><p class="card__b">Ten columns on a phone with horizontal scroll on the whole page instead of the table.</p></div>
+        <div class="card"><span class="card__k">08</span><div class="card__t">Destructive next to primary</div><p class="card__b">Delete and Save, same size, same color, 8px apart.</p></div>
+        <div class="card"><span class="card__k">09</span><div class="card__t">Focus rings removed</div><p class="card__b"><code>outline: none</code> copied from a snippet, keyboard navigation destroyed silently.</p></div>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="1.1" data-label="Lesson 1.1 recap" data-rail="Lesson 1.1 — UI/UX practice">
+      <span class="eyebrow">Recap</span>
+      <h2 class="h2">Fourteen principles, one sentence each</h2>
+      <div class="grid grid--2">
+        <ul class="list">
+          <li><b>Hierarchy</b> — name the one most important element, rank everything against it</li>
+          <li><b>Space</b> — use a 4 or 8pt scale; let the parent own the gaps</li>
+          <li><b>Alignment</b> — one edge per region, held without exception</li>
+          <li><b>Type</b> — one ratio, three sizes, 65-character measure</li>
+          <li><b>Color</b> — one neutral ramp, one accent, three semantics</li>
+          <li><b>Contrast</b> — 4.5:1 body, 3:1 large and UI, no exceptions</li>
+          <li><b>Accessibility</b> — keyboard, focus, labels, 44px, reduced motion</li>
+        </ul>
+        <ul class="list">
+          <li><b>States</b> — seven per component, not one</li>
+          <li><b>Loading &amp; empty</b> — skeletons and onboarding, never "No data"</li>
+          <li><b>Forms</b> — labels above, validate on blur, errors that instruct</li>
+          <li><b>Copy</b> — buttons name the outcome; errors name the fix</li>
+          <li><b>Heuristics</b> — ten shared words for what is broken</li>
+          <li><b>Laws</b> — Hick, Fitts, Jakob, Miller</li>
+          <li><b>Tokens</b> — primitive → semantic → component</li>
+        </ul>
+      </div>
+      <p class="callout">Everything after this point assumes you can apply these <b>as a reviewer</b>. That is the job now.</p>
+    </section>
+
+    <!-- ======================================================
+         LESSON 1.2 — AGENTIC DESIGN
+         ====================================================== -->
+
+    <section class="slide slide--center" data-sec="1.2" data-label="Lesson 1.2 opens" data-rail="Lesson 1.2 — Agentic design">
+      <div class="col" style="align-items:center;gap:var(--s4)">
+        <span class="eyebrow eyebrow--plain">Lesson 1.2</span>
+        <h1 class="h1">Driving the build<br>instead of typing it</h1>
+        <p class="lede" style="text-align:center">Context, brief, generation, review, iteration — and the discipline that keeps it from producing convincing garbage.</p>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="1.2" data-label="The agentic loop" data-rail="Lesson 1.2 — Agentic design">
+      <span class="eyebrow">The workflow</span>
+      <h2 class="h2">"Agentic" means you run a loop, not a prompt</h2>
+      <div data-widget="stepper" class="stepper">
+        <div class="stepper__track">
+          <button class="stepper__btn" type="button" data-step="1"><span class="stepper__n">01</span><span class="stepper__l">Context</span></button>
+          <button class="stepper__btn" type="button" data-step="2"><span class="stepper__n">02</span><span class="stepper__l">Plan</span></button>
+          <button class="stepper__btn" type="button" data-step="3"><span class="stepper__n">03</span><span class="stepper__l">Generate</span></button>
+          <button class="stepper__btn" type="button" data-step="4"><span class="stepper__n">04</span><span class="stepper__l">Review</span></button>
+          <button class="stepper__btn" type="button" data-step="5"><span class="stepper__n">05</span><span class="stepper__l">Iterate</span></button>
+        </div>
+
+        <div class="stepper__panel grid grid--2" data-step="1">
+          <div class="panel"><div class="panel__head">You do</div><ul class="list"><li>State the product, the user, and the one job of the screen</li><li>Hand over tokens, stack, and constraints</li><li>Attach the reference: a screenshot, an existing page, a schema</li></ul></div>
+          <div class="panel"><div class="panel__head">Why it decides everything</div><p class="body">A vague context does not produce a vague answer — it produces a <b>confident answer to a different question.</b> Most bad output traces back to this step, not to the model.</p></div>
+        </div>
+        <div class="stepper__panel grid grid--2" data-step="2">
+          <div class="panel"><div class="panel__head">You do</div><ul class="list"><li>Ask for a plan <b>before</b> any code</li><li>Read it. Correct it. It is 20 seconds against 200 lines of wrong markup</li><li>Confirm the component inventory and the states</li></ul></div>
+          <div class="panel"><div class="panel__head">Prompt shape</div><pre><i># before writing any code</i>
+List the components you'll build,
+the states each one needs, and the
+tokens you'll consume. <b>Wait for my
+go-ahead.</b></pre></div>
+        </div>
+        <div class="stepper__panel grid grid--2" data-step="3">
+          <div class="panel"><div class="panel__head">You do</div><ul class="list"><li>Let it write the whole thing without interrupting</li><li>One screen at a time — not the whole app in one shot</li><li>Keep the tokens file as the single source of truth</li></ul></div>
+          <div class="panel"><div class="panel__head">Watch for</div><ul class="list list--cross"><li>Invented colors that are not in your token set</li><li>Only the default state implemented</li><li>Placeholder text used as a label</li><li>Fake data that hides real overflow cases</li></ul></div>
+        </div>
+        <div class="stepper__panel grid grid--2" data-step="4">
+          <div class="panel"><div class="panel__head">You do</div><ul class="list"><li>Run the 8-point design QA (two slides ahead)</li><li>Tab through it. Zoom to 200%. Check contrast.</li><li>Resize to 320px wide</li></ul></div>
+          <div class="panel"><div class="panel__head">This is the graded skill</div><p class="body">Generation is free and everyone in the room has it. <b>The differentiator is whether you can find what is wrong in 90 seconds.</b> That is what Lesson 1.1 bought you.</p></div>
+        </div>
+        <div class="stepper__panel grid grid--2" data-step="5">
+          <div class="panel"><div class="panel__head">You do</div><ul class="list"><li>Give <b>measured</b> corrections, not adjectives</li><li>One theme per turn — layout, then color, then states</li><li>Stop when it meets the brief; polish is not free</li></ul></div>
+          <div class="panel"><div class="panel__head">Loop, don't restart</div><p class="body">Beginners throw away the conversation and re-prompt from scratch. <b>The context you built is the asset</b> — correct inside it.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="1.2" data-label="Two tools" data-rail="Lesson 1.2 — Agentic design">
+      <span class="eyebrow">Tooling for this module</span>
+      <h2 class="h2">Two surfaces, two jobs</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head" style="color:var(--cyan)">Claude in the browser — exploration</div>
+          <ul class="list">
+            <li>Fastest path from a brief to something <b>you can look at</b></li>
+            <li>Renders a working page immediately — real HTML/CSS, not a picture</li>
+            <li>Paste a screenshot of a bad UI and ask for a critique</li>
+            <li>Generate three directions, throw away two</li>
+          </ul>
+          <p class="small">Use it for: wireframes, mockups, token exploration, and the critique half of Activity 1.</p>
+        </div>
+        <div class="panel">
+          <div class="panel__head" style="color:var(--cyan)">Claude Code / your editor — the build</div>
+          <ul class="list">
+            <li>Works <b>inside your repository</b>, with your files as context</li>
+            <li>Reads your existing components and matches them</li>
+            <li>Runs commands: install, build, test, migrate</li>
+            <li>Changes land as a diff you review before committing</li>
+          </ul>
+          <p class="small">Use it for: Module 02 onward, once there is a repository to work in.</p>
+        </div>
+      </div>
+      <p class="callout">Rule for this module: <b>explore in the browser, commit from the editor.</b> Never paste code you have not read into a project you are graded on.</p>
+    </section>
+
+    <section class="slide" data-sec="1.2" data-label="Context is the product" data-rail="Lesson 1.2 — Agentic design">
+      <span class="eyebrow">Input quality</span>
+      <h2 class="h2">Everything the agent does not know, it invents</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">Feed it these, every time</div>
+          <ul class="list list--check">
+            <li><b>Product + user</b> — "student portal, 3rd-year BSCS students on Android phones"</li>
+            <li><b>The screen's one job</b> — "confirm an enrollment and show what was reserved"</li>
+            <li><b>Stack</b> — "Next.js App Router, Tailwind, no component library"</li>
+            <li><b>Tokens</b> — paste the actual CSS variables or Tailwind theme</li>
+            <li><b>Constraints</b> — WCAG AA, mobile-first, no external images</li>
+            <li><b>Real data shape</b> — a sample row, with the ugly long values included</li>
+            <li><b>Reference</b> — a screenshot of what exists, or of what you like</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">What "invents" looks like in practice</div>
+            <ul class="list list--cross">
+              <li>A color palette that has nothing to do with your app</li>
+              <li>Fields your database does not have</li>
+              <li>An icon library you do not have installed</li>
+              <li>Names that read like a US startup, not a VSU portal</li>
+            </ul>
+          </div>
+          <p class="callout">A useful test before you press enter: <b>could a competent classmate build the right thing from this message alone?</b> If not, the agent cannot either.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="1.2" data-label="Brief builder — live" data-rail="Lesson 1.2 — Agentic design">
+      <span class="eyebrow">Tool · assemble a design brief</span>
+      <h2 class="h2">Build the prompt, then read what you actually asked for</h2>
+      <div class="grid grid--sidebar" id="w-prompt">
+        <div class="panel">
+          <div class="panel__head">Brief inputs</div>
+          <div class="ctl"><span class="ctl__label">Screen</span><input type="text" id="pb-screen" value="Enrollment confirmation" spellcheck="false"></div>
+          <div class="ctl"><span class="ctl__label">User</span><input type="text" id="pb-user" value="3rd-year BSCS students, mostly on Android phones" spellcheck="false"></div>
+          <div class="ctl"><span class="ctl__label">The one job</span><input type="text" id="pb-job" value="confirm what was reserved and what to do next" spellcheck="false"></div>
+          <div class="ctl"><span class="ctl__label">Stack</span>
+            <select id="pb-stack">
+              <option>Next.js App Router + Tailwind CSS</option>
+              <option>Plain HTML + CSS, no build step</option>
+              <option>React + Tailwind CSS</option>
+              <option>Next.js + Tailwind + Supabase</option>
+            </select>
+          </div>
+          <div class="ctl"><span class="ctl__label">Must include</span><div class="col col--tight" id="pb-includes"></div></div>
+        </div>
+        <div class="panel panel--flush">
+          <div class="panel__head" style="padding:var(--s3) var(--s4)">
+            <span>Composed brief</span><span class="spacer"></span>
+            <button class="btn btn--ghost" data-copy="#pb-out" type="button">Copy</button>
+          </div>
+          <pre id="pb-out" style="border:0;max-height:26rem"></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="1.2" data-label="Tokens first" data-rail="Lesson 1.2 — Agentic design">
+      <span class="eyebrow">Sequencing</span>
+      <h2 class="h2">Tokens first, screens second — always</h2>
+      <div class="grid grid--2">
+        <div class="compare__side compare__side--bad">
+          <div class="compare__head">✕ Screen-first</div>
+          <div class="compare__body">
+            <ol class="list"><li>"Build me a dashboard"</li><li>"Now build me a settings page"</li><li>"Now a login page"</li></ol>
+            <p>Three sessions, three palettes, three button styles, three spacing systems. You now own a merge problem instead of an app.</p>
+          </div>
+        </div>
+        <div class="compare__side compare__side--good">
+          <div class="compare__head">✓ Token-first</div>
+          <div class="compare__body">
+            <ol class="list"><li>"Produce a token set: neutrals, one accent, semantics, type scale, spacing scale."</li><li>Review and fix the tokens once.</li><li>"Using <i>only</i> these tokens, build the dashboard."</li><li>"Same tokens — settings page."</li></ol>
+            <p>Every screen is consistent by construction, and a rebrand is one file.</p>
+          </div>
+        </div>
+      </div>
+      <p class="callout">This is also how you make the agent's output <b>reviewable</b>: any hard-coded hex you spot in the diff is, by definition, a bug.</p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="1.2" data-label="Vague vs specific" data-rail="Lesson 1.2 — Agentic design">
+      <span class="eyebrow">Prompt craft</span>
+      <h2 class="h2">The same request, two levels of precision</h2>
+      <div class="compare">
+        <div class="compare__side compare__side--bad">
+          <div class="compare__head">✕ What most people send</div>
+          <div class="compare__body">
+            <pre style="background:transparent;border:0;padding:0">make a nice modern dashboard
+for students, make it look
+professional and clean</pre>
+            <ul class="list list--cross">
+              <li>"Nice", "modern", "clean" carry no constraint</li>
+              <li>No user, no data, no stack, no states</li>
+              <li>You will get the average of every dashboard on the internet</li>
+              <li>Nothing to review against — you cannot call it wrong</li>
+            </ul>
+          </div>
+        </div>
+        <div class="compare__side compare__side--good">
+          <div class="compare__head">✓ What earns marks</div>
+          <div class="compare__body">
+            <pre style="background:transparent;border:0;padding:0"><i>Screen:</i> student dashboard, VSU
+enrollment portal.
+<i>User:</i> 3rd-year BSCS, Android, on
+campus wifi.
+<i>Job:</i> see this term's load and any
+blocking requirement.
+<i>Stack:</i> Next.js + Tailwind.
+<i>Tokens:</i> [pasted]
+<i>Data:</i> 6–9 subjects, codes up to
+12 chars, names up to 60.
+<b>Include: loading, empty, error.</b>
+<b>Constraints: WCAG AA, 320px min,
+keyboard operable, no icon lib.</b>
+<i>Plan first, then wait.</i></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="1.2" data-label="Design QA — live" data-rail="Lesson 1.2 — Agentic design">
+      <span class="eyebrow">Review · the graded skill</span>
+      <h2 class="h2">Eight checks. Run them on every generated screen.</h2>
+      <div class="grid grid--rsidebar" data-widget="check" data-verdicts="Send it back|Needs one more pass|Ready to commit">
+        <div class="check" style="grid-template-columns:1fr 1fr">
+          <label class="check__item"><input type="checkbox"><span class="check__box">✓</span><span class="check__txt"><b>01 · Hierarchy</b>I can name the single most important element without being told.</span></label>
+          <label class="check__item"><input type="checkbox"><span class="check__box">✓</span><span class="check__txt"><b>02 · Tokens</b>No hard-coded hex, no off-scale spacing, no invented font size.</span></label>
+          <label class="check__item"><input type="checkbox"><span class="check__box">✓</span><span class="check__txt"><b>03 · Contrast</b>Body text ≥ 4.5:1, large text and UI borders ≥ 3:1 — measured, not assumed.</span></label>
+          <label class="check__item"><input type="checkbox"><span class="check__box">✓</span><span class="check__txt"><b>04 · States</b>Hover, focus, active, disabled, loading, empty, error all exist.</span></label>
+          <label class="check__item"><input type="checkbox"><span class="check__box">✓</span><span class="check__txt"><b>05 · Keyboard</b>Tab reaches every control in a sensible order, with a visible focus ring.</span></label>
+          <label class="check__item"><input type="checkbox"><span class="check__box">✓</span><span class="check__txt"><b>06 · 320px</b>Nothing clips, nothing overflows the body, tables scroll inside their own box.</span></label>
+          <label class="check__item"><input type="checkbox"><span class="check__box">✓</span><span class="check__txt"><b>07 · Real data</b>Longest realistic string tested — no truncation surprises, no fake perfect names.</span></label>
+          <label class="check__item"><input type="checkbox"><span class="check__box">✓</span><span class="check__txt"><b>08 · Copy</b>Buttons name the outcome; errors name the fix; nothing says "Oops".</span></label>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Verdict</div>
+            <div class="meter"><div class="meter__fill"></div></div>
+            <div class="check__verdict"><span data-verdict>0/8 · Send it back</span></div>
+            <p class="small">Tick them as they pass. Anything unticked is a specific, sayable correction — which is exactly what step 05 of the loop needs.</p>
+          </div>
+          <p class="callout">Print this. It is the same list I will grade Activity 2 against.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="1.2" data-label="Critique language" data-rail="Lesson 1.2 — Agentic design">
+      <span class="eyebrow">Iterate · step 05</span>
+      <h2 class="h2">Say the measurement, not the mood</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th style="width:40%">What you feel</th><th>What you send</th></tr></thead>
+          <tbody>
+            <tr><td class="dim">"Make it pop"</td><td>"The primary action has the same visual weight as the secondary. Give the primary the accent fill and make the secondary a bordered ghost button."</td></tr>
+            <tr><td class="dim">"It feels cramped"</td><td>"Section gaps are at one step of the scale. Move them to two steps, and keep the inner card padding where it is."</td></tr>
+            <tr><td class="dim">"Looks unprofessional"</td><td>"Three type sizes are off-scale and two radii are in use. Snap everything to the type scale and use a single 2px radius."</td></tr>
+            <tr><td class="dim">"Something's off with the header"</td><td>"The heading is centered while the content below it is left-aligned. Left-align the heading to the same edge as the table's first column."</td></tr>
+            <tr><td class="dim">"Fix the mobile view"</td><td>"At 320px the table forces the body to scroll horizontally. Put the table in its own scroll container and stack the filter controls."</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="callout">Notice what happened: <b>every sentence on the right is Lesson 1.1 vocabulary.</b> Prompting well is not a separate skill — it is design literacy, written down.</p>
+    </section>
+
+    <section class="slide" data-sec="1.2" data-label="Mockup to code" data-rail="Lesson 1.2 — Agentic design">
+      <span class="eyebrow">LO 1.2 · Extract usable HTML/CSS</span>
+      <h2 class="h2">What to keep from generated markup, and what to rewrite</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">Keep</div>
+          <ul class="list list--check">
+            <li>The <b>structure</b> — element order and nesting is usually sound</li>
+            <li>The <b>token usage</b>, if you supplied tokens</li>
+            <li><b>Semantic elements</b> and ARIA it got right</li>
+            <li>Layout via grid/flex with <code>gap</code></li>
+            <li>Responsive rules that came from content, not device names</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <div class="panel__head">Rewrite before it enters the repo</div>
+          <ul class="list list--cross">
+            <li><b>Repetition</b> — three copies of a card become one component (Module 02)</li>
+            <li>Hard-coded strings that belong in data</li>
+            <li>Magic numbers: <code>margin-top: 37px</code></li>
+            <li><code>div</code> soup where a <code>button</code>, <code>ul</code>, or <code>table</code> belongs</li>
+            <li>Anything you cannot explain line by line in the practical exam</li>
+          </ul>
+        </div>
+      </div>
+      <p class="callout">
+        The handoff to <b>Module 02</b> is exactly this: today's mockup becomes next week's
+        <code>&lt;SubjectCard /&gt;</code>. Generated markup is a <em>starting structure</em>, never a component library.
+      </p>
+    </section>
+
+    <section class="slide" data-sec="1.2" data-label="Where agents fail" data-rail="Lesson 1.2 — Agentic design">
+      <span class="eyebrow">Calibration</span>
+      <h2 class="h2">Predictable failure modes — memorize these</h2>
+      <div class="grid grid--3">
+        <div class="card"><span class="card__k">Confident wrongness</span><div class="card__t">It never says "I'm unsure"</div><p class="card__b">Output arrives in the same assured tone whether it is right or invented. Tone carries zero information about correctness.</p></div>
+        <div class="card"><span class="card__k">Happy path only</span><div class="card__t">Six states quietly missing</div><p class="card__b">Unless you ask, you get the default state and nothing else. This is the most common gap in submitted work.</p></div>
+        <div class="card"><span class="card__k">Accessibility</span><div class="card__t">Contrast and focus quietly dropped</div><p class="card__b">Removed outlines, placeholder-only labels, decorative divs acting as buttons. Assume it, check it every time.</p></div>
+        <div class="card"><span class="card__k">Perfect fake data</span><div class="card__t">"Juan Dela Cruz", 3 rows</div><p class="card__b">Every name fits, every list is short, nothing overflows. Real data breaks the layout you just approved.</p></div>
+        <div class="card"><span class="card__k">Drift</span><div class="card__t">Session 4 forgets session 1</div><p class="card__b">Without a token file in context, each new screen re-invents the design language.</p></div>
+        <div class="card"><span class="card__k">Over-delivery</span><div class="card__t">Features you never asked for</div><p class="card__b">Extra sections, extra options, extra dependencies. Every one is surface area you must now defend in the exam.</p></div>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="1.2" data-label="Integrity & the log" data-rail="Lesson 1.2 — Agentic design">
+      <span class="eyebrow">Course policy</span>
+      <h2 class="h2">Using an agent is required. Hiding it is the violation.</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">Expected of you</div>
+          <ul class="list list--check">
+            <li>Keep a <b>prompt log</b> — the brief, key iterations, and what you rejected</li>
+            <li>Submit it with the activity; it is worth marks on its own</li>
+            <li>Be able to <b>explain every line</b> you submit, on the spot</li>
+            <li>Cite the tool the way you would cite any source</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <div class="panel__head">Not acceptable</div>
+          <ul class="list list--cross">
+            <li>Submitting output you cannot read back to me</li>
+            <li>A prompt log written after the fact to match the code</li>
+            <li>Skipping the design QA and calling the first generation "done"</li>
+            <li>Pasting a classmate's session and changing the colors</li>
+          </ul>
+        </div>
+      </div>
+      <p class="callout">
+        The practical exam (15%) is <b>you, a screen, and questions about your own decisions.</b> The prompt log is
+        practice for that conversation — which is why it is graded like a lab notebook, not like homework.
+      </p>
+    </section>
+
+    <section class="slide" data-sec="1.2" data-label="Demo protocol" data-rail="Lesson 1.2 — Agentic design">
+      <span class="eyebrow">Watch this next</span>
+      <h2 class="h2">The ten-minute redesign, live</h2>
+      <div class="steps">
+        <div class="step"><div><div class="step__t">Minute 0–1 · Take the ugly screen</div><div class="step__b">A real enrollment page. Screenshot it, paste it, ask for a critique against Nielsen's ten. Read the critique out loud and disagree with at least one point.</div></div></div>
+        <div class="step"><div><div class="step__t">Minute 1–3 · Tokens</div><div class="step__b">Ask for a token set only. Neutral ramp, one accent, semantics, type scale on a 1.2 ratio, 4pt spacing. Fix the accent by hand because it will pick something generic.</div></div></div>
+        <div class="step"><div><div class="step__t">Minute 3–4 · Plan</div><div class="step__b">"List the components and their states before writing code." Correct the plan — it will forget the error state.</div></div></div>
+        <div class="step"><div><div class="step__t">Minute 4–7 · Generate</div><div class="step__b">Full screen, tokens only, all seven states, 320px minimum. Do not interrupt it.</div></div></div>
+        <div class="step"><div><div class="step__t">Minute 7–9 · Review, out loud</div><div class="step__b">Tab through it. Resize to 320. Run the contrast check on the muted text — it will fail at least once.</div></div></div>
+        <div class="step"><div><div class="step__t">Minute 9–10 · One measured correction</div><div class="step__b">A single precise instruction, and we compare before/after. That is the whole job.</div></div></div>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="1.2" data-label="Lesson 1.2 recap" data-rail="Lesson 1.2 — Agentic design">
+      <span class="eyebrow">Recap</span>
+      <h2 class="h2">The loop, in one screen</h2>
+      <div class="grid grid--2">
+        <ul class="list">
+          <li><b>Context</b> — product, user, job, stack, tokens, constraints, real data</li>
+          <li><b>Plan</b> — components and states, reviewed before any code</li>
+          <li><b>Generate</b> — one screen, uninterrupted, tokens only</li>
+          <li><b>Review</b> — the 8-point QA, every time, no exceptions</li>
+          <li><b>Iterate</b> — measured corrections, one theme per turn</li>
+        </ul>
+        <ul class="list">
+          <li>Explore in the browser, <b>commit from the editor</b></li>
+          <li><b>Tokens first</b>, screens second</li>
+          <li>Failure modes are <b>predictable</b> — check for them by habit</li>
+          <li>Keep the <b>prompt log</b></li>
+          <li>You must be able to <b>explain every line</b></li>
+        </ul>
+      </div>
+      <p class="callout"><b>The through-line:</b> good prompting is design vocabulary written down. Lesson 1.1 is what makes Lesson 1.2 work.</p>
+    </section>
+
+    <!-- ======================================================
+         LABORATORY
+         ====================================================== -->
+
+    <section class="slide slide--center" data-sec="lab" data-label="Laboratory opens" data-rail="Laboratory activities">
+      <div class="col" style="align-items:center;gap:var(--s4)">
+        <span class="eyebrow eyebrow--plain">Laboratory · Week 2–3</span>
+        <h1 class="h1">Your turn</h1>
+        <p class="lede" style="text-align:center">Two activities. Both graded on judgment — on what you caught and corrected, not on what the agent produced first.</p>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="lab" data-label="Activity 1" data-rail="Laboratory activities">
+      <span class="eyebrow">Laboratory Activity 1 · Week 2 · CA 1</span>
+      <h2 class="h2">UI Audit &amp; Redesign</h2>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">Scenario</div>
+          <p class="body">You are handed a screenshot of a working but poorly designed academic web page — an enrollment form, a grade viewer, or a request portal. It functions. It is unpleasant. Your job is to say <em>precisely</em> why, then prove your diagnosis by rebuilding it.</p>
+          <div class="panel__head" style="margin-top:var(--s3)">Deliverables</div>
+          <div class="steps">
+            <div class="step"><div><div class="step__t">Written critique — 8 to 12 findings</div><div class="step__b">Each finding names the principle or heuristic violated, quotes the evidence, and states the fix. One sentence each. "It looks bad" earns zero.</div></div></div>
+            <div class="step"><div><div class="step__t">Token set</div><div class="step__b">Neutral ramp, one accent, three semantics, type scale with its ratio stated, spacing scale. As CSS custom properties.</div></div></div>
+            <div class="step"><div><div class="step__t">Redesigned screen — single HTML file</div><div class="step__b">Tokens only, no hard-coded values, all seven states for the primary component, works at 320px.</div></div></div>
+            <div class="step"><div><div class="step__t">Prompt log</div><div class="step__b">Your brief, the corrections you issued, and one thing the agent got wrong that you caught.</div></div></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Constraints</div>
+            <ul class="list">
+              <li>No component library, no icon library, no external images</li>
+              <li>Single file, self-contained</li>
+              <li>Must pass all 8 design QA checks</li>
+              <li>Contrast measured and stated in the critique</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <div class="panel__head">Submission</div>
+            <ul class="list">
+              <li>VSU E-Learning Portal, before the week 3 session</li>
+              <li><code>SURNAME_A1.zip</code> — critique.md, tokens.css, index.html, prompt-log.md</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="lab" data-label="Activity 2" data-rail="Laboratory activities">
+      <span class="eyebrow">Laboratory Activity 2 · Week 3 · CA 2</span>
+      <h2 class="h2">Brief → Prototype</h2>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">Scenario</div>
+          <p class="body">Pick one screen from the web app you intend to build for your final project. Take it from a blank page to a reviewed, state-complete prototype using the full agentic loop — and document the loop as you go.</p>
+          <div class="panel__head" style="margin-top:var(--s3)">Deliverables</div>
+          <div class="steps">
+            <div class="step"><div><div class="step__t">Design brief</div><div class="step__b">Product, user, the screen's one job, stack, tokens, constraints, real data shape. Use the builder from this deck.</div></div></div>
+            <div class="step"><div><div class="step__t">The agent's plan, with your corrections marked</div><div class="step__b">Show what it proposed and what you changed before allowing it to generate.</div></div></div>
+            <div class="step"><div><div class="step__t">Two screens: first generation and final</div><div class="step__b">Both files kept. The diff between them is the actual submission.</div></div></div>
+            <div class="step"><div><div class="step__t">Completed 8-point QA sheet</div><div class="step__b">With the failures you found on the first pass written out, and how each was corrected.</div></div></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">The point of this activity</div>
+            <p class="body">Anyone can generate a screen. <b>You are being graded on the gap between generation one and generation two</b> — that gap is the only place your design judgment is visible.</p>
+          </div>
+          <div class="panel">
+            <div class="panel__head">Feeds directly into</div>
+            <ul class="list">
+              <li>Module 02 — this screen becomes your first real components</li>
+              <li>The final web project (FP, 20%)</li>
+              <li>The practical exam (PE, 15%)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="lab" data-label="Rubric" data-rail="Laboratory activities">
+      <span class="eyebrow">How both activities are marked</span>
+      <h2 class="h2">Rubric · 100 points</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th style="width:14rem">Criterion</th><th style="width:4rem">Pts</th><th>Full marks looks like</th></tr></thead>
+          <tbody>
+            <tr><td><b>Diagnostic precision</b></td><td class="num">25</td><td>Every finding names the specific principle or heuristic, cites the evidence, and proposes an actionable fix. No vague aesthetic complaints.</td></tr>
+            <tr><td><b>Token discipline</b></td><td class="num">20</td><td>Three-layer tokens, no hard-coded values anywhere in the markup, type and spacing both on a stated scale.</td></tr>
+            <tr><td><b>State completeness</b></td><td class="num">20</td><td>All seven states present and visibly distinct for the primary component; loading, empty, and error all designed rather than defaulted.</td></tr>
+            <tr><td><b>Accessibility floor</b></td><td class="num">15</td><td>Measured contrast passing AA, visible focus on every control, labels present, keyboard-operable, works at 320px.</td></tr>
+            <tr><td><b>Loop documentation</b></td><td class="num">15</td><td>Prompt log shows a real plan-review-iterate cycle with at least one agent error you caught and corrected.</td></tr>
+            <tr><td><b>Craft</b></td><td class="num">5</td><td>Coherent, deliberate, and defensible as a whole. Not templated.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="callout"><b>Automatic deductions:</b> any hard-coded hex (−5 each, max −15) · missing focus states (−10) · placeholder used as label (−5) · a prompt log that does not match the submitted code (referred to the integrity policy).</p>
+    </section>
+
+    <section class="slide" data-sec="lab" data-label="Assessment map" data-rail="Laboratory activities">
+      <span class="eyebrow">Traceability</span>
+      <h2 class="h2">How Module 1 maps to your grade</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Assessment</th><th>Weight</th><th>What Module 1 contributes</th><th>Outcome</th></tr></thead>
+          <tbody>
+            <tr><td>Class Activity 1 &amp; 2</td><td class="num">1.5% each</td><td>The two laboratory activities on these slides.</td><td class="num">CO1 / LO 1.1, 1.2</td></tr>
+            <tr><td>Practical Exam</td><td class="num">15%</td><td>You defend your own screen: hierarchy, tokens, states, accessibility — out loud.</td><td class="num">CO1</td></tr>
+            <tr><td>Final Project</td><td class="num">20%</td><td>The design system you build here carries every screen you ship in week 17.</td><td class="num">CO1–CO5</td></tr>
+            <tr><td>Term Examinations</td><td class="num">24%</td><td>Heuristics, contrast requirements, the state model, and the agentic loop are examinable.</td><td class="num">CO1</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="end" data-label="Next up" data-rail="Close">
+      <span class="eyebrow">Ends here, continues there</span>
+      <h2 class="h2">Next: version control, then components</h2>
+      <div class="grid grid--3">
+        <div class="card"><span class="card__k">Immediately next</span><div class="card__t">Git recap</div><p class="card__b">A short interactive session — branches, history, and why your prompt log and tokens belong in the repository.</p></div>
+        <div class="card"><span class="card__k">Module 02 · weeks 3–5</span><div class="card__t">Frontend</div><p class="card__b">Your mockup becomes real components in Next.js + Tailwind, with the token set from this module as the theme.</p></div>
+        <div class="card"><span class="card__k">Carry forward</span><div class="card__t">The 8-point QA</div><p class="card__b">Every generated screen for the rest of the semester goes through it. Keep it open.</p></div>
+      </div>
+      <div class="panel">
+        <div class="panel__head">Worth your time</div>
+        <div class="grid grid--2">
+          <ul class="list">
+            <li><b>Refactoring UI</b> — Wathan &amp; Schoger. The most practical book for developers who design.</li>
+            <li><b>Nielsen Norman Group</b> — nngroup.com/articles, the heuristics with real examples.</li>
+            <li><b>WebAIM Contrast Checker</b> — webaim.org/resources/contrastchecker</li>
+          </ul>
+          <ul class="list">
+            <li><b>Laws of UX</b> — lawsofux.com, one page per law.</li>
+            <li><b>web.dev / Learn Accessibility</b> — Google, free and current.</li>
+            <li><b>Tailwind CSS docs · Theme</b> — how tokens land in Module 02.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ bottom rail ============ -->
+  <footer class="rail rail--bot">
+    <div class="nav">
+      <button class="nav__btn" id="prev" type="button" aria-label="Previous slide">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <button class="nav__btn" id="next" type="button" aria-label="Next slide">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+    <div class="ticks" id="ticks"></div>
+    <button class="btn btn--ghost" id="open-map" type="button">Map</button>
+    <button class="btn btn--ghost" id="open-help" type="button">?</button>
+  </footer>
+</div>
+
+<!-- ============ overlays ============ -->
+<div class="overlay" id="overview" hidden>
+  <div class="overlay__head">
+    <b>Slide map</b><span>Module 01 · UI/UX Design</span><span class="spacer"></span>
+    <button class="btn btn--ghost" data-close type="button">Close · Esc</button>
+  </div>
+  <div class="map" id="map"></div>
+</div>
+
+<div class="overlay" id="help" hidden>
+  <div class="overlay__head">
+    <b>Keyboard</b><span class="spacer"></span>
+    <button class="btn btn--ghost" data-close type="button">Close · Esc</button>
+  </div>
+  <div class="keys">
+    <div class="keys__row"><span class="keys__k">→</span><span class="keys__k">Space</span> Next slide</div>
+    <div class="keys__row"><span class="keys__k">←</span> Previous slide</div>
+    <div class="keys__row"><span class="keys__k">Home</span><span class="keys__k">End</span> First / last</div>
+    <div class="keys__row"><span class="keys__k">O</span><span class="keys__k">G</span> Slide map</div>
+    <div class="keys__row"><span class="keys__k">F</span> Fullscreen</div>
+    <div class="keys__row"><span class="keys__k">?</span><span class="keys__k">H</span> This panel</div>
+    <div class="keys__row"><span class="keys__k">Esc</span> Close overlay</div>
+    <div class="keys__row"><span class="keys__k">Ctrl</span>+<span class="keys__k">P</span> Print all slides</div>
+  </div>
+  <p class="small" style="max-width:52ch">Slide numbers are in the URL — <code>#23</code> jumps straight there, so you can bookmark a starting point for the second session.</p>
+</div>
+
+<script src="../shared/deck.js"></script>
+<script src="module-1.js"></script>

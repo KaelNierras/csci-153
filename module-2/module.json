@@ -1,0 +1,10 @@
+{
+  "number": 2,
+  "title": "Frontend Development",
+  "subtitle": "Components, auth context, the API contract, and a typed request layer.",
+  "weeks": "3 – 5",
+  "outcome": "CO2",
+  "slides": 0,
+  "status": "planned",
+  "labs": []
+}

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSci 153 — Web Systems and Technologies</title>
+<meta name="description" content="Course decks and laboratory activities for CSci 153, Department of Computer Science and Technology, Visayas State University.">
+<link rel="stylesheet" href="shared/deck.css">
+<style>
+  body { overflow: auto; }
+  .page {
+    max-width: 60rem; margin: 0 auto;
+    padding: var(--s8) var(--s5) var(--s7);
+    display: flex; flex-direction: column; gap: var(--s6);
+  }
+  .masthead { display: flex; flex-direction: column; gap: var(--s3); }
+  .masthead h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.02;
+    letter-spacing: -0.035em;
+  }
+  .mods { display: flex; flex-direction: column; gap: var(--s3); }
+  .mod { border: 1px solid var(--line); background: var(--panel); }
+  .mod__main {
+    display: grid; grid-template-columns: 3rem 1fr auto;
+    gap: var(--s4); align-items: center;
+    padding: var(--s5); text-decoration: none; color: inherit;
+    transition: background .15s var(--ease);
+  }
+  a.mod__main:hover { background: var(--panel-3); }
+  a.mod__main:hover .mod__go { color: var(--accent-lit); }
+  .mod__n {
+    font-family: var(--mono); font-size: 1.5rem; color: var(--accent);
+    font-variant-numeric: tabular-nums;
+  }
+  .mod__body { display: flex; flex-direction: column; gap: 0.3rem; }
+  .mod__t { font-size: 1.15rem; font-weight: 600; letter-spacing: -0.015em; }
+  .mod__s { font-size: 0.9rem; color: var(--text-2); }
+  .mod__m {
+    font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--text-4); margin-top: 0.2rem;
+  }
+  .mod__go {
+    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--accent); white-space: nowrap;
+  }
+  .mod__go--soon { color: var(--text-4); }
+  .mod--soon { opacity: 0.55; }
+  .mod--soon .mod__n { color: var(--text-4); }
+  .mod__foot {
+    display: flex; align-items: center; gap: var(--s4); flex-wrap: wrap;
+    border-top: 1px solid var(--line-soft); padding: var(--s3) var(--s5);
+  }
+  .mod__foot .spacer { flex: 1; }
+  .lab {
+    font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text-3); text-decoration: none;
+    border-bottom: 1px solid var(--line-loud); padding-bottom: 2px;
+  }
+  .lab:hover { color: var(--text); border-color: var(--accent); }
+  kbd {
+    font-family: var(--mono); font-size: 0.82em; color: var(--text);
+    border: 1px solid var(--line-loud); border-bottom-width: 2px;
+    padding: 0.1em 0.45em; margin: 0 0.1em; background: var(--panel);
+  }
+  .foot {
+    display: flex; gap: var(--s4); flex-wrap: wrap;
+    border-top: 1px solid var(--line); padding-top: var(--s4);
+    font-size: 0.8rem; color: var(--text-3);
+  }
+  @media (max-width: 40rem) {
+    .mod__main { grid-template-columns: 2.2rem 1fr; }
+    .mod__go { grid-column: 2; }
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <header class="masthead">
+      <span class="eyebrow eyebrow--plain">Visayas State University · Department of Computer Science and Technology</span>
+      <h1>CSci 153<br>Web Systems and Technologies</h1>
+      <p class="lede">Course decks and laboratory activities. Each deck is interactive —
+        use <kbd>→</kbd> to advance, <kbd>O</kbd> for the slide map, <kbd>F</kbd> for fullscreen.</p>
+    </header>
+
+    <main class="mods">
+      <article class="mod">
+        <a class="mod__main" href="module-1/">
+          <span class="mod__n">01</span>
+          <span class="mod__body">
+            <span class="mod__t">UI/UX Design</span>
+            <span class="mod__s">Interface design you can defend, and the agentic workflow that builds it.</span>
+            <span class="mod__m">2 – 3 · CO1 · 49 slides</span>
+          </span>
+          <span class="mod__go">Open deck →</span>
+        </a>
+        <div class="mod__foot">
+          <a class="lab" href="module-1/lab/activity-1-ui-audit-and-redesign.md">Activity 1 — UI Audit and Redesign</a><a class="lab" href="module-1/lab/activity-2-brief-to-prototype.md">Activity 2 — Brief to Prototype</a>
+          <span class="spacer"></span>
+          <a class="lab" href="module-1/module-1.standalone.html" download>Offline copy · 160 KB</a>
+        </div>
+      </article>
+      <article class="mod mod--soon">
+        <div class="mod__main">
+          <span class="mod__n">02</span>
+          <span class="mod__body">
+            <span class="mod__t">Frontend Development</span>
+            <span class="mod__s">Components, auth context, the API contract, and a typed request layer.</span>
+            <span class="mod__m">3 – 5 · CO2</span>
+          </span>
+          <span class="mod__go mod__go--soon">In preparation</span>
+        </div>
+      </article>
+    </main>
+
+    <footer class="foot">
+      <span>First semester 2026–2027</span>
+      <span>·</span>
+      <span>Deep links work: append <code>#23</code> to any deck URL to open at that slide.</span>
+    </footer>
+  </div>
+</body>
+</html>

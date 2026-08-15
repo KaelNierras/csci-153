@@ -1,0 +1,54 @@
+name: Build and deploy course site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Allow one deployment at a time; a newer push supersedes a running one.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # Regenerates index.html and every module-N.standalone.html so the
+      # published site can never drift from the sources.
+      - name: Build decks
+        run: python3 shared/build.py
+
+      - name: Fail if a deck lost its slides
+        run: |
+          for f in module-*/index.html; do
+            n=$(grep -c 'class="slide' "$f" || true)
+            echo "$f — $n slides"
+            [ "$n" -ge 5 ] || { echo "::error file=$f::only $n slides found"; exit 1; }
+          done
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,13 @@
+{
+  "number": 1,
+  "title": "UI/UX Design",
+  "subtitle": "Interface design you can defend, and the agentic workflow that builds it.",
+  "weeks": "2 – 3",
+  "outcome": "CO1",
+  "slides": 49,
+  "status": "ready",
+  "labs": [
+    ["Activity 1 — UI Audit and Redesign", "lab/activity-1-ui-audit-and-redesign.md"],
+    ["Activity 2 — Brief to Prototype", "lab/activity-2-brief-to-prototype.md"]
+  ]
+}
