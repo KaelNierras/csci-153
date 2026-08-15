@@ -532,26 +532,26 @@
 
     /* chronological; `at` is the step where the commit appears */
     var COMMITS = [
-      { id: 'a1', lane: 'main', parents: [],             at: 0, who: 'Ana', msg: 'Scaffold Vite + React + Tailwind' },
-      { id: 'a2', lane: 'main', parents: ['a1'],         at: 0, who: 'Ben', msg: 'Add group tokens as the Tailwind theme' },
-      { id: 'b1', lane: 'f12',  parents: ['a2'],         at: 2, who: 'Ana', msg: 'Add StudentCard with loading and empty states' },
-      { id: 'c1', lane: 'f15',  parents: ['a2'],         at: 4, who: 'Ben', msg: 'Add SessionContext and useSession hook' },
-      { id: 'b2', lane: 'f12',  parents: ['b1'],         at: 5, who: 'Ana', msg: 'Add StudentCard skeleton' },
-      { id: 'm1', lane: 'main', parents: ['a2', 'b2'],   at: 6, who: 'Ana', msg: 'Merge pull request #12 — StudentCard', merge: true },
-      { id: 'c2', lane: 'f15',  parents: ['c1'],         at: 7, who: 'Ben', msg: 'Add RequireRole guard' },
-      { id: 'c3', lane: 'f15',  parents: ['c2', 'm1'],   at: 8, who: 'Ben', msg: 'Merge main into feature/15', merge: true },
-      { id: 'm2', lane: 'main', parents: ['m1', 'c3'],   at: 9, who: 'Ben', msg: 'Merge pull request #15 — session context', merge: true }
+      { id: 'a1', lane: 'main', parents: [],             at: 0, who: 'Ana', msg: 'chore(setup): scaffold Vite + React + Tailwind' },
+      { id: 'a2', lane: 'main', parents: ['a1'],         at: 0, who: 'Ben', msg: 'feat(theme): add the group token set as the Tailwind theme' },
+      { id: 'b1', lane: 'f12',  parents: ['a2'],         at: 2, who: 'Ana', msg: 'feat(student-card): add loading and empty states' },
+      { id: 'c1', lane: 'f15',  parents: ['a2'],         at: 4, who: 'Ben', msg: 'feat(session): add SessionContext and useSession hook' },
+      { id: 'b2', lane: 'f12',  parents: ['b1'],         at: 5, who: 'Ana', msg: 'feat(student-card): add the loading skeleton' },
+      { id: 'm1', lane: 'main', parents: ['a2', 'b2'],   at: 6, who: 'Ana', msg: "Merge pull request #12 from feature/12-student-card", merge: true },
+      { id: 'c2', lane: 'f15',  parents: ['c1'],         at: 7, who: 'Ben', msg: 'feat(session): add the RequireRole route guard' },
+      { id: 'c3', lane: 'f15',  parents: ['c2', 'm1'],   at: 8, who: 'Ben', msg: "Merge branch 'main' into feature/15-session-context", merge: true },
+      { id: 'm2', lane: 'main', parents: ['m1', 'c3'],   at: 9, who: 'Ben', msg: "Merge pull request #15 from feature/15-session-context", merge: true }
     ];
 
     var STEPS = [
       { note: '<b>Monday.</b> Your group&rsquo;s <code>main</code>: a scaffold and the shared token theme. One lane, because nobody has branched yet.' },
       { note: '<b>Ana branches.</b> No commit yet &mdash; a branch is only a label pointing at the commit she started from. Nothing has changed on <code>main</code>.', cmd: 'git checkout -b feature/12-student-card' },
-      { note: '<b>Ana commits.</b> Now the lane separates: her branch has something <code>main</code> does not.', cmd: 'git commit -m "Add StudentCard with loading and empty states"' },
+      { note: '<b>Ana commits.</b> Now the lane separates: her branch has something <code>main</code> does not.', cmd: 'git commit -m "feat(student-card): add loading and empty states"' },
       { note: '<b>Ben branches</b> &mdash; from <code>main</code>, not from Ana&rsquo;s work. He cannot see her StudentCard, and does not need to.', cmd: 'git checkout main && git checkout -b feature/15-session-context' },
-      { note: '<b>Ben commits.</b> Three lanes now. Two people are working at the same moment and neither can break the other&rsquo;s screen.', cmd: 'git commit -m "Add SessionContext and useSession hook"' },
-      { note: '<b>Ana commits again.</b> Her branch is two commits ahead. This is the point of branching: unfinished work is safe to commit.', cmd: 'git commit -m "Add StudentCard skeleton"' },
-      { note: '<b>Ana&rsquo;s pull request is approved and merged.</b> Watch the curve rejoin: the new commit on <code>main</code> has <b>two parents</b> &mdash; the old main, and the tip of her branch. That is a merge commit.', cmd: 'Merge pull request #12' },
-      { note: '<b>Ben commits.</b> But look at his lane: he branched before Ana&rsquo;s merge, so <code>main</code> has moved on without him. He is now behind.', cmd: 'git commit -m "Add RequireRole guard"' },
+      { note: '<b>Ben commits.</b> Three lanes now. Two people are working at the same moment and neither can break the other&rsquo;s screen.', cmd: 'git commit -m "feat(session): add SessionContext and useSession hook"' },
+      { note: '<b>Ana commits again.</b> Her branch is two commits ahead. This is the point of branching: unfinished work is safe to commit.', cmd: 'git commit -m "feat(student-card): add the loading skeleton"' },
+      { note: '<b>Ana&rsquo;s pull request is approved and merged.</b> Watch the curve rejoin: the new commit on <code>main</code> has <b>two parents</b> &mdash; the old main, and the tip of her branch. That is a merge commit. Note its message breaks the convention: <b>git writes merge messages, not you</b>, so they are the one exception.', cmd: 'Merge pull request #12' },
+      { note: '<b>Ben commits.</b> But look at his lane: he branched before Ana&rsquo;s merge, so <code>main</code> has moved on without him. He is now behind.', cmd: 'git commit -m "feat(session): add the RequireRole route guard"' },
       { note: '<b>Ben catches up</b> by merging <code>main</code> into his branch. Cheap today &mdash; two files. This is the step people skip, and it is exactly why a two-week-old branch becomes a conflict you dread.', cmd: 'git checkout feature/15-session-context && git merge main' },
       { note: '<b>Ben&rsquo;s pull request merges.</b> <code>main</code> now has both features, and the history shows honestly who wrote what and when.', cmd: 'Merge pull request #15' },
       { note: '<b>Branches deleted.</b> The labels are gone; every commit remains. <b>Deleting a merged branch throws nothing away</b> &mdash; which is why you should do it, and keep the graph readable.', cmd: 'git branch -d feature/12-student-card feature/15-session-context' }
