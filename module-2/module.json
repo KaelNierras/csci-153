@@ -2,9 +2,18 @@
   "number": 2,
   "title": "Frontend Development",
   "subtitle": "Components, auth context, the API contract, and a typed request layer.",
-  "weeks": "3 – 5",
+  "weeks": "3 \u2013 5",
   "outcome": "CO2",
-  "slides": 0,
-  "status": "planned",
-  "labs": []
+  "slides": 49,
+  "status": "ready",
+  "labs": [
+    [
+      "Activity 3 \u2014 Prototype to Components",
+      "lab/activity-3-prototype-to-components.md"
+    ],
+    [
+      "Activity 4 \u2014 The Contract",
+      "lab/activity-4-the-contract.md"
+    ]
+  ]
 }
