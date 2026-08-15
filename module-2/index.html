@@ -129,6 +129,57 @@
   font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
 }
 
+/* commit graph — GitKraken-style lanes */
+.gg { display: flex; flex-direction: column; gap: var(--s3); padding: var(--s4); }
+.gg__stage {
+  position: relative; overflow-x: auto; overflow-y: hidden;
+  border: 1px solid var(--line); background: var(--sunk);
+}
+.gg__inner { position: relative; min-width: 30rem; }
+.gg__svg { position: absolute; top: 0; left: 0; pointer-events: none; }
+.gg__rows { position: relative; display: flex; flex-direction: column; }
+.gg__row {
+  display: grid; align-items: center; gap: var(--s3);
+  padding-right: var(--s4);
+  font-size: 0.82rem; color: var(--text-2);
+  border-bottom: 1px solid var(--line-soft);
+}
+.gg__row:last-child { border-bottom: 0; }
+.gg__row.is-new { animation: ggIn .32s var(--ease) both; }
+@keyframes ggIn { from { opacity: 0; transform: translateY(-0.35rem); } to { opacity: 1; transform: none; } }
+.gg__msg { display: flex; align-items: center; gap: var(--s3); min-width: 0; }
+.gg__txt { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gg__row.is-merge .gg__txt { color: var(--text); }
+.gg__who {
+  font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.08em;
+  color: var(--text-4); text-transform: uppercase; white-space: nowrap;
+}
+.gg__pill {
+  font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.08em;
+  padding: 0.1rem 0.4rem; border: 1px solid currentColor; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 0.3rem; flex: none;
+}
+.gg__pill::before { content: ""; width: 0.35rem; height: 0.35rem; background: currentColor; border-radius: 50%; }
+.gg__ctl { display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap; }
+.gg__step {
+  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em;
+  color: var(--text-3); font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.gg__note {
+  border-left: 2px solid var(--accent);
+  padding: var(--s3) var(--s4); background: var(--panel);
+  font-size: 0.9rem; color: var(--text-2); min-height: 4.4rem;
+}
+.gg__note b { color: var(--text); }
+.gg__cmd {
+  font-family: var(--mono); font-size: 0.72rem; color: var(--accent-lit);
+  display: block; margin-top: 0.35rem;
+}
+.gg__legend { display: flex; gap: var(--s4); flex-wrap: wrap; font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.gg__legend span { display: inline-flex; align-items: center; gap: var(--s2); color: var(--text-3); }
+.gg__legend i { width: 0.55rem; height: 0.55rem; border-radius: 50%; }
+@media (prefers-reduced-motion: reduce) { .gg__row.is-new { animation: none; } }
+
 /* query cache */
 .qc { display: flex; flex-direction: column; gap: var(--s3); }
 .qc__keys { display: flex; flex-direction: column; gap: 2px; }
@@ -157,7 +208,7 @@
     <span class="rail__spacer"></span>
     <span class="rail__course">CSci 153 · Web Systems &amp; Technologies</span>
     <span class="rail__sep">/</span>
-    <span class="rail__count"><b id="count-now">01</b> <span class="dim">of</span> <span id="count-all">49</span></span>
+    <span class="rail__count"><b id="count-now">01</b> <span class="dim">of</span> <span id="count-all">50</span></span>
   </header>
 
   <!-- ============ stage ============ -->
@@ -382,6 +433,31 @@ git branch -d feature/12-student-card</pre></div>
               <p class="body">Every task is one trip round this loop. Small branches merge easily; a branch that lives for two weeks becomes a conflict you will dread.</p>
               <p class="body"><b>Merge early, merge often</b> is not a slogan — it is conflict avoidance.</p></div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="2.0" data-label="The graph" data-rail="Git & GitHub">
+      <span class="eyebrow">Interactive · one week of a group's history</span>
+      <h2 class="h2">What that loop looks like from above</h2>
+      <div class="grid grid--rsidebar">
+        <div class="panel panel--flush">
+          <div class="gg" data-widget="gitgraph" id="gitgraph"></div>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Reading it</div>
+            <ul class="list">
+              <li>Each <b>lane</b> is a branch. Each <b>dot</b> is a commit.</li>
+              <li>A line leaving a lane is <b>where somebody branched</b> — from whatever main looked like at that moment.</li>
+              <li>Two lines joining at one dot is a <b>merge commit</b>. It has two parents; no other commit does.</li>
+              <li>The <b>pills</b> are branch names. They are only labels pointing at a commit — moving one moves nothing else.</li>
+            </ul>
+          </div>
+          <p class="callout">
+            Notice what never happens: <b>nobody&rsquo;s work is overwritten.</b> Two people committed
+            to the same project on the same day, and both commits are still there with names on them.
+          </p>
         </div>
       </div>
     </section>

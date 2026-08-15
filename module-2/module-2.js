@@ -509,6 +509,228 @@
     render();
   })();
 
+  /* ============================================================
+     6 · Commit graph — one week of a group's history
+     Lanes are branches, dots are commits, curves are where a
+     branch left or rejoined. Step through and watch it build.
+     ============================================================ */
+  (function gitGraph() {
+    var root = $('#gitgraph');
+    if (!root) return;
+
+    var ROW = 34;        // must match the row height set below
+    var LANE_W = 26;
+    var PAD_X = 20;
+
+    var LANES = [
+      { id: 'main', label: 'main',                      color: '#D9A441', from: 0,  until: 99 },
+      { id: 'f12',  label: 'feature/12-student-card',   color: '#5FB8C4', from: 1,  until: 6  },
+      { id: 'f15',  label: 'feature/15-session-context',color: '#A38BD1', from: 3,  until: 9  }
+    ];
+    var LANE_X = {};
+    LANES.forEach(function (l, i) { LANE_X[l.id] = PAD_X + i * LANE_W; });
+
+    /* chronological; `at` is the step where the commit appears */
+    var COMMITS = [
+      { id: 'a1', lane: 'main', parents: [],             at: 0, who: 'Ana', msg: 'Scaffold Vite + React + Tailwind' },
+      { id: 'a2', lane: 'main', parents: ['a1'],         at: 0, who: 'Ben', msg: 'Add group tokens as the Tailwind theme' },
+      { id: 'b1', lane: 'f12',  parents: ['a2'],         at: 2, who: 'Ana', msg: 'Add StudentCard with loading and empty states' },
+      { id: 'c1', lane: 'f15',  parents: ['a2'],         at: 4, who: 'Ben', msg: 'Add SessionContext and useSession hook' },
+      { id: 'b2', lane: 'f12',  parents: ['b1'],         at: 5, who: 'Ana', msg: 'Add StudentCard skeleton' },
+      { id: 'm1', lane: 'main', parents: ['a2', 'b2'],   at: 6, who: 'Ana', msg: 'Merge pull request #12 — StudentCard', merge: true },
+      { id: 'c2', lane: 'f15',  parents: ['c1'],         at: 7, who: 'Ben', msg: 'Add RequireRole guard' },
+      { id: 'c3', lane: 'f15',  parents: ['c2', 'm1'],   at: 8, who: 'Ben', msg: 'Merge main into feature/15', merge: true },
+      { id: 'm2', lane: 'main', parents: ['m1', 'c3'],   at: 9, who: 'Ben', msg: 'Merge pull request #15 — session context', merge: true }
+    ];
+
+    var STEPS = [
+      { note: '<b>Monday.</b> Your group&rsquo;s <code>main</code>: a scaffold and the shared token theme. One lane, because nobody has branched yet.' },
+      { note: '<b>Ana branches.</b> No commit yet &mdash; a branch is only a label pointing at the commit she started from. Nothing has changed on <code>main</code>.', cmd: 'git checkout -b feature/12-student-card' },
+      { note: '<b>Ana commits.</b> Now the lane separates: her branch has something <code>main</code> does not.', cmd: 'git commit -m "Add StudentCard with loading and empty states"' },
+      { note: '<b>Ben branches</b> &mdash; from <code>main</code>, not from Ana&rsquo;s work. He cannot see her StudentCard, and does not need to.', cmd: 'git checkout main && git checkout -b feature/15-session-context' },
+      { note: '<b>Ben commits.</b> Three lanes now. Two people are working at the same moment and neither can break the other&rsquo;s screen.', cmd: 'git commit -m "Add SessionContext and useSession hook"' },
+      { note: '<b>Ana commits again.</b> Her branch is two commits ahead. This is the point of branching: unfinished work is safe to commit.', cmd: 'git commit -m "Add StudentCard skeleton"' },
+      { note: '<b>Ana&rsquo;s pull request is approved and merged.</b> Watch the curve rejoin: the new commit on <code>main</code> has <b>two parents</b> &mdash; the old main, and the tip of her branch. That is a merge commit.', cmd: 'Merge pull request #12' },
+      { note: '<b>Ben commits.</b> But look at his lane: he branched before Ana&rsquo;s merge, so <code>main</code> has moved on without him. He is now behind.', cmd: 'git commit -m "Add RequireRole guard"' },
+      { note: '<b>Ben catches up</b> by merging <code>main</code> into his branch. Cheap today &mdash; two files. This is the step people skip, and it is exactly why a two-week-old branch becomes a conflict you dread.', cmd: 'git checkout feature/15-session-context && git merge main' },
+      { note: '<b>Ben&rsquo;s pull request merges.</b> <code>main</code> now has both features, and the history shows honestly who wrote what and when.', cmd: 'Merge pull request #15' },
+      { note: '<b>Branches deleted.</b> The labels are gone; every commit remains. <b>Deleting a merged branch throws nothing away</b> &mdash; which is why you should do it, and keep the graph readable.', cmd: 'git branch -d feature/12-student-card feature/15-session-context' }
+    ];
+
+    var step = 0;
+    var timer = null;
+    var seen = {};
+
+    root.innerHTML =
+      '<div class="gg__legend"></div>' +
+      '<div class="gg__stage"><div class="gg__inner">' +
+        '<svg class="gg__svg" aria-hidden="true"></svg>' +
+        '<div class="gg__rows"></div>' +
+      '</div></div>' +
+      '<div class="gg__note"></div>' +
+      '<div class="gg__ctl">' +
+        '<button class="btn btn--ghost gg-prev" type="button">&larr; Back</button>' +
+        '<button class="btn btn--primary gg-next" type="button">Next &rarr;</button>' +
+        '<button class="btn gg-play" type="button">Play</button>' +
+        '<button class="btn btn--ghost gg-reset" type="button">Reset</button>' +
+        '<span class="gg__step">STEP <b class="gg-n">1</b>/<span class="gg-t"></span></span>' +
+      '</div>';
+
+    var legend = $('.gg__legend', root);
+    var inner  = $('.gg__inner', root);
+    var svg    = $('.gg__svg', root);
+    var rowsEl = $('.gg__rows', root);
+    var noteEl = $('.gg__note', root);
+    var nEl    = $('.gg-n', root);
+    $('.gg-t', root).textContent = STEPS.length;
+
+    LANES.forEach(function (l) {
+      var s = document.createElement('span');
+      s.innerHTML = '<i style="background:' + l.color + '"></i>' + l.label;
+      legend.appendChild(s);
+    });
+
+    function laneAlive(l) { return step >= l.from && step <= l.until; }
+
+    function visibleCommits() {
+      return COMMITS.filter(function (c) { return c.at <= step; });
+    }
+
+    /* branch tip = newest visible commit reachable on that lane */
+    function tips() {
+      var map = {};
+      LANES.forEach(function (l) {
+        if (!laneAlive(l)) return;
+        var own = visibleCommits().filter(function (c) { return c.lane === l.id; });
+        if (own.length) map[own[own.length - 1].id] = (map[own[own.length - 1].id] || []).concat(l);
+        else {
+          /* branch created but no commit of its own yet — it points at its start commit */
+          var start = visibleCommits().filter(function (c) { return c.lane === 'main'; });
+          if (start.length) {
+            var id = start[start.length - 1].id;
+            map[id] = (map[id] || []).concat(l);
+          }
+        }
+      });
+      return map;
+    }
+
+    function render(animate) {
+      var vis = visibleCommits();
+      var order = vis.slice().reverse();          // newest at top, like GitKraken
+      var yOf = {};
+      order.forEach(function (c, i) { yOf[c.id] = i * ROW + ROW / 2; });
+
+      var tipMap = tips();
+      var graphW = PAD_X * 2 + (LANES.length - 1) * LANE_W;
+
+      /* ---- rows ---- */
+      rowsEl.innerHTML = '';
+      order.forEach(function (c) {
+        var lane = LANES.filter(function (l) { return l.id === c.lane; })[0];
+        var row = el('div', 'gg__row' + (c.merge ? ' is-merge' : ''));
+        row.style.height = ROW + 'px';
+        row.style.gridTemplateColumns = graphW + 'px 1fr auto';
+        if (animate && !seen[c.id]) row.classList.add('is-new');
+        seen[c.id] = true;
+
+        row.appendChild(el('span', '', ''));       // spacer under the svg
+
+        var msg = el('div', 'gg__msg');
+        (tipMap[c.id] || []).forEach(function (l) {
+          var pill = el('span', 'gg__pill', l.label);
+          pill.style.color = l.color;
+          msg.appendChild(pill);
+        });
+        var txt = el('span', 'gg__txt');
+        txt.textContent = c.msg;
+        msg.appendChild(txt);
+        row.appendChild(msg);
+
+        row.appendChild(el('span', 'gg__who', c.who));
+        rowsEl.appendChild(row);
+      });
+
+      /* ---- svg ---- */
+      var h = order.length * ROW;
+      svg.setAttribute('width', graphW);
+      svg.setAttribute('height', h);
+      svg.setAttribute('viewBox', '0 0 ' + graphW + ' ' + h);
+      inner.style.height = h + 'px';
+
+      var parts = [];
+      vis.forEach(function (c) {
+        var cx = LANE_X[c.lane], cy = yOf[c.id];
+        c.parents.forEach(function (pid) {
+          if (yOf[pid] === undefined) return;
+          var pc = COMMITS.filter(function (x) { return x.id === pid; })[0];
+          var px = LANE_X[pc.lane], py = yOf[pid];
+          var color = LANE_X[c.lane] === px
+            ? laneColor(c.lane)
+            : laneColor(px < cx ? c.lane : pc.lane);
+          if (px === cx) {
+            parts.push('<path d="M' + cx + ' ' + cy + ' L' + px + ' ' + py + '" stroke="' + color +
+                       '" stroke-width="2" fill="none" stroke-linecap="round"/>');
+          } else {
+            var mid = (cy + py) / 2;
+            parts.push('<path d="M' + cx + ' ' + cy + ' C' + cx + ' ' + mid + ', ' + px + ' ' + mid +
+                       ', ' + px + ' ' + py + '" stroke="' + color +
+                       '" stroke-width="2" fill="none" stroke-linecap="round"/>');
+          }
+        });
+      });
+      vis.forEach(function (c) {
+        var cx = LANE_X[c.lane], cy = yOf[c.id], col = laneColor(c.lane);
+        var r = c.merge ? 6 : 5;
+        parts.push('<circle cx="' + cx + '" cy="' + cy + '" r="' + r +
+                   '" fill="' + (c.merge ? col : 'var(--sunk)') + '" stroke="' + col + '" stroke-width="2.5"/>');
+      });
+      svg.innerHTML = parts.join('');
+
+      noteEl.innerHTML = STEPS[step].note +
+        (STEPS[step].cmd ? '<code class="gg__cmd">' + STEPS[step].cmd + '</code>' : '');
+      nEl.textContent = step + 1;
+      $('.gg-prev', root).disabled = step === 0;
+      $('.gg-next', root).disabled = step === STEPS.length - 1;
+    }
+
+    function laneColor(id) {
+      var l = LANES.filter(function (x) { return x.id === id; })[0];
+      return l ? l.color : 'var(--text-3)';
+    }
+
+    function go(n, animate) {
+      step = Math.max(0, Math.min(STEPS.length - 1, n));
+      render(animate !== false);
+    }
+
+    function stop() {
+      if (timer) { clearInterval(timer); timer = null; }
+      $('.gg-play', root).textContent = 'Play';
+    }
+
+    $('.gg-next', root).addEventListener('click', function () { stop(); go(step + 1); });
+    $('.gg-prev', root).addEventListener('click', function () { stop(); go(step - 1); });
+    $('.gg-reset', root).addEventListener('click', function () {
+      stop(); seen = {}; go(0, false);
+    });
+    $('.gg-play', root).addEventListener('click', function () {
+      var btn = this;
+      if (timer) { stop(); return; }
+      if (step === STEPS.length - 1) { seen = {}; go(0, false); }
+      btn.textContent = 'Pause';
+      timer = setInterval(function () {
+        if (step >= STEPS.length - 1) { stop(); return; }
+        go(step + 1);
+      }, 2200);
+    });
+
+    /* stop playback when the slide is left */
+    document.addEventListener('slidechange', stop);
+
+    go(0, false);
+  })();
+
   /* ---------- copy button for the token block ---------- */
   (function tokenCopy() {
     var src = $('#tok-src');
