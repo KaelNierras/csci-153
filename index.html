@@ -67,6 +67,28 @@
     border-top: 1px solid var(--line); padding-top: var(--s4);
     font-size: 0.8rem; color: var(--text-3);
   }
+  .plan {
+    display: grid; grid-template-columns: 3rem 1fr auto;
+    gap: var(--s4); align-items: center;
+    border: 1px solid var(--line); background: var(--sunk);
+    padding: var(--s5); text-decoration: none; color: inherit;
+    transition: background .15s var(--ease), border-color .15s var(--ease);
+  }
+  .plan:hover { background: var(--panel); border-color: var(--line-loud); }
+  .plan:hover .plan__go { color: var(--accent-lit); }
+  .plan__i {
+    font-family: var(--mono); font-size: 1.1rem; color: var(--cyan);
+  }
+  .plan__t { font-size: 1rem; font-weight: 600; letter-spacing: -0.015em; }
+  .plan__s { font-size: 0.85rem; color: var(--text-2); margin-top: 0.2rem; }
+  .plan__go {
+    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--cyan); white-space: nowrap;
+  }
+  @media (max-width: 40rem) {
+    .plan { grid-template-columns: 2.2rem 1fr; }
+    .plan__go { grid-column: 2; }
+  }
   @media (max-width: 40rem) {
     .mod__main { grid-template-columns: 2.2rem 1fr; }
     .mod__go { grid-column: 2; }
@@ -96,7 +118,7 @@
         <div class="mod__foot">
           <a class="lab" href="module-1/lab/activity-1-ui-audit-and-redesign.md">Activity 1 — UI Audit and Redesign</a><a class="lab" href="module-1/lab/activity-2-brief-to-prototype.md">Activity 2 — Brief to Prototype</a>
           <span class="spacer"></span>
-          <a class="lab" href="module-1/module-1.standalone.html" download>Offline copy · 160 KB</a>
+          <a class="lab" href="module-1/module-1.standalone.html" download>Offline copy · 163 KB</a>
         </div>
       </article>
       <article class="mod mod--soon">
@@ -110,7 +132,50 @@
           <span class="mod__go mod__go--soon">In preparation</span>
         </div>
       </article>
+      <article class="mod mod--soon">
+        <div class="mod__main">
+          <span class="mod__n">03</span>
+          <span class="mod__body">
+            <span class="mod__t">JavaScript Programming</span>
+            <span class="mod__s">Types, scoping, functions, JSON, the DOM — and how you know a function works.</span>
+            <span class="mod__m">5 – 8 · CO3</span>
+          </span>
+          <span class="mod__go mod__go--soon">In preparation</span>
+        </div>
+      </article>
+      <article class="mod mod--soon">
+        <div class="mod__main">
+          <span class="mod__n">04</span>
+          <span class="mod__body">
+            <span class="mod__t">Backend Development</span>
+            <span class="mod__s">Schema, Row Level Security, and the functions that implement the contract.</span>
+            <span class="mod__m">10 – 12 · CO4</span>
+          </span>
+          <span class="mod__go mod__go--soon">In preparation</span>
+        </div>
+      </article>
+      <article class="mod mod--soon">
+        <div class="mod__main">
+          <span class="mod__n">05</span>
+          <span class="mod__body">
+            <span class="mod__t">Web Application Integration</span>
+            <span class="mod__s">Validation, integration, CI, and a deployed application.</span>
+            <span class="mod__m">13 – 17 · CO5</span>
+          </span>
+          <span class="mod__go mod__go--soon">In preparation</span>
+        </div>
+      </article>
     </main>
+
+    <a class="plan" href="plan/">
+      <span class="plan__i">§</span>
+      <span>
+        <span class="plan__t">Semester plan</span>
+        <span class="plan__s">All five modules and their topics, each mapped to the learning
+          outcome that requires it — and the eight topics no outcome covers.</span>
+      </span>
+      <span class="plan__go">Open plan →</span>
+    </a>
 
     <footer class="foot">
       <span>First semester 2026–2027</span>

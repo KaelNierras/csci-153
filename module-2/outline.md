@@ -2,10 +2,28 @@
 
 **CSci 153 · Weeks 3–5 · CO2** — *Develop responsive web templates using HTML/CSS
 frameworks and component libraries*
-Syllabus LOs: **LO 2.1** reusable UI components with Next.js + Tailwind ·
+Syllabus LOs: **LO 2.1** reusable UI components with React + Tailwind ·
 **LO 2.2** cross-device responsiveness
 
+> **Framework note.** LO 2.1 is worded "Next.js + Tailwind" in the OBE syllabus; this
+> course delivers it with **React (Vite) + Tailwind + shadcn/ui**. React and
+> Shadcn/React are both named in the syllabus reference list, and the learning
+> outcome — reusable, responsive components from a design system — is framework-
+> agnostic. Dropping the server framework also keeps the frontend/backend boundary
+> a *contract* rather than a blurred one, which is what lesson 2.3 is built on.
+> The Final Activity Project specs use this same stack.
+
 Status: **planning**. Deck not built yet.
+
+### Prior knowledge — what this module does *not* re-teach
+
+React fundamentals — components, props, state, `useState`/`useEffect`, lists and keys —
+were covered in the previous course. Module 2 does not repeat them. Lesson 2.1 is a
+bridge, not an introduction: it assumes you can already write a component and spends
+its time on *what to build* and *how to structure it*, not on syntax.
+
+If React is genuinely rusty, that is a self-study gap to close in week 3, not class
+time. Say so early rather than in week 5.
 
 ---
 
@@ -15,11 +33,45 @@ The sequence is load-bearing — each lesson creates the problem the next one so
 
 | # | Lesson | Why it sits here |
 |---|---|---|
-| 2.1 | **Components from mockups** | Module 1's screen becomes real components; tokens become the Tailwind theme |
+| 2.0 | **Git & GitHub — briefly** | ~1 session. The group workflow the Final Activity Project runs on |
+| 2.1 | **Components from mockups** | Module 1's screen becomes real components; tokens become the Tailwind theme. React itself is assumed |
 | 2.2 | **Auth Context + route protection** | First real cross-cutting state; creates the need for a request layer |
 | 2.3 | **The API contract (OpenAPI)** | You cannot type the wrapper until you know the contract |
-| 2.4 | **API wrapper + interception** | Built *against* the spec from 2.3, not invented |
+| 2.4 | **API wrapper, interception, and server state** | Built *against* the spec from 2.3, not invented. TanStack Query enters here |
 | 2.5 | **Data states in practice** | Cashes in Module 1's loading / empty / error work with real latency |
+
+---
+
+## 2.0 · Git & GitHub — the brief version
+
+**Not covered by any syllabus LO**, and deliberately short: one session, practical only.
+The Final Activity Project is group work in a shared repository, so this is the minimum
+that keeps a group from stepping on itself — not a course in version control.
+
+Cover, quickly: branch per feature · commit messages that name the change · pull request
+with one required approval · issues and milestones as the work queue · what a merge
+conflict is and how not to panic. Demonstrate a conflict live and resolve it once.
+
+Skip entirely: rebasing, cherry-picking, submodules, git internals. If a group needs
+those, they can ask.
+
+**Assessment hook:** every group member must have commits by the end of Module 2. This
+is also how individual contribution to a group project is evidenced later.
+
+---
+
+## 2.4 · Server state — the addition
+
+TanStack Query belongs here rather than in its own lesson, because it only makes sense
+once the wrapper exists. The point to land: **server data is not component state.** It
+is a cache of something that lives elsewhere, and it goes stale.
+
+Query keys derive from the contract's `operationId` plus its parameters, which makes
+invalidation-after-mutation mechanical instead of guesswork. Contrast this against
+Context, taught in 2.2: Context is for state the client owns (session, theme, the
+record being edited); Query is for state the server owns. Students who blur the two
+end up copying fetched data into Context and then hand-syncing it — worth showing that
+failure once, on purpose.
 
 ---
 

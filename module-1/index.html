@@ -57,7 +57,7 @@
               <td><b>Design a screen a stranger can use, and drive an agent to build it.</b></td>
               <td class="num">CO1</td>
             </tr>
-            <tr><td class="num">3 – 5</td><td>02 · Frontend</td><td>Reusable components in Next.js + Tailwind, responsive across devices.</td><td class="num">CO2</td></tr>
+            <tr><td class="num">3 – 5</td><td>02 · Frontend</td><td>Reusable components in React + Tailwind, responsive across devices.</td><td class="num">CO2</td></tr>
             <tr><td class="num">5 – 8</td><td>03 · JavaScript</td><td>Types, scoping, modules, JSON, DOM, libraries.</td><td class="num">CO3</td></tr>
             <tr><td class="num">10 – 12</td><td>04 · Backend</td><td>Schema modeling and CRUD endpoints over a real database.</td><td class="num">CO4</td></tr>
             <tr><td class="num">13 – 17</td><td>05 · Integration</td><td>Validation, API consumption, deployment to the cloud.</td><td class="num">CO5</td></tr>
@@ -153,7 +153,13 @@
         <div class="step">
           <div>
             <div class="step__t">Two graded activities</div>
-            <div class="step__b">Activity 1 — UI audit and redesign. Activity 2 — brief to prototype. Both graded on judgment, not on how pretty the agent's first attempt was.</div>
+            <div class="step__b">Activity 1 — UI audit and redesign, <b>individual</b>. Activity 2 — brief to prototype, <b>group brief and tokens, individual screen</b>. Both graded on judgment, not on how pretty the agent's first attempt was.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <div class="step__t">Groups form before week 3</div>
+            <div class="step__b">The Final Activity Project is built by a group, and each group takes one of three systems. Groups and system assignments are settled <b>before the week 3 session</b>, because Activity 2 designs a screen of the system you will actually ship.</div>
           </div>
         </div>
       </div>
@@ -835,7 +841,7 @@ go-ahead.</b></pre></div>
           <ul class="list list--check">
             <li><b>Product + user</b> — "student portal, 3rd-year BSCS students on Android phones"</li>
             <li><b>The screen's one job</b> — "confirm an enrollment and show what was reserved"</li>
-            <li><b>Stack</b> — "Next.js App Router, Tailwind, no component library"</li>
+            <li><b>Stack</b> — "React + Vite, Tailwind, no component library"</li>
             <li><b>Tokens</b> — paste the actual CSS variables or Tailwind theme</li>
             <li><b>Constraints</b> — WCAG AA, mobile-first, no external images</li>
             <li><b>Real data shape</b> — a sample row, with the ugly long values included</li>
@@ -868,10 +874,10 @@ go-ahead.</b></pre></div>
           <div class="ctl"><span class="ctl__label">The one job</span><input type="text" id="pb-job" value="confirm what was reserved and what to do next" spellcheck="false"></div>
           <div class="ctl"><span class="ctl__label">Stack</span>
             <select id="pb-stack">
-              <option>Next.js App Router + Tailwind CSS</option>
+              <option>React + Vite + Tailwind CSS</option>
               <option>Plain HTML + CSS, no build step</option>
-              <option>React + Tailwind CSS</option>
-              <option>Next.js + Tailwind + Supabase</option>
+              <option>React + Tailwind + shadcn/ui</option>
+              <option>React + Tailwind + Supabase</option>
             </select>
           </div>
           <div class="ctl"><span class="ctl__label">Must include</span><div class="col col--tight" id="pb-includes"></div></div>
@@ -935,7 +941,7 @@ enrollment portal.
 campus wifi.
 <i>Job:</i> see this term's load and any
 blocking requirement.
-<i>Stack:</i> Next.js + Tailwind.
+<i>Stack:</i> React + Tailwind.
 <i>Tokens:</i> [pasted]
 <i>Data:</i> 6–9 subjects, codes up to
 12 chars, names up to 60.
@@ -1114,7 +1120,11 @@ keyboard operable, no icon lib.</b>
 
     <section class="slide slide--wide" data-sec="lab" data-label="Activity 1" data-rail="Laboratory activities">
       <span class="eyebrow">Laboratory Activity 1 · Week 2 · CA 1</span>
-      <h2 class="h2">UI Audit &amp; Redesign</h2>
+      <div class="row" style="gap:var(--s4);align-items:baseline">
+        <h2 class="h2">UI Audit &amp; Redesign</h2>
+        <span class="chip chip--accent">Individual</span>
+      </div>
+      <p class="callout"><b>This one you do alone.</b> The Final Activity Project is group work and Activity 2 is half shared — but not this. You will run the 8-point QA on agent output every week until December, and defend a screen out loud at the Practical Exam with no one to hand the question to. That only works if the diagnosis is yours.</p>
       <div class="grid grid--sidebar">
         <div class="panel">
           <div class="panel__head">Scenario</div>
@@ -1150,14 +1160,19 @@ keyboard operable, no icon lib.</b>
 
     <section class="slide slide--wide" data-sec="lab" data-label="Activity 2" data-rail="Laboratory activities">
       <span class="eyebrow">Laboratory Activity 2 · Week 3 · CA 2</span>
-      <h2 class="h2">Brief → Prototype</h2>
+      <div class="row" style="gap:var(--s4);align-items:baseline">
+        <h2 class="h2">Brief → Prototype</h2>
+        <span class="chip chip--accent">Group brief + individual screen</span>
+      </div>
+      <p class="callout"><b>Your group agrees one brief and one token set; each member takes a different screen.</b> A project has exactly one design system, so that half is shared — but each of you runs the loop yourself. A four-person group ends week 3 with one design system and four reviewed screens, all of which carry into Module 2.</p>
       <div class="grid grid--sidebar">
         <div class="panel">
           <div class="panel__head">Scenario</div>
-          <p class="body">Pick one screen from the web app you intend to build for your final project. Take it from a blank page to a reviewed, state-complete prototype using the full agentic loop — and document the loop as you go.</p>
+          <p class="body">Your group is formed and your system assigned before this session. Your group picks the brief and tokens; <b>you</b> pick one screen no one else has claimed, and take it from a blank page to a reviewed, state-complete prototype using the full agentic loop — documenting the loop as you go.</p>
           <div class="panel__head" style="margin-top:var(--s3)">Deliverables</div>
           <div class="steps">
-            <div class="step"><div><div class="step__t">Design brief</div><div class="step__b">Product, user, the screen's one job, stack, tokens, constraints, real data shape. Use the builder from this deck.</div></div></div>
+            <div class="step"><div><div class="step__t">Design brief <span class="chip" style="margin-left:0.3rem">group</span></div><div class="step__b">Product, user, the screen's one job, stack, tokens, constraints, real data shape. Agreed once by the group; every member submits the same file. Use the builder from this deck.</div></div></div>
+            <div class="step"><div><div class="step__t">Token set <span class="chip" style="margin-left:0.3rem">group</span></div><div class="step__b">One design system per project. Refine or merge the candidates you each built in Activity 1 — this is what becomes your Tailwind theme in Module 2.</div></div></div>
             <div class="step"><div><div class="step__t">The agent's plan, with your corrections marked</div><div class="step__b">Show what it proposed and what you changed before allowing it to generate.</div></div></div>
             <div class="step"><div><div class="step__t">Two screens: first generation and final</div><div class="step__b">Both files kept. The diff between them is the actual submission.</div></div></div>
             <div class="step"><div><div class="step__t">Completed 8-point QA sheet</div><div class="step__b">With the failures you found on the first pass written out, and how each was corrected.</div></div></div>
@@ -1206,9 +1221,9 @@ keyboard operable, no icon lib.</b>
         <table>
           <thead><tr><th>Assessment</th><th>Weight</th><th>What Module 1 contributes</th><th>Outcome</th></tr></thead>
           <tbody>
-            <tr><td>Class Activity 1 &amp; 2</td><td class="num">1.5% each</td><td>The two laboratory activities on these slides.</td><td class="num">CO1 / LO 1.1, 1.2</td></tr>
-            <tr><td>Practical Exam</td><td class="num">15%</td><td>You defend your own screen: hierarchy, tokens, states, accessibility — out loud.</td><td class="num">CO1</td></tr>
-            <tr><td>Final Project</td><td class="num">20%</td><td>The design system you build here carries every screen you ship in week 17.</td><td class="num">CO1–CO5</td></tr>
+            <tr><td>Class Activity 1 &amp; 2</td><td class="num">1.5% each</td><td>The two laboratory activities on these slides. <b>A1 individual</b>; <b>A2</b> shares a brief and token set across the group, but each member builds a different screen.</td><td class="num">CO1 / LO 1.1, 1.2</td></tr>
+            <tr><td>Practical Exam</td><td class="num">15%</td><td><b>Individual.</b> You defend your own screen: hierarchy, tokens, states, accessibility — out loud. No group to hand the question to.</td><td class="num">CO1</td></tr>
+            <tr><td>Final Project <span class="chip chip--accent" style="margin-left:0.4rem">By group</span></td><td class="num">20%</td><td>Built by your group, not alone. The design system you establish here carries every screen the group ships in week 17.</td><td class="num">CO1–CO5</td></tr>
             <tr><td>Term Examinations</td><td class="num">24%</td><td>Heuristics, contrast requirements, the state model, and the agentic loop are examinable.</td><td class="num">CO1</td></tr>
           </tbody>
         </table>
@@ -1220,7 +1235,7 @@ keyboard operable, no icon lib.</b>
       <h2 class="h2">Next: version control, then components</h2>
       <div class="grid grid--3">
         <div class="card"><span class="card__k">Immediately next</span><div class="card__t">Git recap</div><p class="card__b">A short interactive session — branches, history, and why your prompt log and tokens belong in the repository.</p></div>
-        <div class="card"><span class="card__k">Module 02 · weeks 3–5</span><div class="card__t">Frontend</div><p class="card__b">Your mockup becomes real components in Next.js + Tailwind, with the token set from this module as the theme.</p></div>
+        <div class="card"><span class="card__k">Module 02 · weeks 3–5</span><div class="card__t">Frontend</div><p class="card__b">Your mockup becomes real components in React + Tailwind, with the token set from this module as the theme.</p></div>
         <div class="card"><span class="card__k">Carry forward</span><div class="card__t">The 8-point QA</div><p class="card__b">Every generated screen for the rest of the semester goes through it. Keep it open.</p></div>
       </div>
       <div class="panel">

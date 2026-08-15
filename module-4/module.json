@@ -1,0 +1,10 @@
+{
+  "number": 4,
+  "title": "Backend Development",
+  "subtitle": "Schema, Row Level Security, and the functions that implement the contract.",
+  "weeks": "10 \u2013 12",
+  "outcome": "CO4",
+  "slides": 0,
+  "status": "planned",
+  "labs": []
+}

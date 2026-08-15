@@ -1,0 +1,10 @@
+{
+  "number": 3,
+  "title": "JavaScript Programming",
+  "subtitle": "Types, scoping, functions, JSON, the DOM \u2014 and how you know a function works.",
+  "weeks": "5 \u2013 8",
+  "outcome": "CO3",
+  "slides": 0,
+  "status": "planned",
+  "labs": []
+}

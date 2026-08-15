@@ -4,6 +4,21 @@
 Module 1 · Lesson 1.1 · Week 2 · Assessment task **CA 1**
 Course outcome **CO1** · Learning outcome **LO 1.1**
 
+> ### This one is individual
+>
+> Submit your own critique, your own tokens, your own rebuild. The Final Activity
+> Project later in the semester is group work, and Activity 2 is partly shared — but
+> not this one, and the reason is deliberate.
+>
+> Everything that comes after this course's first two weeks assumes *you personally*
+> can look at a generated screen and see what is wrong with it. You will run the
+> 8-point QA on agent output every week until December, and you will defend a screen
+> out loud at the Practical Exam with no one to hand the question to. If someone else
+> writes the findings for you now, that gap does not show up until it is expensive.
+>
+> Discussing the screenshot with classmates is fine and encouraged. Submitting
+> someone else's findings, tokens, or markup is not.
+
 ---
 
 ## Scenario

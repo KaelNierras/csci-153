@@ -211,6 +211,28 @@ def landing(modules: list) -> str:
     border-top: 1px solid var(--line); padding-top: var(--s4);
     font-size: 0.8rem; color: var(--text-3);
   }}
+  .plan {{
+    display: grid; grid-template-columns: 3rem 1fr auto;
+    gap: var(--s4); align-items: center;
+    border: 1px solid var(--line); background: var(--sunk);
+    padding: var(--s5); text-decoration: none; color: inherit;
+    transition: background .15s var(--ease), border-color .15s var(--ease);
+  }}
+  .plan:hover {{ background: var(--panel); border-color: var(--line-loud); }}
+  .plan:hover .plan__go {{ color: var(--accent-lit); }}
+  .plan__i {{
+    font-family: var(--mono); font-size: 1.1rem; color: var(--cyan);
+  }}
+  .plan__t {{ font-size: 1rem; font-weight: 600; letter-spacing: -0.015em; }}
+  .plan__s {{ font-size: 0.85rem; color: var(--text-2); margin-top: 0.2rem; }}
+  .plan__go {{
+    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--cyan); white-space: nowrap;
+  }}
+  @media (max-width: 40rem) {{
+    .plan {{ grid-template-columns: 2.2rem 1fr; }}
+    .plan__go {{ grid-column: 2; }}
+  }}
   @media (max-width: 40rem) {{
     .mod__main {{ grid-template-columns: 2.2rem 1fr; }}
     .mod__go {{ grid-column: 2; }}
@@ -229,6 +251,16 @@ def landing(modules: list) -> str:
     <main class="mods">
 {cards}
     </main>
+
+    <a class="plan" href="plan/">
+      <span class="plan__i">§</span>
+      <span>
+        <span class="plan__t">Semester plan</span>
+        <span class="plan__s">All five modules and their topics, each mapped to the learning
+          outcome that requires it — and the eight topics no outcome covers.</span>
+      </span>
+      <span class="plan__go">Open plan →</span>
+    </a>
 
     <footer class="foot">
       <span>First semester 2026–2027</span>

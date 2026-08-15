@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSci 153 — Semester Plan</title>
+<meta name="description" content="All five CSci 153 modules with their topics, each mapped to its syllabus learning outcome, plus the topics no outcome covers.">
+<link rel="stylesheet" href="../shared/deck.css">
+<style>
+/* Page-specific only. Tokens, .eyebrow, .callout, .table-wrap and the type
+   scale all come from shared/deck.css — this file adds the semester ruler,
+   the lesson rows, and one extra signal colour. */
+
+:root {
+  /* third signal: material added beyond the syllabus LOs */
+  --violet:     #A38BD1;
+  --violet-dim: #3A2F52;
+}
+
+body { overflow: auto; }
+
+.page {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: var(--s7) var(--s5) var(--s8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s7);
+}
+
+.masthead { display: flex; flex-direction: column; gap: var(--s3); }
+.masthead h1 {
+  font-size: clamp(2rem, 5vw, 3.1rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+.masthead .lede { max-width: 58ch; }
+
+.back {
+  font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--text-3); text-decoration: none;
+  align-self: flex-start;
+}
+.back:hover { color: var(--accent); }
+
+/* ---------- legend ---------- */
+.legend {
+  display: flex; flex-wrap: wrap; gap: var(--s3) var(--s5);
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  padding: var(--s4) 0;
+}
+.legend__item {
+  display: flex; align-items: baseline; gap: var(--s3);
+  font-size: 0.85rem; color: var(--text-2);
+}
+.key {
+  display: inline-block; width: 0.55rem; height: 0.55rem; flex: none;
+  transform: translateY(-0.05em);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+.key--brass  { background: var(--brass); }
+.key--cyan   { background: var(--cyan); }
+.key--violet { background: var(--violet); }
+
+/* ---------- the week ruler ---------- */
+.timeline { display: flex; flex-direction: column; gap: var(--s5); }
+
+.block {
+  display: grid; grid-template-columns: 5.5rem 1fr;
+  gap: var(--s5); align-items: start;
+}
+
+.weeks {
+  position: sticky; top: var(--s4);
+  font-family: var(--mono); font-variant-numeric: tabular-nums;
+  text-align: right; padding-right: var(--s4);
+  border-right: 1px solid var(--line);
+  display: flex; flex-direction: column; gap: var(--s1);
+  min-height: 4rem;
+}
+.weeks__n { font-size: 1.35rem; color: var(--text-2); letter-spacing: -0.02em; }
+.weeks__l {
+  font-size: 0.6rem; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--text-4);
+}
+
+/* ---------- module panel ---------- */
+.mod { border: 1px solid var(--line); background: var(--panel); }
+.mod__head {
+  display: grid; grid-template-columns: auto 1fr auto;
+  gap: var(--s4); align-items: baseline;
+  padding: var(--s4) var(--s5);
+  border-bottom: 1px solid var(--line); background: var(--sunk);
+}
+.mod__n {
+  font-family: var(--mono); font-size: 1.1rem;
+  color: var(--brass); font-variant-numeric: tabular-nums;
+}
+.mod__t { font-size: 1.1rem; letter-spacing: -0.015em; }
+.mod__s { font-size: 0.85rem; color: var(--text-3); grid-column: 2; margin-top: 0.1rem; }
+.mod__co {
+  font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--text-3); white-space: nowrap;
+}
+
+.status {
+  font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.14em;
+  text-transform: uppercase; padding: 0.15rem 0.45rem;
+  border: 1px solid var(--line-loud); color: var(--text-3); white-space: nowrap;
+}
+.status--ready {
+  border-color: var(--brass-dim); color: var(--brass);
+  background: rgba(217, 164, 65, 0.09);
+}
+
+/* ---------- lesson rows ---------- */
+.lessons { display: flex; flex-direction: column; }
+.lesson {
+  display: grid; grid-template-columns: 2.6rem 1fr 7.5rem;
+  gap: var(--s4); align-items: baseline;
+  padding: var(--s3) var(--s5);
+  border-bottom: 1px solid var(--line-soft);
+}
+.lesson:last-child { border-bottom: 0; }
+.lesson__n {
+  font-family: var(--mono); font-size: 0.72rem;
+  color: var(--text-4); font-variant-numeric: tabular-nums;
+}
+.lesson__t { font-size: 0.95rem; font-weight: 600; }
+.lesson__b {
+  font-size: 0.85rem; color: var(--text-2);
+  margin-top: 0.15rem; max-width: 62ch;
+}
+.lesson__tag { justify-self: end; }
+
+/* signal rails, so the encoding reads while scanning */
+.lesson--lo    { box-shadow: inset 2px 0 0 var(--brass-dim); }
+.lesson--spine { box-shadow: inset 2px 0 0 var(--cyan-dim); }
+.lesson--added { box-shadow: inset 2px 0 0 var(--violet); }
+
+.tag {
+  display: inline-block; font-family: var(--mono); font-size: 0.58rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 0.15rem 0.4rem; border: 1px solid; white-space: nowrap;
+}
+.tag--lo    { border-color: var(--brass-dim);  color: var(--brass);  background: rgba(217, 164, 65, 0.08); }
+.tag--spine { border-color: var(--cyan-dim);   color: var(--cyan);   background: rgba(95, 184, 196, 0.08); }
+.tag--added { border-color: var(--violet-dim); color: var(--violet); background: rgba(163, 139, 209, 0.10); }
+
+/* ---------- exam markers ---------- */
+.exam { display: grid; grid-template-columns: 5.5rem 1fr; gap: var(--s5); align-items: center; }
+.exam__bar {
+  border: 1px dashed var(--line-loud); background: var(--sunk);
+  padding: var(--s3) var(--s5);
+  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--text-3);
+}
+
+/* ---------- callouts + sections ---------- */
+.note {
+  border-left: 2px solid var(--cyan);
+  background: linear-gradient(to right, rgba(95, 184, 196, 0.07), transparent 65%);
+  padding: var(--s4) var(--s5); color: var(--text-2); font-size: 0.92rem;
+}
+.note b { color: var(--text); }
+.note--violet {
+  border-left-color: var(--violet);
+  background: linear-gradient(to right, rgba(163, 139, 209, 0.08), transparent 65%);
+}
+
+.spine {
+  border: 1px solid var(--line); background: var(--panel);
+  padding: var(--s5); display: flex; flex-direction: column; gap: var(--s4);
+}
+.spine h2 { font-size: 1.15rem; }
+.spine__flow { overflow-x: auto; border: 1px solid var(--line); background: var(--sunk); }
+.spine__flow table { min-width: 34rem; }
+
+.wrap { overflow-x: auto; border: 1px solid var(--line); }
+
+section { display: flex; flex-direction: column; gap: var(--s4); }
+.section__head { display: flex; flex-direction: column; gap: var(--s2); }
+.section__head h2 { font-size: 1.35rem; letter-spacing: -0.02em; }
+
+.foot {
+  border-top: 1px solid var(--line); padding-top: var(--s4);
+  font-size: 0.8rem; color: var(--text-3);
+  display: flex; flex-wrap: wrap; gap: var(--s2) var(--s4);
+}
+
+@media (max-width: 46rem) {
+  .block, .exam { grid-template-columns: 1fr; }
+  .weeks {
+    position: static; flex-direction: row; align-items: baseline; gap: var(--s3);
+    text-align: left; border-right: 0; border-bottom: 1px solid var(--line);
+    padding: 0 0 var(--s2) 0; min-height: 0;
+  }
+  .lesson { grid-template-columns: 2.2rem 1fr; }
+  .lesson__tag { grid-column: 2; justify-self: start; margin-top: var(--s2); }
+  .mod__head { grid-template-columns: auto 1fr; }
+  .mod__co { grid-column: 2; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <a class="back" href="../">← All modules</a>
+    <span class="eyebrow eyebrow--plain">Visayas State University · Department of Computer Science and Technology</span>
+    <h1>CSci 153<br>Semester Plan</h1>
+    <p class="lede">Five modules across eighteen weeks, with every topic mapped to the
+      learning outcome that requires it — and every topic that no outcome requires, but the
+      Final Activity Project does.</p>
+  </header>
+
+  <div class="legend">
+    <span class="legend__item"><i class="key key--brass"></i> Required by a syllabus learning outcome</span>
+    <span class="legend__item"><i class="key key--cyan"></i> The API contract — the through-line across modules 2, 4, and 5</span>
+    <span class="legend__item"><i class="key key--violet"></i> No outcome covers it; added as a brief segment</span>
+  </div>
+
+  <p class="note note--violet">The violet items are the gap analysis made concrete. The Final
+    Activity Project specs depend on eight things the OBE syllabus never asks for — Git, server
+    state, testing, Row Level Security, triggers, Edge Functions, end-to-end tests, and CI.
+    <b>Each gets roughly one session, folded into a module that already exists.</b> None gets a
+    lesson of its own, because the outcomes are fixed and the semester is full.</p>
+
+  <div class="timeline">
+
+    <!-- ===== Module 1 ===== -->
+    <div class="block">
+      <div class="weeks">
+        <span class="weeks__n">2–3</span>
+        <span class="weeks__l">Weeks</span>
+      </div>
+      <article class="mod">
+        <div class="mod__head">
+          <span class="mod__n">01</span>
+          <h2 class="mod__t">UI/UX Design</h2>
+          <span class="status status--ready">Deck built · 49 slides</span>
+          <span class="mod__s">Interface design you can defend, and the agentic workflow that builds it.</span>
+          <span class="mod__co">CO1</span>
+        </div>
+        <ul class="lessons">
+          <li class="lesson lesson--lo">
+            <span class="lesson__n">1.1</span>
+            <span>
+              <span class="lesson__t">UI/UX practice</span>
+              <p class="lesson__b">Heuristics, hierarchy, three-layer tokens, the seven states, accessibility floor. Everything needed to evaluate output before generating any.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 1.1</span></span>
+          </li>
+          <li class="lesson lesson--lo">
+            <span class="lesson__n">1.2</span>
+            <span>
+              <span class="lesson__t">The agentic loop</span>
+              <p class="lesson__b">Context → plan → generate → review → iterate, with the 8-point design QA as the review step. Carried into every module after this one.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 1.2</span></span>
+          </li>
+          <li class="lesson">
+            <span class="lesson__n">LAB</span>
+            <span>
+              <span class="lesson__t">Activity 1 — UI Audit &amp; Redesign <span class="tag tag--lo" style="margin-left:0.35rem">Individual</span></span>
+              <p class="lesson__b">The calibration gate. Every student must personally be able to spot the failure before the semester depends on it.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--lo">CA 1</span></span>
+          </li>
+          <li class="lesson">
+            <span class="lesson__n">LAB</span>
+            <span>
+              <span class="lesson__t">Activity 2 — Brief to Prototype <span class="tag tag--added" style="margin-left:0.35rem">Group brief + own screen</span></span>
+              <p class="lesson__b">Group agrees one brief and one token set; each member takes a different screen of the system their group will actually ship.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--lo">CA 2</span></span>
+          </li>
+        </ul>
+      </article>
+    </div>
+
+    <!-- ===== Module 2 ===== -->
+    <div class="block">
+      <div class="weeks">
+        <span class="weeks__n">3–5</span>
+        <span class="weeks__l">Weeks</span>
+      </div>
+      <article class="mod">
+        <div class="mod__head">
+          <span class="mod__n">02</span>
+          <h2 class="mod__t">Frontend Development</h2>
+          <span class="status">Outlined</span>
+          <span class="mod__s">Components, auth context, the API contract, and a typed request layer.</span>
+          <span class="mod__co">CO2</span>
+        </div>
+        <ul class="lessons">
+          <li class="lesson lesson--added">
+            <span class="lesson__n">2.0</span>
+            <span>
+              <span class="lesson__t">Git &amp; GitHub — briefly</span>
+              <p class="lesson__b">One session, practical only. Branch, commit, pull request, one required approval, issues as the work queue. One live merge conflict, resolved.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
+          </li>
+          <li class="lesson lesson--lo">
+            <span class="lesson__n">2.1</span>
+            <span>
+              <span class="lesson__t">Components from mockups</span>
+              <p class="lesson__b">A bridge, not an introduction — React itself was taught in the prior course and is not repeated. Module 1's screen becomes components; tokens become the Tailwind theme.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 2.1</span></span>
+          </li>
+          <li class="lesson lesson--lo">
+            <span class="lesson__n">2.2</span>
+            <span>
+              <span class="lesson__t">Auth Context + route protection</span>
+              <p class="lesson__b">First real cross-cutting state. Creates the need for a request layer, which is what makes the next lesson land.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 2.1</span></span>
+          </li>
+          <li class="lesson lesson--spine">
+            <span class="lesson__n">2.3</span>
+            <span>
+              <span class="lesson__t">The API contract — OpenAPI</span>
+              <p class="lesson__b">The frontend is written against a contract before the backend exists. In this course that is literally true: the backend is five weeks away.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--spine">Contract</span></span>
+          </li>
+          <li class="lesson lesson--spine">
+            <span class="lesson__n">2.4</span>
+            <span>
+              <span class="lesson__t">API wrapper, interception, and server state</span>
+              <p class="lesson__b">Built against the spec, not invented. TanStack Query enters here — server data is a cache of something that lives elsewhere, not component state.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--spine">Contract</span></span>
+          </li>
+          <li class="lesson lesson--lo">
+            <span class="lesson__n">2.5</span>
+            <span>
+              <span class="lesson__t">Data states in practice</span>
+              <p class="lesson__b">Cashes in Module 1's loading / empty / error work against real latency, and Tailwind responsiveness across devices.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 2.2</span></span>
+          </li>
+        </ul>
+      </article>
+    </div>
+
+    <!-- ===== Module 3 ===== -->
+    <div class="block">
+      <div class="weeks">
+        <span class="weeks__n">5–8</span>
+        <span class="weeks__l">Weeks</span>
+      </div>
+      <article class="mod">
+        <div class="mod__head">
+          <span class="mod__n">03</span>
+          <h2 class="mod__t">JavaScript Programming</h2>
+          <span class="status">Outlined</span>
+          <span class="mod__s">Types, scoping, functions, JSON, the DOM — and how you know a function works.</span>
+          <span class="mod__co">CO3</span>
+        </div>
+        <ul class="lessons">
+          <li class="lesson lesson--lo">
+            <span class="lesson__n">3.1</span>
+            <span>
+              <span class="lesson__t">Types, values, and structures</span>
+              <p class="lesson__b">Arrays and objects are what every API response is made of.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 3.1</span></span>
+          </li>
+          <li class="lesson lesson--lo">
+            <span class="lesson__n">3.2</span>
+            <span>
+              <span class="lesson__t">Scope, <code>let</code>/<code>const</code>, modern syntax</span>
+              <p class="lesson__b">Destructuring, spread, optional chaining — the syntax the rest of the course is written in.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 3.2</span></span>
+          </li>
+          <li class="lesson lesson--lo">
+            <span class="lesson__n">3.3</span>
+            <span>
+              <span class="lesson__t">Iteration</span>
+              <p class="lesson__b"><code>for…of</code> first, then <code>map</code> / <code>filter</code> / <code>reduce</code> — the ones React actually uses.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 3.3</span></span>
+          </li>
+          <li class="lesson lesson--lo">
+            <span class="lesson__n">3.4</span>
+            <span>
+              <span class="lesson__t">Functions, arrows, and modules</span>
+              <p class="lesson__b">Closures explain hooks; <code>import</code>/<code>export</code> explains project structure.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 3.4</span></span>
+          </li>
+          <li class="lesson lesson--lo">
+            <span class="lesson__n">3.5</span>
+            <span>
+              <span class="lesson__t">JSON and async</span>
+              <p class="lesson__b"><code>fetch</code>, promises, <code>async</code>/<code>await</code> — what the Module 2 wrapper was doing all along.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 3.5</span></span>
+          </li>
+          <li class="lesson lesson--lo">
+            <span class="lesson__n">3.6</span>
+            <span>
+              <span class="lesson__t">The DOM, directly</span>
+              <p class="lesson__b">Deliberately without React. Build the same list twice — by hand, then in React — and the framework stops being magic.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 3.6</span></span>
+          </li>
+          <li class="lesson lesson--lo">
+            <span class="lesson__n">3.7</span>
+            <span>
+              <span class="lesson__t">Using libraries</span>
+              <p class="lesson__b">npm, semantic versioning, reading documentation, evaluating whether a package is worth the dependency.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 3.7</span></span>
+          </li>
+          <li class="lesson lesson--added">
+            <span class="lesson__n">3.8</span>
+            <span>
+              <span class="lesson__t">Does it actually work? — briefly</span>
+              <p class="lesson__b">Unit testing with Vitest, ~1 session. This module is the only one producing plain testable functions with no UI or database attached — the easiest thing to test, so the easiest place to teach it.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
+          </li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="exam">
+      <div class="weeks"><span class="weeks__n">9</span><span class="weeks__l">Week</span></div>
+      <div class="exam__bar">Midterm examination</div>
+    </div>
+
+    <!-- ===== Module 4 ===== -->
+    <div class="block">
+      <div class="weeks">
+        <span class="weeks__n">10–12</span>
+        <span class="weeks__l">Weeks</span>
+      </div>
+      <article class="mod">
+        <div class="mod__head">
+          <span class="mod__n">04</span>
+          <h2 class="mod__t">Backend Development</h2>
+          <span class="status">Outlined</span>
+          <span class="mod__s">Schema, Row Level Security, and the functions that implement the contract.</span>
+          <span class="mod__co">CO4</span>
+        </div>
+        <ul class="lessons">
+          <li class="lesson lesson--lo">
+            <span class="lesson__n">4.1</span>
+            <span>
+              <span class="lesson__t">Modeling a relational schema</span>
+              <p class="lesson__b">Tables, keys, relationships, normalization — worked from the group's own specification, §6.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 4.1</span></span>
+          </li>
+          <li class="lesson lesson--lo">
+            <span class="lesson__n">4.2</span>
+            <span>
+              <span class="lesson__t">Migrations</span>
+              <p class="lesson__b">Schema as versioned, reviewable files — not clicks in a dashboard nobody can diff.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 4.1</span></span>
+          </li>
+          <li class="lesson lesson--lo">
+            <span class="lesson__n">4.3</span>
+            <span>
+              <span class="lesson__t">CRUD endpoints over the schema</span>
+              <p class="lesson__b">PostgREST gives you the endpoints. The work is deciding which ones you are entitled to call.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 4.2</span></span>
+          </li>
+          <li class="lesson lesson--added">
+            <span class="lesson__n">4.4</span>
+            <span>
+              <span class="lesson__t">Row Level Security — briefly</span>
+              <p class="lesson__b">The most important uncovered topic. Every authorization claim in all three specs rests on it. Demonstration: read another user's row with the anon key, watch it come back <em>empty</em> — then disable the policy and watch everything return.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
+          </li>
+          <li class="lesson lesson--added">
+            <span class="lesson__n">4.5</span>
+            <span>
+              <span class="lesson__t">Constraints and triggers — briefly</span>
+              <p class="lesson__b">Capacity ceilings, zero-gap adviser continuity, cached rollups, append-only audit logs. Why "the frontend validates it" is not an answer to "what stops a bad row."</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
+          </li>
+          <li class="lesson lesson--added">
+            <span class="lesson__n">4.6</span>
+            <span>
+              <span class="lesson__t">Edge Functions — briefly</span>
+              <p class="lesson__b">Where secrets and multi-step writes live. Demonstration: put a key in a <code>VITE_</code> variable, build, and find it in the bundle with devtools.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
+          </li>
+          <li class="lesson lesson--spine">
+            <span class="lesson__n">4.7</span>
+            <span>
+              <span class="lesson__t">Implementing the contract</span>
+              <p class="lesson__b">Groups don't design an API here — they were handed one in week 3, by themselves. <code>contract:check</code> passes, or the module isn't done.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--spine">Contract</span></span>
+          </li>
+        </ul>
+      </article>
+    </div>
+
+    <!-- ===== Module 5 ===== -->
+    <div class="block">
+      <div class="weeks">
+        <span class="weeks__n">13–17</span>
+        <span class="weeks__l">Weeks</span>
+      </div>
+      <article class="mod">
+        <div class="mod__head">
+          <span class="mod__n">05</span>
+          <h2 class="mod__t">Web Application Integration</h2>
+          <span class="status">Outlined</span>
+          <span class="mod__s">Validation, integration, CI, and a deployed application.</span>
+          <span class="mod__co">CO5</span>
+        </div>
+        <ul class="lessons">
+          <li class="lesson lesson--lo">
+            <span class="lesson__n">5.1</span>
+            <span>
+              <span class="lesson__t">Two-layer validation</span>
+              <p class="lesson__b">Zod on the form is a courtesy; RLS and function checks are the enforcement. Demonstrated by bypassing the form entirely with a REST client.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 5.1</span></span>
+          </li>
+          <li class="lesson lesson--spine">
+            <span class="lesson__n">5.2</span>
+            <span>
+              <span class="lesson__t">Integration day</span>
+              <p class="lesson__b">Swap the mock for the real base URL. Anything that breaks is either a contract violation or a contract error — both specific, findable problems.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--spine">LO 5.2</span></span>
+          </li>
+          <li class="lesson lesson--added">
+            <span class="lesson__n">5.3</span>
+            <span>
+              <span class="lesson__t">End-to-end testing — briefly</span>
+              <p class="lesson__b">Playwright, ~1 session, building on Module 3. Tests must run as an authenticated role so RLS is exercised rather than bypassed.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
+          </li>
+          <li class="lesson lesson--added">
+            <span class="lesson__n">5.4</span>
+            <span>
+              <span class="lesson__t">CI — briefly</span>
+              <p class="lesson__b">Automation of what they already run by hand. A red build blocks a merge instead of being ignored.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
+          </li>
+          <li class="lesson lesson--lo">
+            <span class="lesson__n">5.5</span>
+            <span>
+              <span class="lesson__t">Deployment</span>
+              <p class="lesson__b">Static build, the catch-all rewrite that keeps deep links alive, functions deployed separately — and secrets that never touch the host's environment panel.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 5.3</span></span>
+          </li>
+          <li class="lesson">
+            <span class="lesson__n">5.6</span>
+            <span>
+              <span class="lesson__t">Codebase assessment</span>
+              <p class="lesson__b">The graded read-through of the repository, alongside the Final Web Project itself.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--lo">FP</span></span>
+          </li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="exam">
+      <div class="weeks"><span class="weeks__n">18</span><span class="weeks__l">Week</span></div>
+      <div class="exam__bar">Final examination</div>
+    </div>
+
+  </div>
+
+  <!-- ===== the spine ===== -->
+  <section class="spine">
+    <h2>One document, carried across three modules</h2>
+    <p style="color:var(--text-2);font-size:0.92rem;max-width:62ch">This is what makes the
+      course hold together rather than being five unrelated units. The same OpenAPI file is
+      written once and returned to twice.</p>
+    <div class="spine__flow">
+      <table>
+        <thead>
+          <tr><th style="width:6rem">Module</th><th style="width:8rem">Role</th><th>What happens to it</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">02</td><td><b>Consume</b></td><td>Typed wrapper and screens, running against a mock. The implementation does not exist yet.</td></tr>
+          <tr><td class="num">04</td><td><b>Implement</b></td><td>Schema, policies, and functions that satisfy the same document.</td></tr>
+          <tr><td class="num">05</td><td><b>Integrate</b></td><td>Swap the mock for the real base URL. Nothing else changes.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note"><b>Known tension, stated in advance.</b> The contract is authored in weeks 3–5,
+      but schema modeling isn't taught until week 10. Groups will commit to request and response
+      shapes before they have learned to model the data behind them, so <b>week-10 breaking changes
+      are expected rather than exceptional</b> — versioning the change and reviewing it is the
+      method, not a failure of it. What would be a failure is silently editing the frontend to
+      match a drifted backend.</p>
+  </section>
+
+  <!-- ===== added coverage ===== -->
+  <section>
+    <div class="section__head">
+      <span class="eyebrow">Where the uncovered material lives</span>
+      <h2>Eight brief segments, no new lessons</h2>
+    </div>
+    <div class="wrap">
+      <table>
+        <thead>
+          <tr><th style="width:16rem">Topic</th><th style="width:7rem">Home</th><th style="width:8rem">Size</th><th>Why it can't be skipped</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>Git &amp; GitHub</b></td><td class="num">2.0</td><td class="num">~1 session</td><td>The project is group work in a shared repository.</td></tr>
+          <tr><td><b>Server state — TanStack Query</b></td><td class="num">2.4</td><td class="num">Part of a lesson</td><td>Only makes sense once the request wrapper exists.</td></tr>
+          <tr><td><b>Unit testing — Vitest</b></td><td class="num">3.8</td><td class="num">~1 session</td><td>CI runs it; test-cases-as-issues is a graded workflow.</td></tr>
+          <tr><td><b>Row Level Security</b></td><td class="num">4.4</td><td class="num">~1–2 sessions</td><td>Every authorization claim in all three specs rests on it.</td></tr>
+          <tr><td><b>Constraints &amp; triggers</b></td><td class="num">4.5</td><td class="num">~1 session</td><td>Capacity, continuity, rollups, and audit logs are all trigger-based.</td></tr>
+          <tr><td><b>Edge Functions</b></td><td class="num">4.6</td><td class="num">~1 session</td><td>Every secret and multi-step write lives there.</td></tr>
+          <tr><td><b>End-to-end testing — Playwright</b></td><td class="num">5.3</td><td class="num">~1 session</td><td>The specs' §12 workflow is a deliverable.</td></tr>
+          <tr><td><b>CI — GitHub Actions</b></td><td class="num">5.4</td><td class="num">~1 session</td><td><code>contract:check</code> is what catches drift between the halves.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note note--violet">React is compressed for the same reason, in the other direction:
+      it was taught in the prior course, so Module 2 treats it as prior knowledge and spends its
+      time on structure rather than syntax. <b>If React is genuinely rusty, that is a week-3
+      self-study gap</b> — say so early rather than discovering it in week 5.</p>
+  </section>
+
+  <footer class="foot">
+    <span>First semester 2026–2027</span>
+    <span>·</span>
+    <span>Module 1 deck built; modules 2–5 outlined in <code>module-N/outline.md</code></span>
+    <span>·</span>
+    <span>Final Activity Project is group work — one system per group</span>
+  </footer>
+
+</div>
+</body>
+</html>
