@@ -3,52 +3,61 @@
 Companion to `PROJECT-CONTEXT.md`. That file says *what* the app is; this one says
 *when each part gets built, which lesson it serves, and what you demo from it.*
 
-**Principle:** the app is built in the same order the modules teach, one phase ahead of
-the class. Never further ahead than that. An app that is already finished cannot
-demonstrate a decision being made — and the decisions are the lesson.
+**Principle:** the app is **finished before the semester starts**, and lectures explain it
+rather than build it. No live coding during discussion — you open a real file from a real
+running app, and talk about why it is the way it is.
 
-> **Revised 2026-08-19 for the 8-week lecture calendar** (`../plan/semester-calendar.md`).
-> All five modules are lectured in weeks 1–8, so the app must be **complete by week 7** —
-> six weeks earlier than originally planned. That changes the shape of this plan in two
-> ways:
+> **Revised 2026-08-19.** Two decisions changed the shape of this plan on the same day:
+> lectures compress into weeks 1–8 (`../plan/semester-calendar.md`), and **discussion
+> sessions are explanation, not live coding.**
 >
-> 1. **Phase 0 grows.** More has to exist before week 1, because there is no longer a
->    four-week Module 3 to build during.
-> 2. **"One phase ahead" survives for Modules 1–2 only.** Weeks 3–5 can still be
->    demonstrated as live decisions. Modules 4 and 5 are lectured in weeks 7–8, which
->    means their code is written in weeks 5–6 — one week ahead, not one phase.
+> The earlier version of this plan built the app one phase ahead of the class so decisions
+> could be made live on the projector. That is now explicitly not the teaching method, and
+> dropping it removes the worst risk in the calendar — there is no longer 5 hours a week of
+> building on top of teaching through weeks 1–7.
 >
-> What you lose is the *live* build for the backend half. What replaces it is better
-> suited to the compressed calendar anyway: you demo the **git history** of decisions
-> already made, and the live decision-making moves to the sprint clinics in weeks 10–17,
-> where the students are the ones making them.
+> **What replaces the live build:** the app's **git history**. Build in module order, with
+> Conventional Commits, so the log reads as a narrative — the commit where `SubjectList`
+> was split, the commit where a boolean prop became `children`, the `feat(contract)!:`
+> that versioned a breaking change. History is a better teaching artifact than live
+> coding anyway: it cannot fail in front of the class, it can be read at any pace, and
+> students can `git log` it themselves afterwards.
 
-## The shape of it
+## Build order
 
-| Phase | Do it | Ships | Serves |
-|---|---|---|---|
-| **0 · Skeleton** | before week 1 | repo, tokens, one screen, mock, all 9 operations drafted offline | Module 1–2 opening |
-| **1 · Contract & frontend** | weeks 1–4, one lesson ahead | 6 screens on the Prism mock | Module 2 (weeks 3–5) |
-| **2 · Specimens** | week 5 | Vitest tests, the vanilla-DOM twin, annotated `package.json` | Module 3 (weeks 5–6) |
-| **3 · Backend** | weeks 5–6 | Supabase, RLS, Edge Function, contract v2 | Module 4 (weeks 7–8) |
-| **4 · Integration** | weeks 6–7 | real base URL, Playwright, CI, deployed | Module 5 (week 8 + clinics) |
-| **5 · Reference only** | weeks 10–17 | no new code; the app is the thing groups compare against | the dev phase |
+The phases below are now **build order, not a calendar** — they all happen before week 1.
+Build in this sequence anyway, because it is the order the modules explain and it is what
+makes the history legible.
 
-Total instructor build effort is unchanged at roughly **30–40 hours** — but it is now
-compressed into the pre-semester break and weeks 1–7, which is about **5 hours a week on
-top of teaching**. That is the real cost of this calendar, and it is worth naming before
-committing to it.
+| Phase | Ships | Explained in |
+|---|---|---|
+| **0 · Skeleton** | repo, tokens, Tailwind theme, shadcn | Module 1–2 opening |
+| **1 · Contract & frontend** | contract, 6 screens on the Prism mock | Module 2 (weeks 3–5) |
+| **2 · Specimens** | Vitest tests, the vanilla-DOM twin, annotated `package.json` | Module 3 (weeks 5–6) |
+| **3 · Backend** | Supabase, RLS, Edge Function, contract v2 | Module 4 (weeks 7–8) |
+| **4 · Integration** | real base URL, Playwright, CI, deployed | Module 5 (week 8 + clinics) |
+| **5 · Frozen** | no new code; the reference groups compare against | the dev phase (10–17) |
 
-**If that is not survivable,** the honest fallback is to build Phases 0–2 properly and
-teach Modules 4–5 from migrations, policies, and a workflow file written on the projector
-rather than from a finished app. The backend half of Enroll then gets built during the dev
-phase alongside the groups — which has its own teaching value, since they watch you hit
-the same problems they are hitting.
+Roughly **30–40 hours**, all of it before the semester. That is the whole cost, paid once,
+at a time when you are not also teaching.
 
-## Phase 0 · Skeleton — before week 1
+### What each session actually looks like
 
-The smallest thing that runs, so week 1 opens on a working app rather than an empty
-editor. Bigger than it was: the compressed calendar has no spare weeks to build in later.
+Same four moves every time, so students learn the rhythm:
+
+1. **Open the file.** Not a slide about the file — the file, in the editor, in a project
+   that runs.
+2. **Explain why it is shaped that way**, including what was tried and rejected.
+3. **Show the commit** that introduced it, and read the message.
+4. **Run it**, and break it once on purpose.
+
+The deck's job shifts accordingly: it carries the *ideas* and the interactive instruments,
+and the app carries the *evidence*. Neither duplicates the other.
+
+## Phase 0 · Skeleton
+
+The foundation everything else sits on. Get the tokens right here — every screen inherits
+them, and a token change later means touching every commit that came after.
 
 - [ ] `reference-app/` repo, public on GitHub, README pointing at `PROJECT-CONTEXT.md`
 - [ ] Vite + React + TS + Tailwind, `tokens.css` from Module 1's token set
@@ -58,41 +67,44 @@ editor. Bigger than it was: the compressed calendar has no spare weeks to build 
 - [ ] Vitest and Playwright installed but with no tests. Students should see the empty
       folders in Module 3 and 5 and know they were always part of the plan.
 
-**Demo value:** the "Where this sits" slide stops being a diagram. You show one screen
-fetching from a contract that has one operation, then say *"by week 5 this file has nine,
-and the group that writes it decides what the backend has to do."*
+**Explained as:** the "Where this sits" slide stops being a diagram. You open a project
+that runs, show the token file, and show the same three layers arriving in
+`tailwind.config` — the thing Module 1 asked them to build, already load-bearing.
 
 ---
 
-## Phase 1 · Contract & frontend — weeks 1–4
+## Phase 1 · Contract & frontend
 
-The heaviest phase, and the only one that still gets to run a lesson ahead of the class.
-Build in this order, because it is the order the deck argues for. Module 2 is lectured in
-weeks 3–5, so this phase runs one week in front of it.
+The heaviest phase, and the one whose history gets read most closely. Build in this order,
+because it is the order the deck argues for — and commit at every step that has something
+to explain.
 
-| Lesson | Build | Demo in class |
+| Lesson | Build | Explained from |
 |---|---|---|
-| 2.0 Git | the repo's first week of real history | Open the actual commit graph. Your own branches, your own PR with one approval, one conflict you caused on purpose. The deck's commit-graph widget is the model; this is the real thing. |
+| 2.0 Git | real branches, real PRs, one deliberate conflict resolved | Open the actual commit graph. The deck's widget is the model; this is the real thing, with your name on it. |
 | 2.1 Components | `SubjectRow`, `UnitMeter`, `EnrollmentTable`, `EmptyState`, `ErrorState` | The `git log` where `SubjectList.tsx` got split. Show the commit where a boolean prop became `children`. |
 | 2.2 Auth Context | `SessionContext`, `useSession`, `RequireRole`, `/login` | Sign in as a student, then as an adviser; then delete the guard in devtools and land on `/advising` anyway. That is the RLS setup for Module 4. |
-| 2.3 Contract | all 9 operations, error responses, `components.schemas`, Redoc published | Write operation 9 **live**, from an argument about a field name. Then `redocly lint` failing, then passing. |
+| 2.3 Contract | all 9 operations, error responses, `components.schemas`, Redoc published | Read one operation end to end, then the commit that added its 409. Break the YAML indentation and let `redocly lint` say so. |
 | 2.4 Wrapper | `lib/api/client.ts`, TanStack Query on every screen | Devtools network tab: two screens, one request. Then approve an enrollment and watch the queue key invalidate. |
-| 2.5 Data states | skeletons, the three empties, error + retry, 320px pass | Prism's `--errors` flag and Slow 3G throttling, live. Every state on the projector without touching code. |
+| 2.5 Data states | skeletons, the three empties, error + retry, 320px pass | Prism's `--errors` flag and Slow 3G throttling. Every state on the projector without editing a line. |
 
 **Guardrails for this phase**
 
 - Nine operations, no more. Every one you add is one more thing to keep in sync in sprint 1.
 - Build the failures first on at least one screen: 409, 422, empty, offline. It reverses
   the habit students arrive with.
-- Commit messages are lesson material. `feat(enrollment): add unit meter with ceiling
-  warning` is the example on the slide; make sure the real log looks like the slide.
+- **Commit messages are lesson material, not hygiene.** `feat(enrollment): add unit meter
+  with ceiling warning` is the example on the slide; the real log has to look like the
+  slide, because you will be projecting it.
+- Commit at the granularity you want to *explain*, not the granularity that is convenient.
+  One commit per idea. A commit containing three ideas cannot be read out loud.
 
 ---
 
-## Phase 2 · Specimens — week 5
+## Phase 2 · Specimens
 
-Module 3 is a tour, so the app must stop moving. Freeze features; the only additions are
-the three specimens the tour needs. One week, because Module 3 is now one and a half.
+Module 3 is a tour of this codebase, so it needs three specimens that exist only to be
+read.
 
 - [ ] `lib/rules/units.ts` — pure functions for R2, R3, R4, with the tests written after
       the class watches the first one fail
@@ -107,16 +119,16 @@ start reading a codebase, which is the actual professional skill.
 
 ---
 
-## Phase 3 · Backend — weeks 5–6
+## Phase 3 · Backend
 
-Build during weeks 5–6, one week ahead of the Module 4 lectures in weeks 7–8. This is the
-tightest window in the plan and the first thing to protect.
+The half of the app that carries every authorization claim in the course. RLS is the most
+important uncovered topic in the syllabus, and 4.4 is explained entirely from this code.
 
 - [ ] `supabase/migrations/` — the schema behind the contract's shapes
 - [ ] RLS policies for R7 and R8, then **demonstrate the bypass being blocked**: sign in
       as student A, request student B's enrollment, get nothing back. Same request the
       deleted route guard let through in week 4 — a three-week callback, tight enough that
-      the class still remembers it.
+      the class still remembers it. Script this one; it is the best five minutes in Module 4.
 - [ ] Constraints + a trigger for R2, so the unit ceiling is enforced where it counts
 - [ ] An Edge Function for `submitEnrollment`, because it is a multi-table transaction
 - [ ] `supabase gen types typescript` — the second instance of "schema is truth, types
@@ -125,16 +137,18 @@ tightest window in the plan and the first thing to protect.
       modeling has been done. Version it properly: `feat(contract)!: …`, a note saying
       who has to change what, and keep v1 in the history.
 
-**Demo value:** the v1 → v2 diff is the best slide in Module 4 and you cannot fake it.
-Do not tidy the week-5 contract to look prescient — the drift is the lesson, and the groups
-are about to live it in sprint 1.
+**Explained as:** the v1 → v2 diff is the best slide in Module 4 and it has to be real.
+When you write the contract in Phase 1, write it *before* doing the schema work in Phase 3
+and do not go back and improve it. The mistakes are the artifact — and the groups are about
+to make the same ones in sprint 1.
 
 ---
 
-## Phase 4 · Integration — weeks 6–7
+## Phase 4 · Integration
 
-- [ ] Swap Prism for Supabase by changing **one environment variable**. Do this live. It
-      is the payoff for the entire contract-first argument, and it takes ten seconds.
+- [ ] Swap Prism for Supabase by changing **one environment variable**. Keep both `.env`
+      files so you can flip it back and forth in front of the class — this is the payoff
+      for the entire contract-first argument, and it takes ten seconds.
 - [ ] Validation pass on every form, error shape end to end
 - [ ] Playwright: the enrollment happy path, plus the R2 ceiling and the R7 forbidden
       case — **run as an authenticated role so RLS is exercised, not bypassed**
@@ -144,7 +158,7 @@ are about to live it in sprint 1.
 
 ---
 
-## Phase 5 · Reference only — weeks 10–17
+## Phase 5 · Frozen — weeks 10–17
 
 **Write no new features.** From week 10 the app's job changes: it is the thing groups
 compare their own repo against, and the answer key you open when three groups are stuck on
@@ -164,24 +178,23 @@ the same problem.
 | Risk | Mitigation |
 |---|---|
 | **Scope creep.** The app quietly grows into something impressive and unreadable. | The ceiling in `PROJECT-CONTEXT.md` §1 is a hard limit: 9 operations, 6 screens, 2 roles. Cut, do not extend. |
-| **Building too far ahead.** A finished app cannot demo a decision. | Still one phase ahead where it is possible — Phases 0–2. For Modules 4–5 it is one *week* ahead, and the live decision-making moves to the sprint clinics. |
-| **The compressed build is 5 hours a week on top of teaching for seven weeks.** | Named at the top of this file, with a stated fallback: build Phases 0–2 properly and teach Modules 4–5 from files written on the projector. |
+| **A finished app hides the decisions that made it.** | The git history is the mitigation, and it only works if it is built deliberately: one commit per idea, messages written to be read out loud. A history committed carelessly cannot be un-carelessed later. |
+| **Explanation without live coding can slide into reading code aloud.** | The four moves in "What each session actually looks like" are the guard: why it is shaped that way, and what was tried and rejected. If a session has no rejected alternative in it, it is a code review, not a lesson. |
 | **The demo drifts from the deck.** | Both live in git. When a slide changes, check the app; when the app changes, check the slide. The 12-point QA is the shared checklist. |
 | **Students copy it wholesale.** | Different domain from all three project systems, and every rubric grades *justification*, not output. A boundary you cannot defend out loud at the Practical Exam scores nothing. |
-| **You run out of time mid-semester.** | Phases 0–1 are the ones that must exist. If Phase 3 slips, teach Module 4 from migrations and policies alone and catch the app up during sprint 1. Phase 2 can be cut to just `units.ts`. |
+| **The app is not finished by week 1.** | Phases 0–2 are the ones that must exist before teaching starts, because Modules 1–3 are explained entirely from them. Phase 3 has until week 6 and Phase 4 until week 7 without disrupting anything. |
 
 ---
 
 ## Start here
 
-Before week 1, in order:
-
 1. Create the repo and commit `PROJECT-CONTEXT.md` as the first commit — so the context
    file is older than the code, which is the point being taught.
-2. Phase 0 checklist above. Budget a full day now that it carries more.
-3. Draft `contract/openapi.yaml` with all nine operations *offline*, but commit only
-   `listSubjects`. Holding the rest back is what makes lesson 2.3 a live exercise rather
-   than a reveal.
-4. Block out the Phase 3 window (weeks 5–6) in your own calendar **before the semester
-   starts**. It is the phase that gets squeezed, and it is the one carrying RLS — the most
-   important uncovered topic in the course.
+2. Phase 0, then 1, then 2. Those three must exist before week 1, because Modules 1–3 are
+   explained entirely from them.
+3. Write `contract/openapi.yaml` with all nine operations **before** any schema work, and
+   then leave it alone. Phase 3 will prove parts of it wrong; that diff is Module 4.7 and
+   it cannot be manufactured after the fact.
+4. Keep a running `DEMOS.md` as you build. Every time you notice "this would explain X
+   well", write it down with the file path and the commit hash. By week 1 that file is
+   your lecture notes.

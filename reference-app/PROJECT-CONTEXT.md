@@ -21,15 +21,23 @@ Module 3 is a guided tour of.
 - **Read by students, not submitted by them.** Each group ships its own system
   (SPMIS / SAAIS / EIRMIS). Enroll is deliberately a *different* domain, close enough
   that every pattern transfers and far enough that none of it can be handed in.
+- **Explained, not built live.** Discussion sessions open real files from this app and
+  explain why they are shaped that way. There is no live coding in lecture, so the app is
+  **finished before the semester starts** and its **git history is a teaching artifact** —
+  one commit per idea, messages written to be read out loud on a projector.
 - **Size ceiling:** 9 API operations, 6 screens, 2 roles. If it grows past that, cut
   something. A demo nobody can read in one sitting has stopped being a teaching tool.
 
-### The one rule that governs every decision
+### The two rules that govern every decision
 
-**Enroll exists to demonstrate exactly what the modules teach, in the order they teach
-it.** Nothing is in the codebase because it is good practice in general; everything is
-there because a specific lesson points at it. If a feature does not have a lesson, it
-does not get built.
+1. **Enroll exists to demonstrate exactly what the modules teach, in the order they teach
+   it.** Nothing is in the codebase because it is good practice in general; everything is
+   there because a specific lesson points at it. If a feature does not have a lesson, it
+   does not get built.
+2. **The history is part of the product.** Build in module order and commit at the
+   granularity you would *explain*, not the granularity that is convenient. A commit
+   carrying three ideas cannot be read out loud, and a careless history cannot be made
+   careful later.
 
 ---
 
@@ -195,18 +203,23 @@ Conventions that matter:
 
 ## 7 · What exists when — do not build ahead
 
-An agent working on this app must be told which module it is in. Scope by module:
+The whole app is built before the semester, so this table is **not** a schedule — it is the
+narrative map. It says which layer belongs to which module's explanation, and therefore
+which phase of the build a change belongs in and what must not have existed yet *at that
+point in the history*. Building Supabase code into the Module 2 stretch of the history
+makes the Module 2 sessions unexplainable.
 
-Lectures run weeks 1–8; weeks 10–17 are supervised development
-(`../plan/semester-calendar.md`). Scope by module:
-
-| Module | Lectured | What is added | What must NOT exist yet |
+| Module | Explained in | The layer it owns | What must not exist yet at that point |
 |---|---|---|---|
 | **2** | 3–5 | contract, components, SessionContext, route guards, typed client, TanStack Query, all data states — **running entirely on the Prism mock** | any database, any Supabase code, any real auth |
 | **3** | 5–6 | **no new features.** The app is the specimen. Adds `demos/subject-list-vanilla.html`, the annotated `package.json`, and the first Vitest tests | new screens, new operations |
 | **4** | 7–8 | Supabase schema + migrations, RLS policies, constraints and a trigger for R2, an Edge Function for `submitEnrollment`, generated DB types | Playwright, CI, deployment |
 | **5** | 8 + clinics | validation pass, swap mock → real base URL (one env var), Playwright e2e, GitHub Actions, deploy | — |
 | — | 10–17 | **nothing.** The app is frozen and serves as the reference groups compare against | any feature added to match what a group built |
+
+Practically: when you ask an agent for a change, say which phase of the history it belongs
+to. "This is Phase 1, the app has no database yet" is the sentence that keeps the narrative
+intact.
 
 The Module 4 handover is a **teaching moment, not a mistake**: the week-5 contract will
 need changes once real schema modeling is taught. Version it (`feat(contract)!: …`), do
@@ -222,7 +235,8 @@ and the groups hit the same wall in sprint 1, two weeks later.
   ~70 chars, detail in the body. A breaking change takes `!` before the colon.
 - **Branches:** `feature/<issue>-<slug>`, one issue per branch, PR with one approval.
 - **Every commit in this repo is teaching material.** The history gets read on the
-  projector — so the log has to be exemplary, not just functional.
+  projector, so the log has to be exemplary rather than merely functional. One idea per
+  commit. If a message needs "and", it is two commits.
 - **Generated files are committed** (`contract/generated/`, Supabase types) so CI can
   fail when they go stale.
 
