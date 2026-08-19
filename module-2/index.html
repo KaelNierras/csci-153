@@ -699,19 +699,16 @@ git branch -d feature/12-student-card</pre></div>
 }</pre>
         </div>
         <div class="panel">
-          <div class="panel__head">tailwind.config · the same three layers</div>
-          <pre>theme: {
-  extend: {
-    colors: {
-      ground:  'var(--ground)',
-      surface: 'var(--surface)',
-      <b>accent</b>:  'var(--accent)',
-      success: 'var(--success)',
-      danger:  'var(--danger)',
-    }
-  }
+          <div class="panel__head">@theme · the same three layers</div>
+          <pre>@theme inline {
+  --color-ground:  var(--ground);
+  --color-surface: var(--surface);
+  --color-<b>accent</b>:  var(--accent);
+  --color-success: var(--success);
+  --color-danger:  var(--danger);
 }</pre>
-          <p class="body" style="margin-top:var(--s3)">Now <code>bg-surface</code> and <code>text-accent</code> are the <em>only</em> way to write a colour — so a hard-coded hex stands out in review.</p>
+          <p class="small">Tailwind v4 declares the theme in CSS. Older material shows a <code>tailwind.config.js</code> with <code>theme.extend.colors</code> — same three layers, older mechanism.</p>
+          <p class="body" style="margin-top:var(--s3)">Each token becomes a utility: <code>--color-surface</code> makes <code>bg-surface</code> exist. Now that is the <em>only</em> way to write a colour, so a hard-coded hex stands out in review.</p>
         </div>
       </div>
       <p class="callout">

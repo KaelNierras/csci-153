@@ -31,9 +31,9 @@ makes the history legible.
 
 | Phase | Ships | Explained in |
 |---|---|---|
-| **0 · Skeleton** | repo, tokens, Tailwind theme, shadcn | Module 1–2 opening |
-| **1 · Contract & frontend** | contract, 6 screens on the Prism mock | Module 2 (weeks 3–5) |
-| **2 · Specimens** | Vitest tests, the vanilla-DOM twin, annotated `package.json` | Module 3 (weeks 5–6) |
+| **0 · Skeleton** ✅ | repo, tokens, Tailwind theme | Module 1–2 opening |
+| **1 · Contract & frontend** ◐ | contract done, 1 of 6 screens on the Prism mock | Module 2 (weeks 3–5) |
+| **2 · Specimens** ◐ | unit tests and the vanilla-DOM twin done; `package.json` notes pending | Module 3 (weeks 5–6) |
 | **3 · Backend** | Supabase, RLS, Edge Function, contract v2 | Module 4 (weeks 7–8) |
 | **4 · Integration** | real base URL, Playwright, CI, deployed | Module 5 (week 8 + clinics) |
 | **5 · Frozen** | no new code; the reference groups compare against | the dev phase (10–17) |
@@ -185,6 +185,27 @@ the same problem.
 | **The app is not finished by week 1.** | Phases 0–2 are the ones that must exist before teaching starts, because Modules 1–3 are explained entirely from them. Phase 3 has until week 6 and Phase 4 until week 7 without disrupting anything. |
 
 ---
+
+## Progress · 2026-08-19
+
+The repo exists at `../csci-153-enroll` with 14 commits, and everything green: `tsc -b`,
+11 Vitest tests, a production build, and `redocly lint` clean.
+
+**Done:** the contract (9 operations, every one documenting its 401 and its failures),
+generated types, the typed client with auth and error interception, the enrollment rules as
+pure functions, `SessionContext` with the loading branch and the route guard, the shared
+loading/empty/error states, the subject catalog with all four data states reachable against
+the Prism mock, the unit-ceiling tests, the vanilla-DOM twin for 3.6, and `DEMOS.md`.
+
+**Next, in order:**
+
+1. The five remaining screens — my enrollment, enrollment status, adviser queue, adviser
+   review. Each one is a mutation plus a cache invalidation, so they go quickly now that
+   the wrapper and keys exist.
+2. shadcn/ui, for the dialog on adviser return. Not before it is needed.
+3. The annotated `package.json` for lesson 3.1.
+4. Phase 3, the backend. Write no contract changes until the schema work forces them — the
+   v1→v2 diff is Module 4.7 and it cannot be manufactured afterwards.
 
 ## Start here
 

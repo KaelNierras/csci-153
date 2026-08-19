@@ -8,6 +8,11 @@
 >
 > Keep it current. When a decision changes, change it here first; this file is the truth
 > and the code is downstream of it.
+>
+> **The app lives in its own repository**, at `../csci-153-enroll` — separate from the
+> course site so a Vite project's `node_modules` never reaches the Pages build. This file
+> is mirrored there as `PROJECT-CONTEXT.md`, and **that copy is the one to edit**, since it
+> ships with the code it describes. Sync changes back here afterwards.
 
 ---
 
