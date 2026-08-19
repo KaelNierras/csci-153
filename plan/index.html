@@ -156,6 +156,29 @@ body { overflow: auto; }
   text-transform: uppercase; color: var(--text-3);
 }
 
+/* ---------- development phase ---------- */
+.dev { display: grid; grid-template-columns: 5.5rem 1fr; gap: var(--s5); align-items: start; }
+.dev__body {
+  border: 1px solid var(--cyan-dim); background: var(--sunk);
+  padding: var(--s5); display: flex; flex-direction: column; gap: var(--s4);
+}
+.dev__t { font-size: 1.05rem; font-weight: 600; letter-spacing: -0.015em; }
+.dev__s { font-size: 0.9rem; color: var(--text-2); }
+.dev__sprints { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s3); }
+@media (max-width: 52rem) { .dev__sprints { grid-template-columns: 1fr 1fr; } }
+.sprint {
+  border: 1px solid var(--line); background: var(--panel); padding: var(--s4);
+  display: flex; flex-direction: column; gap: 0.35rem;
+}
+.sprint__n {
+  font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--cyan);
+}
+.sprint__t { font-size: 0.88rem; font-weight: 600; }
+.sprint__b { font-size: 0.8rem; color: var(--text-3); }
+.sprint__g { font-size: 0.78rem; color: var(--text-2); border-top: 1px solid var(--line-soft); padding-top: 0.35rem; margin-top: 0.15rem; }
+@media (max-width: 40rem) { .dev { grid-template-columns: 1fr; } }
+
 /* ---------- callouts + sections ---------- */
 .note {
   border-left: 2px solid var(--cyan);
@@ -231,7 +254,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
     <!-- ===== Module 1 ===== -->
     <div class="block">
       <div class="weeks">
-        <span class="weeks__n">2–3</span>
+        <span class="weeks__n">1–2</span>
         <span class="weeks__l">Weeks</span>
       </div>
       <article class="mod">
@@ -322,7 +345,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
             <span class="lesson__n">2.3</span>
             <span>
               <span class="lesson__t">The API contract — OpenAPI</span>
-              <p class="lesson__b">The frontend is written against a contract before the backend exists. In this course that is literally true: the backend is five weeks away.</p>
+              <p class="lesson__b">The frontend is written against a contract before the backend exists. In this course that is literally true: the backend is two weeks away, and its implementation five.</p>
             </span>
             <span class="lesson__tag"><span class="tag tag--spine">Contract</span></span>
           </li>
@@ -349,71 +372,71 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
     <!-- ===== Module 3 ===== -->
     <div class="block">
       <div class="weeks">
-        <span class="weeks__n">5–8</span>
+        <span class="weeks__n">5–6</span>
         <span class="weeks__l">Weeks</span>
       </div>
       <article class="mod">
         <div class="mod__head">
           <span class="mod__n">03</span>
-          <h2 class="mod__t">JavaScript Programming</h2>
+          <h2 class="mod__t">The Stack, End to End</h2>
           <span class="status">Outlined</span>
-          <span class="mod__s">Types, scoping, functions, JSON, the DOM — and how you know a function works.</span>
+          <span class="mod__s">Every piece of the toolchain, taught by opening the file it lives in — types, modules, JSON, the DOM, and how you know a function works.</span>
           <span class="mod__co">CO3</span>
         </div>
         <ul class="lessons">
           <li class="lesson lesson--lo">
             <span class="lesson__n">3.1</span>
             <span>
-              <span class="lesson__t">Types, values, and structures</span>
-              <p class="lesson__b">Arrays and objects are what every API response is made of.</p>
+              <span class="lesson__t">The stack, named</span>
+              <p class="lesson__b">Open <code>package.json</code> and account for every line: what breaks if you remove it, and is it a library you call or a framework that calls you?</p>
             </span>
-            <span class="lesson__tag"><span class="tag tag--lo">LO 3.1</span></span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 3.7</span></span>
           </li>
           <li class="lesson lesson--lo">
             <span class="lesson__n">3.2</span>
             <span>
-              <span class="lesson__t">Scope, <code>let</code>/<code>const</code>, modern syntax</span>
-              <p class="lesson__b">Destructuring, spread, optional chaining — the syntax the rest of the course is written in.</p>
+              <span class="lesson__t">TypeScript in five ideas</span>
+              <p class="lesson__b">Annotations, unions, optional and nullable, <code>let</code> vs <code>const</code> — read off the generated <code>schema.d.ts</code>, which nobody wrote by hand.</p>
             </span>
-            <span class="lesson__tag"><span class="tag tag--lo">LO 3.2</span></span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 3.1, 3.2</span></span>
           </li>
           <li class="lesson lesson--lo">
             <span class="lesson__n">3.3</span>
             <span>
-              <span class="lesson__t">Iteration</span>
-              <p class="lesson__b"><code>for…of</code> first, then <code>map</code> / <code>filter</code> / <code>reduce</code> — the ones React actually uses.</p>
+              <span class="lesson__t">Arrays, objects, iteration</span>
+              <p class="lesson__b"><code>for…of</code> first, then <code>map</code> / <code>filter</code> / <code>reduce</code> on the enrollment data. The idea to land: <code>map</code> in JSX <em>is</em> a loop.</p>
             </span>
-            <span class="lesson__tag"><span class="tag tag--lo">LO 3.3</span></span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 3.1, 3.3</span></span>
           </li>
           <li class="lesson lesson--lo">
             <span class="lesson__n">3.4</span>
             <span>
-              <span class="lesson__t">Functions, arrows, and modules</span>
-              <p class="lesson__b">Closures explain hooks; <code>import</code>/<code>export</code> explains project structure.</p>
+              <span class="lesson__t">Functions, modules, and where files live</span>
+              <p class="lesson__b">Closures explain hooks; <code>import</code>/<code>export</code> explains why <code>lib/</code> differs from <code>hooks/</code> differs from <code>components/</code>.</p>
             </span>
             <span class="lesson__tag"><span class="tag tag--lo">LO 3.4</span></span>
           </li>
           <li class="lesson lesson--lo">
             <span class="lesson__n">3.5</span>
             <span>
-              <span class="lesson__t">JSON and async</span>
-              <p class="lesson__b"><code>fetch</code>, promises, <code>async</code>/<code>await</code> — what the Module 2 wrapper was doing all along.</p>
+              <span class="lesson__t">JSON, <code>fetch</code>, and <code>await</code></span>
+              <p class="lesson__b">A retroactive reading of <code>lib/api/client.ts</code>, which they have used since Module 2 without opening. Then the two failure modes, live.</p>
             </span>
             <span class="lesson__tag"><span class="tag tag--lo">LO 3.5</span></span>
           </li>
           <li class="lesson lesson--lo">
             <span class="lesson__n">3.6</span>
             <span>
-              <span class="lesson__t">The DOM, directly</span>
-              <p class="lesson__b">Deliberately without React. Build the same list twice — by hand, then in React — and the framework stops being magic.</p>
+              <span class="lesson__t">What React does for you</span>
+              <p class="lesson__b">The subject list twice in one session — <code>createElement</code> by hand, then React. Fine for five rows; the lesson is the sixth.</p>
             </span>
             <span class="lesson__tag"><span class="tag tag--lo">LO 3.6</span></span>
           </li>
           <li class="lesson lesson--lo">
             <span class="lesson__n">3.7</span>
             <span>
-              <span class="lesson__t">Using libraries</span>
-              <p class="lesson__b">npm, semantic versioning, reading documentation, evaluating whether a package is worth the dependency.</p>
+              <span class="lesson__t">Choosing a library</span>
+              <p class="lesson__b">npm, semver, lockfiles — then three candidate packages for one job: downloads, last publish, issues, bundle size, shipped types. Pick one and defend it.</p>
             </span>
             <span class="lesson__tag"><span class="tag tag--lo">LO 3.7</span></span>
           </li>
@@ -421,7 +444,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
             <span class="lesson__n">3.8</span>
             <span>
               <span class="lesson__t">Does it actually work? — briefly</span>
-              <p class="lesson__b">Unit testing with Vitest, ~1 session. This module is the only one producing plain testable functions with no UI or database attached — the easiest thing to test, so the easiest place to teach it.</p>
+              <p class="lesson__b">Vitest, ~1 session, on the reference app's unit-ceiling function — a pure function with no UI and no database. Watch it fail first. A test that has never failed proves nothing.</p>
             </span>
             <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
           </li>
@@ -437,7 +460,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
     <!-- ===== Module 4 ===== -->
     <div class="block">
       <div class="weeks">
-        <span class="weeks__n">10–12</span>
+        <span class="weeks__n">7–8</span>
         <span class="weeks__l">Weeks</span>
       </div>
       <article class="mod">
@@ -512,7 +535,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
     <!-- ===== Module 5 ===== -->
     <div class="block">
       <div class="weeks">
-        <span class="weeks__n">13–17</span>
+        <span class="weeks__n">8+</span>
         <span class="weeks__l">Weeks</span>
       </div>
       <article class="mod">
@@ -544,7 +567,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
             <span class="lesson__n">5.3</span>
             <span>
               <span class="lesson__t">End-to-end testing — briefly</span>
-              <p class="lesson__b">Playwright, ~1 session, building on Module 3. Tests must run as an authenticated role so RLS is exercised rather than bypassed.</p>
+              <p class="lesson__b">Playwright, ~1 session, building on Module 3's Vitest session. Tests must run as an authenticated role so RLS is exercised rather than bypassed.</p>
             </span>
             <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
           </li>
@@ -576,6 +599,49 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
       </article>
     </div>
 
+    <!-- ===== development phase ===== -->
+    <div class="dev">
+      <div class="weeks">
+        <span class="weeks__n">10–17</span>
+        <span class="weeks__l">Weeks</span>
+      </div>
+      <div class="dev__body">
+        <div>
+          <div class="dev__t">Development phase</div>
+          <p class="dev__s">No new lectures. Four two-week sprints building the Final Web Project,
+            with the instructor in the room for all five contact hours a week. Three ~45-minute
+            clinics sit inside it — end-to-end testing (week 12), CI (week 13), and deployment
+            (week 15) — each taught in the week it is applied rather than eight weeks early.</p>
+        </div>
+        <div class="dev__sprints">
+          <div class="sprint">
+            <span class="sprint__n">Sprint 1 · 10–11</span>
+            <span class="sprint__t">Schema, migrations, RLS</span>
+            <span class="sprint__b">Your own system's data model. Contract v2 where week-5 decisions were wrong.</span>
+            <span class="sprint__g"><b>Gate:</b> another group's account cannot read your rows — demonstrated, not claimed.</span>
+          </div>
+          <div class="sprint">
+            <span class="sprint__n">Sprint 2 · 12–13</span>
+            <span class="sprint__t">Endpoints &amp; integration</span>
+            <span class="sprint__b">CRUD, Edge Functions, first screens on the real backend.</span>
+            <span class="sprint__g"><b>Gate:</b> <code>contract:check</code> passes and CI is required before merge.</span>
+          </div>
+          <div class="sprint">
+            <span class="sprint__n">Sprint 3 · 14–15</span>
+            <span class="sprint__t">Screens, validation, deploy</span>
+            <span class="sprint__b">Remaining screens, both validation layers, staging deployment.</span>
+            <span class="sprint__g"><b>Gate:</b> reachable at a URL by someone not in the group.</span>
+          </div>
+          <div class="sprint">
+            <span class="sprint__n">Sprint 4 · 16–17</span>
+            <span class="sprint__t">Hardening &amp; submission</span>
+            <span class="sprint__b">Test cases cleared, 12-point QA on every screen.</span>
+            <span class="sprint__g"><b>Gate:</b> Codebase Assessment and the Final Web Project.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="exam">
       <div class="weeks"><span class="weeks__n">18</span><span class="weeks__l">Week</span></div>
       <div class="exam__bar">Final examination</div>
@@ -601,10 +667,10 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
         </tbody>
       </table>
     </div>
-    <p class="note"><b>Known tension, stated in advance.</b> The contract is authored in weeks 3–5,
-      but schema modeling isn't taught until week 10. Groups will commit to request and response
-      shapes before they have learned to model the data behind them, so <b>week-10 breaking changes
-      are expected rather than exceptional</b> — versioning the change and reviewing it is the
+    <p class="note"><b>Known tension, stated in advance.</b> The contract is authored in weeks 4–5,
+      but schema modeling isn't taught until week 7. Groups will commit to request and response
+      shapes before they have learned to model the data behind them, so <b>breaking changes in
+      sprint 1 are expected rather than exceptional</b> — versioning the change and reviewing it is the
       method, not a failure of it. What would be a failure is silently editing the frontend to
       match a drifted backend.</p>
   </section>

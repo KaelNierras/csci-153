@@ -1,6 +1,6 @@
 # Module 5 — Web Application Integration · outline
 
-**CSci 153 · Weeks 13–17 · CO5** — *Deploy a fully working web application integrating
+**CSci 153 · Week 8, plus clinics in the dev phase · CO5** — *Deploy a fully working web application integrating
 frontend, backend, and database components*
 Syllabus LOs: **LO 5.1** validate user inputs on client and server layers ·
 **LO 5.2** utilize API endpoints for frontend application ·
@@ -8,8 +8,13 @@ Syllabus LOs: **LO 5.1** validate user inputs on client and server layers ·
 
 Status: **planning**. Deck not built yet.
 
-Five weeks, and the Final Activity Project is due at the end of it. This module is
-mostly supervised build time with short inputs, not lecture.
+This module was five weeks of mostly supervised build time with short inputs. Under the
+8-week lecture calendar (`plan/semester-calendar.md`) the split is explicit: **5.1 and 5.2
+are lectured in week 8**, and **5.3, 5.4, and 5.5 are ~45-minute clinics inside the
+development phase** — e2e in week 12, CI in week 13, deployment in week 15 — each taught
+in the week it is applied. 5.6 is the graded read-through in weeks 16–17.
+
+The supervised build time did not disappear; it became weeks 10–17.
 
 ---
 
@@ -56,7 +61,7 @@ contract-first, made concrete rather than asserted.
 
 ## 5.3 · End-to-end testing — the brief version
 
-**No LO**, ~1 session, building on Module 3's unit-testing session.
+**No LO**, ~1 session, building on Module 3's unit-testing session (3.8).
 
 Cover: what an e2e test is versus a unit test · Playwright driving a real browser ·
 writing one test for one already-written test-case issue · why e2e tests must run as an
