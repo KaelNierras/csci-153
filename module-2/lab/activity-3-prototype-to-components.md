@@ -163,7 +163,7 @@ referred to the integrity policy.
 |---|---|
 | **Activity 4 · next week** | These components stop using mock data and start calling your group's typed client, against the contract you will write. |
 | **Module 4 · Backend** | `SessionContext` gets a real Supabase session, and the guard's advisory check gets a real enforcement layer behind it in RLS. |
-| **Practical Exam (PE, 15%)** | Individual. You will defend these boundaries out loud — which is why the justification document exists. |
+| **Codebase Assessment (CA, 20%)** | Weeks 16–17. You will defend these boundaries out loud — which is why the justification document exists. |
 
 ---
 

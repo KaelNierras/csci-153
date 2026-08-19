@@ -24,7 +24,7 @@ Course outcome **CO2** · Learning outcome **LO 2.1, LO 2.2**
 You are going to write the document that Module 4 has to implement and Module 5 has to
 connect to. It is the only artifact in this course that touches three modules.
 
-Your backend does not exist. It is seven weeks away, and the people who will build it
+Your backend does not exist. Its implementation is five weeks away, and the people who will build it
 are you. That is precisely why the shapes have to be written down now — while changing
 them costs a text edit rather than a rewrite.
 
@@ -164,10 +164,10 @@ the evidence of thinking**, so write down what the losing option was.
 
 | Feeds into | How |
 |---|---|
-| **Module 3 · JavaScript** | What `await` was doing inside your wrapper, what JSON actually is, and how to unit-test the functions you have started writing. |
+| **Module 3 · The Stack** | What `await` was doing inside your wrapper, what JSON actually is, and how to unit-test the functions you have started writing. |
 | **Module 4 · Backend** | The other side. Your schema, RLS policies, and functions must satisfy **this document** — `npm run contract:check` passing is what "done" means. |
 | **Module 5 · Integration** | Swap the mock base URL for the real one. If the contract held, nothing else changes. That is the whole bet. |
-| **Final Project (FP, 20%)** | Group. This spec is the spine of it. |
+| **Final Web Project (FWP, 50%)** | Group. This spec is the spine of it. |
 
 ---
 
