@@ -179,8 +179,8 @@ past that.
 | Feeds into | How |
 |---|---|
 | **Module 2 · Frontend** | Your group arrives with several screens already designed; they become your first real React + Tailwind components, and the shared `tokens.css` becomes the Tailwind theme. |
-| **Final Project (FP, 20%)** | Group work. The design system your group establishes here carries every screen it ships in week 17. |
-| **Practical Exam (PE, 15%)** | Individual. You defend *your* screen out loud — which is why you each run the loop yourself rather than watching someone else run it. |
+| **Final Web Project (FWP, 50%)** | Group work. The design system your group establishes here carries every screen it ships in week 17. |
+| **Codebase Assessment (CA, 20%)** | Read off the repository in weeks 16–17. You answer for *your* screens — which is why you each run the loop yourself rather than watching someone else run it. |
 
 ---
 

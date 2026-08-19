@@ -1,6 +1,6 @@
 # Module 4 — Backend Development · outline
 
-**CSci 153 · Weeks 10–12 · CO4** — *Create a backend server with RESTful API endpoints
+**CSci 153 · Weeks 7–8 · CO4** — *Create a backend server with RESTful API endpoints
 for database operations*
 Syllabus LOs: **LO 4.1** model relational database schemas ·
 **LO 4.2** develop API endpoints for CRUD operations
@@ -87,12 +87,12 @@ in Module 2, by themselves. The question is whether the implementation satisfies
 ```
 contract/openapi.yaml   written week 3–5, unchanged unless versioned
         ↓
-schema + RLS + Edge Functions   built weeks 10–12
+schema + RLS + Edge Functions   lectured weeks 7–8, built in sprints 1–2 (weeks 10–13)
         ↓
 npm run contract:check   passes, or the module is not done
 ```
 
-**Expect breaking changes here, and say so in advance.** A contract authored in week 3
+**Expect breaking changes here, and say so in advance.** A contract authored in week 4
 by students who had not yet learned schema modeling will have mistakes. That is not a
 failure of the method — versioning the change and reviewing it *is* the method. What
 would be a failure is silently editing the frontend to match a drifted backend.

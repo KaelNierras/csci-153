@@ -35,14 +35,28 @@
   /* ---------- slide map (overview) ---------- */
   var overview = document.getElementById('overview');
   var mapRoot  = document.getElementById('map');
+  /* Section names and colours are per-module. A deck may declare its own with
+       <script type="application/json" id="deck-sections">
+         { "names": { "2.1": "Lesson 2.1 — Components" },
+           "colors": { "2.1": "var(--brass)" } }
+       </script>
+     Anything not declared falls back to the defaults below, so a deck that
+     omits the block still gets sensible headings in the slide map. */
   var SEC_NAMES = {
     '0':   'Orientation',
-    '1.1': 'Lesson 1.1 — UI/UX practice',
-    '1.2': 'Lesson 1.2 — Agentic design',
     'lab': 'Laboratory activities',
     'end': 'Close'
   };
-  var SEC_COLORS = { '0': 'var(--text-3)', '1.1': 'var(--brass)', '1.2': 'var(--cyan)', 'lab': '#E7EBF2', 'end': 'var(--text-3)' };
+  var SEC_COLORS = { '0': 'var(--text-3)', 'lab': '#E7EBF2', 'end': 'var(--text-3)' };
+
+  (function loadSections() {
+    var cfg = document.getElementById('deck-sections');
+    if (!cfg) return;
+    var data;
+    try { data = JSON.parse(cfg.textContent); } catch (err) { return; }
+    Object.keys(data.names || {}).forEach(function (k) { SEC_NAMES[k] = data.names[k]; });
+    Object.keys(data.colors || {}).forEach(function (k) { SEC_COLORS[k] = data.colors[k]; });
+  })();
 
   if (mapRoot) {
     var order = [], groups = {};
