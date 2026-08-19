@@ -223,8 +223,8 @@
         <span class="eyebrow eyebrow--plain">Visayas State University · DCST · Module 02 · Weeks 3–5</span>
         <h1 class="h1" style="max-width:24ch">Build the frontend<br>before the backend exists</h1>
         <p class="lede" style="text-align:center;margin-inline:auto">
-          Components, cross-cutting state, and one document that lets two halves of a
-          group work at the same time instead of waiting in line.
+          Components, shared state, and one document that lets a group build both halves
+          at once instead of waiting in line.
         </p>
         <div class="row" style="justify-content:center;margin-top:var(--s4)">
           <span class="chip">CO2 · Responsive web templates</span>
@@ -248,23 +248,22 @@
             <tr><th style="width:5rem">Weeks</th><th style="width:9rem">Module</th><th>What you walk out able to do</th><th style="width:8rem">Outcome</th></tr>
           </thead>
           <tbody>
-            <tr><td class="num">2 – 3</td><td>01 · UI/UX Design</td><td>Design a screen a stranger can use, and drive an agent to build it.</td><td class="num">CO1</td></tr>
+            <tr><td class="num">1 – 2</td><td>01 · UI/UX Design</td><td>Design a screen a stranger can use, and drive an agent to build it.</td><td class="num">CO1</td></tr>
             <tr style="background:color-mix(in oklab, var(--brass) 8%, transparent)">
               <td class="num" style="color:var(--brass)">3 – 5</td>
               <td><b>02 · Frontend</b></td>
               <td><b>Turn that screen into components, and agree the contract the backend will have to satisfy.</b></td>
               <td class="num">CO2</td>
             </tr>
-            <tr><td class="num">5 – 8</td><td>03 · JavaScript</td><td>Types, scoping, modules, JSON, DOM, libraries.</td><td class="num">CO3</td></tr>
-            <tr><td class="num">10 – 12</td><td>04 · Backend</td><td>Schema modeling and CRUD endpoints over a real database.</td><td class="num">CO4</td></tr>
-            <tr><td class="num">13 – 17</td><td>05 · Integration</td><td>Validation, API consumption, deployment to the cloud.</td><td class="num">CO5</td></tr>
+            <tr><td class="num">5 – 6</td><td>03 · The Stack</td><td>Every piece of the toolchain, taught by opening the file it lives in.</td><td class="num">CO3</td></tr>
+            <tr><td class="num">7 – 8</td><td>04 · Backend</td><td>Schema modeling and CRUD endpoints over a real database.</td><td class="num">CO4</td></tr>
+            <tr><td class="num">8 +</td><td>05 · Integration</td><td>Validation, API consumption, deployment to the cloud.</td><td class="num">CO5</td></tr>
           </tbody>
         </table>
       </div>
       <p class="callout">
-        The document you write in Lesson 2.3 is the thing Module 04 has to implement and Module 05
-        connects to. <b>It is the only artifact that touches three modules</b> — which is why half
-        of this module is spent on it.
+        Lesson 2.3's contract is <b>the only artifact that touches three modules</b>: Module 04
+        implements it, Module 05 connects to it, and you build against it for eight weeks after.
       </p>
     </section>
 
@@ -281,23 +280,22 @@
             <li>Rendering a list, and why it needs a key</li>
             <li>Conditional rendering</li>
           </ul>
-          <p class="small">Covered in the previous course. We do not spend class time here.</p>
+          <p class="small">Covered last course. No class time spent here.</p>
         </div>
         <div class="panel">
           <div class="panel__head">This module adds</div>
           <ul class="list">
-            <li><b>Where the boundaries go</b> — which things are components at all</li>
+            <li><b>Where the boundaries go</b> — what is a component at all</li>
             <li><b>State that crosses the tree</b> — Context, and its limits</li>
-            <li><b>A contract</b> — the agreement between frontend and backend</li>
-            <li><b>A request layer</b> — one place for auth, errors, and caching</li>
+            <li><b>A contract</b> — frontend and backend, agreed</li>
+            <li><b>A request layer</b> — auth, errors, and caching in one place</li>
             <li><b>Data states under real latency</b></li>
           </ul>
         </div>
       </div>
       <p class="callout">
-        If React is genuinely rusty, close that gap <b>this week</b>, on your own time. It gets
-        expensive in week 5, when the thing you are stuck on is a contract question and the
-        syntax is in the way.
+        Rusty React? Close that gap <b>this week</b>, on your own time. In week 5 the problem
+        will be a contract question, and syntax will just be in the way.
       </p>
     </section>
 
@@ -308,18 +306,18 @@
         <div class="panel">
           <div class="panel__head" style="color:var(--brass)">Required by the syllabus</div>
           <div class="steps">
-            <div class="step"><div><div class="step__t">LO 2.1 — Reusable UI components</div><div class="step__b">Build components with React and Tailwind that are used in more than one place without being rewritten.</div></div></div>
-            <div class="step"><div><div class="step__t">LO 2.2 — Cross-device responsiveness</div><div class="step__b">Layouts that hold from a 320px phone to a projector, using Tailwind's breakpoints rather than fixed widths.</div></div></div>
+            <div class="step"><div><div class="step__t">LO 2.1 — Reusable UI components</div><div class="step__b">Components used in more than one place, without being rewritten.</div></div></div>
+            <div class="step"><div><div class="step__t">LO 2.2 — Cross-device responsiveness</div><div class="step__b">Layouts that hold from a 320px phone to a projector.</div></div></div>
           </div>
         </div>
         <div class="panel">
           <div class="panel__head" style="color:var(--violet)">Added — the project needs it</div>
           <ul class="list">
-            <li><b>Git &amp; GitHub</b> — because the project is group work in one repository</li>
-            <li><b>An OpenAPI contract</b> — because the backend is five weeks away</li>
-            <li><b>Server state</b> — because fetched data is a cache, not component state</li>
+            <li><b>Git &amp; GitHub</b> — the project is group work in one repository</li>
+            <li><b>An OpenAPI contract</b> — the backend is two weeks away and unbuilt</li>
+            <li><b>Server state</b> — fetched data is a cache, not component state</li>
           </ul>
-          <p class="small">These carry a <span class="chip chip--added">violet</span> marker all module. No learning outcome requires them; your project does.</p>
+          <p class="small">Marked <span class="chip chip--added">violet</span> all module. No outcome requires them; your project does.</p>
         </div>
       </div>
     </section>
@@ -345,22 +343,22 @@
           <div class="compare__head">Zipping folders</div>
           <div class="compare__body">
             <p><code>final.zip</code>, <code>final2.zip</code>, <code>final_FINAL.zip</code>, <code>final_use_this_one.zip</code></p>
-            <p>Two people edit the same file. One of them loses an afternoon and does not find out until the demo.</p>
-            <p>Nobody can answer "when did this break, and what changed?"</p>
-            <p>"Who wrote this part" is a matter of memory and argument.</p>
+            <p>Two people edit one file. Somebody's afternoon disappears, and nobody notices until the demo.</p>
+            <p>No answer to "when did this break?"</p>
+            <p>Who wrote what is a matter of memory.</p>
           </div>
         </div>
         <div class="compare__side compare__side--good">
           <div class="compare__head">One repository</div>
           <div class="compare__body">
             <p>Every change is dated, attributed, and reversible.</p>
-            <p>Two people editing different files never collide at all. Editing the same file is <em>detected</em>, not silently lost.</p>
-            <p><code>git log</code> answers the "when did this break" question in seconds.</p>
-            <p>Contribution is evidence, not recollection — which matters when a group project carries an individual grade.</p>
+            <p>Different files never collide. The same file is <em>detected</em>, not silently lost.</p>
+            <p><code>git log</code> answers "when did this break" in seconds.</p>
+            <p>Contribution is evidence, not recollection.</p>
           </div>
         </div>
       </div>
-      <p class="callout"><b>This is why every member needs commits.</b> Not as bureaucracy — the commit history is the only durable record of who did what.</p>
+      <p class="callout"><b>This is why every member needs commits.</b> The history is the only durable record of who did what.</p>
     </section>
 
     <section class="slide slide--wide" data-sec="2.0" data-label="The loop" data-rail="Git & GitHub">
@@ -382,8 +380,8 @@
 git pull
 git checkout -b <b>feature/12-student-card</b></pre></div>
             <div class="panel"><div class="panel__head">Why</div>
-              <p class="body">A branch is a private workspace. Nothing you do on it can break what your group is running, so you can commit half-finished work without apologising for it.</p>
-              <p class="body">Name it after the issue it closes. <code>feature/12-…</code> means issue 12 — future you will thank present you.</p></div>
+              <p class="body">A branch is a private workspace. Nothing you do there can break what your group is running — so commit half-finished work freely.</p>
+              <p class="body">Name it after the issue it closes: <code>feature/12-…</code> is issue 12.</p></div>
           </div>
         </div>
 
@@ -392,7 +390,7 @@ git checkout -b <b>feature/12-student-card</b></pre></div>
             <div class="panel"><div class="panel__head">Commit as you go</div>
               <pre>git add src/components/StudentCard.tsx
 git commit -m "<b>feat(student-card): add loading and empty states</b>"</pre>
-              <p class="small">This project uses <b>Conventional Commits</b>: a type, an optional scope, then what changed. Required in the Final Activity Project.</p></div>
+              <p class="small"><b>Conventional Commits</b>: a type, an optional scope, then what changed. Required in the Final Activity Project.</p></div>
             <div class="panel"><div class="panel__head">The shape</div>
               <pre><b>type</b>(<i>scope</i>): <b>what changed</b>
 
@@ -409,9 +407,9 @@ git commit -m "<b>feat(student-card): add loading and empty states</b>"</pre>
           <div class="grid grid--sidebar">
             <div class="panel"><div class="panel__head">Send it to GitHub</div>
               <pre>git push -u origin feature/12-student-card</pre>
-              <p class="small">The <code>-u</code> is only needed the first time on a branch. After that, plain <code>git push</code>.</p></div>
+              <p class="small"><code>-u</code> only the first time on a branch. After that, plain <code>git push</code>.</p></div>
             <div class="panel"><div class="panel__head">Push often</div>
-              <p class="body">Work that exists only on your laptop is work your group cannot see and your laptop can lose. Pushing is the backup.</p></div>
+              <p class="body">Work only on your laptop is work your group cannot see — and your laptop can lose it.</p></div>
           </div>
         </div>
 
@@ -419,13 +417,13 @@ git commit -m "<b>feat(student-card): add loading and empty states</b>"</pre>
           <div class="grid grid--sidebar">
             <div class="panel"><div class="panel__head">Open a pull request</div>
               <ul class="list">
-                <li>Say what changed and why, in sentences</li>
-                <li>Reference the issue — <code>Closes #12</code> — so merging closes it automatically</li>
+                <li>Say what changed and why</li>
+                <li><code>Closes #12</code> — merging then closes the issue</li>
                 <li>Request a reviewer from your group</li>
               </ul></div>
             <div class="panel"><div class="panel__head">One approval required</div>
-              <p class="body">Someone else in the group reads the diff before it lands. This is not ceremony — it is the only moment where a second pair of eyes sees the code at all.</p>
-              <p class="callout" style="margin-top:var(--s3)">A pull request that changes <code>contract/openapi.yaml</code> needs approval from <b>the other side</b> of that contract. More on this in 2.3.</p></div>
+              <p class="body">Someone else reads the diff before it lands. That is the only moment a second pair of eyes sees the code.</p>
+              <p class="callout" style="margin-top:var(--s3)">A PR touching <code>contract/openapi.yaml</code> needs approval from <b>the other side</b> of that contract — see 2.3.</p></div>
           </div>
         </div>
 
@@ -436,8 +434,8 @@ git commit -m "<b>feat(student-card): add loading and empty states</b>"</pre>
 git pull
 git branch -d feature/12-student-card</pre></div>
             <div class="panel"><div class="panel__head">Then start again</div>
-              <p class="body">Every task is one trip round this loop. Small branches merge easily; a branch that lives for two weeks becomes a conflict you will dread.</p>
-              <p class="body"><b>Merge early, merge often</b> is not a slogan — it is conflict avoidance.</p></div>
+              <p class="body">One task, one trip round this loop. Small branches merge easily; a two-week branch becomes a conflict.</p>
+              <p class="body"><b>Merge early, merge often</b> is conflict avoidance, not a slogan.</p></div>
           </div>
         </div>
       </div>
@@ -494,18 +492,18 @@ git branch -d feature/12-student-card</pre></div>
         <div class="panel">
           <div class="panel__head">Why bother</div>
           <ul class="list">
-            <li><b>The log becomes searchable.</b> <code>git log --oneline --grep="^feat"</code> is every feature your group shipped.</li>
-            <li><b>Review gets faster.</b> The type tells a reviewer what kind of scrutiny the diff needs before they open it.</li>
-            <li><b>It forces one change per commit.</b> If you cannot pick a type, the commit is doing two things and should be two commits.</li>
+            <li><b>The log becomes searchable.</b> <code>git log --oneline --grep="^feat"</code> is every feature you shipped.</li>
+            <li><b>Review gets faster.</b> The type says what kind of diff it is before anyone opens it.</li>
+            <li><b>One change per commit.</b> Cannot pick a type? It should be two commits.</li>
           </ul>
         </div>
         <div class="panel">
           <div class="panel__head">Two rules that catch most mistakes</div>
           <ul class="list list--check">
-            <li><b>Imperative mood</b> — "add", not "added" or "adds". Read it as <em>"this commit will…&nbsp;add loading states"</em>.</li>
-            <li><b>Lower case, no full stop</b>, and keep the first line under about 70 characters. Detail goes in the body, after a blank line.</li>
+            <li><b>Imperative mood</b> — "add", not "added". Read it as <em>"this commit will…&nbsp;add loading states"</em>.</li>
+            <li><b>Lower case, no full stop</b>, first line under 70 characters. Detail goes in the body.</li>
           </ul>
-          <p class="callout" style="margin-top:var(--s3)"><b>A breaking change</b> gets a <code>!</code> before the colon &mdash; <code>feat(contract)!: rename load to subjects</code>. You will need this in Lesson 2.3.</p>
+          <p class="callout" style="margin-top:var(--s3)"><b>A breaking change</b> gets a <code>!</code> before the colon &mdash; <code>feat(contract)!: rename load to subjects</code>. Needed in 2.3.</p>
         </div>
       </div>
     </section>
@@ -522,15 +520,15 @@ git branch -d feature/12-student-card</pre></div>
             <div class="panel__head">Reading it</div>
             <ul class="list">
               <li>Each <b>lane</b> is a branch. Each <b>dot</b> is a commit.</li>
-              <li>A line leaving a lane is <b>where somebody branched</b> — from whatever main looked like at that moment.</li>
-              <li>Two lines joining at one dot is a <b>merge commit</b>. It has two parents; no other commit does.</li>
-              <li>The <b>pills</b> are branch names. They are only labels pointing at a commit — moving one moves nothing else.</li>
-              <li>Every message you write follows the convention from the last slide. <b>The merge rows do not</b> — git generates those, and you leave them alone.</li>
+              <li>A line leaving a lane is <b>where somebody branched</b>.</li>
+              <li>Two lines joining at one dot is a <b>merge commit</b> — two parents, which no other commit has.</li>
+              <li>The <b>pills</b> are branch names: labels pointing at a commit, nothing more.</li>
+              <li>Your messages follow the convention. <b>Merge rows do not</b> — git writes those.</li>
             </ul>
           </div>
           <p class="callout">
-            Notice what never happens: <b>nobody&rsquo;s work is overwritten.</b> Two people committed
-            to the same project on the same day, and both commits are still there with names on them.
+            Notice what never happens: <b>nobody&rsquo;s work is overwritten.</b> Both commits are
+            still there, with names on them.
           </p>
         </div>
       </div>
@@ -543,7 +541,7 @@ git branch -d feature/12-student-card</pre></div>
         <div class="panel">
           <div class="panel__head">Git is telling you</div>
           <p class="body">"Two people changed the same lines. I will not guess which one you meant."</p>
-          <p class="body">That is the whole message. It is not corruption, nothing is lost, and it is not a sign anyone did something wrong.</p>
+          <p class="body">That is the whole message. Nothing is lost, and nobody did anything wrong.</p>
           <div class="panel__head" style="margin-top:var(--s3)">What you see</div>
           <pre>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
 <i>  const [subjects, setSubjects] = useState([]);</i>
@@ -555,13 +553,13 @@ git branch -d feature/12-student-card</pre></div>
           <div class="panel">
             <div class="panel__head">Resolving it</div>
             <div class="steps">
-              <div class="step"><div><div class="step__t">Read both sides</div><div class="step__b">Above the <code>=======</code> is what is on the branch you are merging into. Below it is yours.</div></div></div>
-              <div class="step"><div><div class="step__t">Decide, and delete the markers</div><div class="step__b">Keep one, keep the other, or write a third thing. Remove all three marker lines — they are not code.</div></div></div>
+              <div class="step"><div><div class="step__t">Read both sides</div><div class="step__b">Above <code>=======</code> is the branch you are merging into. Below is yours.</div></div></div>
+              <div class="step"><div><div class="step__t">Decide, and delete the markers</div><div class="step__b">Keep one, the other, or write a third thing. Delete all three marker lines.</div></div></div>
               <div class="step"><div><div class="step__t">Run it before you commit</div><div class="step__b">A "resolved" conflict that was never run is a guess.</div></div></div>
-              <div class="step"><div><div class="step__t">Ask the other person</div><div class="step__b">They are in your group and they are sitting right there. This is a thirty-second conversation, not a research problem.</div></div></div>
+              <div class="step"><div><div class="step__t">Ask the other person</div><div class="step__b">They are sitting right there. A thirty-second conversation, not a research problem.</div></div></div>
             </div>
           </div>
-          <p class="callout">We will cause one on purpose in this session and fix it together, so the first one you meet is not during the week-5 deadline.</p>
+          <p class="callout">We will cause one on purpose today and fix it together — so your first conflict is not on the week-5 deadline.</p>
         </div>
       </div>
     </section>
@@ -570,15 +568,15 @@ git branch -d feature/12-student-card</pre></div>
       <span class="eyebrow">The work queue</span>
       <h2 class="h2">Issues are the to-do list. Milestones group them.</h2>
       <div class="grid grid--3">
-        <div class="card"><span class="card__k">Issue</span><div class="card__t">One unit of work</div><p class="card__b">"Student card shows nothing when a student has no enrolled subjects." Assigned to one person, closed by one pull request.</p></div>
-        <div class="card"><span class="card__k">Milestone</span><div class="card__t">A phase</div><p class="card__b">"Auth &amp; routing", "Contract v1", "Approval queues". Every issue belongs to one before work starts.</p></div>
+        <div class="card"><span class="card__k">Issue</span><div class="card__t">One unit of work</div><p class="card__b">"Student card shows nothing when a student has no subjects." One person, one pull request.</p></div>
+        <div class="card"><span class="card__k">Milestone</span><div class="card__t">A phase</div><p class="card__b">"Auth &amp; routing", "Contract v1", "Approval queues". Every issue belongs to one.</p></div>
         <div class="card"><span class="card__k">Project board</span><div class="card__t">Where things are</div><p class="card__b">Todo → In progress → In review → Done. If the board is wrong, the standup is fiction.</p></div>
       </div>
       <div class="panel">
         <div class="panel__head">Test cases are issues too</div>
-        <p class="body">In the Final Activity Project, your Project Manager raises end-to-end test cases <em>as issues</em> — scenario, steps, expected result. Somebody then writes the Playwright test that closes it, in Module 5. Writing the test case and writing the test are deliberately different people.</p>
+        <p class="body">Your Project Manager files test cases <em>as issues</em> — scenario, steps, expected result. Somebody else writes the Playwright test that closes it, in Module 5.</p>
       </div>
-      <p class="callout"><b>Skipped on purpose:</b> rebasing, cherry-picking, submodules, git internals. You will not need them this semester. If a group does, ask and we will cover it then.</p>
+      <p class="callout"><b>Skipped on purpose:</b> rebasing, cherry-picking, submodules, git internals. Not needed this semester — ask if yours turns out to need them.</p>
     </section>
 
     <!-- ======================================================
@@ -611,15 +609,14 @@ git branch -d feature/12-student-card</pre></div>
           <ul class="list list--check">
             <li><b>It appears more than once</b>, now or obviously soon</li>
             <li><b>It has its own states</b> — loading, empty, error, disabled</li>
-            <li><b>It has a name your group already says out loud</b> — "the student card", "the approval row"</li>
+            <li><b>Your group already says its name out loud</b> — "the student card", "the approval row"</li>
             <li><b>It would be tested on its own</b></li>
           </ul>
         </div>
       </div>
       <p class="callout">
-        The strongest signal is the third one. <b>If your group has a word for it, it is a component.</b>
-        Vocabulary that already exists in how people talk about the product is a boundary the design
-        found for you.
+        The third is the strongest signal. <b>If your group has a word for it, it is a component</b> —
+        the vocabulary found the boundary for you.
       </p>
     </section>
 
@@ -634,10 +631,10 @@ git branch -d feature/12-student-card</pre></div>
   <b>status</b>: 'active' | 'pending' | 'inactive'
   <b>onSelect</b>?: (id: string) =&gt; void
 }</pre>
-          <p class="small">Anyone using this component knows exactly what it needs, and TypeScript refuses to let them forget one.</p>
+          <p class="small">Anyone using it knows exactly what it needs, and TypeScript will not let them forget one.</p>
         </div>
         <div class="col">
-          <p class="body">This idea comes back three times in this module, at three scales:</p>
+          <p class="body">The same idea, at three scales:</p>
           <div class="steps">
             <div class="step"><div><div class="step__t">Props</div><div class="step__b">The contract between a parent and a child component.</div></div></div>
             <div class="step"><div><div class="step__t">Context value</div><div class="step__b">The contract between a provider and everything beneath it.</div></div></div>
@@ -661,7 +658,7 @@ git branch -d feature/12-student-card</pre></div>
   headerRight={…} footer={…}
   collapsible defaultOpen
   onToggle={…} /&gt;</pre>
-            <p>Every new use adds a prop. The component becomes a small framework nobody understands, and changing it risks four screens at once.</p>
+            <p>Every new use adds a prop. It becomes a small framework nobody understands, and changing it risks four screens.</p>
           </div>
         </div>
         <div class="compare__side compare__side--good">
@@ -674,11 +671,11 @@ git branch -d feature/12-student-card</pre></div>
   &lt;/Card.Header&gt;
   &lt;Card.Body&gt;{children}&lt;/Card.Body&gt;
 &lt;/Card&gt;</pre>
-            <p>The caller arranges the pieces. The component stays small, and a new layout needs no new prop.</p>
+            <p>The caller arranges the pieces. A new layout needs no new prop.</p>
           </div>
         </div>
       </div>
-      <p class="callout"><b>Rule of thumb:</b> a boolean prop that only ever exists to show or hide a chunk of markup is usually asking to be <code>children</code> instead.</p>
+      <p class="callout"><b>Rule of thumb:</b> a boolean prop that only shows or hides markup is asking to be <code>children</code>.</p>
     </section>
 
     <section class="slide slide--wide" data-sec="2.1" data-label="Tokens → theme" data-rail="Components">
@@ -714,13 +711,12 @@ git branch -d feature/12-student-card</pre></div>
     }
   }
 }</pre>
-          <p class="body" style="margin-top:var(--s3)">Then <code>bg-surface</code> and <code>text-accent</code> are the <em>only</em> way anyone writes a colour. A hard-coded hex in a component becomes visible in review, because it does not look like the rest of the code.</p>
+          <p class="body" style="margin-top:var(--s3)">Now <code>bg-surface</code> and <code>text-accent</code> are the <em>only</em> way to write a colour — so a hard-coded hex stands out in review.</p>
         </div>
       </div>
       <p class="callout">
-        Keeping the CSS variables underneath, rather than pasting hex values into the config, means
-        one token change still repaints the whole app — and it is what makes a dark mode possible
-        later without touching a single component.
+        Keep the CSS variables underneath instead of pasting hex into the config: one token change
+        repaints the whole app, and dark mode costs you no component edits.
       </p>
     </section>
 
@@ -728,14 +724,14 @@ git branch -d feature/12-student-card</pre></div>
       <span class="eyebrow">The component library question</span>
       <h2 class="h2">shadcn/ui: you own the code</h2>
       <div class="grid grid--3">
-        <div class="card"><span class="card__k">Not a dependency</span><div class="card__t">It copies in</div><p class="card__b">Running the CLI writes the component file into <code>src/components/ui/</code>. It is now your file. No package to upgrade, nothing to fight.</p></div>
-        <div class="card"><span class="card__k">Accessible by default</span><div class="card__t">Built on Radix</div><p class="card__b">Focus traps, keyboard handling, and ARIA on dialogs and menus — the parts everyone gets wrong by hand.</p></div>
-        <div class="card"><span class="card__k">Themed by your tokens</span><div class="card__t">Not someone else's brand</div><p class="card__b">It styles with Tailwind classes, so your theme applies. It will not drag in a look you did not choose.</p></div>
+        <div class="card"><span class="card__k">Not a dependency</span><div class="card__t">It copies in</div><p class="card__b">The CLI writes the file into <code>src/components/ui/</code>. It is your file now — no package to upgrade.</p></div>
+        <div class="card"><span class="card__k">Accessible by default</span><div class="card__t">Built on Radix</div><p class="card__b">Focus traps, keyboard handling, ARIA — the parts everyone gets wrong by hand.</p></div>
+        <div class="card"><span class="card__k">Themed by your tokens</span><div class="card__t">Not someone else's brand</div><p class="card__b">Styled with Tailwind classes, so your theme applies. No borrowed brand.</p></div>
       </div>
       <p class="callout">
-        <b>Use it for the hard, generic things</b> — dialog, dropdown, combobox, toast, table primitives.
-        <b>Do not use it to avoid designing.</b> Your student card, approval row, and checklist slot are
-        yours; that is where the design work from Module 1 actually shows.
+        <b>Use it for the hard, generic things</b> — dialog, dropdown, combobox, toast, tables.
+        <b>Not to avoid designing.</b> Your student card and approval row are yours; that is where
+        Module 1's work shows.
       </p>
     </section>
 
@@ -754,7 +750,7 @@ git branch -d feature/12-student-card</pre></div>
     &lt;ul&gt;{query.data.map(s =&gt; &lt;SubjectRow key={s.id} subject={s} /&gt;)}&lt;/ul&gt;
   )
 }</pre>
-          <p class="small">Four returns, in this order, before the happy path. If a component has only the last one, it is unfinished.</p>
+          <p class="small">Four returns, in this order, before the happy path. Only the last one? Unfinished.</p>
         </div>
         <div class="col">
           <div class="panel">
@@ -766,7 +762,7 @@ git branch -d feature/12-student-card</pre></div>
               <li>Focus is visible on everything interactive</li>
             </ul>
           </div>
-          <p class="callout">These were graded in Module 1 against a static mockup. From now on they are graded against a screen with <b>real, variable latency</b> — which is harder, and the subject of Lesson 2.5.</p>
+          <p class="callout">Module 1 graded these on a static mockup. From now on: <b>real, variable latency</b> — Lesson 2.5.</p>
         </div>
       </div>
     </section>
@@ -837,7 +833,7 @@ git branch -d feature/12-student-card</pre></div>
       <div class="col" style="gap:var(--s4);align-items:center">
         <span class="eyebrow eyebrow--plain">Lesson 2.2 · LO 2.1</span>
         <h2 class="h1" style="max-width:22ch">State that the whole<br>tree needs</h2>
-        <p class="lede" style="text-align:center;margin-inline:auto">Who is signed in? Almost every component wants to know. Passing it down by hand does not scale.</p>
+        <p class="lede" style="text-align:center;margin-inline:auto">Who is signed in? Almost every component wants to know — and passing it by hand does not scale.</p>
       </div>
     </section>
 
@@ -850,14 +846,14 @@ git branch -d feature/12-student-card</pre></div>
           <div data-widget="drill" id="drill"></div>
         </div>
         <div class="col">
-          <p class="body">Drag the depth. Every component in <span style="color:var(--fail)">red</span> takes a <code>user</code> prop it does not use — it only passes it along.</p>
+          <p class="body">Drag the depth. Everything in <span style="color:var(--fail)">red</span> takes a <code>user</code> prop it never uses.</p>
           <div class="panel">
             <div class="panel__head">What that costs</div>
             <ul class="list">
-              <li>Every intermediate component's prop type grows for no reason</li>
-              <li>Moving a component means re-threading the prop through a new parent</li>
-              <li>Adding a second piece of shared state doubles the noise</li>
-              <li>A component that "needs <code>user</code>" is now impossible to test in isolation without inventing one</li>
+              <li>Every prop type in between grows for no reason</li>
+              <li>Moving a component means re-threading the prop</li>
+              <li>A second piece of shared state doubles the noise</li>
+              <li>Testing any of them in isolation means inventing a <code>user</code></li>
             </ul>
           </div>
           <p class="callout">Two levels of drilling is fine. <b>Five is a signal.</b></p>
@@ -890,12 +886,12 @@ export function <b>useSession</b>() {
         <div class="col">
           <div class="panel">
             <div class="panel__head">Why the hook, and why it throws</div>
-            <p class="body">Nobody outside this file touches <code>SessionContext</code> directly. They call <code>useSession()</code>.</p>
-            <p class="body">The throw turns a confusing bug — <code>session</code> is mysteriously <code>null</code> — into an error message that names the actual mistake: you forgot the provider.</p>
+            <p class="body">Nobody outside this file touches <code>SessionContext</code> — they call <code>useSession()</code>.</p>
+          <p class="body">The throw turns a confusing bug (<code>session</code> is mysteriously <code>null</code>) into a message that names the mistake: you forgot the provider.</p>
           </div>
           <div class="panel">
             <div class="panel__head">Why <code>useMemo</code></div>
-            <p class="body">Without it, <code>value</code> is a brand-new object on every render of the provider, so every consumer re-renders even when nothing changed.</p>
+            <p class="body">Without it, <code>value</code> is a new object every render — so every consumer re-renders for nothing.</p>
           </div>
         </div>
       </div>
@@ -911,8 +907,8 @@ export function <b>useSession</b>() {
             <pre>{ session, theme, sidebarOpen,
   currentStudent, toasts,
   tableDensity, unreadCount }</pre>
-            <p>Any change to any field re-renders <b>every</b> consumer. Toggle the sidebar and the whole app re-renders, including a 200-row table.</p>
-            <p>It also becomes a dumping ground: nobody can say what belongs in it, so everything does.</p>
+            <p>Any field changing re-renders <b>every</b> consumer. Toggle the sidebar, re-render the 200-row table.</p>
+            <p>And it becomes a dumping ground — nobody can say what belongs in it.</p>
           </div>
         </div>
         <div class="compare__side compare__side--good">
@@ -922,13 +918,13 @@ export function <b>useSession</b>() {
 AdviseeContext      → the record being worked on
 PreferencesContext  → theme, density</pre>
             <p>Changing the theme re-renders what reads the theme. Nothing else notices.</p>
-            <p>Each one has an obvious answer to "does this belong here?"</p>
+            <p>Each has an obvious answer to "does this belong here?"</p>
           </div>
         </div>
       </div>
       <p class="callout">
-        Your Final Activity Project specification already names the contexts your system needs — they
-        are in §8 State Management. <b>That list was written to be small on purpose.</b>
+        Your project spec already names the contexts your system needs, in §8 State Management.
+        <b>That list is short on purpose.</b>
       </p>
     </section>
 
@@ -943,7 +939,7 @@ PreferencesContext  → theme, density</pre>
 const [error, setError]     = useState(null)
 const [data, setData]       = useState(null)
 const [retrying, setRetrying] = useState(false)</pre>
-            <p>Nothing stops <code>loading &amp;&amp; error &amp;&amp; data</code> all being truthy at once. That state is meaningless, but it is representable — so eventually it happens, and the UI renders something nobody designed.</p>
+            <p>Nothing stops <code>loading &amp;&amp; error &amp;&amp; data</code> all being true at once. Meaningless, but representable — so it eventually happens, and the UI renders something nobody designed.</p>
           </div>
         </div>
         <div class="compare__side compare__side--good">
@@ -954,14 +950,14 @@ const [retrying, setRetrying] = useState(false)</pre>
   | { status: 'loading' }
   | { status: 'success', data: Subject[] }
   | { status: 'error', message: string }</pre>
-            <p>Impossible combinations cannot be written down. The component switches on <code>status</code> and every branch is a state somebody designed.</p>
+            <p>Impossible combinations cannot be written down. Switch on <code>status</code> and every branch is designed.</p>
           </div>
         </div>
       </div>
       <p class="callout">
         <b>The rule:</b> independent toggles → <code>useState</code>. A sequence with rules about what
-        follows what → <code>useReducer</code>. Scanning at a check-in desk (idle → scanning →
-        resolving → accepted / duplicate / rejected) is the second kind.
+        follows what → <code>useReducer</code>. Door scanning (idle → scanning → resolving →
+        accepted / duplicate / rejected) is the second kind.
       </p>
     </section>
 
@@ -978,17 +974,17 @@ const [retrying, setRetrying] = useState(false)</pre>
   if (profile.role !== role) return &lt;Navigate to="/" replace /&gt;
   return children
 }</pre>
-          <p class="small">Note the <code>loading</code> branch. Without it the guard bounces a signed-in user to <code>/login</code> for a moment on every refresh, while the session is still resolving.</p>
+          <p class="small">Note the <code>loading</code> branch. Without it, every refresh flashes a signed-in user to <code>/login</code> while the session resolves.</p>
         </div>
         <div class="col">
           <div class="panel" style="border-color:var(--fail)">
             <div class="panel__head" style="color:var(--fail)">Say this out loud</div>
-            <p class="body">This code runs <b>on the user's machine</b>, in a bundle they can read and modify. Anyone can delete the check with devtools.</p>
-            <p class="body">It stops an honest user from landing on a screen that would be broken or confusing for them. <b>It stops an attacker from nothing at all.</b></p>
+            <p class="body">This runs <b>on the user's machine</b>, in a bundle they can read and edit. Devtools deletes the check.</p>
+            <p class="body">It keeps an honest user off a screen that would confuse them. <b>It stops an attacker from nothing.</b></p>
           </div>
           <p class="callout">
-            The real enforcement is Row Level Security in the database — Module 4, lesson 4.4. Until
-            then, hold both ideas at once: <b>guards are for usability, the server is for security.</b>
+            Real enforcement is Row Level Security in the database (Module 4.4).
+            <b>Guards are for usability; the server is for security.</b>
           </p>
         </div>
       </div>
@@ -1003,7 +999,7 @@ const [retrying, setRetrying] = useState(false)</pre>
         <span class="eyebrow eyebrow--plain">Lesson 2.3 · the spine of the semester</span>
         <h2 class="h1" style="max-width:22ch">Agree the shape<br>before either side builds</h2>
         <p class="lede" style="text-align:center;margin-inline:auto">
-          Your backend does not exist yet. It is five weeks away. You are going to build against it anyway.
+          Your backend does not exist yet. You are going to build against it anyway.
         </p>
       </div>
     </section>
@@ -1018,35 +1014,35 @@ const [retrying, setRetrying] = useState(false)</pre>
             <li>Frontend expects <code>studentId</code>. Backend sends <code>student_id</code>.</li>
             <li>Frontend expects <code>units</code> as a number. It arrives as <code>"18"</code>.</li>
             <li>Frontend renders <code>subjects[]</code>. Backend returns <code>{ data: { subjects: [] } }</code>.</li>
-            <li>Nobody knows what a failed enrollment returns, because nobody ever decided.</li>
+            <li>Nobody decided what a failed enrollment returns.</li>
             <li>Both halves are "done". Neither works.</li>
           </ul>
         </div>
         <div class="col">
           <div class="panel">
             <div class="panel__head">Why it happens</div>
-            <p class="body">Two people built from the same conversation and remembered it differently. Nothing was written down that either could be wrong <em>against</em>.</p>
+            <p class="body">Two people built from one conversation and remembered it differently. Nothing was written down to be wrong <em>against</em>.</p>
           </div>
           <div class="panel">
             <div class="panel__head">The fix is not "communicate better"</div>
-            <p class="body">It is to write the shapes down in a file, in a format both sides can check mechanically, <b>before</b> either side starts.</p>
+            <p class="body">Write the shapes in a file both sides can check, <b>before</b> either side starts.</p>
           </div>
         </div>
       </div>
-      <p class="callout">This is not hypothetical for you. <b>Your backend is Module 4 and your integration is Module 5.</b> The gap between them is real and it is seven weeks wide.</p>
+      <p class="callout">Not hypothetical: <b>your backend is Module 4, and you implement it in sprint 1.</b> That gap is six weeks wide.</p>
     </section>
 
     <section class="slide" data-sec="2.3" data-label="What a contract is" data-rail="The API contract">
       <span class="eyebrow">Definition</span>
       <h2 class="h2">A contract is every shape, agreed and written down</h2>
       <div class="grid grid--3">
-        <div class="card"><span class="card__k">For each operation</span><div class="card__t">What goes in</div><p class="card__b">Path, method, parameters, request body — with types, and which fields are required.</p></div>
-        <div class="card"><span class="card__k">For each operation</span><div class="card__t">What comes back</div><p class="card__b">Every status code, and the body shape for each one. Including the failures.</p></div>
+        <div class="card"><span class="card__k">For each operation</span><div class="card__t">What goes in</div><p class="card__b">Path, method, parameters, request body — typed, and which fields are required.</p></div>
+        <div class="card"><span class="card__k">For each operation</span><div class="card__t">What comes back</div><p class="card__b">Every status code and its body shape. Including the failures.</p></div>
         <div class="card"><span class="card__k">For the whole API</span><div class="card__t">Shared shapes</div><p class="card__b">Reusable schemas — a Student is a Student everywhere, defined once.</p></div>
       </div>
       <div class="panel">
         <div class="panel__head">The part people skip</div>
-        <p class="body"><b>The error responses.</b> Almost every team specifies the happy path and leaves failures to be discovered. But the failures are what your UI spends most of its code handling — and "what does a 409 look like" is exactly the question you cannot answer at 11pm on integration day.</p>
+        <p class="body"><b>The error responses.</b> Teams specify the happy path and discover the failures later — but failures are most of your UI code, and "what does a 409 look like" is the question you cannot answer at 11pm.</p>
       </div>
     </section>
 
@@ -1097,12 +1093,12 @@ info: { title: Enrollment API, version: 1.0.0 }
             <div class="panel__head">Four things to find</div>
             <div class="steps">
               <div class="step"><div><div class="step__t">paths</div><div class="step__b">Every URL, and the methods it supports.</div></div></div>
-              <div class="step"><div><div class="step__t">operationId</div><div class="step__b">A stable name for the operation. This becomes the method name in your generated client — and your Query key.</div></div></div>
+              <div class="step"><div><div class="step__t">operationId</div><div class="step__b">A stable name. It becomes your generated method name — and your Query key.</div></div></div>
               <div class="step"><div><div class="step__t">responses</div><div class="step__b">Keyed by status code. <b>Every</b> code your UI must handle.</div></div></div>
               <div class="step"><div><div class="step__t">components.schemas</div><div class="step__b">Shapes defined once and referenced with <code>$ref</code>.</div></div></div>
             </div>
           </div>
-          <p class="callout">YAML is indentation-sensitive and unforgiving. <b>Run <code>redocly lint</code> before you commit</b> — it catches the mistakes that would otherwise show up as a confusing generated type.</p>
+          <p class="callout">YAML is indentation-sensitive and unforgiving. <b>Run <code>redocly lint</code> before you commit.</b></p>
         </div>
       </div>
     </section>
@@ -1115,9 +1111,8 @@ info: { title: Enrollment API, version: 1.0.0 }
         <div class="spec" data-widget="spec" id="spec"></div>
       </div>
       <p class="callout">
-        This is what Redoc renders for you from the same file, prettier and with more detail. The
-        point of reading it here is that <b>you can see there is nothing magic in it</b> — it is a
-        list of operations, each with an input shape and a set of output shapes.
+        Redoc renders the same file, prettier. The point here: <b>there is nothing magic in it</b> —
+        just operations, each with one input shape and a set of output shapes.
       </p>
     </section>
 
@@ -1128,25 +1123,25 @@ info: { title: Enrollment API, version: 1.0.0 }
         <div class="compare__side compare__side--bad">
           <div class="compare__head">Code-first</div>
           <div class="compare__body">
-            <p>Build the backend, then generate documentation from what you built.</p>
-            <p><b>The spec describes whatever happened.</b> If the backend named a field badly, the spec faithfully documents the bad name.</p>
-            <p>The frontend cannot start until the backend exists. One person waits.</p>
-            <p>Fine for a solo project where you are both halves.</p>
+            <p>Build the backend, then generate docs from what you built.</p>
+            <p><b>The spec describes whatever happened</b> — bad field names included.</p>
+            <p>The frontend waits for the backend.</p>
+            <p>Fine solo.</p>
           </div>
         </div>
         <div class="compare__side compare__side--good">
           <div class="compare__head">Contract-first</div>
           <div class="compare__body">
             <p>Agree the spec, then both halves build to it.</p>
-            <p><b>The spec is a decision</b>, reviewed before it is expensive to change.</p>
-            <p>Both halves start on day one. The frontend runs against a mock.</p>
-            <p>Necessary the moment more than one person is involved — which is your situation.</p>
+            <p><b>The spec is a decision</b>, reviewed while it is still cheap to change.</p>
+            <p>Both halves start on day one; the frontend runs on a mock.</p>
+            <p>Necessary as soon as two people are involved — your situation.</p>
           </div>
         </div>
       </div>
       <p class="callout">
-        This is the whole reason the contract is a <b>group</b> deliverable in Activity 4, and why a
-        pull request touching it needs approval from the other side.
+        This is why the contract is a <b>group</b> deliverable in Activity 4, and why a PR touching it
+        needs the other side's approval.
       </p>
     </section>
 
@@ -1160,13 +1155,13 @@ info: { title: Enrollment API, version: 1.0.0 }
       <div class="grid grid--2">
         <div class="panel">
           <div class="panel__head">Why not just write the interface?</div>
-          <p class="body">Because a hand-written mirror of the server drifts, and <b>drifts silently</b>. The backend makes a field nullable; your interface still says it is a string; TypeScript still compiles; the app crashes at runtime on the one record where it is null.</p>
+          <p class="body">A hand-written mirror <b>drifts silently</b>. The backend makes a field nullable, your interface still says string, TypeScript still compiles — and the app crashes on the one null record.</p>
         </div>
         <div class="panel">
           <div class="panel__head">The command</div>
           <pre>npx openapi-typescript contract/openapi.yaml \
   -o contract/generated/schema.d.ts</pre>
-          <p class="small">Commit the output. CI re-runs it and fails if what you committed is stale — so the generated file can never quietly disagree with the spec.</p>
+          <p class="small">Commit the output. CI re-runs it and fails if yours is stale, so it can never quietly disagree with the spec.</p>
         </div>
       </div>
     </section>
@@ -1189,21 +1184,20 @@ src/lib/supabase/…types  <i>← derived, never edited</i></pre>
         </div>
       </div>
       <p class="callout">
-        Same shape, different subject. When you meet the Module 4 command in seven weeks, it should
-        feel like <b>recognition rather than a new topic</b> — and the same rule will apply:
-        <b>if a file says "generated", editing it by hand is always a mistake.</b>
+        Same shape, different subject — so the Module 4 command should feel like <b>recognition, not a
+        new topic</b>. Same rule too: <b>if a file says "generated", never edit it by hand.</b>
       </p>
     </section>
 
     <section class="slide slide--wide" data-sec="2.3" data-label="Mocking" data-rail="The API contract">
       <span class="eyebrow">How you run today</span>
-      <h2 class="h2">The mock is what makes the seven-week gap survivable</h2>
+      <h2 class="h2">The mock is what makes the gap survivable</h2>
       <div class="grid grid--2">
         <div class="panel">
           <div class="panel__head">Prism — a whole fake server</div>
           <pre>npx @stoplight/prism-cli mock contract/openapi.yaml</pre>
-          <p class="body">Reads your spec and serves invented responses that match it, at <code>localhost:4010</code>. Point your client's base URL at it and the app runs end to end.</p>
-          <p class="small">Best for developing screens by hand — click around and everything responds.</p>
+          <p class="body">Serves invented responses that match your spec at <code>localhost:4010</code>. Point your base URL at it and the app runs end to end.</p>
+          <p class="small">Best for building screens by hand — click around, everything responds.</p>
         </div>
         <div class="panel">
           <div class="panel__head">MSW — interception, in tests</div>
@@ -1214,13 +1208,12 @@ src/lib/supabase/…types  <i>← derived, never edited</i></pre>
     subjects: [ /* … */ ]
   })
 )</pre>
-          <p class="body">Intercepts requests inside your tests, so you control exactly what comes back — including the 404 and the 500 that are hard to trigger on purpose.</p>
+          <p class="body">Intercepts requests inside tests, so you choose exactly what comes back — including the 404 and 500 you cannot trigger on demand.</p>
         </div>
       </div>
       <p class="callout">
-        <b>Mock the failures, not just the successes.</b> The empty list, the 404, the 500, the slow
-        response. Those states are most of your UI code and they are the ones you can never reproduce
-        on demand against a real server.
+        <b>Mock the failures, not just the successes</b> — the empty list, the 404, the 500, the slow
+        response. Those states are most of your UI code.
       </p>
     </section>
 
@@ -1232,9 +1225,8 @@ src/lib/supabase/…types  <i>← derived, never edited</i></pre>
         <div class="cdiff" data-widget="cdiff" id="cdiff"></div>
       </div>
       <p class="callout">
-        <b>Additive is safe:</b> old clients ignore what they do not know about. <b>Breaking means
-        somebody's code stops working</b> — so it needs a major version bump and a note in the pull
-        request saying who has to change what.
+        <b>Additive is safe:</b> old clients ignore what they do not know. <b>Breaking means somebody's
+        code stops working</b> — so it needs a version bump and a PR note saying who must change what.
       </p>
     </section>
 
@@ -1246,22 +1238,22 @@ src/lib/supabase/…types  <i>← derived, never edited</i></pre>
           <div class="panel__head">Without the spec</div>
           <pre><i>"Write a function to fetch a
 student's enrolled subjects."</i></pre>
-          <p class="body">The agent invents a URL, invents field names, invents an error shape, and writes plausible code that matches nothing. You will not notice until integration.</p>
+          <p class="body">The agent invents the URL, the field names, the error shape. You find out at integration.</p>
           <div class="panel__head" style="margin-top:var(--s3)">With the spec pasted in</div>
           <pre><i>"Here is our OpenAPI spec.
 Implement getStudentLoad using
 our typed client, handling every
 documented response."</i></pre>
-          <p class="body">Correct path, correct types, correct error handling — because none of it was a guess.</p>
+          <p class="body">Correct path, types, and error handling — because none of it was a guess.</p>
         </div>
         <div class="col">
           <div class="panel">
-            <div class="panel__head">Why this is the highest-leverage paste</div>
-            <p class="body">Most bad agent output comes from missing context, not from a weak model. The spec removes the single biggest source of invention in frontend work: <b>what shape is the data?</b></p>
+            <div class="panel__head">Why it is the highest-leverage paste</div>
+            <p class="body">Bad agent output is usually missing context, not a weak model. The spec removes the biggest guess: <b>what shape is the data?</b></p>
           </div>
           <p class="callout">
-            The prompt log is still a graded artifact. <b>An agent given the spec and still producing
-            wrong code is worth logging</b> — that is a real finding about your spec's clarity.
+            The prompt log is still graded. <b>An agent with the spec that still gets it wrong is worth
+            logging</b> — that is a finding about your spec's clarity.
           </p>
         </div>
       </div>
@@ -1303,7 +1295,7 @@ api.use({
     return response
   },
 })</pre>
-          <p class="small">The <code>&lt;paths&gt;</code> generic is the whole trick: it is the generated type, so calling an endpoint that is not in the spec will not compile.</p>
+          <p class="small">The <code>&lt;paths&gt;</code> generic is the trick: it is the generated type, so an endpoint that is not in the spec will not compile.</p>
         </div>
         <div class="col">
           <div class="panel">
@@ -1339,11 +1331,10 @@ useEffect(() =&gt; {
      .then(r =&gt; setSubjects(r.data.subjects))
 }, [id])</pre>
           <ul class="list list--cross">
-            <li>No loading state until you add a second <code>useState</code></li>
-            <li>No error state until you add a third</li>
-            <li>Two screens showing the same data fetch it twice</li>
+            <li>Loading state costs a second <code>useState</code>; error a third</li>
+            <li>Two screens on the same data fetch it twice</li>
             <li>After a mutation, nothing knows to refetch</li>
-            <li>Race condition: change <code>id</code> twice quickly and the wrong response can win</li>
+            <li>Change <code>id</code> twice quickly and the wrong response can win</li>
           </ul>
         </div>
         <div class="panel" style="border-color:var(--cyan-dim)">
@@ -1353,16 +1344,16 @@ useEffect(() =&gt; {
   queryFn: () =&gt; api.GET('/students/{id}/load', …),
 })</pre>
           <ul class="list list--check">
-            <li><code>isPending</code>, <code>isError</code>, <code>data</code> — all of them, free</li>
+            <li><code>isPending</code>, <code>isError</code>, <code>data</code> — free</li>
             <li>Two screens, same key, one request</li>
-            <li>Invalidate the key after a mutation and everything refetches</li>
+            <li>Invalidate the key; everything refetches</li>
             <li>Out-of-order responses handled for you</li>
           </ul>
         </div>
       </div>
       <p class="callout">
-        <b>The mental shift:</b> that data lives on a server. What you hold is a copy, and copies go
-        stale. Every problem in the left column comes from pretending otherwise.
+        <b>The shift:</b> the data lives on a server. You hold a copy, and copies go stale. Every
+        problem on the left comes from pretending otherwise.
       </p>
     </section>
 
@@ -1374,9 +1365,8 @@ useEffect(() =&gt; {
         <div class="qc" data-widget="qc" id="qc"></div>
       </div>
       <p class="callout">
-        Derive the key from the <code>operationId</code> plus its parameters and invalidation stops
-        being guesswork — <b>you can look up which keys a mutation affects instead of remembering.</b>
-        This is a practical reason the contract has stable operation names.
+        Key = <code>operationId</code> + parameters. Then invalidation is something you look up rather
+        than remember — <b>the practical reason the contract has stable operation names.</b>
       </p>
     </section>
 
@@ -1388,19 +1378,18 @@ useEffect(() =&gt; {
           <thead><tr><th style="width:12rem">The state</th><th style="width:11rem">Where it goes</th><th>Why</th></tr></thead>
           <tbody>
             <tr><td><b>The signed-in session and role</b></td><td style="color:var(--brass)">Context</td><td>Client-owned, needed everywhere, changes rarely.</td></tr>
-            <tr><td><b>A student's enrolled subjects</b></td><td style="color:var(--cyan)">Query</td><td>Server-owned. It can change without you, so it needs to be refetchable and invalidatable.</td></tr>
-            <tr><td><b>Which advisee is being viewed</b></td><td style="color:var(--brass)">Context</td><td>An identifier the client chose. The record it points at is a Query.</td></tr>
+            <tr><td><b>A student's enrolled subjects</b></td><td style="color:var(--cyan)">Query</td><td>Server-owned — it changes without you, so it must be refetchable.</td></tr>
+            <tr><td><b>Which advisee is being viewed</b></td><td style="color:var(--brass)">Context</td><td>An id the client chose. The record it points at is a Query.</td></tr>
             <tr><td><b>Theme and table density</b></td><td style="color:var(--brass)">Context</td><td>Client-owned preference, persisted locally.</td></tr>
             <tr><td><b>The approval queue</b></td><td style="color:var(--cyan)">Query</td><td>Server-owned, and shared — another organiser may be approving right now.</td></tr>
-            <tr><td><b>Whether a modal is open</b></td><td><span class="dim">useState</span></td><td>One component's concern. It does not cross the tree, so it does not need Context.</td></tr>
+            <tr><td><b>Whether a modal is open</b></td><td><span class="dim">useState</span></td><td>One component's concern. It never crosses the tree.</td></tr>
           </tbody>
         </table>
       </div>
       <p class="callout" style="border-left-color:var(--fail)">
-        <b>The failure to avoid:</b> fetching with Query and then copying the result into Context "so
-        other components can see it". Now you have two copies and you are hand-syncing them. If two
-        components need the same server data, <b>they use the same query key</b> — that is what the
-        cache is for.
+        <b>The failure to avoid:</b> fetching with Query, then copying the result into Context "so others
+        can see it" — now you hand-sync two copies. Two components needing the same server data
+        <b>use the same query key</b>.
       </p>
     </section>
 
@@ -1420,13 +1409,13 @@ useEffect(() =&gt; {
       <span class="eyebrow">What changes now</span>
       <h2 class="h2">A mockup has no waiting in it</h2>
       <div class="grid grid--3">
-        <div class="card"><span class="card__k">Under 100ms</span><div class="card__t">Feels instant</div><p class="card__b">Show nothing. A spinner that flashes for 80ms is worse than no spinner — it reads as a glitch.</p></div>
-        <div class="card"><span class="card__k">100ms – 1s</span><div class="card__t">Needs an acknowledgement</div><p class="card__b">A skeleton in the shape of the coming content. The layout should not jump when data lands.</p></div>
-        <div class="card"><span class="card__k">Over 1s</span><div class="card__t">Needs progress</div><p class="card__b">Say what is happening. On a campus connection this is your normal case, not the exception.</p></div>
+        <div class="card"><span class="card__k">Under 100ms</span><div class="card__t">Feels instant</div><p class="card__b">Show nothing. A spinner that flashes for 80ms reads as a glitch.</p></div>
+        <div class="card"><span class="card__k">100ms – 1s</span><div class="card__t">Needs an acknowledgement</div><p class="card__b">A skeleton shaped like the coming content, so the layout does not jump.</p></div>
+        <div class="card"><span class="card__k">Over 1s</span><div class="card__t">Needs progress</div><p class="card__b">Say what is happening. On campus wifi this is the normal case.</p></div>
       </div>
       <div class="panel">
         <div class="panel__head">Test on the network your users actually have</div>
-        <p class="body">Devtools → Network → throttle to <b>Slow 3G</b>, and use your app for two minutes. Everything that was invisible on localhost becomes obvious: the layout shift, the double spinner, the button you can click twice, the empty state that flashes before data arrives.</p>
+        <p class="body">Devtools → Network → <b>Slow 3G</b>, then use your app for two minutes. What localhost hid becomes obvious: the layout shift, the double-clickable button, the empty state that flashes before data lands.</p>
       </div>
     </section>
 
@@ -1438,23 +1427,22 @@ useEffect(() =&gt; {
           <div class="compare__head">Centred spinner</div>
           <div class="compare__body">
             <p>Says "something is happening" and nothing else.</p>
-            <p>When data lands, the whole layout appears at once and everything below it jumps.</p>
-            <p>Gives the eye nowhere to rest, so the wait feels longer than it is.</p>
+            <p>When data lands, the layout appears at once and everything jumps.</p>
+            <p>The wait feels longer than it is.</p>
           </div>
         </div>
         <div class="compare__side compare__side--good">
           <div class="compare__head">Skeleton</div>
           <div class="compare__body">
-            <p>Occupies the same space the content will, so nothing moves when it arrives.</p>
-            <p>Communicates structure before content — the user starts reading the layout early.</p>
-            <p>Measurably shortens perceived wait, at the cost of building it once.</p>
+            <p>Occupies the space the content will, so nothing moves.</p>
+            <p>Shows structure before content — the eye starts reading early.</p>
+            <p>Shortens the perceived wait. Cost: building it once.</p>
           </div>
         </div>
       </div>
       <p class="callout">
-        <b>Build the skeleton from the real component.</b> If they drift apart, the layout jumps again
-        and you have the worst of both. Reusing the component's own spacing and sizes is the reliable
-        way to keep them honest.
+        <b>Build the skeleton from the real component</b>, reusing its spacing and sizes. If the two
+        drift apart, the layout jumps again and you have the worst of both.
       </p>
     </section>
 
@@ -1465,9 +1453,9 @@ useEffect(() =&gt; {
         <div class="panel">
           <div class="panel__head">Empty — three kinds, three answers</div>
           <div class="steps">
-            <div class="step"><div><div class="step__t">Nothing yet</div><div class="step__b">"No reviews yet. Be the first to add one." — plus the button that does it. This is an opportunity, not an apology.</div></div></div>
-            <div class="step"><div><div class="step__t">Nothing matched</div><div class="step__b">"No students match <em>maria</em> in Computer Science." — echo the filters, and offer to clear them.</div></div></div>
-            <div class="step"><div><div class="step__t">Nothing permitted</div><div class="step__b">Say the account cannot see this and who to contact. Never an empty table that looks broken.</div></div></div>
+            <div class="step"><div><div class="step__t">Nothing yet</div><div class="step__b">"No reviews yet. Be the first." — plus the button. An opportunity, not an apology.</div></div></div>
+            <div class="step"><div><div class="step__t">Nothing matched</div><div class="step__b">"No students match <em>maria</em> in Computer Science." — echo the filters, offer to clear.</div></div></div>
+            <div class="step"><div><div class="step__t">Nothing permitted</div><div class="step__b">Say the account cannot see this, and who to ask. Never a table that looks broken.</div></div></div>
           </div>
         </div>
         <div class="panel">
@@ -1479,11 +1467,11 @@ useEffect(() =&gt; {
             <li>A dead end with no way forward</li>
           </ul>
           <ul class="list list--check">
-            <li>"Could not load your subjects. Check your connection." + <b>Retry</b></li>
+            <li>"Could not load your subjects." + <b>Retry</b></li>
             <li>"You are signed out." + <b>Sign in</b></li>
-            <li>"Too many requests — try again in a minute." (your 429, from the spec)</li>
+            <li>"Too many requests — try again in a minute." (the 429)</li>
           </ul>
-          <p class="small">Every one of these is a documented response in your contract. <b>The spec tells you which errors your UI must be able to render.</b></p>
+          <p class="small">Each one is a documented response in your contract. <b>The spec lists the errors your UI must render.</b></p>
         </div>
       </div>
     </section>
@@ -1497,24 +1485,23 @@ useEffect(() =&gt; {
           <pre>&lt;div class="<b>grid grid-cols-1</b>
             <b>md:grid-cols-2</b>
             <b>lg:grid-cols-3</b> gap-4"&gt;</pre>
-          <p class="body">Unprefixed classes are the phone. Prefixed ones add capability as the screen grows. Writing it the other way round means fighting your own CSS at every breakpoint.</p>
+          <p class="body">Unprefixed = the phone. Prefixed classes add capability as the screen grows.</p>
           <div class="panel__head" style="margin-top:var(--s3)">The table problem</div>
-          <p class="body">A 7-column table cannot shrink to 320px. Your options, in order of preference: collapse each row into a card below <code>md</code>; or let the table scroll inside its own container — never the page body.</p>
+          <p class="body">A 7-column table cannot shrink to 320px. Best: collapse each row into a card below <code>md</code>. Otherwise scroll it inside its own container — never the page body.</p>
         </div>
         <div class="col">
           <div class="panel">
             <div class="panel__head">The floor, and how to check it</div>
             <ul class="list list--check">
               <li><b>320px</b> with no horizontal scroll on the body</li>
-              <li><b>200% zoom</b> still usable — this is the same problem as a small screen, and it is a WCAG requirement</li>
+              <li><b>200% zoom</b> still usable — same problem as a small screen, and a WCAG requirement</li>
               <li>Tap targets <b>44px</b> or larger</li>
-              <li>Nothing important hidden behind hover — there is no hover on a phone</li>
+              <li>Nothing important behind hover — phones have none</li>
             </ul>
           </div>
           <p class="callout">
-            Two of the systems in your project are used <b>on a phone, standing up</b> — a guest
-            checking an RSVP, staff scanning at a door. For those, mobile is not the fallback case.
-            It is the real one.
+            Two of the project systems are used <b>on a phone, standing up</b> — a guest checking an RSVP,
+            staff scanning at a door. Mobile is the real case there, not the fallback.
           </p>
         </div>
       </div>
@@ -1544,9 +1531,9 @@ useEffect(() =&gt; {
         <div class="panel" style="border-color:var(--cyan-dim)">
           <div class="panel__head" style="color:var(--cyan)">New in Module 2</div>
           <div class="steps">
-            <div class="step"><div><div class="step__t">09 Every documented response renders</div><div class="step__b">Including the 404, the 409, the 429. If the spec lists it, your UI has an answer for it.</div></div></div>
+            <div class="step"><div><div class="step__t">09 Every documented response renders</div><div class="step__b">404, 409, 429. If the spec lists it, your UI answers it.</div></div></div>
             <div class="step"><div><div class="step__t">10 No layout shift when data lands</div><div class="step__b">The skeleton occupies the same space as the content.</div></div></div>
-            <div class="step"><div><div class="step__t">11 Throttled to Slow 3G, still usable</div><div class="step__b">Not just survivable — usable. No double submits, no flashing empty state.</div></div></div>
+            <div class="step"><div><div class="step__t">11 Throttled to Slow 3G, still usable</div><div class="step__b">Usable, not just survivable. No double submits, no flashing empty state.</div></div></div>
             <div class="step"><div><div class="step__t">12 No hard-coded API shape</div><div class="step__b">Types come from the generated client. Nothing hand-mirrors the server.</div></div></div>
           </div>
         </div>
@@ -1558,21 +1545,21 @@ useEffect(() =&gt; {
          ====================================================== -->
 
     <section class="slide slide--wide" data-sec="lab" data-label="Activity 3" data-rail="Laboratory activities">
-      <span class="eyebrow">Laboratory Activity 3 · Week 4 · CA 3</span>
+      <span class="eyebrow">Laboratory Activity 3 · Week 4 · A3 · 3%</span>
       <div class="row" style="gap:var(--s4);align-items:baseline">
         <h2 class="h2">Prototype → Components</h2>
         <span class="chip chip--accent">Individual</span>
       </div>
-      <p class="callout"><b>Your own Activity 2 screen, rebuilt properly.</b> One long HTML file becomes typed components with a working session context and a guarded route — running against a mock, because there is no backend yet.</p>
+      <p class="callout"><b>Your Activity 2 screen, rebuilt properly.</b> One long HTML file becomes typed components with a session context and a guarded route, running against a mock.</p>
       <div class="grid grid--sidebar">
         <div class="panel">
           <div class="panel__head">Deliverables</div>
           <div class="steps">
-            <div class="step"><div><div class="step__t">The screen, as components</div><div class="step__b">At least four, each with a typed props contract. Your written justification for every boundary — one sentence each, against the criteria from 2.1.</div></div></div>
-            <div class="step"><div><div class="step__t">Tailwind theme from your group's tokens</div><div class="step__b">Zero hard-coded colour values in any component.</div></div></div>
-            <div class="step"><div><div class="step__t">SessionContext + a guarded route</div><div class="step__b">Provider, <code>useSession()</code> hook that throws outside it, and a route that redirects when signed out — including the loading branch.</div></div></div>
-            <div class="step"><div><div class="step__t">All four data states</div><div class="step__b">Loading, empty, error, and content — reachable in the running app, not just written.</div></div></div>
-            <div class="step"><div><div class="step__t">Prompt log</div><div class="step__b">Continues as a graded artifact. At least one agent error you caught.</div></div></div>
+            <div class="step"><div><div class="step__t">The screen, as components</div><div class="step__b">Four or more, each with typed props, plus one sentence justifying each boundary.</div></div></div>
+            <div class="step"><div><div class="step__t">Tailwind theme from your group's tokens</div><div class="step__b">Zero hard-coded colour values.</div></div></div>
+            <div class="step"><div><div class="step__t">SessionContext + a guarded route</div><div class="step__b">Provider, a throwing <code>useSession()</code>, and a redirect when signed out — loading branch included.</div></div></div>
+            <div class="step"><div><div class="step__t">All four data states</div><div class="step__b">Loading, empty, error, content — all reachable in the running app.</div></div></div>
+            <div class="step"><div><div class="step__t">Prompt log</div><div class="step__b">Still graded. At least one agent error you caught.</div></div></div>
           </div>
         </div>
         <div class="col">
@@ -1593,30 +1580,30 @@ useEffect(() =&gt; {
     </section>
 
     <section class="slide slide--wide" data-sec="lab" data-label="Activity 4" data-rail="Laboratory activities">
-      <span class="eyebrow">Laboratory Activity 4 · Week 5 · CA 4</span>
+      <span class="eyebrow">Laboratory Activity 4 · Week 5 · A4 · 3%</span>
       <div class="row" style="gap:var(--s4);align-items:baseline">
         <h2 class="h2">The Contract</h2>
         <span class="chip chip--added">Group</span>
       </div>
-      <p class="callout"><b>The one deliverable your whole group signs.</b> You are writing the document Module 4 has to implement and Module 5 connects to — the single artifact that touches three modules.</p>
+      <p class="callout"><b>The one deliverable your whole group signs</b> — the document Module 4 implements and Module 5 connects to.</p>
       <div class="grid grid--sidebar">
         <div class="panel">
           <div class="panel__head">Deliverables</div>
           <div class="steps">
-            <div class="step"><div><div class="step__t"><code>contract/openapi.yaml</code></div><div class="step__b">At least eight operations covering your system's core flows, with request and response schemas, shared <code>components.schemas</code>, and a documented error shape. Passes <code>redocly lint</code> clean.</div></div></div>
-            <div class="step"><div><div class="step__t">Generated client, committed</div><div class="step__b"><code>contract/generated/</code> from <code>openapi-typescript</code>, plus the <code>openapi-fetch</code> wrapper with auth and error interception.</div></div></div>
-            <div class="step"><div><div class="step__t">Two screens running against a mock</div><div class="step__b">Different members' screens from Activity 3, now fetching through the typed client with TanStack Query.</div></div></div>
+            <div class="step"><div><div class="step__t"><code>contract/openapi.yaml</code></div><div class="step__b">Eight or more operations, shared <code>components.schemas</code>, a documented error shape. Lints clean.</div></div></div>
+            <div class="step"><div><div class="step__t">Generated client, committed</div><div class="step__b"><code>openapi-typescript</code> output, plus the <code>openapi-fetch</code> wrapper with auth and error interception.</div></div></div>
+            <div class="step"><div><div class="step__t">Two screens running against a mock</div><div class="step__b">Two members' Activity 3 screens, fetching through the typed client with TanStack Query.</div></div></div>
             <div class="step"><div><div class="step__t">Redoc published</div><div class="step__b">Your spec, rendered and reachable.</div></div></div>
-            <div class="step"><div><div class="step__t">A contract decision log</div><div class="step__b">Three decisions your group argued about, and why you settled where you did. This is where the actual thinking is visible.</div></div></div>
+            <div class="step"><div><div class="step__t">A contract decision log</div><div class="step__b">Three decisions you argued about, and why you settled where you did.</div></div></div>
           </div>
         </div>
         <div class="col">
           <div class="panel" style="border-color:var(--cyan-dim)">
             <div class="panel__head" style="color:var(--cyan)">How it is graded</div>
-            <p class="body">The spec is graded <b>once, for the group</b>. The screens are graded individually.</p>
-            <p class="body">Every member must appear in the commit history of the contract — an eight-operation spec written entirely by one person is a fail for the group, however good the spec is.</p>
+            <p class="body">The spec is graded <b>once, for the group</b>; the screens individually.</p>
+            <p class="body">Every member must appear in the contract's commit history. One person writing all of it fails the group.</p>
           </div>
-          <p class="callout">Expect to get parts of this wrong. <b>You are specifying data shapes before Module 4 teaches you to model data.</b> Versioning the fix in week 10 is the method working, not you failing.</p>
+          <p class="callout">Expect to get parts wrong — <b>you are specifying data before Module 4 teaches modeling.</b> Versioning the fix in week 10 is the method working.</p>
         </div>
       </div>
     </section>
@@ -1632,25 +1619,25 @@ useEffect(() =&gt; {
         <table>
           <thead><tr><th>Assessment</th><th style="width:7rem">Weight</th><th>What Module 2 contributes</th><th style="width:8rem">Outcome</th></tr></thead>
           <tbody>
-            <tr><td>Class Activity 3 &amp; 4</td><td class="num">1.5% each</td><td><b>A3 individual</b> — your screen as components. <b>A4 group</b> — the contract, plus individually graded screens against it.</td><td class="num">CO2 / LO 2.1, 2.2</td></tr>
-            <tr><td>Practical Exam</td><td class="num">15%</td><td><b>Individual.</b> You defend your component boundaries and your context choices out loud.</td><td class="num">CO1–CO2</td></tr>
-            <tr><td>Final Project</td><td class="num">20%</td><td><b>By group.</b> The contract you write this week is implemented in Module 4 and connected in Module 5.</td><td class="num">CO1–CO5</td></tr>
-            <tr><td>Term Examinations</td><td class="num">24%</td><td>Component boundaries, Context vs server state, and reading an OpenAPI document are all examinable.</td><td class="num">CO2</td></tr>
+            <tr><td>Activities 3 &amp; 4</td><td class="num">3% each</td><td><b>A3 individual</b> — your screen as components. <b>A4 group</b> — the contract, plus screens graded individually.</td><td class="num">CO2 / LO 2.1, 2.2</td></tr>
+            <tr><td>Codebase Assessment</td><td class="num">20%</td><td><b>Once, weeks 16–17.</b> Your component boundaries and context choices are read off the repository — and you answer for them.</td><td class="num">CO1–CO5</td></tr>
+            <tr><td>Final Web Project</td><td class="num">50%</td><td><b>By group.</b> This week's contract is implemented in sprint 1 and connected in sprint 2.</td><td class="num">CO1–CO5</td></tr>
+            <tr><td>Examinations</td><td class="num">Midterm W9 · Final W18</td><td>Component boundaries, Context vs server state, and reading an OpenAPI document.</td><td class="num">CO2</td></tr>
           </tbody>
         </table>
       </div>
       <p class="callout">
-        The contract is worth more than its 1.5% suggests. <b>It is the thing two later modules are
-        graded against</b> — a vague spec in week 5 is a painful week 10.
+        The contract is worth more than its 3% suggests: <b>the 50% project is built against
+        it.</b> A vague spec in week 5 is a painful sprint 1.
       </p>
     </section>
 
     <section class="slide" data-sec="end" data-label="Next up" data-rail="Close">
       <span class="eyebrow">Ends here, continues there</span>
-      <h2 class="h2">Next: the language underneath</h2>
+      <h2 class="h2">Next: the stack underneath</h2>
       <div class="grid grid--3">
-        <div class="card"><span class="card__k">Module 03 · weeks 5–8</span><div class="card__t">JavaScript</div><p class="card__b">Types, scoping, functions, JSON, and the DOM — including what <code>await</code> was doing inside your wrapper, and how you know a function works.</p></div>
-        <div class="card"><span class="card__k">Module 04 · weeks 10–12</span><div class="card__t">Backend</div><p class="card__b">The other side of your contract. <code>contract:check</code> passing is what "done" means.</p></div>
+        <div class="card"><span class="card__k">Module 03 · weeks 5–6</span><div class="card__t">The Stack</div><p class="card__b">A guided tour of a real codebase — including what <code>await</code> was doing inside your wrapper, and how you know a function works.</p></div>
+        <div class="card"><span class="card__k">Module 04 · weeks 7–8</span><div class="card__t">Backend</div><p class="card__b">The other side of your contract. "Done" means <code>contract:check</code> passes.</p></div>
         <div class="card"><span class="card__k">Carry forward</span><div class="card__t">The 12-point QA</div><p class="card__b">Eight from Module 1, four added this week. Every screen, all semester.</p></div>
       </div>
       <div class="panel">
