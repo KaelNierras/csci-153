@@ -7,7 +7,10 @@ Syllabus LOs: **LO 3.1** types and structures · **LO 3.2** block scoping (`let`
 **LO 3.5** JSON serialize/deserialize · **LO 3.6** DOM manipulation ·
 **LO 3.7** JavaScript libraries
 
-Status: **planning**. Deck not built yet.
+Status: **ready** — 49 slides, `module-3/index.html`. Interactive instruments: the
+dependency auditor (3.1), the iteration translator (3.3), the await timeline (3.5), the
+DOM-versus-React operation counter (3.6), and a test runner whose ceiling the class can
+break on purpose (3.8).
 
 > **Delivery note — changed 2026-08-19.** This module was planned as four weeks of
 > JavaScript language teaching. It is now delivered as a **guided tour of the reference

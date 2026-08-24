@@ -4,7 +4,7 @@
   "subtitle": "Validation, integration, CI, and a deployed application.",
   "weeks": "8 + clinics",
   "outcome": "CO5",
-  "slides": 0,
-  "status": "planned",
+  "slides": 32,
+  "status": "ready",
   "labs": []
 }

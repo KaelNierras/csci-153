@@ -5,7 +5,10 @@ for database operations*
 Syllabus LOs: **LO 4.1** model relational database schemas ·
 **LO 4.2** develop API endpoints for CRUD operations
 
-Status: **planning**. Deck not built yet.
+Status: **ready** — 44 slides, `module-4/index.html`. Interactive instruments: the
+normalisation stepper (4.1), the RLS simulator (4.4) — four identities against one query,
+with the policy switchable — the constraint tester (4.5), and a `contract:check` runner
+that starts red (4.7).
 
 > **Framing note.** CO4 says "backend server." These projects have no server of their
 > own — Supabase is the backend, and the API surface is PostgREST plus Edge Functions.

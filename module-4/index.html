@@ -1,0 +1,1400 @@
+<title>The Backend Bench</title>
+<link rel="stylesheet" href="../shared/deck.css">
+
+<script type="application/json" id="deck-sections">
+{
+  "names": {
+    "4.1": "Lesson 4.1 — Modeling a schema",
+    "4.2": "Lesson 4.2 — Migrations",
+    "4.3": "Lesson 4.3 — CRUD endpoints",
+    "4.4": "Lesson 4.4 — Row Level Security",
+    "4.5": "Lesson 4.5 — Constraints & triggers",
+    "4.6": "Lesson 4.6 — Edge Functions",
+    "4.7": "Lesson 4.7 — Implementing the contract"
+  },
+  "colors": {
+    "4.1": "var(--brass)",
+    "4.2": "var(--brass)",
+    "4.3": "var(--cyan)",
+    "4.4": "var(--violet)",
+    "4.5": "var(--violet)",
+    "4.6": "var(--violet)",
+    "4.7": "var(--cyan)"
+  }
+}
+</script>
+
+<style>
+:root {
+  --violet:     #A38BD1;
+  --violet-lit: #C3AEEA;
+  --violet-dim: #3A2F52;
+  --violet-ink: #150F20;
+}
+
+#deck[data-sec="4.3"], #deck[data-sec="4.7"] {
+  --accent: var(--cyan); --accent-lit: var(--cyan-lit);
+  --accent-dim: var(--cyan-dim); --accent-ink: var(--cyan-ink);
+}
+#deck[data-sec="4.4"], #deck[data-sec="4.5"], #deck[data-sec="4.6"] {
+  --accent: var(--violet); --accent-lit: var(--violet-lit);
+  --accent-dim: var(--violet-dim); --accent-ink: var(--violet-ink);
+}
+#deck[data-sec="lab"] {
+  --accent: #E7EBF2; --accent-lit: #FFFFFF;
+  --accent-dim: #2B3547; --accent-ink: #0A0D13;
+}
+
+.tick[data-sec="4.4"], .tick[data-sec="4.5"], .tick[data-sec="4.6"] { background: var(--violet-dim); }
+.tick[data-sec="4.1"], .tick[data-sec="4.2"] { background: var(--brass-dim); }
+.tick[data-sec="4.3"], .tick[data-sec="4.7"] { background: var(--cyan-dim); }
+.tick.is-done[data-sec="4.4"], .tick.is-done[data-sec="4.5"], .tick.is-done[data-sec="4.6"] { background: #6A5A8E; }
+.tick.is-done[data-sec="4.1"], .tick.is-done[data-sec="4.2"] { background: #8B6B2E; }
+.tick.is-done[data-sec="4.3"], .tick.is-done[data-sec="4.7"] { background: #2F717C; }
+
+.chip--added { border-color: var(--violet-dim); color: var(--violet); background: rgba(163,139,209,0.10); }
+
+.file {
+  display: inline-flex; align-items: center; gap: var(--s2);
+  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.04em;
+  border: 1px solid var(--accent-dim); color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 8%, transparent);
+  padding: 0.15rem 0.5rem;
+}
+.file::before { content: "◆"; font-size: 0.55rem; opacity: 0.8; }
+
+/* ---- normalisation stepper (4.1) ---- */
+.norm { display: flex; flex-direction: column; gap: var(--s3); }
+.norm__grid { overflow-x: auto; }
+.norm__t { border-collapse: collapse; font-family: var(--mono); font-size: 0.68rem; min-width: 100%; }
+.norm__t th {
+  text-align: left; padding: 0.3rem var(--s3); border: 1px solid var(--line);
+  background: var(--panel-3); color: var(--text-3); font-weight: 500;
+  font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap;
+}
+.norm__t td { padding: 0.3rem var(--s3); border: 1px solid var(--line); color: var(--text-2); white-space: nowrap; }
+.norm__t td.bad { color: var(--fail); background: #1B1113; }
+.norm__t td.key { color: var(--accent-lit); }
+.norm__cap { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-4); }
+.norm__tables { display: flex; flex-direction: column; gap: var(--s4); }
+.norm__why { border-left: 2px solid var(--accent); padding: var(--s3) var(--s4); background: var(--panel); font-size: 0.9rem; color: var(--text-2); }
+.norm__why b { color: var(--text); }
+
+/* ---- RLS simulator (4.4) ---- */
+.rls { display: grid; grid-template-columns: 1fr 1.25fr; gap: var(--s4); align-items: start; }
+@media (max-width: 60rem) { .rls { grid-template-columns: 1fr; } }
+.rls__rows { display: flex; flex-direction: column; gap: 2px; font-family: var(--mono); font-size: 0.72rem; }
+.rls__row {
+  display: grid; grid-template-columns: 1fr auto; gap: var(--s3); align-items: center;
+  border: 1px solid var(--line); background: var(--panel-2); padding: 0.35rem var(--s3);
+  transition: opacity .25s var(--ease), border-color .25s var(--ease);
+}
+.rls__row.is-hidden { opacity: 0.18; }
+.rls__row.is-shown { border-color: var(--pass); }
+.rls__tag { font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.rls__row.is-shown .rls__tag { color: var(--pass); }
+.rls__row.is-hidden .rls__tag { color: var(--text-4); }
+.rls__verdict {
+  font-family: var(--mono); font-size: 0.78rem; padding: var(--s3) var(--s4);
+  border: 1px solid var(--line); background: var(--sunk);
+}
+.rls__verdict b { font-size: 0.95rem; }
+.rls__policy { font-family: var(--mono); font-size: 0.72rem; }
+
+/* ---- constraint tester (4.5) ---- */
+.con { display: flex; flex-direction: column; gap: var(--s3); }
+.con__row {
+  display: grid; grid-template-columns: 1.2rem 1fr; gap: var(--s3); align-items: baseline;
+  border: 1px solid var(--line); background: var(--panel-2); padding: var(--s3);
+  font-size: 0.85rem;
+}
+.con__row[data-r="reject"] { border-left: 2px solid var(--fail); }
+.con__row[data-r="accept"] { border-left: 2px solid var(--pass); }
+.con__m { font-family: var(--mono); }
+.con__row[data-r="reject"] .con__m { color: var(--fail); }
+.con__row[data-r="accept"] .con__m { color: var(--pass); }
+.con__sql { font-family: var(--mono); font-size: 0.7rem; color: var(--text-3); margin-top: 0.2rem; }
+
+/* ---- contract check (4.7) ---- */
+.cc { display: flex; flex-direction: column; gap: 2px; }
+.cc__row {
+  display: grid; grid-template-columns: 1.2rem 4rem 1fr auto; gap: var(--s3); align-items: baseline;
+  font-family: var(--mono); font-size: 0.72rem;
+  border: 1px solid var(--line); background: var(--panel-2); padding: 0.3rem var(--s3);
+}
+.cc__row[data-s="pass"] { border-left: 2px solid var(--pass); }
+.cc__row[data-s="fail"] { border-left: 2px solid var(--fail); background: #1B1113; }
+.cc__row[data-s="pending"] { opacity: 0.4; }
+.cc__verb { font-size: 0.6rem; letter-spacing: 0.06em; color: var(--text-4); }
+.cc__m { font-size: 0.8rem; }
+.cc__row[data-s="pass"] .cc__m { color: var(--pass); }
+.cc__row[data-s="fail"] .cc__m { color: var(--fail); }
+.cc__msg { grid-column: 3 / -1; font-size: 0.66rem; color: var(--fail); }
+.cc__sum { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; margin-top: var(--s3); }
+</style>
+
+<div id="deck" data-sec="0">
+
+  <header class="rail rail--top">
+    <span class="rail__mark"><i class="rail__dot"></i> Module 04</span>
+    <span class="rail__sep">/</span>
+    <span id="rail-lesson">Orientation</span>
+    <span class="rail__spacer"></span>
+    <span class="rail__course">CSci 153 · Web Systems &amp; Technologies</span>
+    <span class="rail__sep">/</span>
+    <span class="rail__count"><b id="count-now">01</b> <span class="dim">of</span> <span id="count-all">44</span></span>
+  </header>
+
+  <main id="stage">
+
+    <!-- ================= ORIENTATION ================= -->
+
+    <section class="slide slide--center" data-sec="0" data-label="Cover" data-rail="Orientation">
+      <div class="col" style="gap:var(--s5);align-items:center">
+        <span class="eyebrow eyebrow--plain">Visayas State University · DCST · Module 04 · Weeks 7–8</span>
+        <h1 class="h1" style="max-width:26ch">The database is<br>where security<br>actually happens</h1>
+        <p class="lede" style="text-align:center;margin-inline:auto">
+          Schema, migrations, endpoints — and the layer that makes the route guard in
+          Module 2 honest.
+        </p>
+        <div class="row" style="justify-content:center;margin-top:var(--s4)">
+          <span class="chip">CO4 · Backend with RESTful endpoints</span>
+          <span class="chip">LO 4.1 · Schema</span>
+          <span class="chip">LO 4.2 · CRUD</span>
+        </div>
+        <p class="small mono" style="margin-top:var(--s5);letter-spacing:0.12em">
+          PRESS <kbd style="border:1px solid var(--line);padding:0.1em 0.4em">→</kbd> TO START ·
+          <kbd style="border:1px solid var(--line);padding:0.1em 0.4em">O</kbd> FOR THE SLIDE MAP ·
+          <kbd style="border:1px solid var(--line);padding:0.1em 0.4em">?</kbd> FOR KEYS
+        </p>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="0" data-label="Where the server went" data-rail="Orientation">
+      <span class="eyebrow">A framing note, said out loud early</span>
+      <h2 class="h2">"Create a backend server" — with no server</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">What CO4 asks for</div>
+          <p class="body">A backend server with RESTful API endpoints for database operations.</p>
+          <p class="body">The classical answer is Express or Django: you write route handlers, they talk to a database, you deploy the process.</p>
+        </div>
+        <div class="panel">
+          <div class="panel__head">What this course does</div>
+          <p class="body"><b>Supabase.</b> Postgres, plus PostgREST turning your tables into REST endpoints, plus Edge Functions for anything that needs code.</p>
+          <p class="body">You still model a real schema and still produce real CRUD endpoints. What changes is that <b>authorization moves into the database.</b></p>
+        </div>
+      </div>
+      <p class="callout">
+        This is not a shortcut. It is the harder, more honest version — because when the
+        endpoints are generated, <b>the only thing protecting your data is the policy you
+        wrote.</b> There is no route handler to hide a forgotten check inside.
+      </p>
+    </section>
+
+    <section class="slide" data-sec="0" data-label="The shape of it" data-rail="Orientation">
+      <span class="eyebrow">Four pieces, and what each is for</span>
+      <h2 class="h2">What "the backend" means here</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">Postgres · the tables</div>
+          <p class="body">Your schema, written as migration files. Constraints and triggers enforce the rules a client cannot be trusted with.</p>
+          <div class="panel__head" style="margin-top:var(--s3)">PostgREST · the endpoints</div>
+          <p class="body">Every table becomes a REST endpoint automatically. You write no route handlers, which means you cannot forget one.</p>
+        </div>
+        <div class="panel">
+          <div class="panel__head">RLS · the enforcement</div>
+          <p class="body">A policy is a <code>WHERE</code> clause the database adds to every query for you. This is the entire authorization story.</p>
+          <div class="panel__head" style="margin-top:var(--s3)">Edge Functions · the exceptions</div>
+          <p class="body">Anything needing a secret, a privileged write, or several statements that must succeed together.</p>
+        </div>
+      </div>
+      <p class="callout">
+        <b>Two of these four are not in any learning outcome</b> —
+        <span class="chip chip--added">RLS</span> and
+        <span class="chip chip--added">Edge Functions</span> — and your project cannot work
+        without them. They get short, practical sessions.
+      </p>
+    </section>
+
+    <section class="slide" data-sec="0" data-label="Outcomes" data-rail="Orientation">
+      <span class="eyebrow">Learning outcomes · CO4</span>
+      <h2 class="h2">By the end of week 8 you can…</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head" style="color:var(--brass)">Required by the syllabus</div>
+          <div class="steps">
+            <div class="step"><div><div class="step__t">LO 4.1 — Model a relational schema</div><div class="step__b">Tables, keys, and relationships for your own system, normalised enough that no fact is stored twice.</div></div></div>
+            <div class="step"><div><div class="step__t">LO 4.2 — CRUD endpoints</div><div class="step__b">Create, read, update and delete over that schema — satisfying the contract your group wrote in week 5.</div></div></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel__head" style="color:var(--violet)">Added — the project needs it</div>
+          <ul class="list">
+            <li><b>Row Level Security</b> — every authorization claim in your spec rests on it</li>
+            <li><b>Constraints and triggers</b> — the rules the frontend cannot be trusted with</li>
+            <li><b>Edge Functions</b> — secrets, and writes that span tables</li>
+          </ul>
+          <p class="small">RLS is the most important of the three, and gets the most time.</p>
+        </div>
+      </div>
+      <p class="callout">
+        <b>The acceptance criterion for this whole module is one command:</b>
+        <code>npm run contract:check</code> passes. Your implementation satisfies the document
+        you wrote in week 5, or the module is not done.
+      </p>
+    </section>
+
+    <!-- ================= 4.1 SCHEMA ================= -->
+
+    <section class="slide slide--center" data-sec="4.1" data-label="Lesson 4.1 opens" data-rail="Modeling a schema">
+      <div class="col" style="gap:var(--s4);align-items:center">
+        <span class="eyebrow eyebrow--plain">Lesson 4.1 · LO 4.1</span>
+        <h2 class="h1" style="max-width:22ch">Store every fact<br>exactly once</h2>
+        <p class="lede" style="text-align:center;margin-inline:auto">Almost everything else about schema design follows from that.</p>
+        <span class="file">supabase/migrations/</span>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="4.1" data-label="The spreadsheet instinct" data-rail="Modeling a schema">
+      <span class="eyebrow">Where every beginner starts</span>
+      <h2 class="h2">One big table feels obvious</h2>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">enrollments — the spreadsheet version</div>
+          <pre>student_no  name          subject   units  teacher
+20-1-01234  Maria Cruz    CSci 153  3      Prof. Reyes
+20-1-01234  Maria Cruz    CSci 141  3      Prof. Lim
+20-1-01234  Maria Cruz    Math 111  5      Prof. Diaz
+20-1-05678  Jose Ramos    CSci 153  3      Prof. Reyes
+20-1-05678  Jose Ramos    PE 4      2      Coach Uy</pre>
+          <p class="small">Every question is answerable from one place. It reads like the report you eventually want.</p>
+        </div>
+        <div class="col">
+          <div class="panel" style="border-color:var(--fail)">
+            <div class="panel__head" style="color:var(--fail)">Three problems, and they are not stylistic</div>
+            <ul class="list list--cross">
+              <li><b>Update.</b> Maria changes her name — three rows to fix, and if you miss one the database now disagrees with itself.</li>
+              <li><b>Insert.</b> A new subject nobody has enrolled in yet cannot be recorded at all. There is no row to put it in.</li>
+              <li><b>Delete.</b> Jose drops PE 4 and the only record that PE 4 is worth 2 units disappears with it.</li>
+            </ul>
+          </div>
+          <p class="callout"><b>Every one of these is the same bug:</b> a fact is stored more than once, or in the wrong place entirely.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="4.1" data-label="Normalising" data-rail="Modeling a schema">
+      <span class="eyebrow">Interactive · one table becomes four</span>
+      <h2 class="h2">Pulling the facts apart</h2>
+      <div class="panel panel--sunk">
+        <div class="panel__head">Step through it <span class="spacer"></span><span class="dim">each step fixes one specific failure</span></div>
+        <div class="norm" data-widget="norm" id="norm"></div>
+      </div>
+      <p class="callout">
+        You do not need the formal definitions of 1NF, 2NF and 3NF to do this well. You need one
+        question, asked repeatedly: <b>"if this fact changes, how many rows do I have to touch?"</b>
+        More than one is the smell.
+      </p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="4.1" data-label="Keys" data-rail="Modeling a schema">
+      <span class="eyebrow">The vocabulary</span>
+      <h2 class="h2">Keys, and the three relationships</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">Two kinds of key</div>
+          <pre>create table subjects (
+  <b>id uuid primary key</b> default gen_random_uuid(),
+  code text not null,
+  units int not null
+);
+
+create table enrollment_items (
+  enrollment_id uuid <b>references enrollments(id)</b>,
+  subject_id    uuid <b>references subjects(id)</b>,
+  primary key (enrollment_id, subject_id)
+);</pre>
+          <p class="small"><b>Primary key</b> — this row's identity. <b>Foreign key</b> — a pointer to another table's identity, which the database will not let you break.</p>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">One to many · the common case</div>
+            <p class="body">One student has many enrollments. <b>The foreign key goes on the "many" side</b> — <code>enrollments.student_id</code>. This is the shape you will use most.</p>
+          </div>
+          <div class="panel">
+            <div class="panel__head">Many to many · needs a third table</div>
+            <p class="body">An enrollment has many subjects; a subject appears in many enrollments. Neither side can hold the key, so <code>enrollment_items</code> exists to hold the pairs.</p>
+          </div>
+          <div class="panel">
+            <div class="panel__head">One to one · rare, and usually a mistake</div>
+            <p class="body">If two tables have exactly one row each per thing, ask why they are two tables.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="4.1" data-label="Deliberate duplication" data-rail="Modeling a schema">
+      <span class="eyebrow">When the rule bends</span>
+      <h2 class="h2">Storing a total, on purpose</h2>
+      <div class="compare">
+        <div class="compare__side compare__side--good">
+          <div class="compare__head">Compute it</div>
+          <div class="compare__body">
+            <pre>select sum(s.units)
+from enrollment_items i
+join subjects s on s.id = i.subject_id
+where i.enrollment_id = $1</pre>
+            <p>Cannot be wrong. It is derived from the truth every time you ask.</p>
+            <p>Costs a join on every read, and the adviser queue reads it for forty students at once.</p>
+          </div>
+        </div>
+        <div class="compare__side compare__side--bad">
+          <div class="compare__head">Store it</div>
+          <div class="compare__body">
+            <pre>enrollments.total_units int not null default 0</pre>
+            <p>One column, instant read, and the queue query gets simple.</p>
+            <p><b>And now it can be wrong.</b> Any write that changes the items and forgets the total leaves the database disagreeing with itself.</p>
+          </div>
+        </div>
+      </div>
+      <p class="callout">
+        Enroll's contract has <code>totalUnits</code> on the enrollment, so it is stored — and
+        <b>a trigger maintains it</b>, not the application. That is lesson 4.5. Duplication with
+        an automatic guardian is a decision; duplication maintained by hand is a bug waiting.
+      </p>
+    </section>
+
+    <section class="slide" data-sec="4.1" data-label="From contract to schema" data-rail="Modeling a schema">
+      <span class="eyebrow">Where your schema comes from</span>
+      <h2 class="h2">You already wrote most of it in week 5</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">contract/openapi.yaml · written week 5</div>
+          <pre>Subject:
+  properties:
+    id:            { type: string }
+    code:          { type: string }
+    units:         { type: integer }
+    capacity:      { type: integer }
+    enrolledCount: { type: integer }</pre>
+        </div>
+        <div class="panel" style="border-color:var(--brass-dim)">
+          <div class="panel__head" style="color:var(--brass)">The table it implies</div>
+          <pre>create table subjects (
+  id       uuid primary key default gen_random_uuid(),
+  code     text not null,
+  units    int  not null,
+  capacity int  not null,
+  <i>-- enrolled_count is derived. Not a column?
+  -- Or a column with a trigger? Decide, and say why.</i>
+);</pre>
+        </div>
+      </div>
+      <p class="callout">
+        <b>The contract is not the schema, and the difference is where the work is.</b> A
+        response shape can flatten and join things a table cannot. Expect your week-5 shapes to
+        need changes now — that is lesson 4.7, and it is the method working.
+      </p>
+    </section>
+
+    <!-- ================= 4.2 MIGRATIONS ================= -->
+
+    <section class="slide slide--center" data-sec="4.2" data-label="Lesson 4.2 opens" data-rail="Migrations">
+      <div class="col" style="gap:var(--s4);align-items:center">
+        <span class="eyebrow eyebrow--plain">Lesson 4.2 · LO 4.1</span>
+        <h2 class="h1" style="max-width:24ch">A schema is a<br>sequence of files,<br>not a dashboard</h2>
+        <p class="lede" style="text-align:center;margin-inline:auto">If it is not in a migration, it does not exist.</p>
+        <span class="file">supabase/migrations/</span>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="4.2" data-label="Why not the dashboard" data-rail="Migrations">
+      <span class="eyebrow">The habit to break in week 7</span>
+      <h2 class="h2">Clicking works, until there are four of you</h2>
+      <div class="compare">
+        <div class="compare__side compare__side--bad">
+          <div class="compare__head">Clicking in the Supabase UI</div>
+          <div class="compare__body">
+            <p>Fast, and completely invisible. Nobody else's database changes.</p>
+            <p>No answer to "who added this column, and when, and why".</p>
+            <p>No way to review it before it happens. No way to undo it.</p>
+            <p>Your teammate's local database is now different from yours, and the bug only happens on one machine.</p>
+          </div>
+        </div>
+        <div class="compare__side compare__side--good">
+          <div class="compare__head">A migration file</div>
+          <div class="compare__body">
+            <p>A <code>.sql</code> file in the repository, in a pull request, reviewable like any other change.</p>
+            <p><code>git log</code> answers who, when, and — if the message is good — why.</p>
+            <p>Every environment applies the same ordered list, so every database is the same database.</p>
+            <p>It is code. It gets the same treatment as code.</p>
+          </div>
+        </div>
+      </div>
+      <p class="callout"><b>The rule for the semester:</b> if a schema change is not in a migration file, it did not happen — and it will be gone the next time anyone resets.</p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="4.2" data-label="The workflow" data-rail="Migrations">
+      <span class="eyebrow">The loop you will run all module</span>
+      <h2 class="h2">Write, apply, verify, commit</h2>
+      <div data-widget="stepper">
+        <div class="stepper__track">
+          <button class="stepper__btn" type="button" data-step="1"><span class="stepper__n">01</span><span class="stepper__l">New file</span></button>
+          <button class="stepper__btn" type="button" data-step="2"><span class="stepper__n">02</span><span class="stepper__l">Write SQL</span></button>
+          <button class="stepper__btn" type="button" data-step="3"><span class="stepper__n">03</span><span class="stepper__l">Apply</span></button>
+          <button class="stepper__btn" type="button" data-step="4"><span class="stepper__n">04</span><span class="stepper__l">Regenerate types</span></button>
+          <button class="stepper__btn" type="button" data-step="5"><span class="stepper__n">05</span><span class="stepper__l">Commit</span></button>
+        </div>
+
+        <div class="stepper__panel" data-step="1">
+          <div class="grid grid--sidebar">
+            <div class="panel"><div class="panel__head">One change, one file</div>
+              <pre>supabase migration new <b>add_enrollment_status</b></pre>
+              <pre><i># creates:</i>
+supabase/migrations/<b>20260819021905</b>_add_enrollment_status.sql</pre></div>
+            <div class="panel"><div class="panel__head">Why the timestamp matters</div>
+              <p class="body">Migrations run in filename order, and the timestamp is what guarantees that order is the same for everyone.</p>
+              <p class="body">It also means two people creating migrations on the same afternoon do not collide — the names differ by seconds.</p></div>
+          </div>
+        </div>
+
+        <div class="stepper__panel" data-step="2">
+          <div class="grid grid--sidebar">
+            <div class="panel"><div class="panel__head">Forward only</div>
+              <pre>create type enrollment_status as enum (
+  'draft', 'submitted', 'approved', 'returned'
+);
+
+alter table enrollments
+  add column status enrollment_status
+  not null default 'draft';</pre></div>
+            <div class="panel"><div class="panel__head">Two rules that save you</div>
+              <p class="body"><b>Never edit a migration that has been applied anywhere but your laptop.</b> Others have already run it; changing it means their database and yours diverge silently. Write a new one.</p>
+              <p class="body"><b>Adding a non-null column needs a default</b>, or the existing rows have nothing to put there and the migration fails.</p></div>
+          </div>
+        </div>
+
+        <div class="stepper__panel" data-step="3">
+          <div class="grid grid--sidebar">
+            <div class="panel"><div class="panel__head">Locally first, always</div>
+              <pre>supabase db reset   <i># replay every migration from empty</i></pre>
+              <p class="body"><code>db reset</code> is the honest test: it proves the whole sequence works from nothing, which is what a new teammate and a fresh environment will do.</p></div>
+            <div class="panel"><div class="panel__head">Then push</div>
+              <pre>supabase db push    <i># apply new migrations to the hosted project</i></pre>
+              <p class="callout" style="margin-top:var(--s3)">If <code>db reset</code> fails, your migration is broken even though your database looks fine. That gap is where "works on my machine" lives.</p></div>
+          </div>
+        </div>
+
+        <div class="stepper__panel" data-step="4">
+          <div class="grid grid--sidebar">
+            <div class="panel"><div class="panel__head">The schema changed, so the types must</div>
+              <pre>supabase gen types typescript --local \
+  &gt; src/lib/supabase/database.types.ts</pre></div>
+            <div class="panel"><div class="panel__head">You have seen this exact pattern</div>
+              <p class="body">Module 2 generated TypeScript from <code>openapi.yaml</code>. This generates TypeScript from your migrations. <b>Same rule: the schema is truth, the types are downstream, and editing the generated file by hand is always a mistake.</b></p></div>
+          </div>
+        </div>
+
+        <div class="stepper__panel" data-step="5">
+          <div class="grid grid--sidebar">
+            <div class="panel"><div class="panel__head">The migration and the types go together</div>
+              <pre>git add supabase/migrations/ src/lib/supabase/database.types.ts
+git commit -m "<b>feat(db): add enrollment status enum</b>"</pre></div>
+            <div class="panel"><div class="panel__head">Why in one commit</div>
+              <p class="body">Committing the migration without the regenerated types leaves a commit where the code and the database disagree. Anyone who checks out that commit gets type errors that are not their fault.</p>
+              <p class="body">CI regenerates and fails if they drifted — so this is checked, not trusted.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="4.2" data-label="Seed data" data-rail="Migrations">
+      <span class="eyebrow">The thing that makes a demo possible</span>
+      <h2 class="h2">Seed data is not test data</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">supabase/seed.sql</div>
+          <pre>insert into terms (code, label, is_active)
+values ('2026-1', 'First Semester 2026-2027', true);
+
+insert into subjects (code, title, units, capacity)
+values
+  ('CSci 153', 'Web Systems and Technologies', 3, 40),
+  ('CSci 141', 'Data Structures', 3, 35),
+  ('Math 111', 'Discrete Mathematics', 5, 50);</pre>
+          <p class="small">Runs after every <code>db reset</code>, so a fresh database is immediately usable.</p>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">What belongs in it</div>
+            <ul class="list list--check">
+              <li>Reference data your app needs to function at all — terms, subjects, programs</li>
+              <li>Two or three accounts in each role, so you can demo a permission boundary</li>
+              <li>Enough rows that a list looks like a list</li>
+            </ul>
+          </div>
+          <p class="callout">
+            <b>Seed the empty and the awkward cases too:</b> a student with no subjects, a subject
+            at capacity, a name long enough to break your layout. Those are the states your QA
+            requires you to have designed.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 4.3 CRUD ENDPOINTS ================= -->
+
+    <section class="slide slide--center" data-sec="4.3" data-label="Lesson 4.3 opens" data-rail="CRUD endpoints">
+      <div class="col" style="gap:var(--s4);align-items:center">
+        <span class="eyebrow eyebrow--plain">Lesson 4.3 · LO 4.2</span>
+        <h2 class="h1" style="max-width:24ch">The endpoints<br>already exist</h2>
+        <p class="lede" style="text-align:center;margin-inline:auto">The work is deciding which ones you are entitled to call.</p>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="4.3" data-label="PostgREST" data-rail="CRUD endpoints">
+      <span class="eyebrow">What a table gives you for free</span>
+      <h2 class="h2">Four verbs, no route handlers</h2>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">One table, and the API it becomes</div>
+          <pre>create table subjects ( … );</pre>
+          <div class="table-wrap" style="margin-top:var(--s3)">
+            <table>
+              <thead><tr><th style="width:5rem">Verb</th><th style="width:11rem">Path</th><th>What it does</th></tr></thead>
+              <tbody>
+                <tr><td class="mono" style="color:var(--cyan)">GET</td><td class="mono">/subjects</td><td>Read. Filter, sort and paginate with query parameters.</td></tr>
+                <tr><td class="mono" style="color:var(--pass)">POST</td><td class="mono">/subjects</td><td>Create. The body is the row.</td></tr>
+                <tr><td class="mono" style="color:var(--brass)">PATCH</td><td class="mono">/subjects?id=eq.…</td><td>Update whichever rows the filter selects.</td></tr>
+                <tr><td class="mono" style="color:var(--fail)">DELETE</td><td class="mono">/subjects?id=eq.…</td><td>Delete whichever rows the filter selects.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Reading a PostgREST query</div>
+            <pre>GET /subjects
+  ?term=eq.2026-1
+  &amp;units=gte.3
+  &amp;order=code.asc
+  &amp;select=id,code,units</pre>
+            <p class="small"><code>eq</code>, <code>gte</code>, <code>lt</code>, <code>like</code>, <code>in</code> — the operator is part of the value, which is unusual and takes ten minutes to stop looking strange.</p>
+          </div>
+          <p class="callout"><code>select=</code> is worth knowing early: asking for four columns instead of thirty is the cheapest performance win in the course.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="4.3" data-label="The danger" data-rail="CRUD endpoints">
+      <span class="eyebrow">Say this part out loud</span>
+      <h2 class="h2">Generated endpoints do not ask who you are</h2>
+      <div class="grid grid--sidebar">
+        <div class="panel" style="border-color:var(--fail)">
+          <div class="panel__head" style="color:var(--fail)">A table with RLS off</div>
+          <pre>GET /enrollments</pre>
+          <p class="body">Returns <b>every enrollment in the system</b>, to anyone holding the anon key — which is compiled into your frontend bundle and readable by anybody who opens devtools.</p>
+          <p class="body">Not a hypothetical. This is the default state of a new table.</p>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">What you might expect to protect you</div>
+            <ul class="list list--cross">
+              <li><b>The route guard</b> — runs in the browser. Deleted with devtools in Module 2.</li>
+              <li><b>The frontend never requesting it</b> — irrelevant. The endpoint does not care what your UI does.</li>
+              <li><b>The anon key being secret</b> — it is not secret. It is in the bundle by design.</li>
+            </ul>
+          </div>
+          <p class="callout">
+            The only thing that protects a row is <b>a policy on the table</b>. That is the next
+            lesson, and it is the most important hour in this module.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="4.3" data-label="Joins" data-rail="CRUD endpoints">
+      <span class="eyebrow">Getting the contract's shape back out</span>
+      <h2 class="h2">One request, nested rows</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">Your contract promised this shape</div>
+          <pre>{
+  "id": "…",
+  "status": "draft",
+  "totalUnits": 11,
+  "subjects": [
+    { "code": "CSci 153", "units": 3 },
+    { "code": "Math 111", "units": 5 }
+  ]
+}</pre>
+          <p class="small">A nested array — and your schema has that split across three tables.</p>
+        </div>
+        <div class="panel">
+          <div class="panel__head">PostgREST follows the foreign keys</div>
+          <pre>GET /enrollments
+  ?id=eq.abc
+  &amp;select=id,status,total_units,
+    <b>enrollment_items(subjects(code,units))</b></pre>
+          <p class="body">Because the foreign keys exist, the embed is possible. <b>The relationships you declared in 4.1 are what make this work</b> — a schema without them cannot be queried this way at all.</p>
+        </div>
+      </div>
+      <p class="callout">
+        Notice the mismatch: the database says <code>total_units</code>, the contract says
+        <code>totalUnits</code>. Something has to reconcile that — a view, an alias, or a mapping
+        layer. <b>Decide where, once, and do it everywhere.</b> Half-and-half is the worst option.
+      </p>
+    </section>
+
+    <!-- ================= 4.4 RLS ================= -->
+
+    <section class="slide slide--center" data-sec="4.4" data-label="Lesson 4.4 opens" data-rail="Row Level Security">
+      <div class="col" style="gap:var(--s4);align-items:center">
+        <span class="eyebrow eyebrow--plain">Lesson 4.4 · one to two sessions</span>
+        <h2 class="h1" style="max-width:22ch">The layer<br>everything else<br>was pretending to be</h2>
+        <p class="lede" style="text-align:center;margin-inline:auto">Every authorization claim in your project specification rests on this.</p>
+        <span class="chip chip--added">No learning outcome requires this</span>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="4.4" data-label="What a policy is" data-rail="Row Level Security">
+      <span class="eyebrow">The whole idea, in one sentence</span>
+      <h2 class="h2">A policy is a <code>WHERE</code> clause the database adds for you</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">What you write</div>
+          <pre>alter table enrollments <b>enable row level security</b>;
+
+create policy "students read their own"
+  on enrollments <b>for select</b>
+  using ( student_id = <b>auth.uid()</b> );</pre>
+        </div>
+        <div class="panel">
+          <div class="panel__head">What the client sends, and what actually runs</div>
+          <pre><i>-- the request</i>
+select * from enrollments;
+
+<i>-- what Postgres executes</i>
+select * from enrollments
+<b>where student_id = auth.uid()</b>;</pre>
+          <p class="body">The client cannot see the added clause, cannot remove it, and cannot ask for the version without it.</p>
+        </div>
+      </div>
+      <p class="callout">
+        <code>auth.uid()</code> is the id from the verified JWT. <b>Not a value the client sends
+        as data</b> — a value the database extracts from a signed token it checked itself. That
+        distinction is why this works at all.
+      </p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="4.4" data-label="The simulator" data-rail="Row Level Security">
+      <span class="eyebrow">Interactive · the same query, four identities</span>
+      <h2 class="h2">Who sees what</h2>
+      <div class="panel panel--sunk">
+        <div class="panel__head">select * from enrollments <span class="spacer"></span><span class="dim">switch identity, and toggle the policy off</span></div>
+        <div class="rls" data-widget="rls" id="rls"></div>
+      </div>
+      <p class="callout">
+        The detail that surprises everyone: a blocked read comes back <b>empty, not forbidden.</b>
+        There is no 403 — the rows simply are not in the result. <b>Absence of data is what
+        enforcement looks like.</b>
+      </p>
+    </section>
+
+    <section class="slide" data-sec="4.4" data-label="using vs with check" data-rail="Row Level Security">
+      <span class="eyebrow">The distinction that causes the most confusion</span>
+      <h2 class="h2"><code>using</code> reads. <code>with check</code> writes.</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head"><code>using</code> — which existing rows can I touch?</div>
+          <pre>create policy "students read their own"
+  on enrollments for <b>select</b>
+  <b>using</b> ( student_id = auth.uid() );</pre>
+          <p class="body">Applied to <code>select</code>, <code>update</code> and <code>delete</code> — the operations that need to find a row before acting on it.</p>
+        </div>
+        <div class="panel">
+          <div class="panel__head"><code>with check</code> — is this new row allowed?</div>
+          <pre>create policy "students insert their own"
+  on enrollments for <b>insert</b>
+  <b>with check</b> ( student_id = auth.uid() );</pre>
+          <p class="body">Applied to <code>insert</code> and <code>update</code> — evaluated against the row <em>as it will be</em>.</p>
+        </div>
+      </div>
+      <div class="panel" style="border-color:var(--fail)">
+        <div class="panel__head" style="color:var(--fail)">The bug this prevents</div>
+        <p class="body">An <code>update</code> policy with only <code>using</code> lets a student find their own enrollment and then <b>change <code>student_id</code> to somebody else's</b>. They were allowed to touch the row; nobody checked what they turned it into. <b>Update policies need both clauses.</b></p>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="4.4" data-label="One per role per op" data-rail="Row Level Security">
+      <span class="eyebrow">How to organise them</span>
+      <h2 class="h2">One policy per role, per operation</h2>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">Enroll's enrollments table, in full</div>
+          <pre><i>-- R7 · a student sees only their own</i>
+create policy "student select own" on enrollments
+  for select using ( student_id = auth.uid() );
+
+<i>-- R5 · and edits it only while it is a draft</i>
+create policy "student update own draft" on enrollments
+  for update
+  using  ( student_id = auth.uid() and status = 'draft' )
+  with check ( student_id = auth.uid() );
+
+<i>-- R8 · an adviser sees their own advisees</i>
+create policy "adviser select advisees" on enrollments
+  for select using (
+    exists (
+      select 1 from students s
+      where s.id = enrollments.student_id
+        and s.adviser_id = auth.uid()
+    )
+  );</pre>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Why many small ones beat one clever one</div>
+            <ul class="list list--check">
+              <li><b>Policies for the same operation are OR-ed.</b> A student matching one and an adviser matching another both get through, with no shared condition to get wrong.</li>
+              <li>Each one is readable on its own, and its name says what it is for.</li>
+              <li>Deleting a role means deleting its policies — not editing a condition four roles depend on.</li>
+            </ul>
+          </div>
+          <p class="callout"><b>Notice R5 is enforced here too</b>, not only in the UI. The <code>status = 'draft'</code> in the <code>using</code> clause is what actually stops an edit after submission.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="4.4" data-label="The service role" data-rail="Row Level Security">
+      <span class="eyebrow">The key that ignores everything</span>
+      <h2 class="h2">One key bypasses every policy</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">Two keys, and what each is for</div>
+          <div class="steps">
+            <div class="step"><div><div class="step__t"><code>anon</code> · the public key</div><div class="step__b">Ships in your frontend bundle. Anyone can read it. Every policy applies to it. That is fine, and it is the design.</div></div></div>
+            <div class="step"><div><div class="step__t"><code>service_role</code> · the master key</div><div class="step__b">Bypasses RLS entirely. Every row, every table, no policy evaluated.</div></div></div>
+          </div>
+        </div>
+        <div class="panel" style="border-color:var(--fail)">
+          <div class="panel__head" style="color:var(--fail)">Where the service role may appear</div>
+          <ul class="list list--check">
+            <li>Inside an Edge Function, from a secret</li>
+            <li>In a CI job, from a repository secret</li>
+          </ul>
+          <ul class="list list--cross">
+            <li>In any <code>VITE_</code> variable</li>
+            <li>In any file the bundler can see</li>
+            <li>In a commit, ever — even a deleted one</li>
+          </ul>
+          <p class="small">A key in git history is a leaked key, whether or not the commit is still there.</p>
+        </div>
+      </div>
+      <p class="callout">
+        <b>If a service-role key reaches a browser, your entire database is public</b> — every
+        policy you wrote becomes decoration. Lesson 4.6 demonstrates exactly how it gets there.
+      </p>
+    </section>
+
+    <section class="slide" data-sec="4.4" data-label="Testing policies" data-rail="Row Level Security">
+      <span class="eyebrow">How you know it works</span>
+      <h2 class="h2">Prove it from the other account</h2>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">The five-minute check, per table</div>
+          <div class="steps">
+            <div class="step"><div><div class="step__t">Sign in as student A. Read your own row.</div><div class="step__b">You get it. The policy allows what it should.</div></div></div>
+            <div class="step"><div><div class="step__t">With A's token, request B's row by id.</div><div class="step__b">Empty. Not an error — empty.</div></div></div>
+            <div class="step"><div><div class="step__t">Disable the policy. Request it again.</div><div class="step__b">Everything comes back. Now you know the policy was the thing doing the work.</div></div></div>
+            <div class="step"><div><div class="step__t">Re-enable it. Try to write to B's row.</div><div class="step__b">Rejected — and if it is not, your update policy is missing <code>with check</code>.</div></div></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Do it with a REST client, not your app</div>
+            <p class="body">Your app sends requests your UI decides to send. A REST client sends whatever you type — including the request an attacker would send. <b>Only one of those is a test.</b></p>
+          </div>
+          <p class="callout">
+            <b>Sprint 1's gate is this demonstration</b>, not a claim that policies exist.
+            Another group's account cannot read your rows, shown live.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="4.4" data-label="Check: RLS" data-rail="Row Level Security">
+      <span class="eyebrow">Check yourself</span>
+      <h2 class="h2">Reading a policy</h2>
+      <div data-widget="quiz" data-src="quiz-rls"></div>
+      <script type="application/json" id="quiz-rls">
+      [
+        {
+          "scenario": "A group enables RLS on <code>enrollments</code> and writes exactly one policy: <code>for select using (student_id = auth.uid())</code>. Their app works — students see their own enrollment.",
+          "q": "What can a student do that they should not?",
+          "options": [
+            "Read other students' enrollments",
+            "Nothing — the policy is complete",
+            "Insert an enrollment with someone else's student_id, since nothing governs insert",
+            "Delete the table"
+          ],
+          "answer": 2,
+          "why": "With RLS enabled and no insert policy, inserts are blocked entirely — so the app would break rather than be exploitable, which is the safe failure. But the moment they add a permissive insert policy to fix that, without `with check`, a student can insert rows attributed to anyone. Each operation needs its own policy, and insert needs `with check`, not `using`."
+        },
+        {
+          "scenario": "A student requests another student's enrollment by id, with a valid token of their own.",
+          "q": "What comes back?",
+          "options": [
+            "403 Forbidden",
+            "An empty result — the row is simply not there as far as this query is concerned",
+            "401 Unauthorized",
+            "The row, since the id was correct"
+          ],
+          "answer": 1,
+          "why": "RLS filters rows; it does not reject requests. The query succeeds and returns nothing. This matters for your UI: a blocked read looks exactly like a deleted record, so 'not found' and 'not yours' are indistinguishable from the client — which is a feature, since a 403 would confirm the row exists."
+        },
+        {
+          "scenario": "An update policy reads: <code>for update using (student_id = auth.uid())</code> with no <code>with check</code> clause.",
+          "q": "What is the hole?",
+          "options": [
+            "None — using covers updates",
+            "A student can find their own row and update student_id to another student's id, giving the row away",
+            "Updates are blocked entirely",
+            "It only affects deletes"
+          ],
+          "answer": 1,
+          "why": "`using` decides which rows you may touch; `with check` decides what they may become. With only `using`, the student legitimately selects their own row and then writes any values into it, including a different student_id. Update policies need both clauses — one for the row as it is, one for the row as it will be."
+        },
+        {
+          "scenario": "A teammate cannot get an Edge Function to write to a table protected by RLS. They find that using the service_role key makes it work, so they put that key in a <code>VITE_SERVICE_KEY</code> variable and the frontend calls the table directly.",
+          "q": "What has just happened?",
+          "options": [
+            "A reasonable workaround — the key is in an environment variable, not the code",
+            "The entire database is now public, because VITE_ variables are compiled into the browser bundle",
+            "Nothing bad, as long as the repository is private",
+            "It only affects that one table"
+          ],
+          "answer": 1,
+          "why": "Anything prefixed VITE_ is inlined into the bundle at build time by design — it is how the frontend gets its config. So the service_role key is now readable by anyone who opens devtools, and it bypasses every policy on every table. The key belongs in `supabase secrets set`, read inside the function, never reaching the client. Lesson 4.6 demonstrates finding it in the built bundle."
+        }
+      ]
+      </script>
+    </section>
+
+    <!-- ================= 4.5 CONSTRAINTS & TRIGGERS ================= -->
+
+    <section class="slide slide--center" data-sec="4.5" data-label="Lesson 4.5 opens" data-rail="Constraints & triggers">
+      <div class="col" style="gap:var(--s4);align-items:center">
+        <span class="eyebrow eyebrow--plain">Lesson 4.5 · one session</span>
+        <h2 class="h1" style="max-width:24ch">"The frontend validates it"<br>is not an answer</h2>
+        <p class="lede" style="text-align:center;margin-inline:auto">To the question: what stops a bad row?</p>
+        <span class="chip chip--added">No learning outcome requires this</span>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="4.5" data-label="The four constraints" data-rail="Constraints & triggers">
+      <span class="eyebrow">Rules the table enforces itself</span>
+      <h2 class="h2">Four constraints that do most of the work</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">In Enroll's schema, for real</div>
+          <pre>create table enrollment_items (
+  enrollment_id uuid not null
+    references enrollments(id) <b>on delete cascade</b>,
+  subject_id uuid not null
+    references subjects(id) <b>on delete restrict</b>,
+
+  <i>-- R3 · a subject at most once per enrollment</i>
+  <b>primary key</b> (enrollment_id, subject_id)
+);
+
+alter table subjects
+  add constraint units_sane
+  <b>check</b> (units between 1 and 6);
+
+alter table subjects
+  add constraint capacity_positive
+  <b>check</b> (capacity &gt; 0);</pre>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">What each one buys</div>
+            <ul class="list">
+              <li><b><code>not null</code></b> — the column always has a value. Cheapest constraint there is.</li>
+              <li><b><code>check</code></b> — a value must satisfy an expression. Where most business rules can live.</li>
+              <li><b><code>unique</code></b> / composite <b><code>primary key</code></b> — no duplicates, ever, from any code path.</li>
+              <li><b><code>references</code></b> — a pointer that cannot dangle.</li>
+            </ul>
+          </div>
+          <p class="callout">
+            <b>The two <code>on delete</code> choices are a design decision, not a default.</b>
+            Deleting an enrollment should take its items with it — <code>cascade</code>. Deleting a
+            subject that people are enrolled in should be refused — <code>restrict</code>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="4.5" data-label="The tester" data-rail="Constraints & triggers">
+      <span class="eyebrow">Interactive · try to insert a bad row</span>
+      <h2 class="h2">Which layer catches it</h2>
+      <div class="panel panel--sunk">
+        <div class="panel__head">insert into … <span class="spacer"></span><span class="dim">pick a bad write and see what rejects it</span></div>
+        <div class="con" data-widget="con" id="con"></div>
+      </div>
+      <p class="callout">
+        Notice how many are caught by <b>the table itself</b>, with no code involved. A constraint
+        is a rule that holds no matter which client, which endpoint, or which bug tries to break
+        it — including the ones you have not written yet.
+      </p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="4.5" data-label="Triggers" data-rail="Constraints & triggers">
+      <span class="eyebrow">When a constraint is not enough</span>
+      <h2 class="h2">A trigger maintains what a constraint cannot express</h2>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">R2 · the unit ceiling, enforced where it counts</div>
+          <pre>create function check_unit_ceiling()
+returns trigger as $$
+declare total int;
+begin
+  select coalesce(sum(s.units), 0) into total
+  from enrollment_items i
+  join subjects s on s.id = i.subject_id
+  where i.enrollment_id = NEW.enrollment_id;
+
+  if total &gt; 21 then
+    <b>raise exception 'UNIT_CEILING: % units exceeds 21', total;</b>
+  end if;
+
+  return NEW;
+end $$ language plpgsql;
+
+create trigger enforce_ceiling
+  <b>after insert</b> on enrollment_items
+  for each row execute function check_unit_ceiling();</pre>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Why a <code>check</code> cannot do this</div>
+            <p class="body">A <code>check</code> constraint sees <b>one row</b>. The unit ceiling is a fact about <em>all</em> the rows for an enrollment, so it needs a query — and that means a trigger.</p>
+          </div>
+          <div class="panel">
+            <div class="panel__head">The other job triggers do</div>
+            <p class="body">Maintaining the stored <code>total_units</code> from 4.1. Every insert or delete on <code>enrollment_items</code> recomputes it, so the duplicated value cannot drift from the truth.</p>
+            <p class="small">This is what makes deliberate duplication safe rather than a liability.</p>
+          </div>
+        </div>
+      </div>
+      <p class="callout">
+        <b>Now the ceiling exists in three places</b> — the UI in <code>units.ts</code>, this
+        trigger, and the contract's documented 422. That is not redundancy: the first is a
+        courtesy, the second is enforcement, the third is the agreement between them.
+      </p>
+    </section>
+
+    <section class="slide" data-sec="4.5" data-label="Where a rule belongs" data-rail="Constraints & triggers">
+      <span class="eyebrow">The decision, as a table</span>
+      <h2 class="h2">Which layer should hold this rule?</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th style="width:15rem">The rule</th><th style="width:9rem">Where</th><th>Why there</th></tr></thead>
+          <tbody>
+            <tr><td><b>Units must be 1–6</b></td><td style="color:var(--brass)"><code>check</code></td><td>A property of one row. The table can answer it alone.</td></tr>
+            <tr><td><b>No duplicate subject</b></td><td style="color:var(--brass)">composite key</td><td>Structural. No code path can violate it, ever.</td></tr>
+            <tr><td><b>Total units ≤ 21</b></td><td style="color:var(--violet)">trigger</td><td>Needs to see every row for the enrollment, so it needs a query.</td></tr>
+            <tr><td><b>Only your own record</b></td><td style="color:var(--violet)">RLS policy</td><td>Depends on who is asking, which only the database knows for certain.</td></tr>
+            <tr><td><b>Submitting sets a timestamp and locks it</b></td><td style="color:var(--cyan)">Edge Function</td><td>Several statements that must all succeed or all fail together.</td></tr>
+            <tr><td><b>Warn before you hit the ceiling</b></td><td><span class="dim">the UI</span></td><td>A courtesy, so the user is told before the request. Never the enforcement.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="callout">
+        <b>The test for every row of this table:</b> if someone bypassed your UI entirely and
+        posted straight to the endpoint, would this rule still hold? If not, it is in the wrong
+        layer.
+      </p>
+    </section>
+
+    <!-- ================= 4.6 EDGE FUNCTIONS ================= -->
+
+    <section class="slide slide--center" data-sec="4.6" data-label="Lesson 4.6 opens" data-rail="Edge Functions">
+      <div class="col" style="gap:var(--s4);align-items:center">
+        <span class="eyebrow eyebrow--plain">Lesson 4.6 · one session</span>
+        <h2 class="h1" style="max-width:24ch">Where the secrets<br>and the transactions<br>live</h2>
+        <p class="lede" style="text-align:center;margin-inline:auto">Everything PostgREST cannot safely do for you.</p>
+        <span class="chip chip--added">No learning outcome requires this</span>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="4.6" data-label="The decision rule" data-rail="Edge Functions">
+      <span class="eyebrow">When to write one, and when not to</span>
+      <h2 class="h2">Three reasons, and no others</h2>
+      <div class="grid grid--3">
+        <div class="card"><span class="card__k">Reason 01</span><div class="card__t">A secret is involved</div><p class="card__b">An API key, the service role, a signing secret. Anything that must never reach a browser has to run somewhere the browser cannot see.</p></div>
+        <div class="card"><span class="card__k">Reason 02</span><div class="card__t">Several writes must agree</div><p class="card__b">Submitting an enrollment sets a status, stamps a time, and locks the items. All three, or none — a client doing them in sequence can stop halfway.</p></div>
+        <div class="card"><span class="card__k">Reason 03</span><div class="card__t">A privileged action</div><p class="card__b">Something the caller is allowed to <em>request</em> but not to <em>do</em> directly, so it needs code checking the request first.</p></div>
+      </div>
+      <div class="panel">
+        <div class="panel__head">Otherwise: use PostgREST</div>
+        <p class="body">A plain read, or a single-row write the caller is entitled to make, goes straight to the generated endpoint. Wrapping it in a function adds a deploy step, a cold start, and one more place for a bug — and buys nothing.</p>
+      </div>
+      <p class="callout"><b>The rule, sayable in one line:</b> plain read or single-row write → PostgREST. Secret, multi-step, or privileged → a function.</p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="4.6" data-label="A real function" data-rail="Edge Functions">
+      <span class="eyebrow">submitEnrollment, because it is all three reasons at once</span>
+      <h2 class="h2">What one actually looks like</h2>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">supabase/functions/submit-enrollment/index.ts</div>
+          <pre>Deno.serve(async (req) =&gt; {
+  const auth = req.headers.get('Authorization')
+  if (!auth) return err(401, 'UNAUTHORIZED', 'Sign in first.')
+
+  <i>// the caller's token — so RLS still applies to reads</i>
+  const client = createClient(URL, ANON, {
+    global: { headers: { Authorization: auth } }
+  })
+
+  const { data: user } = await client.auth.getUser()
+  if (!user) return err(401, 'UNAUTHORIZED', 'Sign in first.')
+
+  <i>// R6 · nothing to submit</i>
+  const { data: items } = await client
+    .from('enrollment_items').select('subject_id')
+  if (!items?.length)
+    return err(422, 'EMPTY_ENROLLMENT',
+               'Add at least one subject before submitting.')
+
+  <i>// one statement, so it succeeds or fails whole</i>
+  const { error } = await client.rpc('submit_enrollment', {
+    p_term: body.term
+  })
+  if (error) return err(409, 'NOT_EDITABLE',
+                        'This enrollment was already submitted.')
+
+  return json(200, updated)
+})</pre>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Three things to notice</div>
+            <ul class="list list--check">
+              <li><b>It forwards the caller's token</b> rather than using the service role. RLS still applies, so the function cannot accidentally act on someone else's data.</li>
+              <li><b>It returns the contract's error shape</b> — <code>code</code>, <code>message</code> — with the documented status. The client has one error path, not two.</li>
+              <li><b>The multi-table write is one <code>rpc</code> call</b> to a database function, which is what makes it atomic.</li>
+            </ul>
+          </div>
+          <p class="callout">
+            <b>A function that returns a different error shape than PostgREST</b> forces every
+            screen to handle two formats. Match the contract, always.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="4.6" data-label="Secrets" data-rail="Edge Functions">
+      <span class="eyebrow">The demonstration for this session</span>
+      <h2 class="h2">Find the key in the bundle</h2>
+      <div class="grid grid--2">
+        <div class="panel" style="border-color:var(--fail)">
+          <div class="panel__head" style="color:var(--fail)">Do this live, in four commands</div>
+          <pre><i># 1 · put a "secret" in a VITE_ variable</i>
+echo 'VITE_SECRET=hunter2' &gt;&gt; .env
+
+<i># 2 · use it somewhere in a component</i>
+const k = import.meta.env.VITE_SECRET
+
+<i># 3 · build for production</i>
+npm run build
+
+<i># 4 · look for it</i>
+grep -r hunter2 dist/</pre>
+          <p class="body"><b>It is there.</b> In plain text, in a file served to every visitor.</p>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Why, and it is not a bug</div>
+            <p class="body">There is no server in a static build. <code>VITE_</code> variables are <b>substituted into the code at build time</b> — that is the entire mechanism, and it is how the frontend gets its API URL.</p>
+            <p class="body">"Environment variable" does not mean "secret". It means "value chosen at build time".</p>
+          </div>
+          <div class="panel">
+            <div class="panel__head">Where secrets actually go</div>
+            <pre>supabase secrets set STRIPE_KEY=sk_live_…
+
+<i>// read inside the function only</i>
+Deno.env.get('STRIPE_KEY')</pre>
+          </div>
+        </div>
+      </div>
+      <p class="callout">
+        This reframes "keep secrets on the server" from a rule you were told into
+        <b>something you watched happen.</b> Nobody who has run that <code>grep</code> puts a key
+        in a <code>VITE_</code> variable again.
+      </p>
+    </section>
+
+    <!-- ================= 4.7 IMPLEMENTING THE CONTRACT ================= -->
+
+    <section class="slide slide--center" data-sec="4.7" data-label="Lesson 4.7 opens" data-rail="Implementing the contract">
+      <div class="col" style="gap:var(--s4);align-items:center">
+        <span class="eyebrow eyebrow--plain">Lesson 4.7 · LO 4.2</span>
+        <h2 class="h1" style="max-width:24ch">You are not designing<br>an API here</h2>
+        <p class="lede" style="text-align:center;margin-inline:auto">You were handed one in week 5. By yourselves.</p>
+        <span class="file">contract/openapi.yaml</span>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="4.7" data-label="The criterion" data-rail="Implementing the contract">
+      <span class="eyebrow">What "done" means for this module</span>
+      <h2 class="h2">One command decides it</h2>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">The whole semester, as a pipeline</div>
+          <pre>contract/openapi.yaml
+   <i>written week 5, by your group</i>
+        ↓
+schema + RLS + functions
+   <i>built in sprint 1</i>
+        ↓
+<b>npm run contract:check</b>
+   <i>passes, or the module is not done</i></pre>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Why this is a better criterion than a demo</div>
+            <p class="body">A demo shows the paths you chose to show. The contract lists <b>every operation and every documented response</b>, including the failures nobody demonstrates voluntarily.</p>
+            <p class="body">And it was written by you, in week 5, before you knew which parts would be inconvenient.</p>
+          </div>
+          <p class="callout">
+            The frontend has been running against a mock of this document for four weeks.
+            <b>If your backend satisfies it, integration is a URL change.</b> That claim gets
+            tested in Module 5.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="4.7" data-label="Contract check" data-rail="Implementing the contract">
+      <span class="eyebrow">Interactive · running it for the first time</span>
+      <h2 class="h2">Nine operations, checked one by one</h2>
+      <div class="panel panel--sunk">
+        <div class="panel__head">npm run contract:check <span class="spacer"></span><span class="dim">this is what week 7 actually looks like</span></div>
+        <div class="cc" data-widget="cc" id="cc"></div>
+      </div>
+      <p class="callout">
+        <b>Nobody passes on the first run.</b> The failures are specific, findable, and each one
+        is either "the backend did not implement what was agreed" or "what was agreed was wrong."
+        Both are fixable in an afternoon. That is the entire argument for contract-first.
+      </p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="4.7" data-label="Breaking changes" data-rail="Implementing the contract">
+      <span class="eyebrow">The part to expect, and to do properly</span>
+      <h2 class="h2">Your week-5 contract will be wrong somewhere</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">Why it is wrong, and why that is fine</div>
+          <p class="body">You specified data shapes in week 5. You learned to model data in week 7. <b>Those two weeks are in that order on purpose</b> — the contract had to exist before the frontend could be built.</p>
+          <p class="body">So some shapes will turn out to be unrepresentable, or awkward, or missing a field the schema makes obvious.</p>
+        </div>
+        <div class="panel" style="border-color:var(--fail)">
+          <div class="panel__head" style="color:var(--fail)">The one unacceptable response</div>
+          <p class="body">Silently editing the frontend to match whatever the backend ended up doing.</p>
+          <p class="body">Now there is no agreement — just two halves that happen to line up today, and nothing to be wrong <em>against</em> tomorrow. <b>You have thrown away the only thing keeping the two sides honest.</b></p>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel__head">What to do instead</div>
+        <pre>1 · change contract/openapi.yaml
+2 · npm run contract:types        <i># the generated types move with it</i>
+3 · commit: <b>feat(contract)!: rename load to enrollment</b>
+4 · in the PR body: who has to change what, and by when
+5 · both sides approve — the FE half and the BE half</pre>
+      </div>
+      <p class="callout"><b>The <code>!</code> is the whole point.</b> It says out loud: someone's code stops working. That is a thing a group decides together, not a thing one person does on a branch.</p>
+    </section>
+
+    <section class="slide" data-sec="4.7" data-label="Generated types, again" data-rail="Implementing the contract">
+      <span class="eyebrow">The pattern, for the second time</span>
+      <h2 class="h2">You have seen this exact shape before</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">Module 2 · week 4</div>
+          <pre>contract/openapi.yaml     <i>← the truth</i>
+        ↓ openapi-typescript
+contract/generated/       <i>← derived, never edited</i></pre>
+        </div>
+        <div class="panel" style="border-color:var(--cyan-dim)">
+          <div class="panel__head" style="color:var(--cyan)">Module 4 · now</div>
+          <pre>supabase/migrations/      <i>← the truth</i>
+        ↓ supabase gen types
+src/lib/supabase/…types   <i>← derived, never edited</i></pre>
+        </div>
+      </div>
+      <p class="callout">
+        Module 2 promised this would feel like <b>recognition rather than a new topic</b>. Two
+        different sources of truth, the same discipline: one place is authoritative, everything
+        else is generated from it, and <b>if a file says "generated", editing it by hand is
+        always a mistake.</b>
+      </p>
+    </section>
+
+    <!-- ================= LABS ================= -->
+
+    <section class="slide slide--wide" data-sec="lab" data-label="Activity 7" data-rail="Laboratory activities">
+      <span class="eyebrow">Laboratory Activity 7 · Week 7 · A7 · 3%</span>
+      <div class="row" style="gap:var(--s4);align-items:baseline">
+        <h2 class="h2">Schema and migrations</h2>
+        <span class="chip chip--added">Group</span>
+      </div>
+      <p class="callout"><b>Your system's data model, as migration files.</b> Built from your own contract's schemas — and where the two disagree, you say which one is wrong.</p>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">Deliverables</div>
+          <div class="steps">
+            <div class="step"><div><div class="step__t">Migrations that replay from empty</div><div class="step__b"><code>supabase db reset</code> succeeds. If it only works on your existing database, it does not work.</div></div></div>
+            <div class="step"><div><div class="step__t">Every relationship declared</div><div class="step__b">Foreign keys with a deliberate <code>on delete</code> — and a sentence per table on why cascade or restrict.</div></div></div>
+            <div class="step"><div><div class="step__t">Constraints for the rules that fit in one</div><div class="step__b">At least three <code>check</code> constraints traceable to a numbered rule in your spec.</div></div></div>
+            <div class="step"><div><div class="step__t">Seed data, including the awkward cases</div><div class="step__b">An empty list, something at capacity, a name long enough to break a layout.</div></div></div>
+            <div class="step"><div><div class="step__t">A contract-difference note</div><div class="step__b">Every place the schema could not match your week-5 shapes, and which side you are going to change.</div></div></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Graded on</div>
+            <ul class="list">
+              <li><b>Normalisation judgment</b> — 30</li>
+              <li><b>Keys and relationships</b> — 20</li>
+              <li><b>Constraints traced to rules</b> — 20</li>
+              <li><b>Replays from empty</b> — 15</li>
+              <li><b>The difference note</b> — 15</li>
+            </ul>
+          </div>
+          <p class="small">Deliberate denormalisation is fine and gains marks — <em>if</em> you say it is deliberate and name what maintains it.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="lab" data-label="Activity 8" data-rail="Laboratory activities">
+      <span class="eyebrow">Laboratory Activity 8 · Week 8 · A8 · 3%</span>
+      <div class="row" style="gap:var(--s4);align-items:baseline">
+        <h2 class="h2">Policies, proven</h2>
+        <span class="chip chip--accent">Individual</span>
+      </div>
+      <p class="callout"><b>Not "we wrote policies" — a demonstration that they work.</b> Individual, because every member has to be able to reason about who can see what.</p>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">Deliverables</div>
+          <div class="steps">
+            <div class="step"><div><div class="step__t">RLS enabled on every table</div><div class="step__b">Every one. A table with RLS off is the hole, and it is always the table nobody thought about.</div></div></div>
+            <div class="step"><div><div class="step__t">One policy per role, per operation</div><div class="step__b">Named so the name says what it is for. Update policies have both <code>using</code> and <code>with check</code>.</div></div></div>
+            <div class="step"><div><div class="step__t">The four-step proof, recorded</div><div class="step__b">Read your own row · read another account's and get nothing · disable the policy and get everything · re-enable it. Screenshots or a short screen recording.</div></div></div>
+            <div class="step"><div><div class="step__t">One attempted write across the boundary</div><div class="step__b">Try to modify a row that is not yours, from a REST client, and show the rejection.</div></div></div>
+            <div class="step"><div><div class="step__t">A one-page threat note</div><div class="step__b">If someone had your anon key and a REST client, what could they reach? Answer honestly.</div></div></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="panel" style="border-color:var(--violet-dim)">
+            <div class="panel__head" style="color:var(--violet)">Graded on</div>
+            <ul class="list">
+              <li><b>Coverage — every table</b> — 25</li>
+              <li><b>Policy correctness</b> — 25</li>
+              <li><b>The proof, not the claim</b> — 30</li>
+              <li><b>The threat note</b> — 20</li>
+            </ul>
+          </div>
+          <p class="small">A service-role key found anywhere reachable by a browser is an automatic zero, and a conversation.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CLOSE ================= -->
+
+    <section class="slide" data-sec="end" data-label="Assessment map" data-rail="Close">
+      <span class="eyebrow">Where this module's marks come from</span>
+      <h2 class="h2">Assessment</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Assessment</th><th style="width:7rem">Weight</th><th>What Module 4 contributes</th><th style="width:8rem">Outcome</th></tr></thead>
+          <tbody>
+            <tr><td>Activities 7 &amp; 8</td><td class="num">3% each</td><td><b>A7 group</b> — the schema and migrations. <b>A8 individual</b> — policies, proven from another account.</td><td class="num">CO4 / LO 4.1, 4.2</td></tr>
+            <tr><td>Codebase Assessment</td><td class="num">20%</td><td><b>Once, weeks 16–17.</b> Your migrations are read as code: are they replayable, reviewed, and is every schema change in one?</td><td class="num">CO1–CO5</td></tr>
+            <tr><td>Final Web Project</td><td class="num">50%</td><td><b>By group.</b> <code>contract:check</code> passing is what makes the backend half done.</td><td class="num">CO1–CO5</td></tr>
+            <tr><td>Examinations</td><td class="num">Midterm W9 · Final W18</td><td>Normalisation, keys and relationships, reading a policy, and choosing the layer a rule belongs in.</td><td class="num">CO4</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="callout">
+        <b>The midterm is next week</b> and covers all five modules. From this one: what a policy
+        is, why a route guard is not one, and where a given rule belongs.
+      </p>
+    </section>
+
+    <section class="slide" data-sec="end" data-label="Next up" data-rail="Close">
+      <span class="eyebrow">Ends here, continues there</span>
+      <h2 class="h2">Next: connect the two halves</h2>
+      <div class="grid grid--3">
+        <div class="card"><span class="card__k">Module 05 · week 8</span><div class="card__t">Integration</div><p class="card__b">Validation on both layers, then one environment variable turns the mock into your own backend.</p></div>
+        <div class="card"><span class="card__k">Weeks 10–17</span><div class="card__t">Your sprints</div><p class="card__b">Sprint 1 is this module, on your own system. Its gate: another group's account cannot read your rows.</p></div>
+        <div class="card"><span class="card__k">Clinics</span><div class="card__t">12 · 13 · 15</div><p class="card__b">End-to-end testing, CI, and deployment — each taught in the week you need it.</p></div>
+      </div>
+      <div class="panel">
+        <div class="panel__head">Before the midterm</div>
+        <ul class="list list--check">
+          <li>You can say what <code>auth.uid()</code> returns and where it comes from</li>
+          <li>You can explain why a blocked read is empty rather than forbidden</li>
+          <li>You know which of your project's rules belong in a constraint, a trigger, a policy, or a function</li>
+          <li>Your group's migrations replay from empty</li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="rail rail--bot">
+    <div class="nav">
+      <button class="nav__btn" id="prev" type="button" aria-label="Previous slide">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <button class="nav__btn" id="next" type="button" aria-label="Next slide">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+    <div class="ticks" id="ticks"></div>
+    <button class="btn btn--ghost" id="open-map" type="button">Map</button>
+    <button class="btn btn--ghost" id="open-help" type="button">?</button>
+  </footer>
+</div>
+
+<div class="overlay" id="overview" hidden>
+  <div class="overlay__head">
+    <b>Slide map</b><span>Module 04 · Backend Development</span><span class="spacer"></span>
+    <button class="btn btn--ghost" data-close type="button">Close · Esc</button>
+  </div>
+  <div class="map" id="map"></div>
+</div>
+
+<div class="overlay" id="help" hidden>
+  <div class="overlay__head">
+    <b>Keyboard</b><span class="spacer"></span>
+    <button class="btn btn--ghost" data-close type="button">Close · Esc</button>
+  </div>
+  <div class="keys">
+    <div class="keys__row"><span class="keys__k">→</span><span class="keys__k">Space</span> Next slide</div>
+    <div class="keys__row"><span class="keys__k">←</span> Previous slide</div>
+    <div class="keys__row"><span class="keys__k">Home</span><span class="keys__k">End</span> First / last</div>
+    <div class="keys__row"><span class="keys__k">O</span><span class="keys__k">G</span> Slide map</div>
+    <div class="keys__row"><span class="keys__k">F</span> Fullscreen</div>
+    <div class="keys__row"><span class="keys__k">?</span><span class="keys__k">H</span> This panel</div>
+    <div class="keys__row"><span class="keys__k">Esc</span> Close overlay</div>
+    <div class="keys__row"><span class="keys__k">Ctrl</span>+<span class="keys__k">P</span> Print all slides</div>
+  </div>
+  <p class="small" style="max-width:52ch">Slide numbers are in the URL — <code>#23</code> jumps straight there, so you can bookmark a starting point for the second session.</p>
+</div>
+
+<script src="../shared/deck.js"></script>
+<script src="module-4.js"></script>
