@@ -1,0 +1,1545 @@
+<title>The Stack Bench</title>
+<link rel="stylesheet" href="../shared/deck.css">
+
+<script type="application/json" id="deck-sections">
+{
+  "names": {
+    "3.1": "Lesson 3.1 — The stack, named",
+    "3.2": "Lesson 3.2 — TypeScript",
+    "3.3": "Lesson 3.3 — Iteration",
+    "3.4": "Lesson 3.4 — Functions & modules",
+    "3.5": "Lesson 3.5 — JSON, fetch, await",
+    "3.6": "Lesson 3.6 — What React does",
+    "3.7": "Lesson 3.7 — Choosing a library",
+    "3.8": "Lesson 3.8 — Does it work?"
+  },
+  "colors": {
+    "3.1": "var(--violet)",
+    "3.2": "var(--brass)",
+    "3.3": "var(--brass)",
+    "3.4": "var(--brass)",
+    "3.5": "var(--cyan)",
+    "3.6": "var(--brass)",
+    "3.7": "var(--violet)",
+    "3.8": "var(--violet)"
+  }
+}
+</script>
+
+<style>
+/* Module 3 additions. Violet marks material no syllabus outcome requires but
+   the project does — the same encoding as Module 2 and the semester plan. */
+:root {
+  --violet:     #A38BD1;
+  --violet-lit: #C3AEEA;
+  --violet-dim: #3A2F52;
+  --violet-ink: #150F20;
+}
+
+#deck[data-sec="3.5"] {
+  --accent: var(--cyan); --accent-lit: var(--cyan-lit);
+  --accent-dim: var(--cyan-dim); --accent-ink: var(--cyan-ink);
+}
+#deck[data-sec="3.1"], #deck[data-sec="3.7"], #deck[data-sec="3.8"] {
+  --accent: var(--violet); --accent-lit: var(--violet-lit);
+  --accent-dim: var(--violet-dim); --accent-ink: var(--violet-ink);
+}
+#deck[data-sec="lab"] {
+  --accent: #E7EBF2; --accent-lit: #FFFFFF;
+  --accent-dim: #2B3547; --accent-ink: #0A0D13;
+}
+
+.tick[data-sec="3.1"], .tick[data-sec="3.7"], .tick[data-sec="3.8"] { background: var(--violet-dim); }
+.tick[data-sec="3.2"], .tick[data-sec="3.3"], .tick[data-sec="3.4"], .tick[data-sec="3.6"] { background: var(--brass-dim); }
+.tick[data-sec="3.5"] { background: var(--cyan-dim); }
+.tick.is-done[data-sec="3.1"], .tick.is-done[data-sec="3.7"], .tick.is-done[data-sec="3.8"] { background: #6A5A8E; }
+.tick.is-done[data-sec="3.2"], .tick.is-done[data-sec="3.3"], .tick.is-done[data-sec="3.4"], .tick.is-done[data-sec="3.6"] { background: #8B6B2E; }
+.tick.is-done[data-sec="3.5"] { background: #2F717C; }
+
+.chip--added { border-color: var(--violet-dim); color: var(--violet); background: rgba(163,139,209,0.10); }
+
+/* a filename badge, because every lesson opens a real file */
+.file {
+  display: inline-flex; align-items: center; gap: var(--s2);
+  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.04em;
+  border: 1px solid var(--accent-dim); color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 8%, transparent);
+  padding: 0.15rem 0.5rem;
+}
+.file::before { content: "◆"; font-size: 0.55rem; opacity: 0.8; }
+
+/* ---- dependency auditor (3.1) ---- */
+.dep { display: grid; grid-template-columns: 1fr 1.15fr; gap: var(--s4); align-items: start; }
+@media (max-width: 60rem) { .dep { grid-template-columns: 1fr; } }
+.dep__list { display: flex; flex-direction: column; gap: 2px; max-height: 22rem; overflow-y: auto; }
+.dep__item {
+  display: grid; grid-template-columns: 1fr auto; gap: var(--s3); align-items: center;
+  text-align: left; cursor: pointer;
+  border: 1px solid var(--line); background: var(--panel-2);
+  padding: 0.35rem var(--s3); font-family: var(--mono); font-size: 0.72rem; color: var(--text-2);
+  transition: background .15s var(--ease), border-color .15s var(--ease);
+}
+.dep__item:hover { background: var(--panel-3); }
+.dep__item[aria-selected="true"] { border-color: var(--accent); background: var(--panel-3); color: var(--text); }
+.dep__kind { font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.dep__kind[data-k="calls-you"] { color: var(--fail); }
+.dep__kind[data-k="you-call"]  { color: var(--pass); }
+.dep__kind[data-k="tool"]      { color: var(--text-4); }
+.dep__detail { display: flex; flex-direction: column; gap: var(--s3); min-height: 15rem; }
+.dep__name { font-family: var(--mono); font-size: 0.95rem; color: var(--accent); }
+.dep__break { border-left: 2px solid var(--fail); padding-left: var(--s3); font-size: 0.88rem; color: var(--text-2); }
+.dep__meta { display: flex; gap: var(--s4); flex-wrap: wrap; font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-4); }
+
+/* ---- iteration translator (3.3) ---- */
+.iter { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); align-items: start; }
+@media (max-width: 60rem) { .iter { grid-template-columns: 1fr; } }
+.iter__out { display: flex; flex-direction: column; gap: 2px; font-family: var(--mono); font-size: 0.74rem; }
+.iter__row {
+  display: grid; grid-template-columns: 1fr auto; gap: var(--s3);
+  border: 1px solid var(--line); background: var(--panel-2); padding: 0.3rem var(--s3);
+  transition: border-color .2s var(--ease), opacity .2s var(--ease);
+}
+.iter__row.is-out { opacity: 0.28; }
+.iter__row.is-in { border-color: var(--pass); }
+.iter__sum { font-family: var(--mono); font-size: 0.8rem; color: var(--accent-lit); border-top: 1px solid var(--line); padding-top: var(--s3); }
+
+/* ---- await timeline (3.5) ---- */
+.tl { display: flex; flex-direction: column; gap: var(--s3); }
+.tl__track { position: relative; height: 2.2rem; border: 1px solid var(--line); background: var(--sunk); }
+.tl__bar {
+  position: absolute; top: 0.35rem; height: 1.4rem;
+  border: 1px solid var(--accent-dim); background: color-mix(in oklab, var(--accent) 22%, transparent);
+  display: flex; align-items: center; padding: 0 0.4rem;
+  font-family: var(--mono); font-size: 0.62rem; color: var(--text); white-space: nowrap; overflow: hidden;
+  transition: left .4s var(--ease), width .4s var(--ease);
+}
+.tl__scale { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.6rem; color: var(--text-4); }
+.tl__total { font-family: var(--mono); font-size: 0.78rem; }
+
+/* ---- DOM vs React op counter (3.6) ---- */
+.ops { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); }
+@media (max-width: 52rem) { .ops { grid-template-columns: 1fr; } }
+.ops__side { border: 1px solid var(--line); background: var(--panel-2); padding: var(--s4); display: flex; flex-direction: column; gap: var(--s3); }
+.ops__side--hand { border-color: var(--fail-dim); }
+.ops__side--react { border-color: var(--pass-dim); }
+.ops__n { font-family: var(--mono); font-size: 2rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.ops__side--hand .ops__n { color: var(--fail); }
+.ops__side--react .ops__n { color: var(--pass); }
+.ops__lbl { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-4); }
+.ops__log { font-family: var(--mono); font-size: 0.66rem; color: var(--text-3); display: flex; flex-direction: column; gap: 1px; max-height: 8rem; overflow-y: auto; }
+
+/* ---- test runner (3.8) ---- */
+.tr { display: flex; flex-direction: column; gap: var(--s3); }
+.tr__row {
+  display: grid; grid-template-columns: 1.2rem 1fr auto; gap: var(--s3); align-items: baseline;
+  font-family: var(--mono); font-size: 0.74rem;
+  border: 1px solid var(--line); background: var(--panel-2); padding: 0.3rem var(--s3);
+}
+.tr__row[data-s="pass"] { border-left: 2px solid var(--pass); }
+.tr__row[data-s="fail"] { border-left: 2px solid var(--fail); background: #1B1113; }
+.tr__row[data-s="pending"] { opacity: 0.45; }
+.tr__m { font-size: 0.8rem; }
+.tr__row[data-s="pass"] .tr__m { color: var(--pass); }
+.tr__row[data-s="fail"] .tr__m { color: var(--fail); }
+.tr__msg { font-size: 0.68rem; color: var(--fail); grid-column: 2 / -1; }
+.tr__sum { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; }
+</style>
+
+<div id="deck" data-sec="0">
+
+  <header class="rail rail--top">
+    <span class="rail__mark"><i class="rail__dot"></i> Module 03</span>
+    <span class="rail__sep">/</span>
+    <span id="rail-lesson">Orientation</span>
+    <span class="rail__spacer"></span>
+    <span class="rail__course">CSci 153 · Web Systems &amp; Technologies</span>
+    <span class="rail__sep">/</span>
+    <span class="rail__count"><b id="count-now">01</b> <span class="dim">of</span> <span id="count-all">49</span></span>
+  </header>
+
+  <main id="stage">
+
+    <!-- ================= ORIENTATION ================= -->
+
+    <section class="slide slide--center" data-sec="0" data-label="Cover" data-rail="Orientation">
+      <div class="col" style="gap:var(--s5);align-items:center">
+        <span class="eyebrow eyebrow--plain">Visayas State University · DCST · Module 03 · Weeks 5–6</span>
+        <h1 class="h1" style="max-width:26ch">Nothing in your project<br>should be a mystery word</h1>
+        <p class="lede" style="text-align:center;margin-inline:auto">
+          Twelve dependencies, one codebase, and every session spent inside a file that
+          already runs.
+        </p>
+        <div class="row" style="justify-content:center;margin-top:var(--s4)">
+          <span class="chip">CO3 · Valid JavaScript &amp; the DOM</span>
+          <span class="chip">LO 3.1 – 3.7</span>
+        </div>
+        <p class="small mono" style="margin-top:var(--s5);letter-spacing:0.12em">
+          PRESS <kbd style="border:1px solid var(--line);padding:0.1em 0.4em">→</kbd> TO START ·
+          <kbd style="border:1px solid var(--line);padding:0.1em 0.4em">O</kbd> FOR THE SLIDE MAP ·
+          <kbd style="border:1px solid var(--line);padding:0.1em 0.4em">?</kbd> FOR KEYS
+        </p>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="0" data-label="What changed" data-rail="Orientation">
+      <span class="eyebrow">Read this before anything else</span>
+      <h2 class="h2">This module is not a JavaScript course</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">What it was going to be</div>
+          <ul class="list list--cross">
+            <li>Four weeks of language teaching</li>
+            <li>Types, then loops, then functions, in the abstract</li>
+            <li>Exercises that exist only to practise syntax</li>
+          </ul>
+          <p class="small">You had JavaScript in a previous course. Repeating it would spend four weeks on the thing that is not blocking you.</p>
+        </div>
+        <div class="panel">
+          <div class="panel__head">What it is</div>
+          <ul class="list list--check">
+            <li><b>A guided tour of one real codebase</b> — the enrollment app</li>
+            <li>Every session opens a file that already runs</li>
+            <li>The language arrives as the <em>content</em> of the tour, not its shape</li>
+          </ul>
+          <p class="small">Same learning outcomes, same examinable material. Different order, and a reason for every topic.</p>
+        </div>
+      </div>
+      <p class="callout">
+        What actually blocks you in weeks 10–17 is not syntax. It is opening
+        <code>package.json</code> and not knowing what nine of the twelve lines are for.
+        <b>That is what these two weeks fix.</b>
+      </p>
+    </section>
+
+    <section class="slide" data-sec="0" data-label="The app" data-rail="Orientation">
+      <span class="eyebrow">The codebase you are about to read</span>
+      <h2 class="h2">Enroll — a subject enrollment system</h2>
+      <div class="grid grid--3">
+        <div class="card"><span class="card__k">What it does</span><div class="card__t">Nine operations</div><p class="card__b">A student builds a draft enrollment, submits it, an adviser approves or returns it. Six screens, two roles.</p></div>
+        <div class="card"><span class="card__k">Why it is small</span><div class="card__t">Readable in one sitting</div><p class="card__b">Small enough to hold in your head, complete enough to have every layer your own project needs.</p></div>
+        <div class="card"><span class="card__k">Why not your system</span><div class="card__t">A different domain</div><p class="card__b">Close enough that every pattern transfers. Far enough that none of it can be submitted.</p></div>
+      </div>
+      <div class="panel">
+        <div class="panel__head">It runs with no backend, and that is the point</div>
+        <pre>npm run mock   <i># Prism serves invented responses from contract/openapi.yaml</i>
+npm run dev    <i># the app, talking to that mock</i></pre>
+        <p class="body">The frontend was written before the backend existed — the argument Module 2 made. This is the app where it is true.</p>
+      </div>
+      <p class="callout">Clone it. <b>Read it while we read it.</b> Nothing in these two weeks is a screenshot.</p>
+    </section>
+
+    <section class="slide" data-sec="0" data-label="Outcomes" data-rail="Orientation">
+      <span class="eyebrow">Learning outcomes · CO3</span>
+      <h2 class="h2">Every outcome, and the file it lives in</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th style="width:5rem">LO</th><th style="width:15rem">What the syllabus asks</th><th>Where you meet it</th></tr></thead>
+          <tbody>
+            <tr><td class="num">3.1</td><td>Types and structures</td><td>Lesson 3.2 · <code>contract/generated/schema.d.ts</code></td></tr>
+            <tr><td class="num">3.2</td><td>Block scoping, <code>let</code>/<code>const</code></td><td>Lesson 3.2 · every file, as a rule with a reason</td></tr>
+            <tr><td class="num">3.3</td><td>Loop structures</td><td>Lesson 3.3 · <code>SubjectCatalog.tsx</code>, <code>units.ts</code></td></tr>
+            <tr><td class="num">3.4</td><td>Functions and arrow expressions</td><td>Lesson 3.4 · <code>lib/</code> and <code>hooks/</code></td></tr>
+            <tr><td class="num">3.5</td><td>Serialize/deserialize JSON</td><td>Lesson 3.5 · <code>lib/api/client.ts</code></td></tr>
+            <tr><td class="num">3.6</td><td>Manipulate the DOM</td><td>Lesson 3.6 · one list, built twice</td></tr>
+            <tr><td class="num">3.7</td><td>Use JavaScript libraries</td><td>Lessons 3.1 and 3.7 · <code>package.json</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="callout">
+        Plus one topic <span class="chip chip--added">no outcome requires</span>: <b>unit testing</b>,
+        in 3.8. Your project specs require it in CI, so you need enough to not be lost.
+      </p>
+    </section>
+
+    <!-- ================= 3.1 THE STACK, NAMED ================= -->
+
+    <section class="slide slide--center" data-sec="3.1" data-label="Lesson 3.1 opens" data-rail="The stack, named">
+      <div class="col" style="gap:var(--s4);align-items:center">
+        <span class="eyebrow eyebrow--plain">Lesson 3.1 · LO 3.7</span>
+        <h2 class="h1" style="max-width:22ch">Account for<br>every line</h2>
+        <p class="lede" style="text-align:center;margin-inline:auto">One sentence per dependency: what breaks if I remove this?</p>
+        <span class="file">package.json</span>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="3.1" data-label="Two kinds of dependency" data-rail="The stack, named">
+      <span class="eyebrow">The distinction that organises everything</span>
+      <h2 class="h2">Do you call it, or does it call you?</h2>
+      <div class="compare">
+        <div class="compare__side compare__side--good">
+          <div class="compare__head">A library — you call it</div>
+          <div class="compare__body">
+            <p>You decide when. It returns. You stay in charge of the flow.</p>
+            <pre>const total = <b>totalUnits</b>(subjects)</pre>
+            <p><code>openapi-fetch</code>, <code>date-fns</code>, <code>zod</code>. Easy to remove: delete the calls.</p>
+          </div>
+        </div>
+        <div class="compare__side compare__side--bad">
+          <div class="compare__head">A framework — it calls you</div>
+          <div class="compare__body">
+            <p>It owns the flow and invokes your code at moments it chooses.</p>
+            <pre>function SubjectRow(props) { … }
+<i>// React decides when this runs. Not you.</i></pre>
+            <p><code>react</code>, <code>vite</code>, <code>react-router</code>. Removing one is a rewrite.</p>
+          </div>
+        </div>
+      </div>
+      <p class="callout">
+        This is not trivia. <b>It predicts how expensive a mistake is.</b> Picking the wrong
+        date library costs an afternoon; picking the wrong framework costs the project.
+      </p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="3.1" data-label="The audit" data-rail="The stack, named">
+      <span class="eyebrow">Interactive · the real package.json</span>
+      <h2 class="h2">Twelve dependencies, one sentence each</h2>
+      <div class="panel panel--sunk">
+        <div class="panel__head">Pick one <span class="spacer"></span><span class="dim">what breaks if you remove it?</span></div>
+        <div class="dep" data-widget="dep" id="dep"></div>
+      </div>
+      <p class="callout">
+        <b>Activity 5 is this, for your own project.</b> Every line accounted for, and anything
+        you installed that Enroll does not have has to be justified.
+      </p>
+    </section>
+
+    <section class="slide" data-sec="3.1" data-label="node_modules" data-rail="The stack, named">
+      <span class="eyebrow">Where it all goes</span>
+      <h2 class="h2">Twelve dependencies, four hundred folders</h2>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">What you asked for, and what arrived</div>
+          <pre>package.json          <i>12 things you chose</i>
+        ↓ npm install
+node_modules/         <i>~400 folders</i>
+package-lock.json     <i>every exact version, pinned</i></pre>
+          <p class="body">Your twelve have dependencies of their own, and so do those. The lockfile records the exact tree that worked, so the next person gets the same one.</p>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Three rules</div>
+            <ul class="list list--check">
+              <li><b>Commit the lockfile.</b> It is the difference between "works on my machine" and works.</li>
+              <li><b>Never commit <code>node_modules</code>.</b> It is derived, and it is enormous.</li>
+              <li><b>Never edit anything inside it.</b> The next install erases you.</li>
+            </ul>
+          </div>
+          <p class="callout"><code>rm -rf node_modules &amp;&amp; npm install</code> is the answer to a surprising share of "it stopped working".</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="3.1" data-label="Peer dependencies" data-rail="The stack, named">
+      <span class="eyebrow">A real conflict, from this repository</span>
+      <h2 class="h2">Why TypeScript is pinned to 5.9</h2>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">What happened, in order</div>
+          <pre>$ npm create vite@latest
+  <i>→ installs typescript 6.0.3</i>
+
+$ npm install -D openapi-typescript
+<b>npm error</b> Could not resolve dependency:
+<b>npm error</b> peer typescript@"^5.x" from openapi-typescript@7.13.0</pre>
+          <p class="body"><code>openapi-typescript</code> says: I work with TypeScript 5, and I have not been tested against 6.</p>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Three ways out</div>
+            <div class="steps">
+              <div class="step"><div><div class="step__t">Force it</div><div class="step__b"><code>--legacy-peer-deps</code>. Fast, and you now own any breakage nobody has debugged.</div></div></div>
+              <div class="step"><div><div class="step__t">Drop the library</div><div class="step__b">Hand-write the types instead. Module 2 explained why that ends badly.</div></div></div>
+              <div class="step"><div><div class="step__t">Pin TypeScript to 5.9</div><div class="step__b">What Enroll does. The contract-to-types pipeline is load-bearing; being on the newest major is not.</div></div></div>
+            </div>
+          </div>
+          <p class="callout"><b>A peer dependency is a library saying what it expects to live alongside.</b> Ignoring it is allowed, which is exactly why it is worth understanding.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="3.1" data-label="Semver" data-rail="The stack, named">
+      <span class="eyebrow">What the punctuation means</span>
+      <h2 class="h2">Reading a version number</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">MAJOR . MINOR . PATCH</div>
+          <pre>vite: "^<b>8</b>.<b>2</b>.<b>0</b>"
+       │  │  └── patch · a fix, nothing else changes
+       │  └───── minor · new things, old things still work
+       └──────── major · something you use has changed or gone</pre>
+          <div class="panel__head" style="margin-top:var(--s3)">The prefixes</div>
+          <pre><b>^</b>8.2.0   any 8.x — minor and patch updates allowed
+<b>~</b>5.9.0   any 5.9.x — patch only
+ 8.2.0   exactly this. Nothing moves.</pre>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Why <code>^</code> is the default, and what it costs</div>
+            <p class="body"><code>^</code> means a fresh <code>npm install</code> can pick up a version nobody on your team has run. Usually fine, occasionally the cause of a Tuesday you will not enjoy.</p>
+            <p class="body">The lockfile is what makes it safe: it records what you actually installed, so <code>^</code> only moves when somebody deliberately updates.</p>
+          </div>
+          <p class="callout"><b>A major bump is a reading task, not a command.</b> Check the changelog before <code>npm install pkg@latest</code>, or find out from the error.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 3.2 TYPESCRIPT ================= -->
+
+    <section class="slide slide--center" data-sec="3.2" data-label="Lesson 3.2 opens" data-rail="TypeScript">
+      <div class="col" style="gap:var(--s4);align-items:center">
+        <span class="eyebrow eyebrow--plain">Lesson 3.2 · LO 3.1, 3.2</span>
+        <h2 class="h1" style="max-width:22ch">Five ideas,<br>read off a file<br>nobody wrote</h2>
+        <p class="lede" style="text-align:center;margin-inline:auto">Generated code has no stylistic choices in it. That makes it the perfect specimen.</p>
+        <span class="file">contract/generated/schema.d.ts</span>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="3.2" data-label="Why types" data-rail="TypeScript">
+      <span class="eyebrow">The argument, in one example</span>
+      <h2 class="h2">What a type buys you</h2>
+      <div class="compare">
+        <div class="compare__side compare__side--bad">
+          <div class="compare__head">Plain JavaScript</div>
+          <div class="compare__body">
+            <pre>const total = enrollment.<b>totalUnits</b>
+<i>// or was it total_units?
+// or units? or getTotal()?</i></pre>
+            <p>You find out by running it and reading <code>undefined</code>. The typo is legal JavaScript, so nothing warns you.</p>
+            <p>Multiply by every field in nine operations.</p>
+          </div>
+        </div>
+        <div class="compare__side compare__side--good">
+          <div class="compare__head">TypeScript</div>
+          <div class="compare__body">
+            <pre>const total = enrollment.<b>total_units</b>
+        <i>~~~~~~~~~~~</i>
+<b>Property 'total_units' does not exist.
+Did you mean 'totalUnits'?</b></pre>
+            <p>Before you run it. In the editor, while you type.</p>
+            <p>And the answer came from the contract, so it is right.</p>
+          </div>
+        </div>
+      </div>
+      <p class="callout">
+        TypeScript is <b>JavaScript plus annotations</b>. Every file in Enroll is JavaScript
+        with types written on it — not a different language, and it all disappears at build time.
+      </p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="3.2" data-label="Five ideas" data-rail="TypeScript">
+      <span class="eyebrow">Interactive · everything this course needs</span>
+      <h2 class="h2">The five, and no more</h2>
+      <div data-widget="stepper">
+        <div class="stepper__track">
+          <button class="stepper__btn" type="button" data-step="1"><span class="stepper__n">01</span><span class="stepper__l">Annotations</span></button>
+          <button class="stepper__btn" type="button" data-step="2"><span class="stepper__n">02</span><span class="stepper__l">Unions</span></button>
+          <button class="stepper__btn" type="button" data-step="3"><span class="stepper__n">03</span><span class="stepper__l">Optional vs null</span></button>
+          <button class="stepper__btn" type="button" data-step="4"><span class="stepper__n">04</span><span class="stepper__l">type vs interface</span></button>
+          <button class="stepper__btn" type="button" data-step="5"><span class="stepper__n">05</span><span class="stepper__l">Generics you read</span></button>
+        </div>
+
+        <div class="stepper__panel" data-step="1">
+          <div class="grid grid--sidebar">
+            <div class="panel"><div class="panel__head">A name, a colon, a type</div>
+              <pre>function totalUnits(subjects: <b>Subject[]</b>): <b>number</b> {
+  return subjects.reduce((sum, s) => sum + s.units, 0)
+}
+
+const code: <b>string</b> = 'CSci 153'
+const units: <b>number</b> = 3
+const isFull: <b>boolean</b> = false</pre></div>
+            <div class="panel"><div class="panel__head">Where to write them, and where not</div>
+              <p class="body"><b>Always on function parameters and returns.</b> That is the contract of the function, and it is what other people read.</p>
+              <p class="body"><b>Rarely on local variables.</b> <code>const units = 3</code> is already <code>number</code> — TypeScript infers it, and writing it again is noise that can go stale.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="stepper__panel" data-step="2">
+          <div class="grid grid--sidebar">
+            <div class="panel"><div class="panel__head">One of a fixed set</div>
+              <pre>type EnrollmentStatus =
+  | 'draft'
+  | 'submitted'
+  | 'approved'
+  | 'returned'
+
+<i>// from the contract's enum. Any other string
+// is now a compile error.</i>
+if (status === 'submited') <i>// ← caught</i></pre></div>
+            <div class="panel"><div class="panel__head">Why this is the most useful one</div>
+              <p class="body">A union turns a whole class of bug into a compile error: the misspelled status, the state nobody handled, the fifth case somebody added last week.</p>
+              <p class="body">Switch on one and TypeScript will tell you which branch you forgot.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="stepper__panel" data-step="3">
+          <div class="grid grid--sidebar">
+            <div class="panel"><div class="panel__head">Two different absences</div>
+              <pre>type Enrollment = {
+  submittedAt<b>?</b>: string       <i>// may not be there</i>
+  returnedReason: string | <b>null</b> <i>// there, and empty</i>
+}</pre>
+              <p class="small">The contract distinguishes these, so the generated types do too.</p></div>
+            <div class="panel"><div class="panel__head">Why the difference matters</div>
+              <p class="body"><code>?</code> means <em>the key might be missing</em> — nobody has submitted yet, so there is no timestamp to speak of.</p>
+              <p class="body"><code>| null</code> means <em>the key is there and deliberately empty</em> — we looked, and there is no reason because it was never returned.</p>
+              <p class="body">Collapsing them loses the distinction between "not yet" and "no".</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="stepper__panel" data-step="4">
+          <div class="grid grid--sidebar">
+            <div class="panel"><div class="panel__head">Both describe a shape</div>
+              <pre><b>type</b> SubjectRowProps = {
+  subject: Subject
+  onAdd?: (s: Subject) => void
+}
+
+<b>interface</b> SubjectRowProps {
+  subject: Subject
+  onAdd?: (s: Subject) => void
+}</pre></div>
+            <div class="panel"><div class="panel__head">The rule for this course</div>
+              <p class="body"><b>Use <code>type</code>.</b> It does everything <code>interface</code> does and also handles unions, which <code>interface</code> cannot.</p>
+              <p class="body">You will see <code>interface</code> in other people's code and in older tutorials. It is not wrong; it is a preference. Pick one and stop thinking about it.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="stepper__panel" data-step="5">
+          <div class="grid grid--sidebar">
+            <div class="panel"><div class="panel__head">A type that takes a type</div>
+              <pre>export const api = createClient&lt;<b>paths</b>&gt;({ … })
+
+<i>// createClient works with any API shape.
+// &lt;paths&gt; tells it: this one, from our contract.</i>
+
+api.GET('/subjects', …)      <i>// ✓ in the contract</i>
+api.GET('/students/all', …)  <i>// ✗ does not compile</i></pre></div>
+            <div class="panel"><div class="panel__head">You will read these constantly and write them almost never</div>
+              <p class="body">Generics are how a library says "I work with your shape, tell me what it is." <code>useState&lt;string&gt;</code>, <code>useQuery&lt;Enrollment&gt;</code>, <code>createClient&lt;paths&gt;</code> — all the same idea.</p>
+              <p class="callout" style="margin-top:var(--s3)">If you find yourself writing a generic in this course, stop and ask whether a plain type would do. Usually it would.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="3.2" data-label="let vs const" data-rail="TypeScript">
+      <span class="eyebrow">LO 3.2 · block scoping</span>
+      <h2 class="h2"><code>const</code> unless it moves</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">What the three actually mean</div>
+          <div class="steps">
+            <div class="step"><div><div class="step__t"><code>const</code> — this name will not be reassigned</div><div class="step__b">Note: <em>the name</em>. <code>const subjects = []</code> then <code>subjects.push(x)</code> is legal — you changed the array, not what the name points at.</div></div></div>
+            <div class="step"><div><div class="step__t"><code>let</code> — this name will be reassigned</div><div class="step__b">A counter, an accumulator, a value built up in a loop. Rare in this codebase.</div></div></div>
+            <div class="step"><div><div class="step__t"><code>var</code> — never</div><div class="step__b">Scoped to the whole function rather than the block, which produces bugs that read as impossible. It exists for old code.</div></div></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Block scope, seen</div>
+            <pre>if (verdict.ok) {
+  <b>const</b> message = 'Added'
+}
+console.log(message) <i>// ✗ not defined out here</i>
+
+for (<b>var</b> i = 0; i &lt; 3; i++) { … }
+console.log(i) <i>// 3. var leaked out of the loop.</i></pre>
+          </div>
+          <p class="callout">
+            <b>Why <code>const</code> by default:</b> a name that never changes is one less thing to
+            track while reading. In Enroll, <code>let</code> appears three times in the whole
+            <code>src/</code> tree — and each one is a deliberate accumulator.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="3.2" data-label="Reading generated types" data-rail="TypeScript">
+      <span class="eyebrow">Open the file</span>
+      <h2 class="h2">Six hundred lines nobody wrote</h2>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">contract/generated/schema.d.ts</div>
+          <pre>Enrollment: {
+  id: string;
+  studentId: string;
+  status: <b>components["schemas"]["EnrollmentStatus"]</b>;
+  totalUnits: number;
+  subjects: <b>components["schemas"]["Subject"][]</b>;
+  submittedAt?: string | null;
+  returnedReason?: string | null;
+}</pre>
+          <p class="small">Every one of the five ideas is in this fragment. Find them.</p>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Why this file, of all files</div>
+            <p class="body">Nothing in it is a human's stylistic choice. Every line is a mechanical consequence of the YAML that produced it, so when you ask "why is it written this way", the answer is always <em>because the contract says so</em>.</p>
+          </div>
+          <div class="panel" style="border-color:var(--fail)">
+            <div class="panel__head" style="color:var(--fail)">Do not edit it</div>
+            <p class="body">Regenerating overwrites you, and CI fails if what is committed has drifted. If a type is wrong, <b>the contract is wrong</b> — fix it there.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 3.3 ITERATION ================= -->
+
+    <section class="slide slide--center" data-sec="3.3" data-label="Lesson 3.3 opens" data-rail="Iteration">
+      <div class="col" style="gap:var(--s4);align-items:center">
+        <span class="eyebrow eyebrow--plain">Lesson 3.3 · LO 3.1, 3.3</span>
+        <h2 class="h1" style="max-width:24ch">Every response<br>is an array of objects</h2>
+        <p class="lede" style="text-align:center;margin-inline:auto">Which makes iteration the most-used idea in the codebase.</p>
+        <span class="file">SubjectCatalog.tsx · units.ts</span>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="3.3" data-label="The shapes" data-rail="Iteration">
+      <span class="eyebrow">LO 3.1 · structures</span>
+      <h2 class="h2">Two shapes, nested, forever</h2>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">What comes back from listSubjects</div>
+          <pre>{
+  "items": <b>[</b>                    <i>← array</i>
+    <b>{</b>                          <i>← object</i>
+      "code": "CSci 153",
+      "units": 3,
+      "capacity": 40
+    <b>}</b>,
+    { … }
+  <b>]</b>,
+  "page": 1
+}</pre>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">The whole vocabulary</div>
+            <ul class="list">
+              <li><b>Object</b> — named slots. Reach in with <code>subject.units</code>. Order means nothing.</li>
+              <li><b>Array</b> — ordered slots, numbered from zero. <code>items[0]</code>. Order is the point.</li>
+              <li><b>Nested</b> — an array of objects, each holding arrays. All the way down.</li>
+            </ul>
+          </div>
+          <p class="callout">
+            <code>subjects[0].units</code> is not two ideas. It is <b>reach into the array, then
+            reach into the object</b> — and every deep access in the app is that, repeated.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="3.3" data-label="Four loops" data-rail="Iteration">
+      <span class="eyebrow">Interactive · the same job, four ways</span>
+      <h2 class="h2">Which loop, and why</h2>
+      <div class="panel panel--sunk">
+        <div class="panel__head">Six offered subjects <span class="spacer"></span><span class="dim">pick a form and watch what it produces</span></div>
+        <div class="iter" data-widget="iter" id="iter"></div>
+      </div>
+      <p class="callout">
+        <b>They are all the same loop.</b> <code>map</code>, <code>filter</code> and
+        <code>reduce</code> are <code>for…of</code> with the bookkeeping named — and a named
+        thing is a thing you can read at a glance.
+      </p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="3.3" data-label="map in JSX" data-rail="Iteration">
+      <span class="eyebrow">The idea to land</span>
+      <h2 class="h2"><code>map</code> in JSX is a loop</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">You have been writing this since Module 2</div>
+          <pre>&lt;ul&gt;
+  {subjects.<b>map</b>((subject) =&gt; (
+    &lt;SubjectRow <b>key</b>={subject.id} subject={subject} /&gt;
+  ))}
+&lt;/ul&gt;</pre>
+          <p class="body">An array of subjects in. An array of six <code>&lt;SubjectRow&gt;</code> elements out. React renders the array.</p>
+        </div>
+        <div class="panel">
+          <div class="panel__head">The same thing, spelled out</div>
+          <pre>const rows = []
+<b>for (const subject of subjects)</b> {
+  rows.push(
+    &lt;SubjectRow key={subject.id} subject={subject} /&gt;
+  )
+}
+return &lt;ul&gt;{rows}&lt;/ul&gt;</pre>
+          <p class="body">Works identically. Three lines longer, and the <code>rows</code> array has to be declared, named, and remembered.</p>
+        </div>
+      </div>
+      <p class="callout">
+        Students who learned <code>for</code> loops as a statement often do not recognise list
+        rendering as iteration at all. <b>It is the same loop.</b> And <code>key</code> is how
+        React tells one iteration from the next when the array changes.
+      </p>
+    </section>
+
+    <section class="slide" data-sec="3.3" data-label="reduce" data-rail="Iteration">
+      <span class="eyebrow">The one that looks hardest</span>
+      <h2 class="h2"><code>reduce</code> is a loop with the accumulator named</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">In the codebase, for real</div>
+          <pre>export function totalUnits(subjects: Subject[]) {
+  return subjects.<b>reduce</b>(
+    (sum, subject) =&gt; sum + subject.units,
+    <b>0</b>
+  )
+}</pre>
+          <p class="small">The <code>0</code> is the starting value, and forgetting it on an empty array is the classic bug.</p>
+        </div>
+        <div class="panel">
+          <div class="panel__head">Line for line</div>
+          <pre>let <b>sum</b> = <b>0</b>
+for (const subject of subjects) {
+  <b>sum</b> = <b>sum</b> + subject.units
+}
+return <b>sum</b></pre>
+          <p class="body">Same variable, same update, same result. <code>reduce</code> just moves the declaration into the call so it cannot be reused by accident.</p>
+        </div>
+      </div>
+      <p class="callout">
+        <b>When to use which:</b> going from many to many, <code>map</code>. Many to fewer,
+        <code>filter</code>. Many to <em>one</em>, <code>reduce</code>. Anything with an
+        <code>await</code> inside it, <code>for…of</code> — and 3.5 shows why.
+      </p>
+    </section>
+
+    <!-- ================= 3.4 FUNCTIONS & MODULES ================= -->
+
+    <section class="slide slide--center" data-sec="3.4" data-label="Lesson 3.4 opens" data-rail="Functions & modules">
+      <div class="col" style="gap:var(--s4);align-items:center">
+        <span class="eyebrow eyebrow--plain">Lesson 3.4 · LO 3.4</span>
+        <h2 class="h1" style="max-width:22ch">Small functions,<br>and where<br>they live</h2>
+        <p class="lede" style="text-align:center;margin-inline:auto">Closures explain hooks. Imports explain the folder structure.</p>
+        <span class="file">src/lib/ · src/features/</span>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="3.4" data-label="Arrow functions" data-rail="Functions & modules">
+      <span class="eyebrow">Same thing, three spellings</span>
+      <h2 class="h2">Arrows are shorter, not different</h2>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">All three declare a function</div>
+          <pre><i>// declaration — hoisted, has a name</i>
+<b>function</b> isFull(s: Subject) { return seatsLeft(s) === 0 }
+
+<i>// arrow, with a body</i>
+const isFull = <b>(s: Subject) =&gt;</b> { return seatsLeft(s) === 0 }
+
+<i>// arrow, implicit return — no braces, no `return`</i>
+const isFull = <b>(s: Subject) =&gt;</b> seatsLeft(s) === 0</pre>
+          <p class="small">Enroll uses declarations for exported functions and arrows for callbacks. Both, deliberately.</p>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Where arrows earn their keep</div>
+            <pre>onClick={() =&gt; add.mutate(subject)}
+subjects.map((s) =&gt; s.units)
+setTimeout(() =&gt; refetch(), 500)</pre>
+            <p class="body">A function passed to something else, used once, that does not need a name. Naming it would be one more thing to read.</p>
+          </div>
+          <p class="callout"><b>Rule of thumb:</b> a function you export gets a <code>function</code> declaration and a name. A function you hand to <code>map</code> or <code>onClick</code> gets an arrow.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="3.4" data-label="Closures" data-rail="Functions & modules">
+      <span class="eyebrow">The idea that explains hooks</span>
+      <h2 class="h2">A function remembers where it was born</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">The smallest possible example</div>
+          <pre>function makeAdder(<b>step</b>: number) {
+  return (n: number) =&gt; n + <b>step</b>
+}
+
+const addThree = makeAdder(<b>3</b>)
+addThree(10) <i>// 13</i>
+
+<i>// makeAdder has already returned. `step` is gone
+// from anywhere you could reach — except inside
+// the function that was created there.</i></pre>
+        </div>
+        <div class="panel">
+          <div class="panel__head">Which is why this works</div>
+          <pre>function SubjectCatalog() {
+  const [<b>search</b>, setSearch] = useState('')
+
+  return &lt;input onChange={(e) =&gt;
+    <b>setSearch</b>(e.target.value)
+  } /&gt;
+}</pre>
+          <p class="body">The arrow handed to <code>onChange</code> runs long after <code>SubjectCatalog</code> returned. It still reaches <code>setSearch</code>, because it closed over the scope it was written in.</p>
+        </div>
+      </div>
+      <p class="callout">
+        <b>This is the whole mechanism behind hooks.</b> <code>useState</code> is not magic
+        syntax — it is a function returning a value and a setter, and your handlers keep working
+        because closures let them.
+      </p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="3.4" data-label="Modules" data-rail="Functions & modules">
+      <span class="eyebrow">LO 3.4 · modularise</span>
+      <h2 class="h2">One job per file, and imports say so</h2>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">Enroll's src/, and the rule for each folder</div>
+          <pre>src/
+  lib/          <i>framework-free. No JSX in here, ever.</i>
+    api/        <i>the one way in and out</i>
+    rules/      <i>business rules, pure functions</i>
+  context/      <i>state the client owns</i>
+  components/   <i>reusable pieces</i>
+    ui/         <i>generic: skeleton, empty, error</i>
+  features/     <i>one folder per feature: screens + hooks</i>
+    enrollment/
+    advising/</pre>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Export, then import</div>
+            <pre><i>// units.ts — offers two things outward</i>
+<b>export</b> const UNIT_CEILING = 21
+<b>export</b> function totalUnits(s) { … }
+
+<i>// SubjectCatalog.tsx — asks for them</i>
+<b>import</b> { totalUnits, UNIT_CEILING } from '@/lib/rules/units'</pre>
+            <p class="small">Anything without <code>export</code> is private to its file. That is the only encapsulation you need.</p>
+          </div>
+          <p class="callout">
+            <b>Why <code>lib/</code> has no JSX:</b> it is the part you can test without rendering
+            anything. That is not tidiness — it is what makes lesson 3.8 possible.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="3.4" data-label="The alias" data-rail="Functions & modules">
+      <span class="eyebrow">A small thing that compounds</span>
+      <h2 class="h2">Why <code>@/</code> exists</h2>
+      <div class="compare">
+        <div class="compare__side compare__side--bad">
+          <div class="compare__head">Relative paths</div>
+          <div class="compare__body">
+            <pre>import { api } from '../../../lib/api/client'</pre>
+            <p>Count the dots. Now move the file one folder deeper and count again.</p>
+            <p>Three levels of <code>../</code> tells you nothing about where the thing actually is.</p>
+          </div>
+        </div>
+        <div class="compare__side compare__side--good">
+          <div class="compare__head">An alias to the root</div>
+          <div class="compare__body">
+            <pre>import { api } from '@/lib/api/client'</pre>
+            <p>Reads as an address. Survives moving the importing file anywhere.</p>
+            <p>Configured twice, in <code>vite.config.ts</code> and <code>tsconfig.app.json</code> — the bundler and the typechecker each need telling.</p>
+          </div>
+        </div>
+      </div>
+      <p class="callout">
+        Setting this up costs four lines and you notice it every day for a semester.
+        <b>The alias is in your project template too</b> — use it.
+      </p>
+    </section>
+
+    <!-- ================= 3.5 JSON, FETCH, AWAIT ================= -->
+
+    <section class="slide slide--center" data-sec="3.5" data-label="Lesson 3.5 opens" data-rail="JSON, fetch, await">
+      <div class="col" style="gap:var(--s4);align-items:center">
+        <span class="eyebrow eyebrow--plain">Lesson 3.5 · LO 3.5</span>
+        <h2 class="h1" style="max-width:24ch">What <code>await</code> was<br>doing all along</h2>
+        <p class="lede" style="text-align:center;margin-inline:auto">You have used this wrapper since Module 2 without opening it.</p>
+        <span class="file">src/lib/api/client.ts</span>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="3.5" data-label="What JSON is" data-rail="JSON, fetch, await">
+      <span class="eyebrow">LO 3.5 · serialize, deserialize</span>
+      <h2 class="h2">JSON is text. That is the whole idea.</h2>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">A network carries bytes, not objects</div>
+          <pre><i>// in your browser: a JavaScript object</i>
+{ code: 'CSci 153', units: 3 }
+
+        ↓ JSON.stringify  <i>(serialize)</i>
+
+<i>// on the wire: a string</i>
+'{"code":"CSci 153","units":3}'
+
+        ↓ JSON.parse      <i>(deserialize)</i>
+
+<i>// on the server: an object again</i>
+{ code: 'CSci 153', units: 3 }</pre>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">What JSON cannot carry</div>
+            <ul class="list list--cross">
+              <li><b>Dates.</b> They become strings — which is why the contract says <code>format: date-time</code> and you parse it yourself.</li>
+              <li><b>Functions.</b> Silently dropped.</li>
+              <li><b>undefined.</b> Dropped from objects entirely. <code>null</code> survives.</li>
+              <li><b>Comments.</b> There is no such thing as a comment in JSON.</li>
+            </ul>
+          </div>
+          <p class="callout">
+            <code>submittedAt</code> arrives as <code>"2026-08-19T02:19:05Z"</code>, a
+            <b>string</b>. Calling <code>.getFullYear()</code> on it is the bug this slide exists
+            to prevent.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="3.5" data-label="Promises" data-rail="JSON, fetch, await">
+      <span class="eyebrow">The thing a request returns</span>
+      <h2 class="h2">A promise is a receipt, not a result</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">Three states, one direction</div>
+          <div class="steps">
+            <div class="step"><div><div class="step__t">pending</div><div class="step__b">The request is out. Nothing to show yet — this is your loading state.</div></div></div>
+            <div class="step"><div><div class="step__t">fulfilled</div><div class="step__b">A value arrived. <code>await</code> hands it to you.</div></div></div>
+            <div class="step"><div><div class="step__t">rejected</div><div class="step__b">It failed. <code>await</code> throws, which is why <code>try/catch</code> works on it.</div></div></div>
+          </div>
+          <p class="small">Once it settles it never changes again. A promise resolves exactly once.</p>
+        </div>
+        <div class="panel" style="border-color:var(--fail)">
+          <div class="panel__head" style="color:var(--fail)">The mistake, and what it looks like</div>
+          <pre>const res = fetch('/subjects')   <i>// no await</i>
+console.log(res)
+<i>// → Promise { &lt;pending&gt; }</i>
+
+&lt;p&gt;{res}&lt;/p&gt;
+<i>// → [object Promise]</i></pre>
+          <p class="body">You asked for the receipt and rendered it. <b><code>[object Promise]</code> on a screen always means a missing <code>await</code>.</b></p>
+        </div>
+      </div>
+      <p class="callout">
+        <code>await</code> means <em>stop here until this settles, then give me the value or
+        throw</em>. It only works inside a function marked <code>async</code>, and that
+        function itself returns a promise — which is why <code>await</code> tends to spread.
+      </p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="3.5" data-label="Sequential vs parallel" data-rail="JSON, fetch, await">
+      <span class="eyebrow">Interactive · the cost of a loop with await in it</span>
+      <h2 class="h2">Three requests, two very different waits</h2>
+      <div class="panel panel--sunk">
+        <div class="panel__head">Each request takes 300ms <span class="spacer"></span><span class="dim">switch the strategy</span></div>
+        <div class="tl" data-widget="tl" id="tl"></div>
+      </div>
+      <p class="callout">
+        <b>Awaiting inside a loop makes requests queue.</b> If they do not depend on each other,
+        start them all and await the set — <code>Promise.all</code>. If each one needs the
+        previous answer, sequential is correct and slow is the price.
+      </p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="3.5" data-label="The wrapper, read" data-rail="JSON, fetch, await">
+      <span class="eyebrow">Open the file</span>
+      <h2 class="h2">Every line of <code>unwrap</code></h2>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">src/lib/api/client.ts</div>
+          <pre>export <b>async</b> function unwrap&lt;T&gt;(call): Promise&lt;T&gt; {
+  const { data, error, response } = <b>await</b> call
+
+  if (error !== undefined || !response.ok) {
+    <b>throw</b> new ApiErrorException(
+      normalizeError(error, response.status),
+      response.status
+    )
+  }
+
+  if (data === undefined) { <b>throw</b> … }
+
+  return data
+}</pre>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Four decisions in twelve lines</div>
+            <ul class="list">
+              <li><b><code>await call</code></b> — the request is already in flight; this waits for it.</li>
+              <li><b>Destructuring</b> — <code>{ data, error, response }</code> pulls three names out of one object.</li>
+              <li><b>It throws instead of returning</b> — because TanStack Query decides between its branches by whether the function threw.</li>
+              <li><b>A 2xx with no body throws too</b> — that is a contract bug, not a state to design for.</li>
+            </ul>
+          </div>
+          <p class="callout"><b>Delete the <code>throw</code></b> and Query's error branch never fires: failures become silent. Try it, then put it back.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="3.5" data-label="Errors" data-rail="JSON, fetch, await">
+      <span class="eyebrow">The half everybody forgets</span>
+      <h2 class="h2">A failed request is not an exception</h2>
+      <div class="grid grid--2">
+        <div class="panel" style="border-color:var(--fail)">
+          <div class="panel__head" style="color:var(--fail)">The trap in plain <code>fetch</code></div>
+          <pre>const res = await fetch('/subjects')
+const data = await res.json()
+<i>// 404? 500? This code cannot tell.
+// fetch only rejects if the network failed.</i></pre>
+          <p class="body">A 500 is a <em>successful</em> fetch of an error page. You have to check <code>res.ok</code> yourself, every time.</p>
+        </div>
+        <div class="panel">
+          <div class="panel__head">Which is why the wrapper exists</div>
+          <pre>if (error !== undefined || <b>!response.ok</b>) throw …</pre>
+          <p class="body">Written once, in one file, so no screen ever forgets it. Then every error reaching a component has the contract's shape: a <code>code</code> to branch on and a <code>message</code> to show.</p>
+        </div>
+      </div>
+      <p class="callout">
+        Three very different failures — a documented 409, a dead network, a thrown exception —
+        arrive as <b>one shape</b>. A component that had to tell them apart would grow three
+        error paths.
+      </p>
+    </section>
+
+    <!-- ================= 3.6 WHAT REACT DOES ================= -->
+
+    <section class="slide slide--center" data-sec="3.6" data-label="Lesson 3.6 opens" data-rail="What React does">
+      <div class="col" style="gap:var(--s4);align-items:center">
+        <span class="eyebrow eyebrow--plain">Lesson 3.6 · LO 3.6</span>
+        <h2 class="h1" style="max-width:24ch">Build the list<br>by hand once</h2>
+        <p class="lede" style="text-align:center;margin-inline:auto">Then nobody asks why we need React again.</p>
+        <span class="file">demos/subject-list-vanilla.html</span>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="3.6" data-label="The DOM" data-rail="What React does">
+      <span class="eyebrow">What you are actually manipulating</span>
+      <h2 class="h2">The DOM is a tree of objects</h2>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">HTML is text. The DOM is what the browser built from it.</div>
+          <pre><i>// find things</i>
+document.<b>querySelector</b>('#list')
+document.<b>getElementById</b>('total')
+
+<i>// make things</i>
+const li = document.<b>createElement</b>('li')
+li.<b>textContent</b> = 'CSci 153'
+
+<i>// attach things</i>
+list.<b>appendChild</b>(li)
+
+<i>// listen for things</i>
+button.<b>addEventListener</b>('click', handler)</pre>
+          <p class="small">Six functions. That is essentially the whole API you need.</p>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Why this lesson is not a detour</div>
+            <p class="body"><b>React is a DOM-manipulation library.</b> Every render ends in these exact calls — React just works out which ones are necessary.</p>
+            <p class="body">Doing it by hand once is what turns React from magic into a labour-saving device, which is the difference between using it and being at its mercy.</p>
+          </div>
+          <p class="callout"><code>textContent</code>, not <code>innerHTML</code>, for anything a user typed. <code>innerHTML</code> with user input is how a script tag ends up in your page.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="3.6" data-label="The cost of by hand" data-rail="What React does">
+      <span class="eyebrow">Interactive · count the operations</span>
+      <h2 class="h2">Fine for five rows</h2>
+      <div class="panel panel--sunk">
+        <div class="panel__head">The same list, two ways <span class="spacer"></span><span class="dim">add, remove, re-sort — and watch the counters</span></div>
+        <div class="ops" data-widget="ops" id="ops"></div>
+      </div>
+      <p class="callout">
+        The by-hand column is not <em>wrong</em>. It is <b>bookkeeping you have to get right
+        every time</b>, and the count is how much of it there is. React's number stays flat
+        because working out the difference is the thing it does.
+      </p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="3.6" data-label="Two bugs" data-rail="What React does">
+      <span class="eyebrow">In the demo file, marked with comments</span>
+      <h2 class="h2">The two bugs everyone writes by hand</h2>
+      <div class="grid grid--2">
+        <div class="panel" style="border-color:var(--fail)">
+          <div class="panel__head" style="color:var(--fail)">01 · Forgetting to clear</div>
+          <pre>function render() {
+  <b>list.innerHTML = ''</b>   <i>// ← delete this line</i>
+
+  for (const subject of subjects) {
+    list.appendChild(makeRow(subject))
+  }
+}</pre>
+          <p class="body">Without it, every render <em>appends</em>. Click twice and you have twelve rows; click ten times and the page has 60. The data is right and the screen is wrong.</p>
+        </div>
+        <div class="panel" style="border-color:var(--fail)">
+          <div class="panel__head" style="color:var(--fail)">02 · Forgetting to call it</div>
+          <pre>subjects.push(newSubject)
+<i>// ← and nothing happens</i>
+
+subjects.push(newSubject)
+<b>render()</b>   <i>// ← you have to remember, every time</i></pre>
+          <p class="body">The data changed and the screen did not. In React, <b>state changing <em>is</em> the instruction to re-render</b> — there is no call to forget.</p>
+        </div>
+      </div>
+      <p class="callout">
+        Both bugs are impossible in the React version. That is the trade: you give up direct
+        control of the DOM, and you get back <b>the class of bug that comes from managing it
+        yourself.</b>
+      </p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="3.6" data-label="Check: the DOM" data-rail="What React does">
+      <span class="eyebrow">Check yourself</span>
+      <h2 class="h2">Reading the two versions</h2>
+      <div data-widget="quiz" data-src="quiz-dom"></div>
+      <script type="application/json" id="quiz-dom">
+      [
+        {
+          "scenario": "In the by-hand version, a teammate removes the line `list.innerHTML = ''` from the top of render() because \"it looked wasteful — why throw away rows we are about to rebuild?\"",
+          "q": "What happens?",
+          "options": [
+            "Nothing visible — the rows are identical anyway",
+            "Rows accumulate on every render, so the list grows without limit",
+            "The page throws an error on the second render",
+            "It gets faster, and that is the right optimisation"
+          ],
+          "answer": 1,
+          "why": "appendChild adds; it does not replace. Every render appends a fresh copy of every row on top of what is already there. The instinct was right — throwing away identical rows *is* wasteful — and working out which rows actually changed is precisely the job React does for you."
+        },
+        {
+          "scenario": "A component renders a list of subjects with `subjects.map(s => <SubjectRow subject={s} />)` and no key prop. Everything looks correct on screen.",
+          "q": "What is the actual risk?",
+          "options": [
+            "None — key is only needed for performance",
+            "React cannot tell which row is which when the array changes, so state attached to a row can end up on the wrong one",
+            "The list will not render at all",
+            "It breaks only if the array has more than ten items"
+          ],
+          "answer": 1,
+          "why": "Without a key, React matches rows by position. Remove the second of six and every row below shifts up one — so anything React was tracking per row (focus, an open menu, a half-typed input) follows the position rather than the subject. It looks fine until the array changes, which is why this bug reaches production."
+        },
+        {
+          "scenario": "You need to display a student's name, which they typed into a form themselves.",
+          "q": "`el.textContent = name` or `el.innerHTML = name`?",
+          "options": [
+            "innerHTML — it handles more cases",
+            "textContent — innerHTML would interpret the value as markup",
+            "Either; they do the same thing for plain strings",
+            "innerHTML, then sanitise it afterwards"
+          ],
+          "answer": 1,
+          "why": "innerHTML parses the string as HTML. A name containing a script tag becomes a script tag. textContent sets text and only text, so there is nothing to exploit. React escapes by default for this exact reason — `{name}` in JSX is textContent, not innerHTML."
+        },
+        {
+          "scenario": "The by-hand version attaches a click listener to each row's Remove button inside render(), which runs again on every change.",
+          "q": "Why does this not leak listeners?",
+          "options": [
+            "The browser deduplicates identical listeners automatically",
+            "Because the old rows are discarded entirely, their listeners are garbage with them",
+            "It does leak — that is a bug in the demo",
+            "removeEventListener is called somewhere implicitly"
+          ],
+          "answer": 1,
+          "why": "innerHTML = '' discards the old &lt;li&gt; elements, and a listener on a discarded element is unreachable, so it is collected with the element. It works — but notice it only works because of the clear-and-rebuild strategy. Patching rows in place instead, without removing listeners, is where the real leak lives."
+        }
+      ]
+      </script>
+    </section>
+
+    <!-- ================= 3.7 CHOOSING A LIBRARY ================= -->
+
+    <section class="slide slide--center" data-sec="3.7" data-label="Lesson 3.7 opens" data-rail="Choosing a library">
+      <div class="col" style="gap:var(--s4);align-items:center">
+        <span class="eyebrow eyebrow--plain">Lesson 3.7 · LO 3.7</span>
+        <h2 class="h1" style="max-width:22ch">Three candidates,<br>one job</h2>
+        <p class="lede" style="text-align:center;margin-inline:auto">Pick one and defend it. "Most stars" is not a defence.</p>
+        <span class="chip chip--added">The judgment is the skill</span>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="3.7" data-label="Build or install" data-rail="Choosing a library">
+      <span class="eyebrow">The first question, before any comparison</span>
+      <h2 class="h2">Should this be a dependency at all?</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">Install it</div>
+          <ul class="list list--check">
+            <li><b>It is genuinely hard and boring</b> — date arithmetic, timezones, accessible dialogs, drag and drop</li>
+            <li><b>Getting it subtly wrong is expensive</b> — auth, money, cryptography</li>
+            <li><b>It is a solved problem with a standard answer</b></li>
+          </ul>
+          <p class="small">Enroll installs <code>openapi-fetch</code>, <code>@tanstack/react-query</code> and <code>react-router</code> on exactly these grounds.</p>
+        </div>
+        <div class="panel">
+          <div class="panel__head">Write it</div>
+          <ul class="list list--check">
+            <li><b>It is a few lines you fully understand</b> — the unit-ceiling check is nine</li>
+            <li><b>It carries your design</b> — the student card, the approval row</li>
+            <li><b>The library does forty things and you need one</b></li>
+          </ul>
+          <p class="small"><code>lib/rules/units.ts</code> is 90 lines and has no dependencies. It never will.</p>
+        </div>
+      </div>
+      <p class="callout">
+        Every dependency is a permanent commitment: it can break, get abandoned, or change its
+        mind about how it works. <b>The cheapest dependency is the one you did not add.</b>
+      </p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="3.7" data-label="The judgment" data-rail="Choosing a library">
+      <span class="eyebrow">Check yourself</span>
+      <h2 class="h2">Which one, and why</h2>
+      <div data-widget="quiz" data-src="quiz-pkg"></div>
+      <script type="application/json" id="quiz-pkg">
+      [
+        {
+          "scenario": "You need to format dates. Three candidates: <b>moment</b> — 4.9M weekly downloads, last publish 2 years ago, README says \"we consider Moment legacy, do not use it for new projects\". <b>date-fns</b> — 20M weekly, published last month, ships its own types. <b>my-fast-dates</b> — 300 weekly, published yesterday, 1 contributor.",
+          "q": "Which one?",
+          "options": [
+            "moment — by far the most established, and 4.9M people cannot be wrong",
+            "date-fns — actively maintained, ships types, and nobody is telling you to avoid it",
+            "my-fast-dates — newest, so it has learned from the others",
+            "None; write your own date formatting"
+          ],
+          "answer": 1,
+          "why": "Download count measures the past, not the present. moment's own maintainers are telling you not to start with it — read what a project says about itself. my-fast-dates has one contributor and no track record, which is a risk with no compensating benefit. date-fns is maintained, typed, and widely used; that combination is the answer. Writing your own is defensible for one format string and indefensible for timezones."
+        },
+        {
+          "scenario": "A package you need has 800k weekly downloads and solves your problem exactly. Its last publish was 3 years ago. There are 40 open issues and no commits since.",
+          "q": "Is stale automatically disqualifying?",
+          "options": [
+            "Yes — anything unpublished for 3 years is abandoned",
+            "No — a small, finished library with no dependencies can be genuinely done",
+            "Only if it has open issues",
+            "Yes, unless it has more than 1M downloads"
+          ],
+          "answer": 1,
+          "why": "\"Finished\" and \"abandoned\" look identical from the outside. A 200-line library with no dependencies that does one thing may simply be complete — nothing to fix. The questions that separate them: does it have dependencies that themselves need security updates, does it touch the browser APIs that keep changing, and are the open issues bug reports or feature requests? A finished leaf library is fine. A stale framework is not."
+        },
+        {
+          "scenario": "You are choosing between two component libraries. One is 12KB and you would write your own dialog. The other is 300KB, includes 60 components, and you need four of them.",
+          "q": "What matters most in this decision?",
+          "options": [
+            "Total bundle size — 300KB is too much, always",
+            "Whether the big one is tree-shakeable, so unused components never reach the bundle",
+            "The number of components, since more is better value",
+            "Whichever has better documentation"
+          ],
+          "answer": 1,
+          "why": "The published size is not the shipped size. If the library has proper ES module exports, your bundler includes only what you import — four components, not sixty. If it does not, you ship all 300KB to every student on campus wifi. Check that before arguing about the total. Documentation matters too, but it is not the question that changes the answer here."
+        },
+        {
+          "scenario": "Your group finds a package that does exactly what your project spec needs. It has 50 weekly downloads, was published 3 weeks ago, and the repository has one commit.",
+          "q": "What is the strongest argument against it?",
+          "options": [
+            "The download count is too low to be popular",
+            "Nobody has found its bugs yet, and you have no idea whether it will exist in six weeks",
+            "One commit means the code is badly written",
+            "New packages are always insecure"
+          ],
+          "answer": 1,
+          "why": "Popularity is not the point — unproven is. 50 users means the bugs are still in there waiting for you, and one commit three weeks ago tells you nothing about whether anyone will still be maintaining it when your project is due in week 17. The code might be excellent. You cannot tell yet, and your semester is not the place to find out."
+        }
+      ]
+      </script>
+    </section>
+
+    <section class="slide" data-sec="3.7" data-label="Reading docs" data-rail="Choosing a library">
+      <span class="eyebrow">The skill nobody teaches</span>
+      <h2 class="h2">How to read documentation you did not write</h2>
+      <div class="grid grid--3">
+        <div class="card"><span class="card__k">First</span><div class="card__t">The install and the first example</div><p class="card__b">If the "getting started" example does not resemble your problem, this may be the wrong library. Two minutes, and it saves an afternoon.</p></div>
+        <div class="card"><span class="card__k">Then</span><div class="card__t">The API reference for one function</div><p class="card__b">Read the whole signature. Optional parameters and defaults are where the behaviour you needed usually already exists.</p></div>
+        <div class="card"><span class="card__k">Last</span><div class="card__t">The changelog</div><p class="card__b">Before any major upgrade. It is the only place that tells you what broke, and it is written for exactly this moment.</p></div>
+      </div>
+      <div class="panel">
+        <div class="panel__head">And when the docs are wrong or missing</div>
+        <p class="body">Open <code>node_modules/&lt;package&gt;</code> and read the source, or the <code>.d.ts</code> file. It is allowed, it is often faster than searching, and the types cannot be out of date with the code the way prose can.</p>
+      </div>
+      <p class="callout"><b>An agent is very good at this and still gets versions wrong.</b> Paste the actual docs into context rather than trusting recall — the same principle as pasting the contract in Module 2.</p>
+    </section>
+
+    <!-- ================= 3.8 DOES IT WORK ================= -->
+
+    <section class="slide slide--center" data-sec="3.8" data-label="Lesson 3.8 opens" data-rail="Does it work?">
+      <div class="col" style="gap:var(--s4);align-items:center">
+        <span class="eyebrow eyebrow--plain">Lesson 3.8 · one session</span>
+        <h2 class="h1" style="max-width:24ch">A test that has<br>never failed<br>proves nothing</h2>
+        <p class="lede" style="text-align:center;margin-inline:auto">Enough Vitest to not be lost in Module 5.</p>
+        <span class="chip chip--added">No learning outcome requires this</span>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="3.8" data-label="What a unit test is" data-rail="Does it work?">
+      <span class="eyebrow">The anatomy</span>
+      <h2 class="h2">Three words, and one assertion</h2>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">src/lib/rules/units.test.ts</div>
+          <pre><b>describe</b>('canAddSubject', () =&gt; {
+  <b>it</b>('R2 · rejects an add past the ceiling', () =&gt; {
+    const enrolled = [six(), six(), six()]  <i>// 18 units</i>
+
+    const result = canAddSubject(six(), enrolled, 'draft')
+
+    <b>expect</b>(result).toMatchObject({
+      ok: false,
+      code: 'UNIT_CEILING'
+    })
+  })
+})</pre>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Read it as a sentence</div>
+            <ul class="list">
+              <li><b><code>describe</code></b> — the thing under test</li>
+              <li><b><code>it</code></b> — one claim about it, in words</li>
+              <li><b><code>expect</code></b> — the claim, in code</li>
+            </ul>
+            <p class="small">Arrange, act, assert. Every test in the file has those three parts in that order.</p>
+          </div>
+          <p class="callout">
+            <b>The name is half the value.</b> "returns an object" tests the language. "R2 rejects
+            an add past the ceiling" tests a decision somebody made — and when it fails, the name
+            alone tells you what broke.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="3.8" data-label="Watch it fail" data-rail="Does it work?">
+      <span class="eyebrow">Interactive · the run, and a deliberate break</span>
+      <h2 class="h2">Green means nothing until you have seen red</h2>
+      <div class="panel panel--sunk">
+        <div class="panel__head">npm run test <span class="spacer"></span><span class="dim">then break the rule on purpose</span></div>
+        <div class="tr" data-widget="tr" id="tr"></div>
+      </div>
+      <p class="callout">
+        <b>Change the ceiling to 24 and two tests fail with useful messages.</b> That is the proof
+        the tests are connected to the code. A suite that has never gone red might be asserting
+        nothing at all.
+      </p>
+    </section>
+
+    <section class="slide" data-sec="3.8" data-label="What to test" data-rail="Does it work?">
+      <span class="eyebrow">Where the value is</span>
+      <h2 class="h2">Test the rules, not the framework</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">Worth testing</div>
+          <ul class="list list--check">
+            <li><b>Pure functions with rules in them</b> — the unit ceiling, capacity, duplicate detection</li>
+            <li><b>The boundaries</b> — exactly 21 units, an empty array, a subject at capacity</li>
+            <li><b>Anything you got wrong once</b> — a test is how a bug stays fixed</li>
+          </ul>
+          <p class="small">Enroll has 11 tests, all of them on <code>lib/rules/</code>.</p>
+        </div>
+        <div class="panel">
+          <div class="panel__head">Not worth your time here</div>
+          <ul class="list list--cross">
+            <li>That React renders a <code>&lt;div&gt;</code></li>
+            <li>That <code>map</code> maps</li>
+            <li>Getters and setters with no logic in them</li>
+            <li>Chasing 100% coverage for its own sake</li>
+          </ul>
+          <p class="small">Coverage measures lines executed, not claims verified. 100% coverage with weak assertions is a comfortable lie.</p>
+        </div>
+      </div>
+      <p class="callout">
+        The off-by-one test — <b>an add landing exactly on 21 is allowed</b> — is the most
+        valuable one in the file. Boundaries are where bugs live, which is why every rule gets a
+        test on each side of its edge.
+      </p>
+    </section>
+
+    <section class="slide" data-sec="3.8" data-label="Where this goes" data-rail="Does it work?">
+      <span class="eyebrow">The progression</span>
+      <h2 class="h2">Three kinds of test, arriving in order</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th style="width:9rem">Kind</th><th style="width:7rem">When</th><th>What it proves, and what it costs</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><b>Unit</b></td><td class="num">Now · 3.8</td>
+              <td>One function does what its name claims. Milliseconds to run, so you run them constantly.</td>
+            </tr>
+            <tr>
+              <td><b>Component</b></td><td class="num">Module 5</td>
+              <td>A component renders the right thing for a given state. Needs a fake DOM, so slower and more fragile.</td>
+            </tr>
+            <tr style="background:color-mix(in oklab, var(--violet) 8%, transparent)">
+              <td><b>End to end</b></td><td class="num">Module 5.3</td>
+              <td>A real browser completes a real flow against a real backend. The only kind that proves the app <em>works</em> — and slow enough that you keep few of them.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="callout">
+        Your project specs require Vitest <b>and</b> Playwright in CI, and §12 makes
+        test-cases-as-issues a graded workflow. <b>This session is the floor</b>, not the whole
+        story — Module 5 finishes it.
+      </p>
+    </section>
+
+    <!-- ================= LABS ================= -->
+
+    <section class="slide slide--wide" data-sec="lab" data-label="Activity 5" data-rail="Laboratory activities">
+      <span class="eyebrow">Laboratory Activity 5 · Week 6 · A5 · 3%</span>
+      <div class="row" style="gap:var(--s4);align-items:baseline">
+        <h2 class="h2">Account for your stack</h2>
+        <span class="chip chip--accent">Individual</span>
+      </div>
+      <p class="callout"><b>Your own project's <code>package.json</code>, line by line.</b> The audit you watched in 3.1, run on the repository your group is actually shipping.</p>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">Deliverables</div>
+          <div class="steps">
+            <div class="step"><div><div class="step__t">Every dependency, one sentence</div><div class="step__b">What breaks if you remove it. "It is needed" is not an answer.</div></div></div>
+            <div class="step"><div><div class="step__t">Library or framework, for each</div><div class="step__b">Do you call it, or does it call you? One word plus a reason.</div></div></div>
+            <div class="step"><div><div class="step__t">Anything Enroll does not have, justified</div><div class="step__b">Extra dependencies are allowed. Unexamined ones are not.</div></div></div>
+            <div class="step"><div><div class="step__t">One version range explained</div><div class="step__b">Pick a <code>^</code> in your file and say what could change under it.</div></div></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Graded on</div>
+            <ul class="list">
+              <li><b>Accuracy</b> — 40</li>
+              <li><b>Library vs framework</b> — 20</li>
+              <li><b>Justifying the extras</b> — 25</li>
+              <li><b>Semver reading</b> — 15</li>
+            </ul>
+          </div>
+          <p class="small">A dependency nobody in the group can explain is a finding, not a failure — remove it or learn it.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="lab" data-label="Activity 6" data-rail="Laboratory activities">
+      <span class="eyebrow">Laboratory Activity 6 · Week 6 · A6 · 3%</span>
+      <div class="row" style="gap:var(--s4);align-items:baseline">
+        <h2 class="h2">Your first tests</h2>
+        <span class="chip chip--accent">Individual</span>
+      </div>
+      <p class="callout"><b>Pull one rule out of a component and test it.</b> Most groups have a rule buried in a screen — a total, a limit, a validity check. Move it to <code>lib/rules/</code> and prove it works.</p>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">Deliverables</div>
+          <div class="steps">
+            <div class="step"><div><div class="step__t">One extracted pure function</div><div class="step__b">No React, no fetch, no database. It takes values and returns a value.</div></div></div>
+            <div class="step"><div><div class="step__t">At least six tests, named after claims</div><div class="step__b">Not "works correctly". Name the rule each one enforces.</div></div></div>
+            <div class="step"><div><div class="step__t">Both sides of one boundary</div><div class="step__b">If the rule has a limit, test exactly on it and exactly past it.</div></div></div>
+            <div class="step"><div><div class="step__t">Evidence of red, then green</div><div class="step__b">A screenshot of the suite failing before the fix. A test you never saw fail is a test you cannot trust.</div></div></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Graded on</div>
+            <ul class="list">
+              <li><b>The extraction</b> — 25</li>
+              <li><b>Test names as claims</b> — 25</li>
+              <li><b>Boundary coverage</b> — 25</li>
+              <li><b>Red before green</b> — 15</li>
+              <li><b>It runs clean</b> — 10</li>
+            </ul>
+          </div>
+          <p class="small">The extraction is the real work. The tests are easy once the function is pure.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CLOSE ================= -->
+
+    <section class="slide" data-sec="end" data-label="Assessment map" data-rail="Close">
+      <span class="eyebrow">Where this module's marks come from</span>
+      <h2 class="h2">Assessment</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Assessment</th><th style="width:7rem">Weight</th><th>What Module 3 contributes</th><th style="width:8rem">Outcome</th></tr></thead>
+          <tbody>
+            <tr><td>Activities 5 &amp; 6</td><td class="num">3% each</td><td><b>Both individual.</b> Your stack audit, and your first extracted-and-tested rule.</td><td class="num">CO3 / LO 3.1–3.7</td></tr>
+            <tr><td>Codebase Assessment</td><td class="num">20%</td><td><b>Once, weeks 16–17.</b> Your dependencies, your file layout, and whether anything under <code>generated/</code> was hand-edited.</td><td class="num">CO1–CO5</td></tr>
+            <tr><td>Final Web Project</td><td class="num">50%</td><td><b>By group.</b> Every line of it is written in the language and stack this module made legible.</td><td class="num">CO1–CO5</td></tr>
+            <tr><td>Examinations</td><td class="num">Midterm W9 · Final W18</td><td>Types and structures, scoping, iteration, JSON, the DOM, and reading a version range.</td><td class="num">CO3</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="callout">
+        The midterm is in <b>week 9</b> and covers all five modules. This one is the most
+        examinable of them, because it is the one made of facts rather than judgment.
+      </p>
+    </section>
+
+    <section class="slide" data-sec="end" data-label="Next up" data-rail="Close">
+      <span class="eyebrow">Ends here, continues there</span>
+      <h2 class="h2">Next: the other side of the contract</h2>
+      <div class="grid grid--3">
+        <div class="card"><span class="card__k">Module 04 · weeks 7–8</span><div class="card__t">Backend</div><p class="card__b">Schema modeling, migrations, CRUD — and Row Level Security, which is what the route guard in Module 2 was only pretending to do.</p></div>
+        <div class="card"><span class="card__k">Module 05 · week 8</span><div class="card__t">Integration</div><p class="card__b">Validation on both layers, then swapping the mock for your own backend by changing one line.</p></div>
+        <div class="card"><span class="card__k">Weeks 10–17</span><div class="card__t">You build it</div><p class="card__b">No new lectures. Four sprints, with the room and the instructor.</p></div>
+      </div>
+      <div class="panel">
+        <div class="panel__head">Before week 7</div>
+        <ul class="list list--check">
+          <li>You can open your group's <code>package.json</code> and explain every line</li>
+          <li>One rule is out of a component, in <code>lib/rules/</code>, with tests</li>
+          <li><code>npm run test</code> passes in your repository</li>
+          <li>You have read Enroll's <code>lib/api/client.ts</code> top to bottom</li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="rail rail--bot">
+    <div class="nav">
+      <button class="nav__btn" id="prev" type="button" aria-label="Previous slide">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <button class="nav__btn" id="next" type="button" aria-label="Next slide">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+    <div class="ticks" id="ticks"></div>
+    <button class="btn btn--ghost" id="open-map" type="button">Map</button>
+    <button class="btn btn--ghost" id="open-help" type="button">?</button>
+  </footer>
+</div>
+
+<div class="overlay" id="overview" hidden>
+  <div class="overlay__head">
+    <b>Slide map</b><span>Module 03 · The Stack, End to End</span><span class="spacer"></span>
+    <button class="btn btn--ghost" data-close type="button">Close · Esc</button>
+  </div>
+  <div class="map" id="map"></div>
+</div>
+
+<div class="overlay" id="help" hidden>
+  <div class="overlay__head">
+    <b>Keyboard</b><span class="spacer"></span>
+    <button class="btn btn--ghost" data-close type="button">Close · Esc</button>
+  </div>
+  <div class="keys">
+    <div class="keys__row"><span class="keys__k">→</span><span class="keys__k">Space</span> Next slide</div>
+    <div class="keys__row"><span class="keys__k">←</span> Previous slide</div>
+    <div class="keys__row"><span class="keys__k">Home</span><span class="keys__k">End</span> First / last</div>
+    <div class="keys__row"><span class="keys__k">O</span><span class="keys__k">G</span> Slide map</div>
+    <div class="keys__row"><span class="keys__k">F</span> Fullscreen</div>
+    <div class="keys__row"><span class="keys__k">?</span><span class="keys__k">H</span> This panel</div>
+    <div class="keys__row"><span class="keys__k">Esc</span> Close overlay</div>
+    <div class="keys__row"><span class="keys__k">Ctrl</span>+<span class="keys__k">P</span> Print all slides</div>
+  </div>
+  <p class="small" style="max-width:52ch">Slide numbers are in the URL — <code>#23</code> jumps straight there, so you can bookmark a starting point for the second session.</p>
+</div>
+
+<script src="../shared/deck.js"></script>
+<script src="module-3.js"></script>

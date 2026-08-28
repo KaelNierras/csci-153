@@ -4,7 +4,7 @@
   "subtitle": "Schema, Row Level Security, and the functions that implement the contract.",
   "weeks": "7 – 8",
   "outcome": "CO4",
-  "slides": 0,
-  "status": "planned",
+  "slides": 44,
+  "status": "ready",
   "labs": []
 }

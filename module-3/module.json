@@ -4,7 +4,7 @@
   "subtitle": "Every piece of the toolchain, taught by opening the file it lives in — types, modules, JSON, the DOM, and how you know a function works.",
   "weeks": "5 – 6",
   "outcome": "CO3",
-  "slides": 0,
-  "status": "planned",
+  "slides": 49,
+  "status": "ready",
   "labs": []
 }

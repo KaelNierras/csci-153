@@ -6,7 +6,10 @@ Syllabus LOs: **LO 5.1** validate user inputs on client and server layers ·
 **LO 5.2** utilize API endpoints for frontend application ·
 **LO 5.3** deploy a web application to a cloud platform
 
-Status: **planning**. Deck not built yet.
+Status: **ready** — 32 slides, `module-5/index.html`. Interactive instruments: the
+validation bypass (5.1) — the same bad write sent by a form, by devtools, by a REST client,
+and with a service-role key — a CI pipeline with a merge gate (5.4), and the three-place
+deployment map (5.5).
 
 This module was five weeks of mostly supervised build time with short inputs. Under the
 8-week lecture calendar (`plan/semester-calendar.md`) the split is explicit: **5.1 and 5.2
