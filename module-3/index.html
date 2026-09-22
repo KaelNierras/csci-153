@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Backend Bench</title>
 <link rel="stylesheet" href="../shared/deck.css">
 
@@ -232,6 +237,8 @@
 .dep5__secret[data-ok="1"] { color: var(--pass); }
 .dep5__secret[data-ok="0"] { color: var(--fail); }
 </style>
+</head>
+<body>
 
 <div id="deck" data-sec="0">
 
@@ -251,14 +258,13 @@
 
     <section class="slide slide--center" data-sec="0" data-label="Cover" data-rail="Orientation">
       <div class="col" style="gap:var(--s5);align-items:center">
-        <span class="eyebrow eyebrow--plain">Visayas State University · DCST · Module 04 · Weeks 7–8</span>
+        <span class="eyebrow eyebrow--plain">Visayas State University · DCST · Module 03 · Weeks 7–8 · Milestone 3</span>
         <h1 class="h1" style="max-width:26ch">The database is<br>where security<br>actually happens</h1>
         <p class="lede" style="text-align:center;margin-inline:auto">
-          Schema, migrations, endpoints — and the layer that makes a route guard honest.
+          Migrations, endpoints, and the layer that makes a route guard honest — implementing the document you agreed two weeks ago.
         </p>
         <div class="row" style="justify-content:center;margin-top:var(--s4)">
           <span class="chip">CO4 · Backend with RESTful endpoints</span>
-          <span class="chip">LO 4.1 · Schema</span>
           <span class="chip">LO 4.2 · CRUD</span>
         </div>
         <p class="small mono" style="margin-top:var(--s5);letter-spacing:0.12em">
@@ -321,10 +327,10 @@
       <h2 class="h2">By the end of week 8 you can…</h2>
       <div class="grid grid--2">
         <div class="panel">
-          <div class="panel__head" style="color:var(--brass)">Required by the syllabus</div>
+          <div class="panel__head" style="color:var(--brass)">Required by the syllabus · LO 4.2</div>
           <div class="steps">
-            <div class="step"><div><div class="step__t">LO 4.1 — Model a relational schema</div><div class="step__b">Tables, keys, and relationships for your own system, normalised enough that no fact is stored twice.</div></div></div>
-            <div class="step"><div><div class="step__t">LO 4.2 — CRUD endpoints</div><div class="step__b">Create, read, update and delete over that schema — satisfying the contract your group wrote in week 5.</div></div></div>
+            <div class="step"><div><div class="step__t">LO 4.2 — CRUD endpoints</div><div class="step__b">Create, read, update and delete over your schema — satisfying the contract your group wrote in week 4.</div></div></div>
+            <div class="step"><div><div class="step__t">Migrations, as versioned files</div><div class="step__b">The schema you modelled in Lesson 2.1 becomes reviewable SQL that anyone can re-run from scratch.</div></div></div>
           </div>
         </div>
         <div class="panel">
@@ -340,7 +346,7 @@
       <p class="callout">
         <b>The acceptance criterion for this whole module is one command:</b>
         <code>npm run contract:check</code> passes. Your implementation satisfies the document
-        you wrote in week 5, or the module is not done.
+        you wrote in week 4, or the module is not done.
       </p>
     </section>
 
@@ -1359,7 +1365,7 @@ jobs:
         </table>
       </div>
       <p class="callout">
-        <b>The midterm is next week</b> and covers all five modules. From this one: what a policy
+        <b>The midterm is next week</b> and covers all four modules. From this one: what a policy
         is, why a route guard is not one, and where a given rule belongs.
       </p>
     </section>
@@ -1368,7 +1374,7 @@ jobs:
       <span class="eyebrow">Ends here, continues there</span>
       <h2 class="h2">Next: connect the two halves</h2>
       <div class="grid grid--3">
-        <div class="card"><span class="card__k">Module 05 · week 8</span><div class="card__t">Integration</div><p class="card__b">Validation on both layers, then one environment variable turns the mock into your own backend.</p></div>
+        <div class="card"><span class="card__k">Module 04 · clinics 11–15</span><div class="card__t">Frontend</div><p class="card__b">Auth, the typed request layer, validation on both layers — then one environment variable turns the mock into your own backend.</p></div>
         <div class="card"><span class="card__k">Weeks 10–17</span><div class="card__t">Your sprints</div><p class="card__b">Sprint 1 is this module, on your own system. Its gate: another group's account cannot read your rows.</p></div>
         <div class="card"><span class="card__k">Clinics</span><div class="card__t">12 · 13 · 15</div><p class="card__b">End-to-end testing, CI, and deployment — each taught in the week you need it.</p></div>
       </div>
@@ -1429,3 +1435,6 @@ jobs:
 
 <script src="../shared/deck.js"></script>
 <script src="module-3.js"></script>
+
+</body>
+</html>

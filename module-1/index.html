@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>UI/UX Design Bench</title>
 <link rel="stylesheet" href="../shared/deck.css">
 
@@ -199,6 +204,8 @@
 .qc__key[data-s="fetching"]{ border-color: var(--accent); }
 .qc__key[data-s="fetching"] .qc__state { color: var(--accent); }
 </style>
+</head>
+<body>
 
 <div id="deck" data-sec="0">
 
@@ -218,16 +225,16 @@
 
     <section class="slide slide--center" data-sec="0" data-label="Cover" data-rail="Orientation">
       <div class="col" style="gap:var(--s5);align-items:center">
-        <span class="eyebrow eyebrow--plain">Visayas State University · DCST · Module 01 · Weeks 1–2</span>
+        <span class="eyebrow eyebrow--plain">Visayas State University · DCST · Module 01 · Weeks 1–3 · Milestone 1</span>
         <h1 class="h1" style="max-width:22ch">Interface design,<br>done with an agent</h1>
         <p class="lede" style="text-align:center;margin-inline:auto">
-          UI/UX practice you can defend, and the agentic workflow that turns it into
-          working screens — without either of us typing every line.
+          UI/UX practice you can defend, the agentic workflow that turns it into working
+          screens, and the repository all of it is delivered into.
         </p>
         <div class="row" style="justify-content:center;margin-top:var(--s4)">
           <span class="chip">CO1 · Design intuitive UI/UX</span>
-          <span class="chip">LO 1.1 · Wireframes &amp; mockups</span>
-          <span class="chip">LO 1.2 · Extract HTML/CSS</span>
+          <span class="chip">CO2 · Reusable components</span>
+          <span class="chip">LO 1.1 · 1.2 · 2.1 · 2.2</span>
         </div>
         <p class="small mono" style="margin-top:var(--s5);letter-spacing:0.12em">
           PRESS <kbd style="border:1px solid var(--line);padding:0.1em 0.4em">→</kbd> TO START ·
@@ -238,30 +245,31 @@
     </section>
 
     <section class="slide" data-sec="0" data-label="Where this sits" data-rail="Orientation">
-      <span class="eyebrow">The semester, in five moves</span>
+      <span class="eyebrow">The semester, in four moves</span>
       <h2 class="h2">You are here</h2>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th style="width:5rem">Weeks</th><th style="width:9rem">Module</th><th>What you walk out able to do</th><th style="width:8rem">Outcome</th></tr>
+            <tr><th style="width:5rem">Weeks</th><th style="width:10rem">Module</th><th>What you walk out able to do</th><th style="width:8rem">Outcome</th></tr>
           </thead>
           <tbody>
             <tr style="background:color-mix(in oklab, var(--brass) 8%, transparent)">
-              <td class="num" style="color:var(--brass)">1 – 2</td>
-              <td><b>01 · UI/UX Design</b></td>
-              <td><b>Design a screen a stranger can use, and drive an agent to build it.</b></td>
-              <td class="num">CO1</td>
+              <td class="num" style="color:var(--brass)">1 – 3</td>
+              <td><b>01 · UI/UX</b></td>
+              <td><b>Design a screen a stranger can use, drive an agent to build it, and ship it as static components.</b></td>
+              <td class="num">CO1 · CO2</td>
             </tr>
-            <tr><td class="num">3 – 5</td><td>02 · Frontend</td><td>Reusable components in React + Tailwind, responsive across devices.</td><td class="num">CO2</td></tr>
-            <tr><td class="num">5 – 6</td><td>03 · The Stack</td><td>Every piece of the toolchain, taught by opening the file it lives in.</td><td class="num">CO3</td></tr>
-            <tr><td class="num">7 – 8</td><td>04 · Backend</td><td>Schema modeling and CRUD endpoints over a real database.</td><td class="num">CO4</td></tr>
-            <tr><td class="num">8 +</td><td>05 · Integration</td><td>Validation, API consumption, deployment to the cloud.</td><td class="num">CO5</td></tr>
+            <tr><td class="num">4 – 6</td><td>02 · Contract</td><td>Model the data, write the document that exposes it, and read every tool that turns it into code.</td><td class="num">CO3 · CO4</td></tr>
+            <tr><td class="num">7 – 8</td><td>03 · Backend</td><td>Migrations, Row Level Security, and endpoints that satisfy the contract.</td><td class="num">CO4</td></tr>
+            <tr><td class="num">11 – 15</td><td>04 · Frontend</td><td>Auth, the typed request layer, validation, and a deployed application.</td><td class="num">CO2 · CO5</td></tr>
           </tbody>
         </table>
       </div>
       <p class="callout">
-        Everything downstream inherits what you decide in these two weeks. A schema can be migrated and an
-        endpoint can be rewritten, but <b>a bad information hierarchy gets rebuilt from zero.</b>
+        <b>Each module hands the next one something it cannot start without.</b> You cannot agree a contract
+        for data you have not modelled, implement a contract you have not agreed, or consume an implementation
+        that does not exist. Everything downstream inherits what you decide in these three weeks — a schema can
+        be migrated and an endpoint rewritten, but <b>a bad information hierarchy gets rebuilt from zero.</b>
       </p>
     </section>
 
@@ -297,7 +305,7 @@
     </section>
 
     <section class="slide" data-sec="0" data-label="Module outcomes" data-rail="Orientation">
-      <span class="eyebrow">Learning outcomes · CO1</span>
+      <span class="eyebrow">Learning outcomes · CO1 · CO2</span>
       <h2 class="h2">By the end of week 3 you can…</h2>
       <div class="grid grid--2">
         <div class="panel">
@@ -317,15 +325,37 @@
             <li>Generate a <b>token set first</b>, then screens that consume it</li>
             <li>Run the <b>agentic loop</b>: context → plan → generate → review → iterate</li>
             <li>Apply an <b>8-point design QA</b> pass to any generated screen</li>
-            <li>Convert a mockup into <b>component-ready markup</b> for Module 02</li>
+            <li>Convert a mockup into <b>component-ready markup</b></li>
           </ul>
         </div>
       </div>
+      <div class="grid grid--2" style="margin-top:var(--s4)">
+        <div class="panel">
+          <div class="panel__head" style="color:var(--brass)">LO 2.1 · Reusable components</div>
+          <ul class="list">
+            <li>Turn the mockup into <b>React components with defensible boundaries</b></li>
+            <li>Treat <b>props as a contract</b>, and know when one has too many</li>
+            <li>Promote your token set into the <b>Tailwind theme</b>, in one place</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <div class="panel__head" style="color:var(--cyan)">LO 2.2 · Responsive across devices</div>
+          <ul class="list">
+            <li>Build to <b>breakpoints that hold at 320px</b>, not just on your laptop</li>
+            <li>Express the seven states as <b>variants</b> rather than branches</li>
+            <li>Deliver it all through a <b>repository with reviewed pull requests</b></li>
+          </ul>
+        </div>
+      </div>
+      <p class="callout">
+        <b>Static only.</b> No <code>fetch</code>, no Context, no query client — those are Module 04, once
+        there is something real to talk to. A screen with nothing behind it is still finished design work.
+      </p>
     </section>
 
     <section class="slide" data-sec="0" data-label="How sessions run" data-rail="Orientation">
       <span class="eyebrow">Ground rules</span>
-      <h2 class="h2">How these two weeks run</h2>
+      <h2 class="h2">How these three weeks run</h2>
       <div class="steps">
         <div class="step">
           <div>
@@ -873,7 +903,7 @@
       <p class="callout">
         This is the single highest-leverage thing you can hand an agent. <b>Give it the token file and it stops
         inventing colors</b> — every screen it generates afterwards is automatically consistent with every other one.
-        You will feel this immediately in Module 02 with Tailwind's <code>theme</code> config.
+        You will feel this immediately in Lesson 1.4 with Tailwind's <code>theme</code> config.
       </p>
     </section>
 
@@ -1021,7 +1051,7 @@ go-ahead.</b></pre></div>
             <li>Runs commands: install, build, test, migrate</li>
             <li>Changes land as a diff you review before committing</li>
           </ul>
-          <p class="small">Use it for: Module 02 onward, once there is a repository to work in.</p>
+          <p class="small">Use it for: Lesson 1.3 onward, once there is a repository to work in.</p>
         </div>
       </div>
       <p class="callout">Rule for this module: <b>explore in the browser, commit from the editor.</b> Never paste code you have not read into a project you are graded on.</p>
@@ -1210,7 +1240,7 @@ keyboard operable, no icon lib.</b>
         <div class="panel">
           <div class="panel__head">Rewrite before it enters the repo</div>
           <ul class="list list--cross">
-            <li><b>Repetition</b> — three copies of a card become one component (Module 02)</li>
+            <li><b>Repetition</b> — three copies of a card become one component (Lesson 1.4)</li>
             <li>Hard-coded strings that belong in data</li>
             <li>Magic numbers: <code>margin-top: 37px</code></li>
             <li><code>div</code> soup where a <code>button</code>, <code>ul</code>, or <code>table</code> belongs</li>
@@ -1219,7 +1249,7 @@ keyboard operable, no icon lib.</b>
         </div>
       </div>
       <p class="callout">
-        The handoff to <b>Module 02</b> is exactly this: today's mockup becomes next week's
+        The handoff to <b>Lesson 1.4</b> is exactly this: today's mockup becomes next week's
         <code>&lt;SubjectCard /&gt;</code>. Generated markup is a <em>starting structure</em>, never a component library.
       </p>
     </section>
@@ -1880,7 +1910,7 @@ git branch -d feature/12-student-card</pre></div>
           <div class="panel">
             <div class="panel__head">Feeds directly into</div>
             <ul class="list">
-              <li>Module 02 — this screen becomes your first real components</li>
+              <li>Lesson 1.4 — this screen becomes your first real components</li>
               <li>The Final Web Project (FWP, 50%)</li>
               <li>The Codebase Assessment (CA, 20%)</li>
             </ul>
@@ -1968,7 +1998,7 @@ git branch -d feature/12-student-card</pre></div>
       <h2 class="h2">Next: version control, then components</h2>
       <div class="grid grid--3">
         <div class="card"><span class="card__k">Immediately next</span><div class="card__t">Git recap</div><p class="card__b">A short interactive session — branches, history, and why your prompt log and tokens belong in the repository.</p></div>
-        <div class="card"><span class="card__k">Module 02 · weeks 3–5</span><div class="card__t">Frontend</div><p class="card__b">Your mockup becomes real components in React + Tailwind, with the token set from this module as the theme.</p></div>
+        <div class="card"><span class="card__k">Module 02 · weeks 4–6</span><div class="card__t">The Contract</div><p class="card__b">You model the data behind these screens, then write the document that exposes it — and meet every tool that turns it into code.</p></div>
         <div class="card"><span class="card__k">Carry forward</span><div class="card__t">The 8-point QA</div><p class="card__b">Every generated screen for the rest of the semester goes through it. Keep it open.</p></div>
       </div>
       <div class="panel">
@@ -1982,7 +2012,7 @@ git branch -d feature/12-student-card</pre></div>
           <ul class="list">
             <li><b>Laws of UX</b> — lawsofux.com, one page per law.</li>
             <li><b>web.dev / Learn Accessibility</b> — Google, free and current.</li>
-            <li><b>Tailwind CSS docs · Theme</b> — how tokens land in Module 02.</li>
+            <li><b>Tailwind CSS docs · Theme</b> — how tokens land in Lesson 1.4.</li>
           </ul>
         </div>
       </div>
@@ -2034,3 +2064,6 @@ git branch -d feature/12-student-card</pre></div>
 
 <script src="../shared/deck.js"></script>
 <script src="module-1.js"></script>
+
+</body>
+</html>

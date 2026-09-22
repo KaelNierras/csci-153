@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Frontend Bench</title>
 <link rel="stylesheet" href="../shared/deck.css">
 
@@ -301,6 +306,8 @@
 .dep5__secret[data-ok="1"] { color: var(--pass); }
 .dep5__secret[data-ok="0"] { color: var(--fail); }
 </style>
+</head>
+<body>
 
 <div id="deck" data-sec="0">
 
@@ -320,13 +327,14 @@
 
     <section class="slide slide--center" data-sec="0" data-label="Cover" data-rail="Orientation">
       <div class="col" style="gap:var(--s5);align-items:center">
-        <span class="eyebrow eyebrow--plain">Visayas State University · DCST · Module 05 · Week 8, then the sprints</span>
+        <span class="eyebrow eyebrow--plain">Visayas State University · DCST · Module 04 · Clinics, weeks 11–15 · Milestone 4</span>
         <h1 class="h1" style="max-width:24ch">One line changes,<br>and the mock<br>becomes real</h1>
         <p class="lede" style="text-align:center;margin-inline:auto">
-          Everything the contract-first argument promised, tested in ten seconds.
+          Auth, the typed request layer, server state and validation — then everything the contract-first argument promised, tested in ten seconds.
         </p>
         <div class="row" style="justify-content:center;margin-top:var(--s4)">
           <span class="chip">CO5 · Deploy a working application</span>
+          <span class="chip">CO2 · Consume it from the client</span>
           <span class="chip">LO 5.1 · 5.2 · 5.3</span>
         </div>
         <p class="small mono" style="margin-top:var(--s5);letter-spacing:0.12em">
@@ -338,36 +346,37 @@
     </section>
 
     <section class="slide" data-sec="0" data-label="How this module runs" data-rail="Orientation">
-      <span class="eyebrow">Different shape from the other four</span>
-      <h2 class="h2">Two lectures now, three clinics later</h2>
+      <span class="eyebrow">Different shape from the other three</span>
+      <h2 class="h2">Five clinics, each in the week you need it</h2>
       <div class="table-wrap">
         <table>
           <thead><tr><th style="width:9rem">When</th><th style="width:13rem">What</th><th>Why then</th></tr></thead>
           <tbody>
-            <tr><td class="num">Week 8</td><td><b>5.1</b> Two-layer validation</td><td>You need it before you write a single form against a real backend.</td></tr>
-            <tr><td class="num">Week 8</td><td><b>5.2</b> Integration day</td><td>The framing for the whole development phase — what can break, and what cannot.</td></tr>
-            <tr style="background:color-mix(in oklab, var(--violet) 8%, transparent)"><td class="num">Week 12</td><td><b>5.3</b> End-to-end testing <span class="chip chip--clinic">clinic</span></td><td>Needs a working backend to test against. It does not exist in week 8.</td></tr>
-            <tr style="background:color-mix(in oklab, var(--violet) 8%, transparent)"><td class="num">Week 13</td><td><b>5.4</b> CI <span class="chip chip--clinic">clinic</span></td><td>Needs tests worth running automatically.</td></tr>
-            <tr style="background:color-mix(in oklab, var(--violet) 8%, transparent)"><td class="num">Week 15</td><td><b>5.5</b> Deployment <span class="chip chip--clinic">clinic</span></td><td>Teaching deployment seven weeks before anyone deploys guarantees re-teaching it.</td></tr>
-            <tr><td class="num">Weeks 16–17</td><td><b>5.6</b> Codebase assessment</td><td>The graded read-through of your repository. 20% of the course.</td></tr>
+            <tr style="background:color-mix(in oklab, var(--violet) 8%, transparent)"><td class="num">Week 11</td><td><b>4.1</b> Auth Context <span class="chip chip--clinic">clinic</span></td><td>Needs a real session to protect a route with. Sprint 1 has just built one.</td></tr>
+            <tr style="background:color-mix(in oklab, var(--violet) 8%, transparent)"><td class="num">Week 12</td><td><b>4.2</b> Wrapper &amp; server state<br><b>4.3</b> Data states <span class="chip chip--clinic">clinic</span></td><td>Needs endpoints to wrap and real latency to show. You read this client in Lesson 2.7; now you write one.</td></tr>
+            <tr style="background:color-mix(in oklab, var(--violet) 8%, transparent)"><td class="num">Week 13</td><td><b>4.4</b> Two-layer validation<br><b>4.5</b> Integration day <span class="chip chip--clinic">clinic</span></td><td>Both layers have to exist before you can bypass one on purpose.</td></tr>
+            <tr style="background:color-mix(in oklab, var(--violet) 8%, transparent)"><td class="num">Week 14</td><td><b>4.6</b> End-to-end testing <span class="chip chip--clinic">clinic</span></td><td>Needs a working app to drive, as a real authenticated role.</td></tr>
+            <tr style="background:color-mix(in oklab, var(--violet) 8%, transparent)"><td class="num">Week 15</td><td><b>4.7</b> Deployment <span class="chip chip--clinic">clinic</span></td><td>Teaching deployment seven weeks before anyone deploys guarantees re-teaching it.</td></tr>
+            <tr><td class="num">Weeks 16–17</td><td><b>4.8</b> Codebase assessment</td><td>The graded read-through of your repository. 20% of the course.</td></tr>
           </tbody>
         </table>
       </div>
       <p class="callout">
-        The clinics are <b>45 minutes, one demonstration, then you apply it that afternoon.</b>
-        This is the module that was always mostly supervised build time — now it says so.
+        Every clinic is <b>45–60 minutes, one demonstration, then you apply it that afternoon.</b>
+        Nothing here is taught before the thing it operates on exists — which is why this module
+        lives inside the development phase rather than in week 8.
       </p>
     </section>
 
     <section class="slide" data-sec="0" data-label="Outcomes" data-rail="Orientation">
-      <span class="eyebrow">Learning outcomes · CO5</span>
+      <span class="eyebrow">Learning outcomes · CO2 · CO5</span>
       <h2 class="h2">By the end of week 17 you have shipped</h2>
       <div class="grid grid--2">
         <div class="panel">
           <div class="panel__head" style="color:var(--brass)">Required by the syllabus</div>
           <div class="steps">
             <div class="step"><div><div class="step__t">LO 5.1 — Validate on client and server</div><div class="step__b">Both layers, and you can say what each one is actually for.</div></div></div>
-            <div class="step"><div><div class="step__t">LO 5.2 — Consume API endpoints</div><div class="step__b">Your own frontend against your own backend, over the contract you wrote in week 5.</div></div></div>
+            <div class="step"><div><div class="step__t">LO 5.2 — Consume API endpoints</div><div class="step__b">Your own frontend against your own backend, over the contract you wrote in week 4.</div></div></div>
             <div class="step"><div><div class="step__t">LO 5.3 — Deploy to a cloud platform</div><div class="step__b">A URL a stranger can open, with secrets that never reached the bundle.</div></div></div>
           </div>
         </div>
@@ -1468,3 +1477,6 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6…</pre>
 
 <script src="../shared/deck.js"></script>
 <script src="module-4.js"></script>
+
+</body>
+</html>

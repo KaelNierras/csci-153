@@ -75,8 +75,19 @@ def build_module(module_dir: Path) -> dict | None:
         print(f"{module_dir.name}: no index.html — listed as '{meta.get('status', 'planned')}'\n")
         return meta
 
+    raw = src.read_text(encoding="utf-8")
+
+    # A deck must be a complete HTML document. Without </body>, live-server
+    # injects its reload script before the first </svg> instead — which lands
+    # inside the nav buttons, corrupts the markup, and serves a blank deck.
+    # Without a doctype the deck renders in quirks mode and the layout collapses.
+    for needle, why in (("<!doctype", "no doctype — quirks mode"),
+                        ("</body>", "no </body> — live-server injects into the nav SVG")):
+        if needle not in raw.lower():
+            print(f"  ! {module_dir.name}/index.html: {why}")
+
     report: list = []
-    html = inline(src.read_text(encoding="utf-8"), src.parent, report)
+    html = inline(raw, src.parent, report)
     out = module_dir / f"{module_dir.name}.standalone.html"
     out.write_text(html, encoding="utf-8")
 
@@ -116,7 +127,7 @@ def card(m: dict) -> str:
 
     if ready:
         return f"""      <article class="mod">
-        <a class="mod__main" href="{slug}/">
+        <a class="mod__main" href="{slug}/index.html">
           <span class="mod__n">{num}</span>
           <span class="mod__body">
             <span class="mod__t">{m.get("title", slug)}</span>
@@ -294,20 +305,20 @@ def landing(modules: list) -> str:
         <li><b>3</b> Backend<span>implement the shape</span></li>
         <li><b>4</b> Frontend<span>consume it, validate, ship</span></li>
       </ol>
-      <p class="spine__n">Milestones are the sequence a group builds in. The decks below are
-        the material they draw on — two of them are delivered in more than one piece.</p>
+      <p class="spine__n">Each module is one milestone: one deck, one gate, and one artifact
+        handed to the next. Nothing is delivered out of order.</p>
     </section>
 
     <main class="mods">
 {cards}
     </main>
 
-    <a class="plan" href="plan/">
+    <a class="plan" href="plan/index.html">
       <span class="plan__i">§</span>
       <span>
         <span class="plan__t">Semester plan</span>
-        <span class="plan__s">All five modules and their topics, each mapped to the learning
-          outcome that requires it, the milestone that delivers it, and the eight topics no
+        <span class="plan__s">All four modules and their topics, each mapped to the learning
+          outcome that requires it and the milestone that delivers it, plus the eight topics no
           outcome covers.</span>
       </span>
       <span class="plan__go">Open plan →</span>
