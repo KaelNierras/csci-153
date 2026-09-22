@@ -10,6 +10,10 @@
   "status": "ready",
   "labs": [
     [
+      "Week 5 \u2014 Prior-knowledge diagnostic",
+      "lab/week-5-prior-knowledge-diagnostic.md"
+    ],
+    [
       "Activity 4 \u2014 The Contract",
       "lab/activity-4-the-contract.md"
     ]

@@ -192,9 +192,11 @@ which is the tightest deadline this restructure creates.
 - [x] `index.html` landing page
 - [x] `reference-app/BUILD-PLAN.md` — rewritten against the app as actually built
 - [ ] **Activities 5–10 need writing** — A5–A8 by week 6
-- [ ] **The week-5 prior-knowledge diagnostic needs writing.** It is now the only evidence
-      for **five** outcomes — LO 3.2, 3.3, 3.4, 3.6 and 3.7 — after the whole stack tour was
-      removed. This is the course's largest open OBE item
+- [x] **The week-5 prior-knowledge diagnostic** — written, at
+      `module-2/lab/week-5-prior-knowledge-diagnostic.md`. Six questions over real reference-app
+      code, banded not graded, with a retained cohort summary as the CO3 attainment record. It
+      is the only evidence for LO 3.2, 3.3, 3.4, 3.6 and 3.7, so **running it and keeping the
+      summary is not optional**
 - [x] Assessment weights reconciled with the syllabus table — 3% per activity, Codebase
       Assessment 20%, Final Web Project 50%
 - [ ] The published Semester Plan artifact still shows the old 15-week spread

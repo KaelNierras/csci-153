@@ -95,10 +95,12 @@ are not lectured anywhere:
 | 3.6 DOM manipulation | Prior course; React is the DOM layer from Lesson 1.4 |
 | 3.7 JavaScript libraries | Prior course |
 
-**This is the course's largest OBE exposure and it needs one artifact to close it.** The
-**week-5 prior-knowledge diagnostic does not exist yet.** Until it does, five learning
-outcomes rest on an assertion that students covered the material before, with nothing on
-file to show it. Writing it is not optional bookkeeping — it is the evidence.
+**This is the course's largest OBE exposure, and one artifact closes it.** The
+**week-5 prior-knowledge diagnostic** — `lab/week-5-prior-knowledge-diagnostic.md` — is
+now written: six questions over real reference-app code, 45 minutes, individual, banded
+rather than graded, with a retained per-LO cohort summary. Five learning outcomes rest on
+it, so **running it and filing the summary is the evidence**, not bookkeeping. Skipping it
+puts the claim "they had this in the previous subject" back to being an assertion.
 
 **Generated types were deliberately deferred**, not dropped. Lesson 2.2 still demonstrates
 the contract producing them (*Schema → type*, interactive) and names the pattern that
@@ -123,6 +125,7 @@ generation before either exists was teaching it twice.
 
 | Activity | Week | |
 |---|---|---|
+| *Prior-knowledge diagnostic* | 5 | individual · **no marks**, banded |
 | **A4** The contract | 5 | group |
 | **A5** Your screens, on your mock | 6 | group — **the milestone gate** |
 | **A6** First unit tests | 6 | individual |

@@ -2,7 +2,8 @@
 
 **CSci 153 · Web Systems and Technologies**
 Module 2 · Lesson 2.2 · Week 5 · Assessment task **CA 4**
-Course outcome **CO2** · Learning outcome **LO 2.1, LO 2.2**
+Course outcome **CO4** · Learning outcome **LO 4.1** (the model behind it)
+The contract itself carries no syllabus LO — it is the spine the whole project hangs on
 
 > ### This one is a group activity — with individually graded parts
 >
@@ -21,10 +22,10 @@ Course outcome **CO2** · Learning outcome **LO 2.1, LO 2.2**
 
 ## Scenario
 
-You are going to write the document that Module 3 has to implement and Module 5 has to
+You are going to write the document that Module 3 has to implement and Module 4 has to
 connect to. It is the only artifact in this course that touches three modules.
 
-Your backend does not exist. Its implementation is five weeks away, and the people who will build it
+Your backend does not exist. Its implementation is three weeks away, and the people who will build it
 are you. That is precisely why the shapes have to be written down now — while changing
 them costs a text edit rather than a rewrite.
 
