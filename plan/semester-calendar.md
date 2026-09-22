@@ -52,7 +52,7 @@ closing slides, which belonged to a module that no longer exists.
 | New module | Weeks | Slides | Built from |
 |---|---|---|---|
 | **1 · UI/UX** | **1–3** | 65 | old 1.1, 1.2 · old 2.0 → **1.3** · old 2.1 → **1.4** |
-| **2 · The Contract** | **4–6** | 67 | old 4.1 → **2.1** · old 2.3 → **2.2** · old 3.1–3.8 → **2.3–2.10** |
+| **2 · The Contract** | **4–6** | 56 | old 4.1 → **2.1** · old 2.3 → **2.2** · old 3.1, 3.2, 3.5, 3.7, 3.8 → **2.3–2.7** · old 3.3, 3.4, 3.6 **removed** |
 | **3 · Backend** | **7–8** | 42 | old 4.2–4.7 → **3.1–3.6** · old 5.4 → **3.7** |
 | **4 · Frontend** | **clinics 11–15** | 45 | old 2.2, 2.4, 2.5 → **4.1–4.3** · old 5.1, 5.2, 5.3, 5.5, 5.6 → **4.4–4.8** |
 
@@ -72,8 +72,8 @@ actually done, with you in the room.
 | **2** | 1 | 1.2 States, copy, the 8-point QA, the agentic build | Activity 1 clinic | **A1** UI audit *(individual)* |
 | **3** | 1 | 1.3 Git & GitHub · 1.4 Components from mockups | Repo, branches, first PRs | **A2** Brief → prototype |
 | **4** | **2 · Contract** | 2.1 Modelling the data · 2.2 The API contract (OpenAPI) | ERD and contract authoring clinic | **A3** Prototype → components *(individual)* · **M1 gate** |
-| **5** | 2 | 2.3 The stack, named · 2.4 TypeScript in five ideas · 2.5 Arrays, objects, iteration | Generate the types; screens on the Prism mock | **A4** The contract *(group)* |
-| **6** | 2 | 2.6 Functions and modules · 2.7 JSON, `fetch`, `await` · 2.8 What React does for you · 2.9 Choosing a library · 2.10 Does it work? | Code reading · first unit tests | **A5** `package.json` accounting · **A6** First unit tests · **M2 gate** |
+| **5** | 2 | 2.3 The stack, named · 2.4 TypeScript in five ideas | Prior-knowledge diagnostic · generate the types; screens on the Prism mock | **A4** The contract *(group)* |
+| **6** | 2 | 2.5 JSON, `fetch`, `await` · 2.6 Choosing a library · 2.7 Does it work? | Code reading · first unit tests | **A5** `package.json` accounting · **A6** First unit tests · **M2 gate** |
 | **7** | **3 · Backend** | 3.1 Migrations · 3.2 CRUD over the schema · 3.3 Row Level Security | Migration clinic on the group's own model | **A7** Schema + migrations |
 | **8** | 3 | 3.4 Constraints & triggers · 3.5 Edge Functions · 3.6 Implementing the contract · 3.7 CI | Sprint 1 planning: issues, milestones, board, CI wired | **A8** RLS policies |
 | **9** | — | **MIDTERM EXAMINATION** — covers all four modules | | |
@@ -84,9 +84,9 @@ interactive, and the three lab hours that afternoon are the ERD-and-contract cli
 the modelling is applied within the hour it is taught, on the group's own system.
 
 **Week 6 and week 8 are the dense ones.** Five and four short inputs, one live
-demonstration apiece and no exercises. The demonstrations are already chosen: the DOM
-operation counter (2.8), the test ceiling broken on purpose (2.10), the anon key reading
-another user's row (3.3), and the `VITE_` secret found in the bundle (3.5).
+demonstration apiece and no exercises. The demonstrations are already chosen: the await
+timeline (2.5), the test ceiling broken on purpose (2.7), the anon key reading another
+user's row (3.3), and the `VITE_` secret found in the bundle (3.5).
 
 ### The five clinics
 
@@ -192,6 +192,8 @@ which is the tightest deadline this restructure creates.
 - [x] `index.html` landing page
 - [x] `reference-app/BUILD-PLAN.md` — rewritten against the app as actually built
 - [ ] **Activities 5–10 need writing** — A5–A8 by week 6
+- [ ] **The week-5 prior-knowledge diagnostic needs writing.** It is the only evidence for
+      LO 3.3, 3.4 and 3.6 now that the JavaScript and React lessons are gone
 - [x] Assessment weights reconciled with the syllabus table — 3% per activity, Codebase
       Assessment 20%, Final Web Project 50%
 - [ ] The published Semester Plan artifact still shows the old 15-week spread

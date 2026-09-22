@@ -1,12 +1,12 @@
 {
   "number": 2,
   "title": "The Contract",
-  "subtitle": "Model the data, write down how it is exposed, and read every tool that turns the document into types.",
+  "subtitle": "Model the data, write down how it is exposed, and read the toolchain that turns the document into types.",
   "weeks": "4 \u2013 6",
   "milestone": "Milestone 2 \u00b7 Contract",
-  "delivery": "The hinge of the semester. 2.1 models the data, 2.2 specifies the API over it, and 2.3\u20132.10 tour the stack that generates and consumes the result.",
+  "delivery": "The hinge of the semester. 2.1 models the data, 2.2 specifies the API over it with four worked examples, and 2.3\u20132.7 cover the toolchain. JavaScript and React are prior knowledge and are not re-taught.",
   "outcome": "CO3 \u00b7 CO4",
-  "slides": 67,
+  "slides": 56,
   "status": "ready",
   "labs": [
     [

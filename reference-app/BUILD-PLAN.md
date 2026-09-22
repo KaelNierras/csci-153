@@ -142,7 +142,7 @@ read.
 - [ ] `lib/rules/units.ts` — pure functions for R2, R3, R4, with the tests written after
       the class watches the first one fail
 - [ ] `demos/subject-list-vanilla.html` — the same subject list in `createElement` and
-      `addEventListener`, for lesson 2.8
+      `addEventListener`, for the retired DOM demo
 - [ ] A one-page annotated `package.json` for lesson 2.3: every dependency, one sentence,
       "what breaks if I remove this?"
 
