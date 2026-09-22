@@ -143,7 +143,7 @@ read.
       the class watches the first one fail
 - [ ] `demos/subject-list-vanilla.html` — the same subject list in `createElement` and
       `addEventListener`, for the retired DOM demo
-- [ ] A one-page annotated `package.json` for lesson 2.3: every dependency, one sentence,
+- [x] ~~A one-page annotated `package.json`~~ — the stack lesson was removed 2026-09-22; npm was covered in the prior course. Kept as an aside:
       "what breaks if I remove this?"
 
 **Demo value:** every session opens a real file from a running app. That is the whole

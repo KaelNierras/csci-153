@@ -184,7 +184,7 @@ students do not need is a dependency that confuses them.
 | HTTP | **openapi-fetch** + `openapi-typescript` | typed against the contract |
 | Mock (M2–M3) | **Prism** for dev, **MSW** for tests | the app runs before the backend exists |
 | Backend (M4) | **Supabase** — Postgres, RLS, Edge Functions | the other side of the contract |
-| Unit tests | **Vitest** | Lesson 2.7 |
+| Unit tests | **Vitest** | Lesson 2.3 |
 | E2E | **Playwright** | Lesson 4.6 |
 | CI | **GitHub Actions** | Lesson 3.7 |
 
@@ -222,7 +222,7 @@ Conventions that matter:
 - **One job per file.** A file students cannot summarise in a sentence is too big.
 - `lib/` is framework-free — pure functions and the client. No JSX in `lib/`.
 - Business rules live in `lib/rules/` as pure functions so they are testable and so
-  Lesson 2.7 has something honest to test.
+  Lesson 2.3 has something honest to test.
 - **No hard-coded colour anywhere.** `bg-surface`, `text-accent`, never a hex.
 - Query keys are `[operationId, ...params]` — derived from the contract, never invented.
 

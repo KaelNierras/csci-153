@@ -2,7 +2,9 @@
 
 **CSci 153 · Weeks 7–8 · Milestone 3 · CO4** — *Create a backend server with RESTful API
 endpoints for database operations*
-Syllabus LOs: **LO 4.2** develop API endpoints for CRUD operations
+Syllabus LOs: **LO 4.2** develop API endpoints for CRUD operations · **LO 3.1** types and
+structures — relocated here 2026-09-22, met in *Generated types, again* (lesson 3.6) where
+`supabase gen types` produces a real type file to read
 *(LO 4.1, schema modelling, is taught in Module 2 — see below.)*
 
 Status: **ready** — 42 slides, `module-3/index.html`. Interactive instruments: the RLS

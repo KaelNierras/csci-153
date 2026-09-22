@@ -1,16 +1,12 @@
 # Module 2 — The Contract · outline
 
-**CSci 153 · Weeks 4–6 · Milestone 2 · CO3 and CO4**
-Syllabus LOs **taught here**: **LO 4.1** model relational database schemas ·
-**LO 3.1** types and structures · **LO 3.2** block scoping ·
-**LO 3.5** JSON serialize/deserialize · **LO 3.7** JavaScript libraries
-Syllabus LOs **assumed from the prior course**, verified not taught: **LO 3.3** loop
-structures · **LO 3.4** functions and arrow expressions · **LO 3.6** DOM manipulation
+**CSci 153 · Weeks 4–6 · Milestone 2 · CO4**
+Syllabus LO taught here: **LO 4.1** model relational database schemas
+**CO3 is not lectured in this module** — see *What this module does not teach* below.
 
-Status: **ready** — 56 slides, `module-2/index.html`. Interactive instruments: the
-normalisation stepper (2.1), the spec explorer, schema→type and contract diff (2.2), the
-dependency auditor (2.3), the await timeline (2.5), and a test runner whose ceiling the
-class can break on purpose (2.7).
+Status: **ready** — 35 slides, `module-2/index.html`. Interactive instruments: the
+normalisation stepper (2.1), the spec explorer, schema→type and contract diff (2.2), and a
+test runner whose ceiling the class can break on purpose (2.3).
 
 > ## The milestone
 >
@@ -33,14 +29,10 @@ then you meet every tool that turns that document into code.
 |---|---|---|---|---|
 | 2.1 | **Modelling the data** | 4.1 | 6 | the group's own spec §6 |
 | 2.2 | **The API contract — OpenAPI** | *(no LO)* | 15 | `contract/openapi.yaml` |
-| 2.3 | **The stack, named** | 3.7 | 6 | `package.json` |
-| 2.4 | **TypeScript in five ideas** | 3.1, 3.2 | 5 | `contract/generated/schema.d.ts` |
-| 2.5 | **JSON, `fetch`, and `await`** | 3.5 | 6 | `src/lib/api/client.ts` |
-| 2.6 | **Choosing a library** | 3.7 | 4 | the dependency list, judged |
-| 2.7 | **Does it work? — briefly** | *(no LO)* | 5 | `src/lib/rules/units.test.ts` |
+| 2.3 | **Does it work? — briefly** | *(no LO)* | 5 | `src/lib/rules/units.test.ts` |
 
 **Week 4** is 2.1 and 2.2 — two dense inputs in one block, with the ERD-and-contract clinic
-that afternoon. **Week 5** is 2.3–2.4, **week 6** is 2.5–2.7.
+that afternoon. **Week 5** is the contract authoring clinic and the prior-knowledge diagnostic; **week 6** is 2.3, the mock, and the gate.
 
 ---
 
@@ -69,7 +61,6 @@ argued its case well and demonstrated it poorly:
 | **Failures are shapes too** | A documented 422 with an example body, the `code`/`message`/`details` split, and the fact that Prism will serve that example today. |
 
 
-
 **Framing:** the contract is agreed before either side is built. In this course that is
 literally true — the backend is Module 3, three weeks away, and the frontend wiring is
 Module 4, seven.
@@ -83,59 +74,66 @@ screens on the Prism mock. A group that waited has nothing to show in week 6.
 
 ## What this module does *not* teach
 
-**Removed 2026-09-22: the JavaScript and React lessons.** Three lessons went — iteration
-(`for…of`, `map`, `reduce`), functions and modules (arrows, closures, `import`/`export`),
-and *What React does for you* (the DOM, built by hand then in React). Fifteen slides.
+**Two rounds of removals, both on 2026-09-22.** First the JavaScript and React lessons
+(iteration, functions and modules, React-and-the-DOM). Then the rest of the stack tour —
+*The stack, named*, *TypeScript in five ideas*, *JSON, fetch and await*, and *Choosing a
+library*. Thirty-six slides in total; the module went 67 → 35.
 
-**Why:** all three were taught in the prior course. Re-teaching them spent a third of this
-module on the thing that is not blocking students, at the cost of the thing that is — the
-contract.
+**The rule behind both cuts:** lecture only what the previous subject did not cover. That
+subject taught JavaScript, React, and npm and the toolchain.
 
-**What happened to their outcomes.** LO 3.3 (loops), LO 3.4 (functions) and LO 3.6 (DOM)
-are now declared **prior-course knowledge, verified rather than taught**:
+**Where CO3 lives now.** It is not lectured in this module, and five of its seven outcomes
+are not lectured anywhere:
 
-| LO | Where it is now |
+| LO | Where it is met |
 |---|---|
-| 3.3 loop structures | Prior course · verified in the week-5 lab diagnostic |
-| 3.4 functions and arrows | Prior course · verified in the week-5 lab diagnostic |
-| 3.6 DOM manipulation | Prior course · React is the DOM layer from Lesson 1.4 onward |
+| 3.1 types and structures | **Module 3**, *Generated types, again* — read off `database.types.ts` |
+| 3.2 block scoping | Prior course |
+| 3.3 loop structures | Prior course |
+| 3.4 functions and arrows | Prior course |
+| 3.5 JSON serialize/deserialize | **Module 4**, lesson 4.2 — the typed client |
+| 3.6 DOM manipulation | Prior course; React is the DOM layer from Lesson 1.4 |
+| 3.7 JavaScript libraries | Prior course |
 
-This is stated on the module's **Assumed knowledge** orientation slide and in the CO3
-coverage table inside the deck, so an assessor can find it without being told. **The
-week-5 diagnostic is the evidence and it does not exist yet — it has to be written**, or
-these three LOs have no artifact behind them.
+**This is the course's largest OBE exposure and it needs one artifact to close it.** The
+**week-5 prior-knowledge diagnostic does not exist yet.** Until it does, five learning
+outcomes rest on an assertion that students covered the material before, with nothing on
+file to show it. Writing it is not optional bookkeeping — it is the evidence.
 
-CO3's other four outcomes — 3.1, 3.2, 3.5, 3.7 — are still lectured, in 2.3, 2.4 and 2.5.
+**Generated types were deliberately deferred**, not dropped. Lesson 2.2 still demonstrates
+the contract producing them (*Schema → type*, interactive) and names the pattern that
+recurs (*The same idea twice*). The fuller treatment belongs in Module 3, where
+`supabase gen types` runs against a schema that exists, and in Module 4, where the typed
+client actually consumes them. Since the backend now precedes the frontend, teaching
+generation before either exists was teaching it twice.
+
+> **One distinction not to lose.** `supabase/database.types.ts` does **not** replace
+> `contract/generated/schema.d.ts`. The first types your *tables*; the second types your
+> *API surface*, and it is what `createClient<paths>` needs. Two sources of truth, and both
+> Module 3 and Module 4 say so explicitly.
+
+---
 
 ---
 
 ## 2.3–2.7 · The toolchain tour
 
-Every session opens a real file from the Enroll reference app and explains the piece of the
-toolchain it belongs to. What survives is the material students have *not* met before: the
-dependency list and what each line is for, the types generated from the contract, how a
-typed request is made, how to judge a library, and how to know a function works.
-
-**Why it belongs in this milestone.** Two of the tour's three anchor files are produced by
-the contract: `schema.d.ts` is generated from it, and `client.ts` is typed by it. Teaching
-generated types in the fortnight they are generated turns 2.4 from a TypeScript lesson into
-the answer to a question the class has just asked.
-
-**2.5 reads the client; it does not build it.** Building the wrapper — interception, retries,
-server state — is lesson 4.2, a week-12 clinic. Reading a finished thing and writing one are
-different sessions, and they are now in different milestones.
-
----
 
 ## Laboratory
 
 | Activity | Week | |
 |---|---|---|
 | **A4** The contract | 5 | group |
-| **A5** `package.json` accounting | 6 | |
-| **A6** First unit tests | 6 | **the milestone gate** |
+| **A5** Your screens, on your mock | 6 | group — **the milestone gate** |
+| **A6** First unit tests | 6 | individual |
 
-A5 and A6 do not exist yet. They are needed by week 6.
+**A5 was rewritten.** It used to be *"account for your `package.json`"*, which rested on the
+deleted stack lesson. It is now the milestone gate: the static screens from Lesson 1.4,
+running against a Prism mock of the group's own contract, with generated types in sync and
+one designed failure state reachable. A group that waited for the backend has nothing to
+show — which is what makes contract-first a practice rather than a slogan.
+
+Neither brief is written yet. Both are needed by week 6.
 
 ---
 

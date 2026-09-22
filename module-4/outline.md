@@ -3,7 +3,9 @@
 **CSci 153 · Clinics in weeks 11–15 · Milestone 4 · CO2 and CO5**
 Syllabus LOs: **LO 5.1** validate user inputs on client and server layers ·
 **LO 5.2** utilize API endpoints for frontend application ·
-**LO 5.3** deploy a web application to a cloud platform
+**LO 5.3** deploy a web application to a cloud platform · **LO 3.5** JSON
+serialize/deserialize — relocated here 2026-09-22, met in lesson 4.2 where the typed client
+actually sends and receives it
 *(CO2's LOs — 2.1 and 2.2 — are attained in Module 1, lesson 1.4.)*
 
 Status: **ready** — 45 slides, `module-4/index.html`. Interactive instruments: the

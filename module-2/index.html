@@ -11,20 +11,12 @@
   "names": {
     "2.1": "Lesson 2.1 — Modelling the data",
     "2.2": "Lesson 2.2 — The API contract",
-    "2.3": "Lesson 2.3 — The stack, named",
-    "2.4": "Lesson 2.4 — TypeScript",
-    "2.5": "Lesson 2.5 — JSON, fetch, await",
-    "2.6": "Lesson 2.6 — Choosing a library",
-    "2.7": "Lesson 2.7 — Does it work?"
+    "2.3": "Lesson 2.3 — Does it work?"
   },
   "colors": {
     "2.1": "var(--brass)",
     "2.2": "var(--cyan)",
-    "2.3": "var(--brass)",
-    "2.4": "var(--brass)",
-    "2.5": "var(--cyan)",
-    "2.6": "var(--brass)",
-    "2.7": "var(--violet)"
+    "2.3": "var(--violet)"
   }
 }
 </script>
@@ -427,7 +419,7 @@
     <span class="rail__spacer"></span>
     <span class="rail__course">CSci 153 · Web Systems &amp; Technologies</span>
     <span class="rail__sep">/</span>
-    <span class="rail__count"><b id="count-now">01</b> <span class="dim">of</span> <span id="count-all">56</span></span>
+    <span class="rail__count"><b id="count-now">01</b> <span class="dim">of</span> <span id="count-all">35</span></span>
   </header>
 
   <!-- ============ stage ============ -->
@@ -438,13 +430,12 @@
         <span class="eyebrow eyebrow--plain">Visayas State University · DCST · Module 02 · Weeks 4–6 · Milestone 2</span>
         <h1 class="h1" style="max-width:26ch">Agree the shape<br>of the data,<br>before you build it</h1>
         <p class="lede" style="text-align:center;margin-inline:auto">
-          A model first, then the document that exposes it — then every tool that turns
-          that document into code. JavaScript and React are assumed, not re-taught.
+          A model first, then the document that exposes it. Nothing here re-teaches what
+          the previous course already covered.
         </p>
         <div class="row" style="justify-content:center;margin-top:var(--s4)">
           <span class="chip">CO4 · LO 4.1 · Model a schema</span>
-          <span class="chip">CO3 · LO 3.1 · 3.2 · 3.5 · 3.7</span>
-          <span class="chip">LO 3.3 · 3.4 · 3.6 assumed</span>
+          <span class="chip">The contract · no LO, the spine of the semester</span>
         </div>
         <p class="small mono" style="margin-top:var(--s5);letter-spacing:0.12em">
           PRESS <kbd style="border:1px solid var(--line);padding:0.1em 0.4em">→</kbd> TO START ·
@@ -456,32 +447,31 @@
 
     <section class="slide" data-sec="0" data-label="Assumed knowledge" data-rail="Orientation">
       <span class="eyebrow">Read this before anything else</span>
-      <h2 class="h2">This module does not teach you JavaScript</h2>
+      <h2 class="h2">This module teaches two things you have not seen</h2>
       <div class="grid grid--2">
         <div class="panel">
-          <div class="panel__head">Assumed — you had this in a previous course</div>
+          <div class="panel__head">Assumed — covered in your previous course</div>
           <ul class="list list--cross">
-            <li><b>Loops and iteration</b> — <code>for…of</code>, <code>map</code>, <code>filter</code>, <code>reduce</code> <span class="chip">LO 3.3</span></li>
-            <li><b>Functions, arrows, closures, modules</b> <span class="chip">LO 3.4</span></li>
+            <li><b>JavaScript</b> — loops, functions, arrows, closures, modules <span class="chip">LO 3.2 · 3.3 · 3.4</span></li>
             <li><b>React and the DOM</b> — components, props, state, lists and keys <span class="chip">LO 3.6</span></li>
+            <li><b>npm and the toolchain</b> — <code>package.json</code>, installing, versions <span class="chip">LO 3.7</span></li>
           </ul>
-          <p class="small">Not re-taught. <b>Verified in the week-5 lab diagnostic</b> — if it is rusty, that is a self-study gap to close this week, not in week 12.</p>
+          <p class="small">Not re-taught, and not re-examined in lecture. <b>Verified in the week-5 lab diagnostic</b> — if any of it is rusty, that is a self-study gap to close this week.</p>
         </div>
         <div class="panel">
-          <div class="panel__head" style="color:var(--cyan)">Taught here, because it is new</div>
+          <div class="panel__head" style="color:var(--cyan)">Taught here, because it is genuinely new</div>
           <ul class="list list--check">
-            <li><b>Modelling the data</b> your system actually stores</li>
-            <li><b>OpenAPI</b> — writing the shape down so two halves can be built apart</li>
-            <li><b>The toolchain</b> that turns that document into types you never write <span class="chip">LO 3.1 · 3.2 · 3.5 · 3.7</span></li>
+            <li><b>Modelling the data</b> your system stores — tables, keys, normalisation <span class="chip">LO 4.1</span></li>
+            <li><b>OpenAPI</b> — writing the shape down so two halves can be built apart, and built in the right order</li>
           </ul>
-          <p class="small">Every session opens a file that already runs, in the enrollment app.</p>
+          <p class="small">Two lessons, three weeks, and one document your whole group signs.</p>
         </div>
       </div>
       <p class="callout">
-        What blocks you in weeks 10–17 is not syntax — you can already write a component.
-        It is <b>not having agreed what a request looks like</b>, and then opening
-        <code>package.json</code> without knowing what most of the lines are for.
-        <b>That is what these three weeks fix.</b>
+        <b>Generated types arrive later, and twice.</b> You will see the contract produce them
+        once in Lesson 2.2 — then Module 3 generates them from your database schema, and
+        Module 4 is where you actually consume them. Same principle, two sources of truth,
+        taught where each one is used.
       </p>
     </section>
 
@@ -503,26 +493,36 @@ npm run dev    <i># the app, talking to that mock</i></pre>
     </section>
 
     <section class="slide" data-sec="0" data-label="Outcomes" data-rail="Orientation">
-      <span class="eyebrow">Learning outcomes · CO3</span>
-      <h2 class="h2">Every outcome, and the file it lives in</h2>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th style="width:5rem">LO</th><th style="width:15rem">What the syllabus asks</th><th>Where you meet it</th></tr></thead>
-          <tbody>
-            <tr><td class="num">3.1</td><td>Types and structures</td><td>Lesson 2.4 · <code>contract/generated/schema.d.ts</code></td></tr>
-            <tr><td class="num">3.2</td><td>Block scoping, <code>let</code>/<code>const</code></td><td>Lesson 2.4 · every file, as a rule with a reason</td></tr>
-            <tr><td class="num">3.3</td><td>Loop structures</td><td><b>Prior course</b> · verified in the week-5 diagnostic</td></tr>
-            <tr><td class="num">3.4</td><td>Functions and arrow expressions</td><td><b>Prior course</b> · verified in the week-5 diagnostic</td></tr>
-            <tr><td class="num">3.5</td><td>Serialize/deserialize JSON</td><td>Lesson 2.5 · <code>lib/api/client.ts</code></td></tr>
-            <tr><td class="num">3.6</td><td>Manipulate the DOM</td><td><b>Prior course</b> · React is the DOM layer from Lesson 1.4 onward</td></tr>
-            <tr><td class="num">3.7</td><td>Use JavaScript libraries</td><td>Lessons 3.1 and 3.7 · <code>package.json</code></td></tr>
-          </tbody>
-        </table>
+      <span class="eyebrow">Learning outcomes · CO4, and where CO3 lives</span>
+      <h2 class="h2">What you walk out of week 6 able to do</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head" style="color:var(--brass)">Taught and assessed here</div>
+          <div class="steps">
+            <div class="step"><div><div class="step__t">LO 4.1 — Model a relational schema</div><div class="step__b">Tables, keys, and relationships for your own system, normalised enough that no fact is stored twice. <b>Lesson 2.1</b>, assessed by A7.</div></div></div>
+            <div class="step"><div><div class="step__t">The contract <span class="chip chip--added">no LO</span></div><div class="step__b">One OpenAPI document your group signs, linted, with types generated from it and screens running on its mock. <b>Lesson 2.2</b>, assessed by A4.</div></div></div>
+            <div class="step"><div><div class="step__t">Unit testing <span class="chip chip--added">no LO</span></div><div class="step__b">One rule pulled out of a screen and proven. <b>Lesson 2.3</b>, assessed by A6.</div></div></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel__head" style="color:var(--violet)">CO3 — JavaScript — is not lectured in this course</div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:4rem">LO</th><th>Where it is met</th></tr></thead>
+              <tbody>
+                <tr><td class="num">3.1</td><td>Types and structures — <b>Module 3</b>, generated from your schema</td></tr>
+                <tr><td class="num">3.2</td><td>Block scoping — prior course</td></tr>
+                <tr><td class="num">3.3</td><td>Loop structures — prior course</td></tr>
+                <tr><td class="num">3.4</td><td>Functions and arrows — prior course</td></tr>
+                <tr><td class="num">3.5</td><td>JSON serialize/deserialize — <b>Module 4</b>, in the typed client</td></tr>
+                <tr><td class="num">3.6</td><td>DOM manipulation — prior course; React from Lesson 1.4</td></tr>
+                <tr><td class="num">3.7</td><td>JavaScript libraries — prior course</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small">Five of seven were taught in the previous subject. <b>The week-5 diagnostic is how that claim is evidenced</b> rather than assumed.</p>
+        </div>
       </div>
-      <p class="callout">
-        Plus one topic <span class="chip chip--added">no outcome requires</span>: <b>unit testing</b>,
-        in 3.8. Your project specs require it in CI, so you need enough to not be lost.
-      </p>
     </section>
 
     <!-- ================= 4.1 SCHEMA ================= -->
@@ -1153,625 +1153,18 @@ documented response."</i></pre>
       </div>
     </section>
 
-    <!-- ================= 3.1 THE STACK, NAMED ================= -->
-
-    <section class="slide slide--center" data-sec="2.3" data-label="Lesson 2.3 opens" data-rail="The stack, named">
-      <div class="col" style="gap:var(--s4);align-items:center">
-        <span class="eyebrow eyebrow--plain">Lesson 2.3 · LO 3.7</span>
-        <h2 class="h1" style="max-width:22ch">Account for<br>every line</h2>
-        <p class="lede" style="text-align:center;margin-inline:auto">One sentence per dependency: what breaks if I remove this?</p>
-        <span class="file">package.json</span>
-      </div>
-    </section>
-
-    <section class="slide" data-sec="2.3" data-label="Two kinds of dependency" data-rail="The stack, named">
-      <span class="eyebrow">The distinction that organises everything</span>
-      <h2 class="h2">Do you call it, or does it call you?</h2>
-      <div class="compare">
-        <div class="compare__side compare__side--good">
-          <div class="compare__head">A library — you call it</div>
-          <div class="compare__body">
-            <p>You decide when. It returns. You stay in charge of the flow.</p>
-            <pre>const total = <b>totalUnits</b>(subjects)</pre>
-            <p><code>openapi-fetch</code>, <code>date-fns</code>, <code>zod</code>. Easy to remove: delete the calls.</p>
-          </div>
-        </div>
-        <div class="compare__side compare__side--bad">
-          <div class="compare__head">A framework — it calls you</div>
-          <div class="compare__body">
-            <p>It owns the flow and invokes your code at moments it chooses.</p>
-            <pre>function SubjectRow(props) { … }
-<i>// React decides when this runs. Not you.</i></pre>
-            <p><code>react</code>, <code>vite</code>, <code>react-router</code>. Removing one is a rewrite.</p>
-          </div>
-        </div>
-      </div>
-      <p class="callout">
-        This is not trivia. <b>It predicts how expensive a mistake is.</b> Picking the wrong
-        date library costs an afternoon; picking the wrong framework costs the project.
-      </p>
-    </section>
-
-    <section class="slide slide--wide" data-sec="2.3" data-label="The audit" data-rail="The stack, named">
-      <span class="eyebrow">Interactive · the real package.json</span>
-      <h2 class="h2">Twelve dependencies, one sentence each</h2>
-      <div class="panel panel--sunk">
-        <div class="panel__head">Pick one <span class="spacer"></span><span class="dim">what breaks if you remove it?</span></div>
-        <div class="dep" data-widget="dep" id="dep"></div>
-      </div>
-      <p class="callout">
-        <b>Activity 5 is this, for your own project.</b> Every line accounted for, and anything
-        you installed that Enroll does not have has to be justified.
-      </p>
-    </section>
-
-    <section class="slide" data-sec="2.3" data-label="node_modules" data-rail="The stack, named">
-      <span class="eyebrow">Where it all goes</span>
-      <h2 class="h2">Twelve dependencies, four hundred folders</h2>
-      <div class="grid grid--sidebar">
-        <div class="panel">
-          <div class="panel__head">What you asked for, and what arrived</div>
-          <pre>package.json          <i>12 things you chose</i>
-        ↓ npm install
-node_modules/         <i>~400 folders</i>
-package-lock.json     <i>every exact version, pinned</i></pre>
-          <p class="body">Your twelve have dependencies of their own, and so do those. The lockfile records the exact tree that worked, so the next person gets the same one.</p>
-        </div>
-        <div class="col">
-          <div class="panel">
-            <div class="panel__head">Three rules</div>
-            <ul class="list list--check">
-              <li><b>Commit the lockfile.</b> It is the difference between "works on my machine" and works.</li>
-              <li><b>Never commit <code>node_modules</code>.</b> It is derived, and it is enormous.</li>
-              <li><b>Never edit anything inside it.</b> The next install erases you.</li>
-            </ul>
-          </div>
-          <p class="callout"><code>rm -rf node_modules &amp;&amp; npm install</code> is the answer to a surprising share of "it stopped working".</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="slide slide--wide" data-sec="2.3" data-label="Peer dependencies" data-rail="The stack, named">
-      <span class="eyebrow">A real conflict, from this repository</span>
-      <h2 class="h2">Why TypeScript is pinned to 5.9</h2>
-      <div class="grid grid--sidebar">
-        <div class="panel">
-          <div class="panel__head">What happened, in order</div>
-          <pre>$ npm create vite@latest
-  <i>→ installs typescript 6.0.3</i>
-
-$ npm install -D openapi-typescript
-<b>npm error</b> Could not resolve dependency:
-<b>npm error</b> peer typescript@"^5.x" from openapi-typescript@7.13.0</pre>
-          <p class="body"><code>openapi-typescript</code> says: I work with TypeScript 5, and I have not been tested against 6.</p>
-        </div>
-        <div class="col">
-          <div class="panel">
-            <div class="panel__head">Three ways out</div>
-            <div class="steps">
-              <div class="step"><div><div class="step__t">Force it</div><div class="step__b"><code>--legacy-peer-deps</code>. Fast, and you now own any breakage nobody has debugged.</div></div></div>
-              <div class="step"><div><div class="step__t">Drop the library</div><div class="step__b">Hand-write the types instead. Lesson 2.2 explained why that ends badly.</div></div></div>
-              <div class="step"><div><div class="step__t">Pin TypeScript to 5.9</div><div class="step__b">What Enroll does. The contract-to-types pipeline is load-bearing; being on the newest major is not.</div></div></div>
-            </div>
-          </div>
-          <p class="callout"><b>A peer dependency is a library saying what it expects to live alongside.</b> Ignoring it is allowed, which is exactly why it is worth understanding.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="slide" data-sec="2.3" data-label="Semver" data-rail="The stack, named">
-      <span class="eyebrow">What the punctuation means</span>
-      <h2 class="h2">Reading a version number</h2>
-      <div class="grid grid--2">
-        <div class="panel">
-          <div class="panel__head">MAJOR . MINOR . PATCH</div>
-          <pre>vite: "^<b>8</b>.<b>2</b>.<b>0</b>"
-       │  │  └── patch · a fix, nothing else changes
-       │  └───── minor · new things, old things still work
-       └──────── major · something you use has changed or gone</pre>
-          <div class="panel__head" style="margin-top:var(--s3)">The prefixes</div>
-          <pre><b>^</b>8.2.0   any 8.x — minor and patch updates allowed
-<b>~</b>5.9.0   any 5.9.x — patch only
- 8.2.0   exactly this. Nothing moves.</pre>
-        </div>
-        <div class="col">
-          <div class="panel">
-            <div class="panel__head">Why <code>^</code> is the default, and what it costs</div>
-            <p class="body"><code>^</code> means a fresh <code>npm install</code> can pick up a version nobody on your team has run. Usually fine, occasionally the cause of a Tuesday you will not enjoy.</p>
-            <p class="body">The lockfile is what makes it safe: it records what you actually installed, so <code>^</code> only moves when somebody deliberately updates.</p>
-          </div>
-          <p class="callout"><b>A major bump is a reading task, not a command.</b> Check the changelog before <code>npm install pkg@latest</code>, or find out from the error.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= 3.2 TYPESCRIPT ================= -->
-
-    <section class="slide slide--center" data-sec="2.4" data-label="Lesson 2.4 opens" data-rail="TypeScript">
-      <div class="col" style="gap:var(--s4);align-items:center">
-        <span class="eyebrow eyebrow--plain">Lesson 2.4 · LO 3.1, 3.2</span>
-        <h2 class="h1" style="max-width:22ch">Five ideas,<br>read off a file<br>nobody wrote</h2>
-        <p class="lede" style="text-align:center;margin-inline:auto">Generated code has no stylistic choices in it. That makes it the perfect specimen.</p>
-        <span class="file">contract/generated/schema.d.ts</span>
-      </div>
-    </section>
-
-    <section class="slide" data-sec="2.4" data-label="Why types" data-rail="TypeScript">
-      <span class="eyebrow">The argument, in one example</span>
-      <h2 class="h2">What a type buys you</h2>
-      <div class="compare">
-        <div class="compare__side compare__side--bad">
-          <div class="compare__head">Plain JavaScript</div>
-          <div class="compare__body">
-            <pre>const total = enrollment.<b>totalUnits</b>
-<i>// or was it total_units?
-// or units? or getTotal()?</i></pre>
-            <p>You find out by running it and reading <code>undefined</code>. The typo is legal JavaScript, so nothing warns you.</p>
-            <p>Multiply by every field in nine operations.</p>
-          </div>
-        </div>
-        <div class="compare__side compare__side--good">
-          <div class="compare__head">TypeScript</div>
-          <div class="compare__body">
-            <pre>const total = enrollment.<b>total_units</b>
-        <i>~~~~~~~~~~~</i>
-<b>Property 'total_units' does not exist.
-Did you mean 'totalUnits'?</b></pre>
-            <p>Before you run it. In the editor, while you type.</p>
-            <p>And the answer came from the contract, so it is right.</p>
-          </div>
-        </div>
-      </div>
-      <p class="callout">
-        TypeScript is <b>JavaScript plus annotations</b>. Every file in Enroll is JavaScript
-        with types written on it — not a different language, and it all disappears at build time.
-      </p>
-    </section>
-
-    <section class="slide slide--wide" data-sec="2.4" data-label="Five ideas" data-rail="TypeScript">
-      <span class="eyebrow">Interactive · everything this course needs</span>
-      <h2 class="h2">The five, and no more</h2>
-      <div data-widget="stepper">
-        <div class="stepper__track">
-          <button class="stepper__btn" type="button" data-step="1"><span class="stepper__n">01</span><span class="stepper__l">Annotations</span></button>
-          <button class="stepper__btn" type="button" data-step="2"><span class="stepper__n">02</span><span class="stepper__l">Unions</span></button>
-          <button class="stepper__btn" type="button" data-step="3"><span class="stepper__n">03</span><span class="stepper__l">Optional vs null</span></button>
-          <button class="stepper__btn" type="button" data-step="4"><span class="stepper__n">04</span><span class="stepper__l">type vs interface</span></button>
-          <button class="stepper__btn" type="button" data-step="5"><span class="stepper__n">05</span><span class="stepper__l">Generics you read</span></button>
-        </div>
-
-        <div class="stepper__panel" data-step="1">
-          <div class="grid grid--sidebar">
-            <div class="panel"><div class="panel__head">A name, a colon, a type</div>
-              <pre>function totalUnits(subjects: <b>Subject[]</b>): <b>number</b> {
-  return subjects.reduce((sum, s) => sum + s.units, 0)
-}
-
-const code: <b>string</b> = 'CSci 153'
-const units: <b>number</b> = 3
-const isFull: <b>boolean</b> = false</pre></div>
-            <div class="panel"><div class="panel__head">Where to write them, and where not</div>
-              <p class="body"><b>Always on function parameters and returns.</b> That is the contract of the function, and it is what other people read.</p>
-              <p class="body"><b>Rarely on local variables.</b> <code>const units = 3</code> is already <code>number</code> — TypeScript infers it, and writing it again is noise that can go stale.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="stepper__panel" data-step="2">
-          <div class="grid grid--sidebar">
-            <div class="panel"><div class="panel__head">One of a fixed set</div>
-              <pre>type EnrollmentStatus =
-  | 'draft'
-  | 'submitted'
-  | 'approved'
-  | 'returned'
-
-<i>// from the contract's enum. Any other string
-// is now a compile error.</i>
-if (status === 'submited') <i>// ← caught</i></pre></div>
-            <div class="panel"><div class="panel__head">Why this is the most useful one</div>
-              <p class="body">A union turns a whole class of bug into a compile error: the misspelled status, the state nobody handled, the fifth case somebody added last week.</p>
-              <p class="body">Switch on one and TypeScript will tell you which branch you forgot.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="stepper__panel" data-step="3">
-          <div class="grid grid--sidebar">
-            <div class="panel"><div class="panel__head">Two different absences</div>
-              <pre>type Enrollment = {
-  submittedAt<b>?</b>: string       <i>// may not be there</i>
-  returnedReason: string | <b>null</b> <i>// there, and empty</i>
-}</pre>
-              <p class="small">The contract distinguishes these, so the generated types do too.</p></div>
-            <div class="panel"><div class="panel__head">Why the difference matters</div>
-              <p class="body"><code>?</code> means <em>the key might be missing</em> — nobody has submitted yet, so there is no timestamp to speak of.</p>
-              <p class="body"><code>| null</code> means <em>the key is there and deliberately empty</em> — we looked, and there is no reason because it was never returned.</p>
-              <p class="body">Collapsing them loses the distinction between "not yet" and "no".</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="stepper__panel" data-step="4">
-          <div class="grid grid--sidebar">
-            <div class="panel"><div class="panel__head">Both describe a shape</div>
-              <pre><b>type</b> SubjectRowProps = {
-  subject: Subject
-  onAdd?: (s: Subject) => void
-}
-
-<b>interface</b> SubjectRowProps {
-  subject: Subject
-  onAdd?: (s: Subject) => void
-}</pre></div>
-            <div class="panel"><div class="panel__head">The rule for this course</div>
-              <p class="body"><b>Use <code>type</code>.</b> It does everything <code>interface</code> does and also handles unions, which <code>interface</code> cannot.</p>
-              <p class="body">You will see <code>interface</code> in other people's code and in older tutorials. It is not wrong; it is a preference. Pick one and stop thinking about it.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="stepper__panel" data-step="5">
-          <div class="grid grid--sidebar">
-            <div class="panel"><div class="panel__head">A type that takes a type</div>
-              <pre>export const api = createClient&lt;<b>paths</b>&gt;({ … })
-
-<i>// createClient works with any API shape.
-// &lt;paths&gt; tells it: this one, from our contract.</i>
-
-api.GET('/subjects', …)      <i>// ✓ in the contract</i>
-api.GET('/students/all', …)  <i>// ✗ does not compile</i></pre></div>
-            <div class="panel"><div class="panel__head">You will read these constantly and write them almost never</div>
-              <p class="body">Generics are how a library says "I work with your shape, tell me what it is." <code>useState&lt;string&gt;</code>, <code>useQuery&lt;Enrollment&gt;</code>, <code>createClient&lt;paths&gt;</code> — all the same idea.</p>
-              <p class="callout" style="margin-top:var(--s3)">If you find yourself writing a generic in this course, stop and ask whether a plain type would do. Usually it would.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="slide slide--wide" data-sec="2.4" data-label="let vs const" data-rail="TypeScript">
-      <span class="eyebrow">LO 3.2 · block scoping</span>
-      <h2 class="h2"><code>const</code> unless it moves</h2>
-      <div class="grid grid--2">
-        <div class="panel">
-          <div class="panel__head">What the three actually mean</div>
-          <div class="steps">
-            <div class="step"><div><div class="step__t"><code>const</code> — this name will not be reassigned</div><div class="step__b">Note: <em>the name</em>. <code>const subjects = []</code> then <code>subjects.push(x)</code> is legal — you changed the array, not what the name points at.</div></div></div>
-            <div class="step"><div><div class="step__t"><code>let</code> — this name will be reassigned</div><div class="step__b">A counter, an accumulator, a value built up in a loop. Rare in this codebase.</div></div></div>
-            <div class="step"><div><div class="step__t"><code>var</code> — never</div><div class="step__b">Scoped to the whole function rather than the block, which produces bugs that read as impossible. It exists for old code.</div></div></div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="panel">
-            <div class="panel__head">Block scope, seen</div>
-            <pre>if (verdict.ok) {
-  <b>const</b> message = 'Added'
-}
-console.log(message) <i>// ✗ not defined out here</i>
-
-for (<b>var</b> i = 0; i &lt; 3; i++) { … }
-console.log(i) <i>// 3. var leaked out of the loop.</i></pre>
-          </div>
-          <p class="callout">
-            <b>Why <code>const</code> by default:</b> a name that never changes is one less thing to
-            track while reading. In Enroll, <code>let</code> appears three times in the whole
-            <code>src/</code> tree — and each one is a deliberate accumulator.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="slide" data-sec="2.4" data-label="Reading generated types" data-rail="TypeScript">
-      <span class="eyebrow">Open the file</span>
-      <h2 class="h2">Six hundred lines nobody wrote</h2>
-      <div class="grid grid--sidebar">
-        <div class="panel">
-          <div class="panel__head">contract/generated/schema.d.ts</div>
-          <pre>Enrollment: {
-  id: string;
-  studentId: string;
-  status: <b>components["schemas"]["EnrollmentStatus"]</b>;
-  totalUnits: number;
-  subjects: <b>components["schemas"]["Subject"][]</b>;
-  submittedAt?: string | null;
-  returnedReason?: string | null;
-}</pre>
-          <p class="small">Every one of the five ideas is in this fragment. Find them.</p>
-        </div>
-        <div class="col">
-          <div class="panel">
-            <div class="panel__head">Why this file, of all files</div>
-            <p class="body">Nothing in it is a human's stylistic choice. Every line is a mechanical consequence of the YAML that produced it, so when you ask "why is it written this way", the answer is always <em>because the contract says so</em>.</p>
-          </div>
-          <div class="panel" style="border-color:var(--fail)">
-            <div class="panel__head" style="color:var(--fail)">Do not edit it</div>
-            <p class="body">Regenerating overwrites you, and CI fails if what is committed has drifted. If a type is wrong, <b>the contract is wrong</b> — fix it there.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= 3.5 JSON, FETCH, AWAIT ================= -->
-
-    <section class="slide slide--center" data-sec="2.5" data-label="Lesson 2.5 opens" data-rail="JSON, fetch, await">
-      <div class="col" style="gap:var(--s4);align-items:center">
-        <span class="eyebrow eyebrow--plain">Lesson 2.5 · LO 3.5</span>
-        <h2 class="h1" style="max-width:24ch">What <code>await</code> was<br>doing all along</h2>
-        <p class="lede" style="text-align:center;margin-inline:auto">You do not write this until Module 4. Read it now, and the contract stops being abstract.</p>
-        <span class="file">src/lib/api/client.ts</span>
-      </div>
-    </section>
-
-    <section class="slide" data-sec="2.5" data-label="What JSON is" data-rail="JSON, fetch, await">
-      <span class="eyebrow">LO 3.5 · serialize, deserialize</span>
-      <h2 class="h2">JSON is text. That is the whole idea.</h2>
-      <div class="grid grid--sidebar">
-        <div class="panel">
-          <div class="panel__head">A network carries bytes, not objects</div>
-          <pre><i>// in your browser: a JavaScript object</i>
-{ code: 'CSci 153', units: 3 }
-
-        ↓ JSON.stringify  <i>(serialize)</i>
-
-<i>// on the wire: a string</i>
-'{"code":"CSci 153","units":3}'
-
-        ↓ JSON.parse      <i>(deserialize)</i>
-
-<i>// on the server: an object again</i>
-{ code: 'CSci 153', units: 3 }</pre>
-        </div>
-        <div class="col">
-          <div class="panel">
-            <div class="panel__head">What JSON cannot carry</div>
-            <ul class="list list--cross">
-              <li><b>Dates.</b> They become strings — which is why the contract says <code>format: date-time</code> and you parse it yourself.</li>
-              <li><b>Functions.</b> Silently dropped.</li>
-              <li><b>undefined.</b> Dropped from objects entirely. <code>null</code> survives.</li>
-              <li><b>Comments.</b> There is no such thing as a comment in JSON.</li>
-            </ul>
-          </div>
-          <p class="callout">
-            <code>submittedAt</code> arrives as <code>"2026-08-19T02:19:05Z"</code>, a
-            <b>string</b>. Calling <code>.getFullYear()</code> on it is the bug this slide exists
-            to prevent.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="slide slide--wide" data-sec="2.5" data-label="Promises" data-rail="JSON, fetch, await">
-      <span class="eyebrow">The thing a request returns</span>
-      <h2 class="h2">A promise is a receipt, not a result</h2>
-      <div class="grid grid--2">
-        <div class="panel">
-          <div class="panel__head">Three states, one direction</div>
-          <div class="steps">
-            <div class="step"><div><div class="step__t">pending</div><div class="step__b">The request is out. Nothing to show yet — this is your loading state.</div></div></div>
-            <div class="step"><div><div class="step__t">fulfilled</div><div class="step__b">A value arrived. <code>await</code> hands it to you.</div></div></div>
-            <div class="step"><div><div class="step__t">rejected</div><div class="step__b">It failed. <code>await</code> throws, which is why <code>try/catch</code> works on it.</div></div></div>
-          </div>
-          <p class="small">Once it settles it never changes again. A promise resolves exactly once.</p>
-        </div>
-        <div class="panel" style="border-color:var(--fail)">
-          <div class="panel__head" style="color:var(--fail)">The mistake, and what it looks like</div>
-          <pre>const res = fetch('/subjects')   <i>// no await</i>
-console.log(res)
-<i>// → Promise { &lt;pending&gt; }</i>
-
-&lt;p&gt;{res}&lt;/p&gt;
-<i>// → [object Promise]</i></pre>
-          <p class="body">You asked for the receipt and rendered it. <b><code>[object Promise]</code> on a screen always means a missing <code>await</code>.</b></p>
-        </div>
-      </div>
-      <p class="callout">
-        <code>await</code> means <em>stop here until this settles, then give me the value or
-        throw</em>. It only works inside a function marked <code>async</code>, and that
-        function itself returns a promise — which is why <code>await</code> tends to spread.
-      </p>
-    </section>
-
-    <section class="slide slide--wide" data-sec="2.5" data-label="Sequential vs parallel" data-rail="JSON, fetch, await">
-      <span class="eyebrow">Interactive · the cost of a loop with await in it</span>
-      <h2 class="h2">Three requests, two very different waits</h2>
-      <div class="panel panel--sunk">
-        <div class="panel__head">Each request takes 300ms <span class="spacer"></span><span class="dim">switch the strategy</span></div>
-        <div class="tl" data-widget="tl" id="tl"></div>
-      </div>
-      <p class="callout">
-        <b>Awaiting inside a loop makes requests queue.</b> If they do not depend on each other,
-        start them all and await the set — <code>Promise.all</code>. If each one needs the
-        previous answer, sequential is correct and slow is the price.
-      </p>
-    </section>
-
-    <section class="slide slide--wide" data-sec="2.5" data-label="The wrapper, read" data-rail="JSON, fetch, await">
-      <span class="eyebrow">Open the file</span>
-      <h2 class="h2">Every line of <code>unwrap</code></h2>
-      <div class="grid grid--sidebar">
-        <div class="panel">
-          <div class="panel__head">src/lib/api/client.ts</div>
-          <pre>export <b>async</b> function unwrap&lt;T&gt;(call): Promise&lt;T&gt; {
-  const { data, error, response } = <b>await</b> call
-
-  if (error !== undefined || !response.ok) {
-    <b>throw</b> new ApiErrorException(
-      normalizeError(error, response.status),
-      response.status
-    )
-  }
-
-  if (data === undefined) { <b>throw</b> … }
-
-  return data
-}</pre>
-        </div>
-        <div class="col">
-          <div class="panel">
-            <div class="panel__head">Four decisions in twelve lines</div>
-            <ul class="list">
-              <li><b><code>await call</code></b> — the request is already in flight; this waits for it.</li>
-              <li><b>Destructuring</b> — <code>{ data, error, response }</code> pulls three names out of one object.</li>
-              <li><b>It throws instead of returning</b> — because TanStack Query decides between its branches by whether the function threw.</li>
-              <li><b>A 2xx with no body throws too</b> — that is a contract bug, not a state to design for.</li>
-            </ul>
-          </div>
-          <p class="callout"><b>Delete the <code>throw</code></b> and Query's error branch never fires: failures become silent. Try it, then put it back.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="slide" data-sec="2.5" data-label="Errors" data-rail="JSON, fetch, await">
-      <span class="eyebrow">The half everybody forgets</span>
-      <h2 class="h2">A failed request is not an exception</h2>
-      <div class="grid grid--2">
-        <div class="panel" style="border-color:var(--fail)">
-          <div class="panel__head" style="color:var(--fail)">The trap in plain <code>fetch</code></div>
-          <pre>const res = await fetch('/subjects')
-const data = await res.json()
-<i>// 404? 500? This code cannot tell.
-// fetch only rejects if the network failed.</i></pre>
-          <p class="body">A 500 is a <em>successful</em> fetch of an error page. You have to check <code>res.ok</code> yourself, every time.</p>
-        </div>
-        <div class="panel">
-          <div class="panel__head">Which is why the wrapper exists</div>
-          <pre>if (error !== undefined || <b>!response.ok</b>) throw …</pre>
-          <p class="body">Written once, in one file, so no screen ever forgets it. Then every error reaching a component has the contract's shape: a <code>code</code> to branch on and a <code>message</code> to show.</p>
-        </div>
-      </div>
-      <p class="callout">
-        Three very different failures — a documented 409, a dead network, a thrown exception —
-        arrive as <b>one shape</b>. A component that had to tell them apart would grow three
-        error paths.
-      </p>
-    </section>
-
-    <!-- ================= 3.7 CHOOSING A LIBRARY ================= -->
-
-    <section class="slide slide--center" data-sec="2.6" data-label="Lesson 2.6 opens" data-rail="Choosing a library">
-      <div class="col" style="gap:var(--s4);align-items:center">
-        <span class="eyebrow eyebrow--plain">Lesson 2.6 · LO 3.7</span>
-        <h2 class="h1" style="max-width:22ch">Three candidates,<br>one job</h2>
-        <p class="lede" style="text-align:center;margin-inline:auto">Pick one and defend it. "Most stars" is not a defence.</p>
-        <span class="chip chip--added">The judgment is the skill</span>
-      </div>
-    </section>
-
-    <section class="slide slide--wide" data-sec="2.6" data-label="Build or install" data-rail="Choosing a library">
-      <span class="eyebrow">The first question, before any comparison</span>
-      <h2 class="h2">Should this be a dependency at all?</h2>
-      <div class="grid grid--2">
-        <div class="panel">
-          <div class="panel__head">Install it</div>
-          <ul class="list list--check">
-            <li><b>It is genuinely hard and boring</b> — date arithmetic, timezones, accessible dialogs, drag and drop</li>
-            <li><b>Getting it subtly wrong is expensive</b> — auth, money, cryptography</li>
-            <li><b>It is a solved problem with a standard answer</b></li>
-          </ul>
-          <p class="small">Enroll installs <code>openapi-fetch</code>, <code>@tanstack/react-query</code> and <code>react-router</code> on exactly these grounds.</p>
-        </div>
-        <div class="panel">
-          <div class="panel__head">Write it</div>
-          <ul class="list list--check">
-            <li><b>It is a few lines you fully understand</b> — the unit-ceiling check is nine</li>
-            <li><b>It carries your design</b> — the student card, the approval row</li>
-            <li><b>The library does forty things and you need one</b></li>
-          </ul>
-          <p class="small"><code>lib/rules/units.ts</code> is 90 lines and has no dependencies. It never will.</p>
-        </div>
-      </div>
-      <p class="callout">
-        Every dependency is a permanent commitment: it can break, get abandoned, or change its
-        mind about how it works. <b>The cheapest dependency is the one you did not add.</b>
-      </p>
-    </section>
-
-    <section class="slide slide--wide" data-sec="2.6" data-label="The judgment" data-rail="Choosing a library">
-      <span class="eyebrow">Check yourself</span>
-      <h2 class="h2">Which one, and why</h2>
-      <div data-widget="quiz" data-src="quiz-pkg"></div>
-      <script type="application/json" id="quiz-pkg">
-      [
-        {
-          "scenario": "You need to format dates. Three candidates: <b>moment</b> — 4.9M weekly downloads, last publish 2 years ago, README says \"we consider Moment legacy, do not use it for new projects\". <b>date-fns</b> — 20M weekly, published last month, ships its own types. <b>my-fast-dates</b> — 300 weekly, published yesterday, 1 contributor.",
-          "q": "Which one?",
-          "options": [
-            "moment — by far the most established, and 4.9M people cannot be wrong",
-            "date-fns — actively maintained, ships types, and nobody is telling you to avoid it",
-            "my-fast-dates — newest, so it has learned from the others",
-            "None; write your own date formatting"
-          ],
-          "answer": 1,
-          "why": "Download count measures the past, not the present. moment's own maintainers are telling you not to start with it — read what a project says about itself. my-fast-dates has one contributor and no track record, which is a risk with no compensating benefit. date-fns is maintained, typed, and widely used; that combination is the answer. Writing your own is defensible for one format string and indefensible for timezones."
-        },
-        {
-          "scenario": "A package you need has 800k weekly downloads and solves your problem exactly. Its last publish was 3 years ago. There are 40 open issues and no commits since.",
-          "q": "Is stale automatically disqualifying?",
-          "options": [
-            "Yes — anything unpublished for 3 years is abandoned",
-            "No — a small, finished library with no dependencies can be genuinely done",
-            "Only if it has open issues",
-            "Yes, unless it has more than 1M downloads"
-          ],
-          "answer": 1,
-          "why": "\"Finished\" and \"abandoned\" look identical from the outside. A 200-line library with no dependencies that does one thing may simply be complete — nothing to fix. The questions that separate them: does it have dependencies that themselves need security updates, does it touch the browser APIs that keep changing, and are the open issues bug reports or feature requests? A finished leaf library is fine. A stale framework is not."
-        },
-        {
-          "scenario": "You are choosing between two component libraries. One is 12KB and you would write your own dialog. The other is 300KB, includes 60 components, and you need four of them.",
-          "q": "What matters most in this decision?",
-          "options": [
-            "Total bundle size — 300KB is too much, always",
-            "Whether the big one is tree-shakeable, so unused components never reach the bundle",
-            "The number of components, since more is better value",
-            "Whichever has better documentation"
-          ],
-          "answer": 1,
-          "why": "The published size is not the shipped size. If the library has proper ES module exports, your bundler includes only what you import — four components, not sixty. If it does not, you ship all 300KB to every student on campus wifi. Check that before arguing about the total. Documentation matters too, but it is not the question that changes the answer here."
-        },
-        {
-          "scenario": "Your group finds a package that does exactly what your project spec needs. It has 50 weekly downloads, was published 3 weeks ago, and the repository has one commit.",
-          "q": "What is the strongest argument against it?",
-          "options": [
-            "The download count is too low to be popular",
-            "Nobody has found its bugs yet, and you have no idea whether it will exist in six weeks",
-            "One commit means the code is badly written",
-            "New packages are always insecure"
-          ],
-          "answer": 1,
-          "why": "Popularity is not the point — unproven is. 50 users means the bugs are still in there waiting for you, and one commit three weeks ago tells you nothing about whether anyone will still be maintaining it when your project is due in week 17. The code might be excellent. You cannot tell yet, and your semester is not the place to find out."
-        }
-      ]
-      </script>
-    </section>
-
-    <section class="slide" data-sec="2.6" data-label="Reading docs" data-rail="Choosing a library">
-      <span class="eyebrow">The skill nobody teaches</span>
-      <h2 class="h2">How to read documentation you did not write</h2>
-      <div class="grid grid--3">
-        <div class="card"><span class="card__k">First</span><div class="card__t">The install and the first example</div><p class="card__b">If the "getting started" example does not resemble your problem, this may be the wrong library. Two minutes, and it saves an afternoon.</p></div>
-        <div class="card"><span class="card__k">Then</span><div class="card__t">The API reference for one function</div><p class="card__b">Read the whole signature. Optional parameters and defaults are where the behaviour you needed usually already exists.</p></div>
-        <div class="card"><span class="card__k">Last</span><div class="card__t">The changelog</div><p class="card__b">Before any major upgrade. It is the only place that tells you what broke, and it is written for exactly this moment.</p></div>
-      </div>
-      <div class="panel">
-        <div class="panel__head">And when the docs are wrong or missing</div>
-        <p class="body">Open <code>node_modules/&lt;package&gt;</code> and read the source, or the <code>.d.ts</code> file. It is allowed, it is often faster than searching, and the types cannot be out of date with the code the way prose can.</p>
-      </div>
-      <p class="callout"><b>An agent is very good at this and still gets versions wrong.</b> Paste the actual docs into context rather than trusting recall — the same principle as pasting the contract in Lesson 2.2.</p>
-    </section>
-
     <!-- ================= 3.8 DOES IT WORK ================= -->
 
-    <section class="slide slide--center" data-sec="2.7" data-label="Lesson 2.7 opens" data-rail="Does it work?">
+    <section class="slide slide--center" data-sec="2.3" data-label="Lesson 2.3 opens" data-rail="Does it work?">
       <div class="col" style="gap:var(--s4);align-items:center">
-        <span class="eyebrow eyebrow--plain">Lesson 2.7 · one session</span>
+        <span class="eyebrow eyebrow--plain">Lesson 2.3 · one session</span>
         <h2 class="h1" style="max-width:24ch">A test that has<br>never failed<br>proves nothing</h2>
         <p class="lede" style="text-align:center;margin-inline:auto">Enough Vitest to not be lost in Module 4.</p>
         <span class="chip chip--added">No learning outcome requires this</span>
       </div>
     </section>
 
-    <section class="slide" data-sec="2.7" data-label="What a unit test is" data-rail="Does it work?">
+    <section class="slide" data-sec="2.3" data-label="What a unit test is" data-rail="Does it work?">
       <span class="eyebrow">The anatomy</span>
       <h2 class="h2">Three words, and one assertion</h2>
       <div class="grid grid--sidebar">
@@ -1809,7 +1202,7 @@ const data = await res.json()
       </div>
     </section>
 
-    <section class="slide slide--wide" data-sec="2.7" data-label="Watch it fail" data-rail="Does it work?">
+    <section class="slide slide--wide" data-sec="2.3" data-label="Watch it fail" data-rail="Does it work?">
       <span class="eyebrow">Interactive · the run, and a deliberate break</span>
       <h2 class="h2">Green means nothing until you have seen red</h2>
       <div class="panel panel--sunk">
@@ -1823,7 +1216,7 @@ const data = await res.json()
       </p>
     </section>
 
-    <section class="slide" data-sec="2.7" data-label="What to test" data-rail="Does it work?">
+    <section class="slide" data-sec="2.3" data-label="What to test" data-rail="Does it work?">
       <span class="eyebrow">Where the value is</span>
       <h2 class="h2">Test the rules, not the framework</h2>
       <div class="grid grid--2">
@@ -1854,7 +1247,7 @@ const data = await res.json()
       </p>
     </section>
 
-    <section class="slide" data-sec="2.7" data-label="Where this goes" data-rail="Does it work?">
+    <section class="slide" data-sec="2.3" data-label="Where this goes" data-rail="Does it work?">
       <span class="eyebrow">The progression</span>
       <h2 class="h2">Three kinds of test, arriving in order</h2>
       <div class="table-wrap">
@@ -1916,31 +1309,32 @@ const data = await res.json()
     <section class="slide slide--wide" data-sec="lab" data-label="Activity 5" data-rail="Laboratory activities">
       <span class="eyebrow">Laboratory Activity 5 · Week 6 · A5 · 3%</span>
       <div class="row" style="gap:var(--s4);align-items:baseline">
-        <h2 class="h2">Account for your stack</h2>
-        <span class="chip chip--accent">Individual</span>
+        <h2 class="h2">Your screens, on your mock</h2>
+        <span class="chip chip--accent">Group</span>
+        <span class="chip">Milestone 2 gate</span>
       </div>
-      <p class="callout"><b>Your own project's <code>package.json</code>, line by line.</b> The audit you watched in 3.1, run on the repository your group is actually shipping.</p>
+      <p class="callout"><b>The contract is not done because it lints. It is done because something runs against it.</b> Point the static screens you built in Lesson 1.4 at a Prism mock of your own <code>openapi.yaml</code>, with no backend in existence.</p>
       <div class="grid grid--sidebar">
         <div class="panel">
           <div class="panel__head">Deliverables</div>
           <div class="steps">
-            <div class="step"><div><div class="step__t">Every dependency, one sentence</div><div class="step__b">What breaks if you remove it. "It is needed" is not an answer.</div></div></div>
-            <div class="step"><div><div class="step__t">Library or framework, for each</div><div class="step__b">Do you call it, or does it call you? One word plus a reason.</div></div></div>
-            <div class="step"><div><div class="step__t">Anything Enroll does not have, justified</div><div class="step__b">Extra dependencies are allowed. Unexamined ones are not.</div></div></div>
-            <div class="step"><div><div class="step__t">One version range explained</div><div class="step__b">Pick a <code>^</code> in your file and say what could change under it.</div></div></div>
+            <div class="step"><div><div class="step__t">The mock runs from your spec</div><div class="step__b"><code>npm run mock</code> serves your contract. Committed script, not a command someone typed once.</div></div></div>
+            <div class="step"><div><div class="step__t">Types generated, not written</div><div class="step__b"><code>npm run contract:types</code> produces the file, and <code>contract:check</code> shows no drift.</div></div></div>
+            <div class="step"><div><div class="step__t">One screen reading real shapes</div><div class="step__b">A list or a detail view, drawing the fields your own spec promises — not placeholder text.</div></div></div>
+            <div class="step"><div><div class="step__t">One failure state, on purpose</div><div class="step__b">Ask the mock for a documented error and show the screen you designed for it in Module 1.</div></div></div>
           </div>
         </div>
         <div class="col">
           <div class="panel">
             <div class="panel__head">Graded on</div>
             <ul class="list">
-              <li><b>Accuracy</b> — 40</li>
-              <li><b>Library vs framework</b> — 20</li>
-              <li><b>Justifying the extras</b> — 25</li>
-              <li><b>Semver reading</b> — 15</li>
+              <li><b>It runs</b> — 30</li>
+              <li><b>Types generated and in sync</b> — 25</li>
+              <li><b>Screen matches the spec's shapes</b> — 25</li>
+              <li><b>The failure state is real</b> — 20</li>
             </ul>
           </div>
-          <p class="small">A dependency nobody in the group can explain is a finding, not a failure — remove it or learn it.</p>
+          <p class="small">A group that waited for the backend has nothing to show here. That is the point of the gate — it is the only thing making contract-first a practice rather than a slogan.</p>
         </div>
       </div>
     </section>
