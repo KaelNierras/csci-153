@@ -476,20 +476,26 @@
     </section>
 
     <section class="slide" data-sec="0" data-label="The app" data-rail="Orientation">
-      <span class="eyebrow">The codebase you are about to read</span>
-      <h2 class="h2">Enroll — a subject enrollment system</h2>
+      <span class="eyebrow">The contract you are about to read</span>
+      <h2 class="h2">Enroll — one system, nine operations, one document</h2>
       <div class="grid grid--3">
         <div class="card"><span class="card__k">What it does</span><div class="card__t">Nine operations</div><p class="card__b">A student builds a draft enrollment, submits it, an adviser approves or returns it. Six screens, two roles.</p></div>
-        <div class="card"><span class="card__k">Why it is small</span><div class="card__t">Readable in one sitting</div><p class="card__b">Small enough to hold in your head, complete enough to have every layer your own project needs.</p></div>
+        <div class="card"><span class="card__k">Why it is small</span><div class="card__t">Readable in one sitting</div><p class="card__b">Nine operations is not a limitation, it is the target. Yours should be about this size — see it before you write yours.</p></div>
         <div class="card"><span class="card__k">Why not your system</span><div class="card__t">A different domain</div><p class="card__b">Close enough that every pattern transfers. Far enough that none of it can be submitted.</p></div>
       </div>
       <div class="panel">
-        <div class="panel__head">It runs with no backend, and that is the point</div>
-        <pre>npm run mock   <i># Prism serves invented responses from contract/openapi.yaml</i>
-npm run dev    <i># the app, talking to that mock</i></pre>
-        <p class="body">The frontend was written before the backend existed — the argument this module makes. This is the app where it is true.</p>
+        <div class="panel__head">Its whole API surface is one file</div>
+        <pre>contract/openapi.yaml   <i># every request and response, 9 operations</i>
+
+npm run contract:lint   <i># it has to be valid before anyone builds on it</i>
+npm run mock            <i># Prism serves it — no backend, no database</i></pre>
+        <p class="body">Every example in Lesson 2.2 comes out of this file. It is the model for the one your group writes in Activity 4, and it is what your screens will run against at the week-6 gate.</p>
       </div>
-      <p class="callout">Clone it. <b>Read it while we read it.</b> Nothing in these two weeks is a screenshot.</p>
+      <p class="callout">
+        <b>You are reading the contract, not touring the codebase.</b> The app's source is
+        there if you want it, but this module only needs one file — and by week 6 you will
+        have written its equivalent for your own system.
+      </p>
     </section>
 
     <section class="slide" data-sec="0" data-label="Outcomes" data-rail="Orientation">
@@ -1153,7 +1159,7 @@ documented response."</i></pre>
       </div>
     </section>
 
-    <!-- ================= 3.8 DOES IT WORK ================= -->
+    <!-- ================= 2.3 DOES IT WORK ================= -->
 
     <section class="slide slide--center" data-sec="2.3" data-label="Lesson 2.3 opens" data-rail="Does it work?">
       <div class="col" style="gap:var(--s4);align-items:center">
@@ -1255,7 +1261,7 @@ documented response."</i></pre>
           <thead><tr><th style="width:9rem">Kind</th><th style="width:7rem">When</th><th>What it proves, and what it costs</th></tr></thead>
           <tbody>
             <tr>
-              <td><b>Unit</b></td><td class="num">Now · 3.8</td>
+              <td><b>Unit</b></td><td class="num">Now · 2.3</td>
               <td>One function does what its name claims. Milliseconds to run, so you run them constantly.</td>
             </tr>
             <tr>
@@ -1405,10 +1411,10 @@ documented response."</i></pre>
       <div class="panel">
         <div class="panel__head">Before week 7</div>
         <ul class="list list--check">
-          <li>You can open your group's <code>package.json</code> and explain every line</li>
+          <li>Your contract lints clean, and <code>contract:check</code> shows no drift</li>
           <li>One rule is out of a component, in <code>lib/rules/</code>, with tests</li>
           <li><code>npm run test</code> passes in your repository</li>
-          <li>You have read Enroll's <code>lib/api/client.ts</code> top to bottom</li>
+          <li>Your screens run against your own mock — including one failure state</li>
         </ul>
       </div>
     </section>
