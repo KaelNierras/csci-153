@@ -1,7 +1,7 @@
 # Laboratory Activity 4 — The Contract
 
 **CSci 153 · Web Systems and Technologies**
-Module 2 · Lessons 2.3–2.5 · Week 5 · Assessment task **CA 4**
+Module 2 · Lesson 2.2 · Week 5 · Assessment task **CA 4**
 Course outcome **CO2** · Learning outcome **LO 2.1, LO 2.2**
 
 > ### This one is a group activity — with individually graded parts
@@ -21,17 +21,18 @@ Course outcome **CO2** · Learning outcome **LO 2.1, LO 2.2**
 
 ## Scenario
 
-You are going to write the document that Module 4 has to implement and Module 5 has to
+You are going to write the document that Module 3 has to implement and Module 5 has to
 connect to. It is the only artifact in this course that touches three modules.
 
 Your backend does not exist. Its implementation is five weeks away, and the people who will build it
 are you. That is precisely why the shapes have to be written down now — while changing
 them costs a text edit rather than a rewrite.
 
-> **You will get parts of this wrong, and that is expected.** You are specifying data
-> shapes before Module 4 teaches you to model data. Week-10 breaking changes are the
-> method working, not you failing. What is *not* acceptable is discovering in week 13
-> that nobody ever decided what a failed request looks like.
+> **You will get parts of this wrong, and that is expected.** You modelled this data in
+> Lesson 2.1, an hour before writing the contract over it — which makes the corrections in
+> sprint 1 refinements rather than discoveries, but it does not make them zero. Versioning
+> a breaking change is the method working, not you failing. What is *not* acceptable is
+> discovering in week 13 that nobody ever decided what a failed request looks like.
 
 ---
 
@@ -73,7 +74,7 @@ npx openapi-typescript contract/openapi.yaml -o contract/generated/schema.d.ts
 - Interception for: attaching the auth token, normalising errors into the contract's
   error shape, and handling 401 globally.
 - The base URL comes from an environment variable. **This is the one line that changes
-  in Module 5** — treat it accordingly.
+  in Module 4** — treat it accordingly.
 
 ### 3 · Two screens running against a mock — **individual**
 
@@ -164,9 +165,9 @@ the evidence of thinking**, so write down what the losing option was.
 
 | Feeds into | How |
 |---|---|
-| **Module 3 · The Stack** | What `await` was doing inside your wrapper, what JSON actually is, and how to unit-test the functions you have started writing. |
-| **Module 4 · Backend** | The other side. Your schema, RLS policies, and functions must satisfy **this document** — `npm run contract:check` passing is what "done" means. |
-| **Module 5 · Integration** | Swap the mock base URL for the real one. If the contract held, nothing else changes. That is the whole bet. |
+| **Lessons 2.3–2.10 · the stack tour** | What `await` is doing inside the typed client this contract generated, what JSON actually is, and how to unit-test the functions you have started writing. |
+| **Module 3 · Backend** | The other side. Your schema, RLS policies, and functions must satisfy **this document** — `npm run contract:check` passing is what "done" means. |
+| **Module 4 · Frontend** | Swap the mock base URL for the real one. If the contract held, nothing else changes. That is the whole bet. |
 | **Final Web Project (FWP, 50%)** | Group. This spec is the spine of it. |
 
 ---

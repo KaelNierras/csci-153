@@ -1,158 +1,108 @@
-# Module 2 — Frontend Development · outline
+# Module 2 — The Contract · outline
 
-**CSci 153 · Weeks 3 and 4, plus clinics in weeks 11–12 · CO2** — *Develop responsive web templates using HTML/CSS
-frameworks and component libraries*
-Syllabus LOs: **LO 2.1** reusable UI components with React + Tailwind ·
-**LO 2.2** cross-device responsiveness
+**CSci 153 · Weeks 4–6 · Milestone 2 · CO3 and CO4**
+Syllabus LOs: **LO 4.1** model relational database schemas · **LO 3.1** types and structures ·
+**LO 3.2** block scoping · **LO 3.3** loop structures · **LO 3.4** functions and arrow
+expressions · **LO 3.5** JSON serialize/deserialize · **LO 3.6** DOM manipulation ·
+**LO 3.7** JavaScript libraries
 
-> **Framework note.** LO 2.1 is worded "Next.js + Tailwind" in the OBE syllabus; this
-> course delivers it with **React (Vite) + Tailwind + shadcn/ui**. React and
-> Shadcn/React are both named in the syllabus reference list, and the learning
-> outcome — reusable, responsive components from a design system — is framework-
-> agnostic. Dropping the server framework also keeps the frontend/backend boundary
-> a *contract* rather than a blurred one, which is what lesson 2.3 is built on.
-> The Final Activity Project specs use this same stack.
+Status: **ready** — 67 slides, `module-2/index.html`. Interactive instruments: the
+normalisation stepper (2.1), the spec explorer, schema→type and contract diff (2.2), the
+dependency auditor (2.3), the iteration translator (2.5), the await timeline (2.7), the
+DOM-versus-React operation counter (2.8), and a test runner whose ceiling the class can
+break on purpose (2.10).
 
-Status: **planning**. Deck not built yet.
-
-### Prior knowledge — what this module does *not* re-teach
-
-React fundamentals — components, props, state, `useState`/`useEffect`, lists and keys —
-were covered in the previous course. Module 2 does not repeat them. Lesson 2.1 is a
-bridge, not an introduction: it assumes you can already write a component and spends
-its time on *what to build* and *how to structure it*, not on syntax.
-
-If React is genuinely rusty, that is a self-study gap to close in week 3, not class
-time. Say so early rather than in week 5.
-
-> ## ⬛ Delivery — this module is split across three milestones
+> ## The milestone
 >
-> Resequenced 2026-09-22 (`../plan/milestones.md`). Module 2 is the one deck that is not
-> delivered in one sitting, because its lessons belong to three different stages of a build.
+> **Agree the shape of the data, before either side is built.** The deliverable is one
+> `openapi.yaml` with a data model behind it, types generated from it, and screens from
+> Milestone 1 running against a Prism mock of it.
 >
-> | Lesson | Milestone | When |
-> |---|---|---|
-> | 2.0 Git & GitHub | **1 · UI/UX** | Week 3 |
-> | 2.1 Components from mockups | **1 · UI/UX** | Week 3 |
-> | 2.3 The API contract (OpenAPI) | **2 · Contract** | Week 4 |
-> | 2.2 Auth Context + route protection | **4 · Frontend** | Week 11 clinic, ~45 min |
-> | 2.4 API wrapper, interception, server state | **4 · Frontend** | Week 12 clinic, ~60 min |
-> | 2.5 Data states in practice | **4 · Frontend** | Week 12 clinic, ~60 min |
->
-> **The lesson order below is still the order to read them in** — each lesson still creates
-> the problem the next one solves. What changed is that the gap between 2.1 and 2.2 is now
-> eight weeks of contract and backend work, and by the time 2.2 runs there is a real session
-> to protect a route with.
->
-> **LO retag.** LO 2.2 (cross-device responsiveness) moved from lesson 2.5 to lesson 2.1,
-> where responsiveness is actually built. Both of CO2's outcomes are therefore attained in
-> week 3 and assessed by A3 in week 4. Everything that moved into the dev phase carries no
-> syllabus LO.
+> This module did not exist before 2026-09-22. It was one lesson (the old 2.3) buried in the
+> middle of a frontend module. It is now the hinge of the semester, and it absorbs the whole
+> of the old Module 3 — because that module's anchor files *are* contract artifacts.
 
 ---
 
 ## Lesson order
 
-The sequence is load-bearing — each lesson creates the problem the next one solves.
+The sequence is load-bearing: you model what exists, you write down how it is exposed, and
+then you meet every tool that turns that document into code.
 
-| # | Lesson | Milestone · week | Why it sits here |
-|---|---|---|---|
-| 2.0 | **Git & GitHub — briefly** | 1 · W3 | ~1 session. The group workflow the Final Activity Project runs on |
-| 2.1 | **Components from mockups** | 1 · W3 | Module 1's screen becomes real components; tokens become the Tailwind theme. React itself is assumed. **LO 2.1 and LO 2.2** |
-| 2.3 | **The API contract (OpenAPI)** | 2 · W4 | Taught the same block as data modeling (4.1) — you model what exists, then write down how it is exposed |
-| 2.2 | **Auth Context + route protection** | 4 · W11 | First real cross-cutting state. Now taught when there is a real session to protect a route with |
-| 2.4 | **API wrapper, interception, and server state** | 4 · W12 | Built *against* the spec, not invented. TanStack Query enters here |
-| 2.5 | **Data states in practice** | 4 · W12 | Cashes in Module 1's loading / empty / error work with real latency |
+| # | Lesson | LO | Slides | The file it opens |
+|---|---|---|---|---|
+| 2.1 | **Modelling the data** | 4.1 | 6 | the group's own spec §6 |
+| 2.2 | **The API contract — OpenAPI** | *(no LO)* | 11 | `contract/openapi.yaml` |
+| 2.3 | **The stack, named** | 3.7 | 6 | `package.json` |
+| 2.4 | **TypeScript in five ideas** | 3.1, 3.2 | 5 | `contract/generated/schema.d.ts` |
+| 2.5 | **Arrays, objects, iteration** | 3.1, 3.3 | 5 | `SubjectCatalog.tsx` |
+| 2.6 | **Functions, modules, file layout** | 3.4 | 5 | `src/lib/`, `src/features/` |
+| 2.7 | **JSON, `fetch`, and `await`** | 3.5 | 6 | `src/lib/api/client.ts` |
+| 2.8 | **What React does for you** | 3.6 | 5 | `demos/subject-list-vanilla.html`, then the React twin |
+| 2.9 | **Choosing a library** | 3.7 | 4 | the dependency list, judged |
+| 2.10 | **Does it work? — briefly** | *(no LO)* | 5 | `src/lib/rules/units.test.ts` |
 
-The rows are in **delivery order**, which is no longer numeric order. The numbering is
-kept because the deck's slides and the activity briefs refer to it.
-
----
-
-## 2.0 · Git & GitHub — the brief version
-
-**Not covered by any syllabus LO**, and deliberately short: one session, practical only.
-The Final Activity Project is group work in a shared repository, so this is the minimum
-that keeps a group from stepping on itself — not a course in version control.
-
-Cover, quickly: branch per feature · commit messages that name the change · pull request
-with one required approval · issues and milestones as the work queue · what a merge
-conflict is and how not to panic. Demonstrate a conflict live and resolve it once.
-
-Skip entirely: rebasing, cherry-picking, submodules, git internals. If a group needs
-those, they can ask.
-
-**Assessment hook:** every group member must have commits by the end of Module 2. This
-is also how individual contribution to a group project is evidenced later.
+**Week 4** is 2.1 and 2.2 — two dense inputs in one block, with the ERD-and-contract clinic
+that afternoon. **Week 5** is 2.3–2.5, **week 6** is 2.6–2.10.
 
 ---
 
-## 2.4 · Server state — the addition
+## 2.1 · Modelling the data — why it is first
 
-TanStack Query belongs here rather than in its own lesson, because it only makes sense
-once the wrapper exists. The point to land: **server data is not component state.** It
-is a cache of something that lives elsewhere, and it goes stale.
+This was lesson 4.1, taught in week 7, three weeks *after* groups wrote their contract. The
+old Module 4 outline said the consequence out loud: *"expect breaking changes here, and say
+so in advance."* Planned rework is still rework.
 
-Query keys derive from the contract's `operationId` plus its parameters, which makes
-invalidation-after-mutation mechanical instead of guesswork. Contrast this against
-Context, taught in 2.2: Context is for state the client owns (session, theme, the
-record being edited); Query is for state the server owns. Students who blur the two
-end up copying fetched data into Context and then hand-syncing it — worth showing that
-failure once, on purpose.
+Moving it here does not eliminate contract v2, and it should not — a model drawn in week 4
+will still be wrong in places. What changes is that the corrections made in sprint 1 are
+**refinements rather than discoveries**.
 
 ---
 
-## 2.3 · The API contract — the new segment
+## 2.2 · The API contract
 
-**Framing:** the contract is agreed *before either side is built*. That is the real
-professional workflow, and in this course it is literally true — the backend is
-Milestone 3, three weeks away, and the frontend wiring is Milestone 4, seven.
+**Framing:** the contract is agreed before either side is built. In this course that is
+literally true — the backend is Module 3, three weeks away, and the frontend wiring is
+Module 4, seven.
 
-**Say the cost out loud.** The gap used to be five weeks, which made the argument for
-contract-first by itself. It is now shorter, so a group could reasonably ask why they
-should not just wait for the backend. The answer is the week-6 gate: running screens on
-the Prism mock. A group that waited has nothing to show.
+**Say the cost out loud.** Under the old sequence the gap was five weeks, which made the
+argument for contract-first by itself. It is now three, so a group could reasonably ask why
+they should not just wait for the backend. The answer is this milestone's gate: running
+screens on the Prism mock. A group that waited has nothing to show in week 6.
 
-### Slides (~10)
+---
 
-1. **Integration day** — what goes wrong when FE and BE are built from separate
-   assumptions. The field is called `student_id`, or is it `studentId`, or `id`?
-2. **What a contract is** — every request and response shape, agreed and written
-   down, before either side is built
-3. **OpenAPI in three minutes** — `paths` → operation → `parameters` /
-   `requestBody` → `responses` → `components.schemas`
-4. **Reading a real spec** — *interactive: mini spec explorer*
-5. **Contract-first vs code-first** — which you are doing, and why contract-first
-   is what lets two people work in parallel
-6. **Generated types, never hand-written** — `openapi-typescript` produces the
-   interfaces; hand-written mirrors of the server drift silently
-7. **The same idea, twice** — `supabase gen types typescript` in Module 4 is this
-   exact pattern: schema is truth, types are a downstream artifact. Introduce the
-   principle here so Module 4 is a recognition, not a new topic
-8. **Mocking the contract** — Prism or MSW, so the UI runs today against a spec
-   whose implementation does not exist yet
-9. **Breaking vs additive change** — *interactive: contract diff with a verdict* —
-   why the spec is the thing you review, not the implementation
-10. **Agentic angle** — pasting the spec into context is the single
-    highest-leverage thing you can hand the agent: it produces correct fetch calls,
-    correct types, and correct error handling because the shape is no longer a guess
+## 2.3–2.10 · The stack tour
 
-### Interactive instruments
+Every session opens a real file from the Enroll reference app and explains the piece of the
+toolchain it belongs to. The language topics are still taught and still assessed — they are
+the *content* of the tour rather than its organising principle. Nobody gets a lecture on
+`for` loops in the abstract; they meet iteration in the file that renders the subject catalog.
 
-- **Spec explorer** — small enrollment-API YAML on the left; expanding an operation
-  shows the typed request and response on the right. A stripped, teachable
-  Swagger UI in the deck's own visual language.
-- **Schema → type** — an OpenAPI schema object beside its generated TypeScript
-  interface, updating live as fields are toggled required / optional / nullable.
-- **Contract diff** — toggle v1 → v2 of the spec; each change is labeled
-  *additive* or *breaking*, with a verdict line.
+**Why it belongs in this milestone.** Two of the tour's three anchor files are produced by
+the contract: `schema.d.ts` is generated from it, and `client.ts` is typed by it. Teaching
+generated types in the fortnight they are generated turns 2.4 from a TypeScript lesson into
+the answer to a question the class has just asked.
+
+**2.7 reads the client; it does not build it.** Building the wrapper — interception, retries,
+server state — is lesson 4.2, a week-12 clinic. Reading a finished thing and writing one are
+different sessions, and they are now in different milestones.
+
+---
+
+## Laboratory
+
+| Activity | Week | |
+|---|---|---|
+| **A4** The contract | 5 | group |
+| **A5** `package.json` accounting | 6 | |
+| **A6** First unit tests | 6 | **the milestone gate** |
+
+A5 and A6 do not exist yet. They are needed by week 6.
 
 ---
 
 ## The spec is the spine of the semester
-
-One OpenAPI document, carried across three modules. This is what makes the course
-hold together rather than being five unrelated units.
 
 ```
 Milestone 2   agree it       a data model, then openapi.yaml, then generated types
@@ -160,19 +110,6 @@ Milestone 3   implement it   schema, RLS, and endpoints that satisfy that docume
 Milestone 4   consume it     typed wrapper and screens, then the real base URL
 ```
 
-Milestone 3 then has a real acceptance criterion: *does your implementation satisfy the
-contract you agreed two weeks ago?* — and Milestone 4 has a guarantee: if the backend
-satisfies the contract, the screens the mock was built against will work against it.
-
-**To prepare:** author `enrollment-api.yaml` — 5 or 6 operations (list subjects, get
-load, add subject, remove subject, submit enrollment) with error responses that
-actually appear in the UI. Ship it in `Module 2/` and reuse the same file in 4 and 5.
-
----
-
-## Carried forward from Module 1
-
-- The 8-point design QA runs on every generated screen, all semester
-- Tokens become `tailwind.config` theme values — same three layers
-- Loading / empty / error states are now built against real latency
-- Prompt log continues as a graded artifact
+Module 3 then has a real acceptance criterion: *does your implementation satisfy the contract
+you agreed two weeks ago?* — and Module 4 has a guarantee: if the backend satisfies the
+contract, the screens built against the mock will work against it.

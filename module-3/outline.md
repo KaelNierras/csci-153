@@ -1,207 +1,122 @@
-# Module 3 — The Stack, End to End · outline
+# Module 3 — Backend Development · outline
 
-**CSci 153 · Weeks 5–6 · CO3 · Milestone 2 · Contract** — *Write valid JavaScript utilizing core programming
-paradigms and DOM manipulation*
-Syllabus LOs: **LO 3.1** types and structures · **LO 3.2** block scoping (`let`/`const`) ·
-**LO 3.3** loop structures · **LO 3.4** functions and arrow expressions ·
-**LO 3.5** JSON serialize/deserialize · **LO 3.6** DOM manipulation ·
-**LO 3.7** JavaScript libraries
+**CSci 153 · Weeks 7–8 · Milestone 3 · CO4** — *Create a backend server with RESTful API
+endpoints for database operations*
+Syllabus LOs: **LO 4.2** develop API endpoints for CRUD operations
+*(LO 4.1, schema modelling, is taught in Module 2 — see below.)*
 
-Status: **ready** — 49 slides, `module-3/index.html`. Interactive instruments: the
-dependency auditor (3.1), the iteration translator (3.3), the await timeline (3.5), the
-DOM-versus-React operation counter (3.6), and a test runner whose ceiling the class can
-break on purpose (3.8).
+Status: **ready** — 42 slides, `module-3/index.html`. Interactive instruments: the RLS
+simulator (3.3) — four identities against one query, with the policy switchable — the
+constraint tester (3.4), a `contract:check` runner that starts red (3.6), and a CI pipeline
+with a merge gate (3.7).
 
-> **Delivery note — changed 2026-08-19.** This module was planned as four weeks of
-> JavaScript language teaching. It is now delivered as a **guided tour of the reference
-> app** (`reference-app/`, the Subject Enrollment system — see `plan/reference-app.md`):
-> every session opens a real file from a running codebase and explains the piece of the
-> stack it belongs to. The language topics are still taught and still assessed — they are
-> the *content* of the tour rather than its organising principle. Nobody gets a lecture on
-> `for` loops in the abstract; they meet iteration in the file that renders the subject catalog.
+> ## The milestone
 >
-> **Why:** students arrive having had JavaScript in a prior course, and what actually
-> blocks them in weeks 10–17 is not syntax — it is not knowing what the twelve things in
-> `package.json` are for. Making the stack legible before Module 4 adds to it is
-> worth a week and a half; it was never worth four.
+> **Implement the shape agreed in Module 2.** Lectured in weeks 7–8, built in sprints 1–2
+> (weeks 10–13). Two gates: another group's account cannot read your rows, demonstrated
+> against a live database; and `contract:check` passes with CI green and required before merge.
 
-### Every LO still has a home
-
-Coverage is unchanged; only the framing moved. Nothing in the OBE syllabus is dropped.
-
-| Syllabus LO | Where it is taught now |
-|---|---|
-| LO 3.1 types and structures | 3.2, 3.3 — the shapes an API response is made of |
-| LO 3.2 block scoping | 3.2 — `let`/`const` as they appear in the app |
-| LO 3.3 loop structures | 3.3 — `for…of`, then `map`/`filter`/`reduce` |
-| LO 3.4 functions and arrows | 3.4 — arrows, closures, `import`/`export` |
-| LO 3.5 JSON serialize/deserialize | 3.5 — `fetch`, `await`, and the wrapper from 2.4 |
-| LO 3.6 DOM manipulation | 3.6 — built by hand once, then in React |
-| LO 3.7 JavaScript libraries | 3.1, 3.7 — the app's real dependencies, and how to judge one |
-
-> ## ⬛ This module is the second half of the Contract milestone
->
-> Resequenced 2026-09-22 (`../plan/milestones.md`). Module 3 is delivered whole, in weeks
-> 5–6, immediately after the contract is authored in week 4 — because **two of its three
-> anchor files are produced by the contract.**
->
-> | The file it opens | Where it comes from |
-> |---|---|
-> | `contract/generated/schema.d.ts` (3.2) | `openapi-typescript` run against the week-4 spec |
-> | `src/lib/api/client.ts` (3.5) | `openapi-fetch`, typed by that same spec |
-> | `package.json` (3.1, 3.7) | the toolchain that produced both |
->
-> Teaching generated types in the fortnight they are generated turns 3.2 from a TypeScript
-> lesson into the answer to a question the class has just asked.
->
-> **3.5 reads the client; it does not build it.** Building the wrapper — interception,
-> retries, server state — is lesson 2.4, a week-12 clinic in Milestone 4. Reading a finished
-> thing and writing one are different sessions.
+> **Framing note.** CO4 says "backend server." These projects have no server of their own —
+> Supabase is the backend, and the API surface is PostgREST plus Edge Functions. The outcome
+> still holds, and arguably more directly: students model a real schema and produce real CRUD
+> endpoints over it. What changes is that *authorization moves into the database*, which is
+> the single most important idea in this module.
 
 ---
 
 ## Lesson order
 
-One and a half weeks of lecture (3.1 lands in week 5, the rest in week 6). Each session starts in a file that already runs — the reading is lab work and self-study, not lecture time.
+| # | Lesson | LO | Slides | Why it sits here |
+|---|---|---|---|---|
+| 3.1 | **Migrations** | 4.1 | 4 | Schema as versioned, reviewable files, not clicks in a dashboard |
+| 3.2 | **CRUD endpoints over the schema** | 4.2 | 4 | PostgREST gives you the endpoints; the work is deciding which you are entitled to call |
+| 3.3 | **Row Level Security — briefly** | *(no LO)* | 8 | The enforcement layer the whole project rests on |
+| 3.4 | **Constraints and triggers — briefly** | *(no LO)* | 5 | Rules the client cannot be trusted with |
+| 3.5 | **Edge Functions — briefly** | *(no LO)* | 4 | Where secrets and multi-step writes live |
+| 3.6 | **Implementing the contract** | 4.2 | 5 | The acceptance criterion: does it satisfy Module 2's document? |
+| 3.7 | **CI — briefly** | *(no LO)* | 4 | Moved up from a week-13 clinic; the dev phase needs a merge gate from its first PR |
 
-| # | Lesson | LO | The file it opens |
-|---|---|---|---|
-| 3.1 | **The stack, named** | 3.7 | `package.json` |
-| 3.2 | **TypeScript in five ideas** | 3.1, 3.2 | `contract/generated/schema.d.ts` |
-| 3.3 | **Arrays, objects, iteration** | 3.1, 3.3 | `SubjectCatalog.tsx` |
-| 3.4 | **Functions, modules, and where files live** | 3.4 | `src/lib/`, `src/features/` |
-| 3.5 | **JSON, `fetch`, and `await`** | 3.5 | `src/lib/api/client.ts` |
-| 3.6 | **What React does for you** | 3.6 | one list, twice — by hand, then in React |
-| 3.7 | **Choosing a library** | 3.7 | the dependency list, judged |
-| 3.8 | **Does it work? — briefly** | *(no LO)* | `src/lib/rules/units.test.ts` |
+**Where lesson 4.1 went.** Schema modelling is now **lesson 2.1**, taught in week 4 in the
+same block as the contract. Migrations (3.1) therefore arrive three weeks after the model was
+drawn rather than in the same hour, which is the right order: you draw it, you specify an API
+over it, and only then do you commit it to versioned files.
 
 ---
 
-## 3.1 · The stack, named
+## 3.3 · Row Level Security — the brief version
 
-Open `package.json` and account for **every line**. Eight runtime dependencies and
-eighteen dev dependencies, each with a one-sentence answer to "what breaks if I remove
-this?" — and, for each, whether it is a library you call or a framework that calls you.
+**Not covered by any syllabus LO, and the most important of the uncovered topics.** Every
+authorization claim in all three project specs rests on it: *"route guards are redirect
+conveniences only; RLS is what separates the roles."*
 
-**The split is the first lesson.** `dependencies` ship to the browser; `devDependencies`
-never leave the build machine. A student who cannot say which list a package belongs in
-cannot reason about bundle size, and will eventually put a secret-bearing tool in the
-first list.
+Cover: a policy is a `WHERE` clause the database adds for you · `auth.uid()` · `USING` vs
+`WITH CHECK` · one policy per role per operation · the service role bypasses everything,
+which is why it never reaches a browser.
+
+The demonstration that makes it land: **open the app's own anon key in a REST client and try
+to read another user's row.** Watch it come back empty — not forbidden, *empty*. Then disable
+the policy and watch the same request return everything.
+
+**One sequencing note.** Under the old order this lesson could point back at the route guard
+students had already built and deleted in devtools. The guard is now lesson 4.1, four weeks
+*later*, so the callback runs forwards instead: this module establishes what enforcement is,
+and 4.1 arrives already knowing that a guard is a convenience.
+
+---
+
+## 3.4 · Constraints and triggers — the brief version
+
+**No LO**, ~1 session. The specs lean on these constantly: capacity enforcement, zero-gap
+adviser continuity, cached rollups, append-only audit logs.
+
+Cover: `CHECK`, `UNIQUE`, `NOT NULL`, foreign keys with the right `ON DELETE` · what a trigger
+is and when a rollup should be maintained by one · why "the frontend validates it" is not an
+answer to "what stops a bad row."
+
+---
+
+## 3.5 · Edge Functions — the brief version
+
+**No LO**, ~1 session. The decision rule: *plain read or single-row write goes to PostgREST;
+secret, privileged write, or multi-step goes to a function.*
+
+The demonstration: put an API key in a `VITE_` variable, build, and find it in the bundle with
+devtools. It reframes "keep secrets on the server" from a rule into an observation.
+
+---
+
+## 3.6 · Implementing the contract
 
 ```
-dependencies (8)     react · react-dom · react-router-dom · @tanstack/react-query
-                     openapi-fetch · zod · react-hook-form · @hookform/resolvers
-
-devDependencies (18) vite · typescript · tailwindcss · vitest · @playwright/test
-                     openapi-typescript · @redocly/cli · @stoplight/prism-cli
-                     oxlint · jsdom · testing-library ×2 · types ×3 · plugins ×3
+data model              drawn week 4, lesson 2.1
+        ↓
+contract/openapi.yaml   written week 4–5, unchanged unless versioned
+        ↓
+schema + RLS + Edge Functions   lectured weeks 7–8, built in sprints 1–2
+        ↓
+npm run contract:check   passes, or the milestone is not done
 ```
 
-**Two absences are worth as much as the presences**, and both are deliberate choices
-recorded in `PROJECT-CONTEXT.md`:
-
-- **No `@supabase/supabase-js`.** The app talks to Supabase with `fetch` — about seventy
-  readable lines in `src/lib/api/auth.ts`. Ask the class what the library would have
-  saved, and what it would have hidden.
-- **No shadcn/ui package.** shadcn is not a dependency; it copies components into your
-  repo. "Why is there nothing to install?" is the question that teaches what it actually
-  is.
-
-The point is orientation, not depth: after this session, no name in the project is a
-mystery word.
-
-**The exercise:** each group writes the same accounting for *their own* `package.json`,
-and has to justify anything they installed that the reference app does not have.
+Groups do not design an API here — they were handed one in Module 2, by themselves, three
+weeks earlier and on top of a model they drew the same afternoon. Expect contract v2, and
+version it properly; what would be a failure is silently editing the frontend to match a
+drifted backend.
 
 ---
 
-## 3.2 · TypeScript in five ideas
+## Laboratory
 
-Only the TypeScript this course actually writes: annotations, unions, `type` vs
-`interface`, optional and nullable, and generics **you only ever read, never write**.
+| Activity | Week |
+|---|---|
+| **A7** Schema + migrations | 7 |
+| **A8** RLS policies | 8 |
 
-Taught on `contract/generated/schema.d.ts` — the file Module 2 generated from the spec.
-It is the ideal specimen because nobody wrote it by hand, so nothing in it is stylistic.
-
-`let` vs `const` (LO 3.2) lands here as a rule with a reason: `const` unless the binding
-is reassigned, which in this codebase is almost never.
-
----
-
-## 3.3 · Arrays, objects, iteration
-
-Every API response in the app is arrays of objects. `for…of` first, because it is the
-one that reads like a sentence, then `map` / `filter` / `reduce` — the three React
-actually uses — on the enrollment data.
-
-Land one idea hard: **`map` in JSX is a loop.** Students who learned `for` loops as a
-statement often do not recognise the list-rendering they have been writing since
-Module 2 as iteration at all.
-
----
-
-## 3.4 · Functions, modules, and where files live
-
-Arrow functions, parameters and returns, and closures — introduced as *the reason hooks
-work*, which is the only motivation students find convincing.
-
-Then `import` / `export`, and the folder layout of the reference app: why `lib/` differs
-from `hooks/` differs from `components/`, and what "one job per file" buys.
-
----
-
-## 3.5 · JSON, `fetch`, and `await`
-
-Retroactive explanation of `src/lib/api/client.ts`, which they have been using since
-Module 2 without opening. What JSON is and is not, `JSON.parse` / `stringify`, and
-`fetch` returning a promise.
-
-`await` shown against the callback version of the same request. **Then the failure
-modes:** an `await` nobody awaited, and an error nobody caught — both live, in the
-running app, with the mock returning a 500 on purpose.
-
----
-
-## 3.6 · What React does for you
-
-Build the subject list twice in one session: once with `querySelector`,
-`createElement`, and `addEventListener`, and once in React.
-
-The hand-built version is fine for five rows. The lesson is what happens on the sixth,
-and on "now remove one" — the bookkeeping React is doing on your behalf. Do this and
-nobody asks "why do we need React" again.
-
-This satisfies LO 3.6 honestly rather than as a detour: **React is a DOM-manipulation
-library**, and this is the session where that stops being a slogan.
-
----
-
-## 3.7 · Choosing a library
-
-npm and `node_modules`, semantic versioning and what `^` licenses, lockfiles, and
-reading documentation you did not write.
-
-Then a real judgment exercise: three candidate packages for the same job — weekly
-downloads, last publish date, open issues, bundle size, whether the types ship with it.
-Pick one and defend it. The reference app's own dependency choices are the worked example.
-
----
-
-## 3.8 · Does it work? — the brief version
-
-**No syllabus LO**, ~1 session. Enough Vitest to not be lost in Module 5: what a unit
-test is, `describe` / `it` / `expect`, and testing the unit-ceiling function from the
-reference app — a pure function with no UI and no database attached.
-
-Watch it fail first, then pass. Land the rule: **a test that has never failed proves
-nothing.**
-
-Defer to Module 5: component tests, Playwright, CI.
+Neither exists yet; both are needed by week 6.
 
 ---
 
 ## Carried forward
 
-- The 12-point QA (8 from Module 1, 4 from Module 2) runs on anything with a UI
-- The contract from Module 2 is now something students can *read*, not just generate
-- Prompt log continues as a graded artifact
+- The contract from Module 2 is the specification; `contract:check` is the grader
+- `supabase gen types typescript` is the same principle as `openapi-typescript` in
+  Module 2 — schema is truth, types are downstream

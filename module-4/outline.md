@@ -1,134 +1,129 @@
-# Module 4 — Backend Development · outline
+# Module 4 — Frontend Development · outline
 
-**CSci 153 · Week 4 (lesson 4.1) and weeks 7–8 (4.2–4.7) · CO4** — *Create a backend server with RESTful API endpoints
-for database operations*
-Syllabus LOs: **LO 4.1** model relational database schemas ·
-**LO 4.2** develop API endpoints for CRUD operations
+**CSci 153 · Clinics in weeks 11–15 · Milestone 4 · CO2 and CO5**
+Syllabus LOs: **LO 5.1** validate user inputs on client and server layers ·
+**LO 5.2** utilize API endpoints for frontend application ·
+**LO 5.3** deploy a web application to a cloud platform
+*(CO2's LOs — 2.1 and 2.2 — are attained in Module 1, lesson 1.4.)*
 
-Status: **ready** — 44 slides, `module-4/index.html`. Interactive instruments: the
-normalisation stepper (4.1), the RLS simulator (4.4) — four identities against one query,
-with the policy switchable — the constraint tester (4.5), and a `contract:check` runner
-that starts red (4.7).
+Status: **ready** — 45 slides, `module-4/index.html`. Interactive instruments: the
+prop-drilling visualiser (4.1), the query cache (4.2), the validation bypass (4.4) — the same
+bad write sent by a form, by devtools, by a REST client, and with a service-role key — and the
+three-place deployment map (4.7).
 
-> **Framing note.** CO4 says "backend server." These projects have no server of their
-> own — Supabase is the backend, and the API surface is PostgREST plus Edge Functions.
-> The outcome still holds, and arguably more directly: students model a real schema and
-> produce real CRUD endpoints over it. What changes is that *authorization moves into
-> the database*, which is the single most important idea in this module.
-
-> ## ⬛ Lesson 4.1 moved forward, to the head of the Contract milestone
+> ## The milestone
 >
-> Resequenced 2026-09-22 (`../plan/milestones.md`). **4.1 Modeling the data is taught in
-> week 4**, in the same block as the OpenAPI lesson and three weeks before the rest of this
-> module. 4.2–4.7 stay in weeks 7–8 as Milestone 3.
+> **Consume the backend that now exists.** Taught as five ~45–60 minute clinics inside the
+> development phase, each in the week it is applied, and built across sprints 2–4.
 >
-> **Why:** groups used to author `openapi.yaml` in week 4 having never modeled a schema, and
-> this outline said so out loud — *"expect breaking changes here, and say so in advance."*
-> Planned rework is still rework. You now model what exists, then write down how it is
-> exposed. The week-4 lab is the ERD-and-contract clinic, so the modeling is applied within
-> the hour it is taught.
->
-> **This does not eliminate contract v2**, and it should not. A model drawn in week 4 will
-> still be wrong in places. What changes is that the corrections are refinements rather than
-> discoveries, and 4.7's `contract:check` now lands two weeks after the contract instead of
-> five.
->
-> **One lesson joined this module.** M5.4 CI is taught at the end of week 8, not as a
-> week-13 clinic: `lint`, `typecheck`, `test` and `contract:check` all exist by then, and
-> the dev phase needs a merge gate from its first pull request.
+> This is the same exception the calendar already made for deployment and e2e, extended to the
+> wiring lessons for the same reason: teaching students to consume an API eight weeks before
+> they have one to consume guarantees it is re-taught.
 
 ---
 
 ## Lesson order
 
-| # | Lesson | Syllabus LO | Milestone · week | Why it sits here |
+| # | Lesson | LO | Slides | Clinic |
 |---|---|---|---|---|
-| 4.1 | **Modeling a relational schema** | 4.1 | **2 · W4** | Tables, keys, relationships, normalization — from the group's own spec §6. **Taught before the contract**, so the contract describes a model that exists |
-| 4.2 | **Migrations** | 4.1 | **3 · W7** | Schema as versioned, reviewable files, not clicks in a dashboard |
-| 4.3 | **CRUD endpoints over the schema** | 4.2 | **3 · W7** | PostgREST gives you the endpoints; the work is deciding which ones you are entitled to call |
-| 4.4 | **Row Level Security — briefly** | *(no LO)* | **3 · W7** | ~1–2 sessions. The enforcement layer the whole project rests on |
-| 4.5 | **Constraints and triggers — briefly** | *(no LO)* | **3 · W8** | ~1 session. Rules the client cannot be trusted with |
-| 4.6 | **Edge Functions — briefly** | *(no LO)* | **3 · W8** | ~1 session. Where secrets and multi-step writes live |
-| 4.7 | **Implementing the contract** | 4.2 | **3 · W8** | The acceptance criterion: does it satisfy the contract agreed in week 4? |
-| 5.4 | **CI — briefly** *(from Module 5)* | *(no LO)* | **3 · W8** | Moved up from a week-13 clinic. Everything it runs exists by now, and the dev phase needs a merge gate from its first PR |
+| 4.1 | **Auth Context + route protection** | *(no LO)* | 6 | **W11**, ~45 min |
+| 4.2 | **API wrapper, interception, server state** | *(no LO)* | 5 | **W12**, ~60 min |
+| 4.3 | **Data states in practice** | *(no LO)* | 6 | **W12** |
+| 4.4 | **Two-layer validation** | 5.1 | 5 | **W13**, ~60 min |
+| 4.5 | **Integration day** | 5.2 | 4 | **W13** |
+| 4.6 | **End-to-end testing — briefly** | *(no LO)* | 4 | **W14**, ~45 min |
+| 4.7 | **Deployment** | 5.3 | 4 | **W15**, ~45 min |
+| 4.8 | **Codebase assessment** | — | 3 | W16–17, the graded read-through |
+
+**Nothing here carries a CO2 outcome.** 4.1, 4.2 and 4.3 were Module 2's lessons 2.2, 2.4 and
+2.5; all three are enrichment. LO 2.1 and LO 2.2 are both attained by lesson 1.4 in week 3 and
+assessed by A3 in week 4, so moving these three into the development phase moves no outcome.
 
 ---
 
-## 4.4 · Row Level Security — the brief version
+## 4.2 · Server state
 
-**Not covered by any syllabus LO, and the most important of the uncovered topics.**
-Every authorization claim in all three project specs rests on it: *"route guards are
-redirect conveniences only; RLS is what separates the roles."* A student who never
-learns it will write the specs' security model without understanding what enforces it.
+TanStack Query belongs here rather than in its own lesson, because it only makes sense once
+the wrapper exists. The point to land: **server data is not component state.** It is a cache
+of something that lives elsewhere, and it goes stale.
 
-Cover: a policy is a `WHERE` clause the database adds for you · `auth.uid()` ·
-`USING` vs `WITH CHECK` · one policy per role per operation · the service role bypasses
-everything, which is why it never reaches a browser.
+Query keys derive from the contract's `operationId` plus its parameters, which makes
+invalidation-after-mutation mechanical instead of guesswork. Contrast against Context from
+4.1: Context is for state the client owns; Query is for state the server owns. Students who
+blur the two copy fetched data into Context and then hand-sync it — worth showing that failure
+once, on purpose.
 
-The demonstration that makes it land: **open the app's own anon key in a REST client and
-try to read another user's row.** Watch it come back empty — not forbidden, *empty*.
-Then disable the policy and watch the same request return everything. Five minutes,
-and no one forgets which layer is doing the work.
-
-Keep it practical. Skip policy performance tuning and complex `security definer`
-patterns unless a group hits them.
+**Students have read `client.ts` already**, in lesson 2.7. This is where they write one.
 
 ---
 
-## 4.5 · Constraints and triggers — the brief version
+## 4.4 · Two-layer validation
 
-**No LO**, ~1 session. The specs lean on these constantly: capacity enforcement,
-zero-gap adviser continuity, cached rollups (`party_size`, GWA), append-only audit logs.
+- **Client (Zod + React Hook Form)** — stops a wasted round trip and tells the user what is
+  wrong while they are still looking at the field. It is a UX affordance.
+- **Server (RLS, constraints, function checks)** — the actual enforcement, because the client
+  runs on a machine the user controls.
 
-Cover: `CHECK`, `UNIQUE`, `NOT NULL`, foreign keys with the right `ON DELETE` ·
-what a trigger is and when a rollup should be maintained by one · why "the frontend
-validates it" is not an answer to "what stops a bad row."
-
-One worked example from the group's own spec is worth more than five generic ones.
-
----
-
-## 4.6 · Edge Functions — the brief version
-
-**No LO**, ~1 session. Everything needing a secret, a privileged write, or a
-multi-statement transaction lives here.
-
-Cover: what a serverless function is · the decision rule — *plain read or single-row
-write goes to PostgREST; secret, privileged write, or multi-step goes to a function* ·
-`supabase secrets set`, and why a key in a `VITE_` variable is a key you published ·
-returning the same error shape as PostgREST so the client has one error path.
-
-The demonstration: put an API key in a `VITE_` variable, build, and find it in the
-bundle with browser devtools. It reframes "keep secrets on the server" from a rule into
-an observation.
+Demonstrate by bypassing the form entirely and posting a payload with a REST client. If only
+the client validated, the bad row lands. That is the whole lesson, and the reference app's
+`e2e/validation.spec.ts` is the same demonstration written as a test.
 
 ---
 
-## 4.7 · Implementing the contract
+## 4.5 · Integration day — no longer a cliff
 
-The module's real assessment. Groups do not design an API here — they were handed one
-in Module 2, by themselves. The question is whether the implementation satisfies it.
+Under the old sequence this was the first time the frontend met the backend, in week 13, and
+the failure surface was the whole application. Screens are now wired to the real backend one at
+a time from sprint 2, so this session **explains what the contract bounded** with the evidence
+already on the students' own screens.
+
+Anything that breaks is either a contract violation (the backend did not implement what was
+agreed) or a contract error (what was agreed was wrong). Both are specific, findable problems —
+which is the argument for contract-first, made concrete rather than asserted. It is a better
+lesson for having less to fix.
+
+---
+
+## 4.6 · End-to-end testing — the brief version
+
+**No LO**, ~1 session, building on the unit-testing session in 2.10.
+
+Cover: e2e versus unit · Playwright driving a real browser · writing one test for one
+already-written test-case issue · **why e2e tests must run as an authenticated role**, so RLS is
+actually exercised rather than bypassed. The specs' §12 workflow — the Project Manager raises
+test cases as issues, a contributor implements the Playwright test, the PR closes the issue —
+is the deliverable.
+
+---
+
+## 4.7 · Deployment
+
+Cover: a static SPA build versus a server · the catch-all rewrite to `index.html`, and why deep
+links 404 without it · deploying Edge Functions separately from the frontend · environment
+variables per environment · **secrets go to `supabase secrets set`, never to the host's
+environment panel**, since `VITE_` variables are compiled into a public bundle (demonstrated
+already in 3.5).
+
+---
+
+## Laboratory
+
+| Activity | Week |
+|---|---|
+| **A9** Deployed staging build | 15 — **the milestone gate** |
+| **A10** E2E tests from issues | 16 |
+
+---
+
+## Carried forward — everything
 
 ```
-data model              drawn week 4, lesson 4.1
-        ↓
-contract/openapi.yaml   written week 4–5, unchanged unless versioned
-        ↓
-schema + RLS + Edge Functions   lectured weeks 7–8, built in sprints 1–2 (weeks 10–13)
-        ↓
-npm run contract:check   passes, or the milestone is not done
+Milestone 1  UI/UX      design the screen, then build it static
+Milestone 2  Contract   agree the shape of the data
+Milestone 3  Backend    implement that shape
+Milestone 4  Frontend   consume it, validate it, ship it
 ```
 
-**Expect contract v2, and say so in advance** — but expect less of it than before. Since
-2026-09-22 the model is drawn in the same block as the contract (4.1 moved to week 4), so
-the corrections made here are refinements rather than discoveries. Versioning the change
-and reviewing it *is* the method. What would be a failure is silently editing the frontend
-to match a drifted backend.
-
----
-
-## Carried forward
-
-- The contract from Milestone 2 is the specification; `contract:check` is the grader
-- `supabase gen types typescript` is the same principle as `openapi-typescript` in
-  Module 2 — schema is truth, types are downstream
+Read it as one sentence: **you cannot agree a contract for data you have not modelled, you
+cannot implement a contract you have not agreed, and you cannot consume an implementation that
+does not exist.** Each milestone hands the next one the artifact it needs.

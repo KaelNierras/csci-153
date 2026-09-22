@@ -1,18 +1,14 @@
 {
   "number": 2,
-  "title": "Frontend Development",
-  "subtitle": "Components, the API contract, auth context, and a typed request layer \u2014 delivered across three milestones.",
-  "weeks": "3 \u2013 4 \u00b7 clinics 11 \u2013 12",
-  "milestone": "Milestones 1, 2 and 4",
-  "delivery": "Split. 2.0 and 2.1 in week 3 (Milestone 1) \u00b7 2.3 in week 4 (Milestone 2) \u00b7 2.2, 2.4 and 2.5 as clinics in weeks 11\u201312 (Milestone 4).",
-  "outcome": "CO2",
-  "slides": 51,
+  "title": "The Contract",
+  "subtitle": "Model the data, write down how it is exposed, and read every tool that turns the document into types.",
+  "weeks": "4 \u2013 6",
+  "milestone": "Milestone 2 \u00b7 Contract",
+  "delivery": "The hinge of the semester. 2.1 models the data, 2.2 specifies the API over it, and 2.3\u20132.10 tour the stack that generates and consumes the result.",
+  "outcome": "CO3 \u00b7 CO4",
+  "slides": 67,
   "status": "ready",
   "labs": [
-    [
-      "Activity 3 \u2014 Prototype to Components",
-      "lab/activity-3-prototype-to-components.md"
-    ],
     [
       "Activity 4 \u2014 The Contract",
       "lab/activity-4-the-contract.md"

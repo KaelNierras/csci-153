@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CSci 153 — Semester Plan</title>
-<meta name="description" content="All five CSci 153 modules with their topics, each mapped to its syllabus learning outcome, plus the topics no outcome covers.">
+<meta name="description" content="All four CSci 153 modules — UI/UX, Contract, Backend, Frontend — with every topic mapped to its syllabus learning outcome, plus the topics no outcome covers.">
 <link rel="stylesheet" href="../shared/deck.css">
 <style>
 /* Page-specific only. Tokens, .eyebrow, .callout, .table-wrap and the type
@@ -239,8 +239,8 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
     <a class="back" href="../">← All modules</a>
     <span class="eyebrow eyebrow--plain">Visayas State University · Department of Computer Science and Technology</span>
     <h1>CSci 153<br>Semester Plan</h1>
-    <p class="lede">Four milestones — <b>UI/UX → Contract → Backend → Frontend</b> — delivered
-      from five modules across eighteen weeks, with every topic mapped to the
+    <p class="lede">Four modules, each one a build milestone — <b>UI/UX → Contract → Backend →
+      Frontend</b> — across eighteen weeks, with every topic mapped to the
       learning outcome that requires it — and every topic that no outcome requires, but the
       Final Activity Project does.</p>
   </header>
@@ -262,17 +262,17 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
     <!-- ===== Module 1 ===== -->
     <div class="block">
       <div class="weeks">
-        <span class="weeks__n">1–2</span>
+        <span class="weeks__n">1–3</span>
         <span class="weeks__l">Weeks</span>
       </div>
       <article class="mod">
         <div class="mod__head">
           <span class="mod__n">01</span>
           <h2 class="mod__t">UI/UX Design</h2>
-          <span class="status status--ready">Deck built · 49 slides</span>
-          <span class="mod__s">Interface design you can defend, and the agentic workflow that builds it.</span>
-          <span class="mod__co">CO1</span>
-          <span class="mod__ms">Milestone 1</span>
+          <span class="status status--ready">Deck built · 65 slides</span>
+          <span class="mod__s">Interface design you can defend, the repository it lives in, and the static components it becomes.</span>
+          <span class="mod__co">CO1 · CO2</span>
+          <span class="mod__ms">Milestone 1 · UI/UX</span>
         </div>
         <ul class="lessons">
           <li class="lesson lesson--lo">
@@ -290,6 +290,22 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
               <p class="lesson__b">Context → plan → generate → review → iterate, with the 8-point design QA as the review step. Carried into every module after this one.</p>
             </span>
             <span class="lesson__tag"><span class="tag tag--lo">LO 1.2</span></span>
+          </li>
+          <li class="lesson lesson--added">
+            <span class="lesson__n">1.3</span>
+            <span>
+              <span class="lesson__t">Git &amp; GitHub — briefly</span>
+              <p class="lesson__b">One session, practical only. Branch, commit, pull request, one required approval, issues as the work queue. One live merge conflict, resolved.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
+          </li>
+          <li class="lesson lesson--lo">
+            <span class="lesson__n">1.4</span>
+            <span>
+              <span class="lesson__t">Components from mockups</span>
+              <p class="lesson__b">A bridge, not an introduction — React itself was taught in the prior course and is not repeated. Module 1's screen becomes components; tokens become the Tailwind theme, responsive at every breakpoint. Static — no data yet.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 2.1</span> <span class="tag tag--lo">LO 2.2</span></span>
           </li>
           <li class="lesson">
             <span class="lesson__n">LAB</span>
@@ -314,89 +330,37 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
     <!-- ===== Module 2 ===== -->
     <div class="block">
       <div class="weeks">
-        <span class="weeks__n">3 · 4<br>11–12</span>
+        <span class="weeks__n">4–6</span>
         <span class="weeks__l">Weeks</span>
       </div>
       <article class="mod">
         <div class="mod__head">
           <span class="mod__n">02</span>
-          <h2 class="mod__t">Frontend Development</h2>
-          <span class="status">Outlined</span>
-          <span class="mod__s">Components, auth context, the API contract, and a typed request layer.</span>
-          <span class="mod__co">CO2</span>
-          <span class="mod__ms">Milestones 1 · 2 · 4</span>
+          <h2 class="mod__t">The Contract</h2>
+          <span class="status status--ready">Deck built · 67 slides</span>
+          <span class="mod__s">Model the data, write down how it is exposed, and read every tool that turns the document into types.</span>
+          <span class="mod__co">CO3 · CO4</span>
+          <span class="mod__ms">Milestone 2 · Contract</span>
         </div>
         <ul class="lessons">
-          <li class="lesson lesson--added">
-            <span class="lesson__n">2.0</span>
-            <span>
-              <span class="lesson__t">Git &amp; GitHub — briefly</span>
-              <p class="lesson__b">One session, practical only. Branch, commit, pull request, one required approval, issues as the work queue. One live merge conflict, resolved.</p>
-            </span>
-            <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
-          </li>
           <li class="lesson lesson--lo">
             <span class="lesson__n">2.1</span>
             <span>
-              <span class="lesson__t">Components from mockups</span>
-              <p class="lesson__b">A bridge, not an introduction — React itself was taught in the prior course and is not repeated. Module 1's screen becomes components; tokens become the Tailwind theme, responsive at every breakpoint. Static — no data yet.</p>
+              <span class="lesson__t">Modeling a relational schema</span>
+              <p class="lesson__b">Tables, keys, relationships, normalization — worked from the group's own specification, §6.</p>
             </span>
-            <span class="lesson__tag"><span class="tag tag--lo">LO 2.1</span> <span class="tag tag--lo">LO 2.2</span></span>
-          </li>
-          <li class="lesson lesson--lo">
-            <span class="lesson__n">2.2</span>
-            <span>
-              <span class="lesson__t">Auth Context + route protection</span>
-              <p class="lesson__b">First real cross-cutting state. Creates the need for a request layer, which is what makes the next lesson land.</p>
-            </span>
-            <span class="lesson__tag"><span class="tag tag--lo">LO 2.1</span></span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 4.1</span></span>
           </li>
           <li class="lesson lesson--spine">
-            <span class="lesson__n">2.3</span>
+            <span class="lesson__n">2.2</span>
             <span>
               <span class="lesson__t">The API contract — OpenAPI</span>
               <p class="lesson__b">The contract is agreed before either side is built. Taught in the same block as the data model (4.1), so it describes a model that exists rather than one nobody has drawn yet.</p>
             </span>
             <span class="lesson__tag"><span class="tag tag--spine">Contract</span></span>
           </li>
-          <li class="lesson lesson--spine">
-            <span class="lesson__n">2.4</span>
-            <span>
-              <span class="lesson__t">API wrapper, interception, and server state</span>
-              <p class="lesson__b">Built against the spec, not invented. TanStack Query enters here — server data is a cache of something that lives elsewhere, not component state.</p>
-            </span>
-            <span class="lesson__tag"><span class="tag tag--spine">Contract</span></span>
-          </li>
-          <li class="lesson lesson--added">
-            <span class="lesson__n">2.5</span>
-            <span>
-              <span class="lesson__t">Data states in practice</span>
-              <p class="lesson__b">Cashes in Module 1's loading / empty / error work against real latency. Responsiveness was attained in 2.1, where the components were built; this adds the states a network puts them through.</p>
-            </span>
-            <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
-          </li>
-        </ul>
-      </article>
-    </div>
-
-    <!-- ===== Module 3 ===== -->
-    <div class="block">
-      <div class="weeks">
-        <span class="weeks__n">5–6</span>
-        <span class="weeks__l">Weeks</span>
-      </div>
-      <article class="mod">
-        <div class="mod__head">
-          <span class="mod__n">03</span>
-          <h2 class="mod__t">The Stack, End to End</h2>
-          <span class="status">Outlined</span>
-          <span class="mod__s">Every piece of the toolchain, taught by opening the file it lives in — types, modules, JSON, the DOM, and how you know a function works.</span>
-          <span class="mod__co">CO3</span>
-          <span class="mod__ms">Milestone 2</span>
-        </div>
-        <ul class="lessons">
           <li class="lesson lesson--lo">
-            <span class="lesson__n">3.1</span>
+            <span class="lesson__n">2.3</span>
             <span>
               <span class="lesson__t">The stack, named</span>
               <p class="lesson__b">Open <code>package.json</code> and account for every line: what breaks if you remove it, and is it a library you call or a framework that calls you?</p>
@@ -404,7 +368,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
             <span class="lesson__tag"><span class="tag tag--lo">LO 3.7</span></span>
           </li>
           <li class="lesson lesson--lo">
-            <span class="lesson__n">3.2</span>
+            <span class="lesson__n">2.4</span>
             <span>
               <span class="lesson__t">TypeScript in five ideas</span>
               <p class="lesson__b">Annotations, unions, optional and nullable, <code>let</code> vs <code>const</code> — read off the generated <code>schema.d.ts</code>, which nobody wrote by hand.</p>
@@ -412,7 +376,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
             <span class="lesson__tag"><span class="tag tag--lo">LO 3.1, 3.2</span></span>
           </li>
           <li class="lesson lesson--lo">
-            <span class="lesson__n">3.3</span>
+            <span class="lesson__n">2.5</span>
             <span>
               <span class="lesson__t">Arrays, objects, iteration</span>
               <p class="lesson__b"><code>for…of</code> first, then <code>map</code> / <code>filter</code> / <code>reduce</code> on the enrollment data. The idea to land: <code>map</code> in JSX <em>is</em> a loop.</p>
@@ -420,7 +384,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
             <span class="lesson__tag"><span class="tag tag--lo">LO 3.1, 3.3</span></span>
           </li>
           <li class="lesson lesson--lo">
-            <span class="lesson__n">3.4</span>
+            <span class="lesson__n">2.6</span>
             <span>
               <span class="lesson__t">Functions, modules, and where files live</span>
               <p class="lesson__b">Closures explain hooks; <code>import</code>/<code>export</code> explains why <code>lib/</code> differs from <code>hooks/</code> differs from <code>components/</code>.</p>
@@ -428,7 +392,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
             <span class="lesson__tag"><span class="tag tag--lo">LO 3.4</span></span>
           </li>
           <li class="lesson lesson--lo">
-            <span class="lesson__n">3.5</span>
+            <span class="lesson__n">2.7</span>
             <span>
               <span class="lesson__t">JSON, <code>fetch</code>, and <code>await</code></span>
               <p class="lesson__b">A reading of <code>lib/api/client.ts</code> — the client the week-4 contract generated, opened the week after it was generated. Then the two failure modes, live. Reading it, not building it: that is lesson 2.4, in week 12.</p>
@@ -436,7 +400,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
             <span class="lesson__tag"><span class="tag tag--lo">LO 3.5</span></span>
           </li>
           <li class="lesson lesson--lo">
-            <span class="lesson__n">3.6</span>
+            <span class="lesson__n">2.8</span>
             <span>
               <span class="lesson__t">What React does for you</span>
               <p class="lesson__b">The subject list twice in one session — <code>createElement</code> by hand, then React. Fine for five rows; the lesson is the sixth.</p>
@@ -444,7 +408,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
             <span class="lesson__tag"><span class="tag tag--lo">LO 3.6</span></span>
           </li>
           <li class="lesson lesson--lo">
-            <span class="lesson__n">3.7</span>
+            <span class="lesson__n">2.9</span>
             <span>
               <span class="lesson__t">Choosing a library</span>
               <p class="lesson__b">npm, semver, lockfiles — then three candidate packages for one job: downloads, last publish, issues, bundle size, shipped types. Pick one and defend it.</p>
@@ -452,7 +416,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
             <span class="lesson__tag"><span class="tag tag--lo">LO 3.7</span></span>
           </li>
           <li class="lesson lesson--added">
-            <span class="lesson__n">3.8</span>
+            <span class="lesson__n">2.10</span>
             <span>
               <span class="lesson__t">Does it actually work? — briefly</span>
               <p class="lesson__b">Vitest, ~1 session, on the reference app's unit-ceiling function — a pure function with no UI and no database. Watch it fail first. A test that has never failed proves nothing.</p>
@@ -463,6 +427,83 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
       </article>
     </div>
 
+    <!-- ===== Module 3 ===== -->
+    <div class="block">
+      <div class="weeks">
+        <span class="weeks__n">7–8</span>
+        <span class="weeks__l">Weeks</span>
+      </div>
+      <article class="mod">
+        <div class="mod__head">
+          <span class="mod__n">03</span>
+          <h2 class="mod__t">Backend Development</h2>
+          <span class="status status--ready">Deck built · 42 slides</span>
+          <span class="mod__s">Migrations, Row Level Security, the functions that implement the contract, and the pipeline that guards it.</span>
+          <span class="mod__co">CO4</span>
+          <span class="mod__ms">Milestone 3 · Backend</span>
+        </div>
+        <ul class="lessons">
+          <li class="lesson lesson--lo">
+            <span class="lesson__n">3.1</span>
+            <span>
+              <span class="lesson__t">Migrations</span>
+              <p class="lesson__b">Schema as versioned, reviewable files — not clicks in a dashboard nobody can diff.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 4.1</span></span>
+          </li>
+          <li class="lesson lesson--lo">
+            <span class="lesson__n">3.2</span>
+            <span>
+              <span class="lesson__t">CRUD endpoints over the schema</span>
+              <p class="lesson__b">PostgREST gives you the endpoints. The work is deciding which ones you are entitled to call.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 4.2</span></span>
+          </li>
+          <li class="lesson lesson--added">
+            <span class="lesson__n">3.3</span>
+            <span>
+              <span class="lesson__t">Row Level Security — briefly</span>
+              <p class="lesson__b">The most important uncovered topic. Every authorization claim in all three specs rests on it. Demonstration: read another user's row with the anon key, watch it come back <em>empty</em> — then disable the policy and watch everything return.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
+          </li>
+          <li class="lesson lesson--added">
+            <span class="lesson__n">3.4</span>
+            <span>
+              <span class="lesson__t">Constraints and triggers — briefly</span>
+              <p class="lesson__b">Capacity ceilings, zero-gap adviser continuity, cached rollups, append-only audit logs. Why "the frontend validates it" is not an answer to "what stops a bad row."</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
+          </li>
+          <li class="lesson lesson--added">
+            <span class="lesson__n">3.5</span>
+            <span>
+              <span class="lesson__t">Edge Functions — briefly</span>
+              <p class="lesson__b">Where secrets and multi-step writes live. Demonstration: put a key in a <code>VITE_</code> variable, build, and find it in the bundle with devtools.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
+          </li>
+          <li class="lesson lesson--spine">
+            <span class="lesson__n">3.6</span>
+            <span>
+              <span class="lesson__t">Implementing the contract</span>
+              <p class="lesson__b">Groups don't design an API here — they were handed one in week 4, by themselves, on top of a model they drew the same afternoon. <code>contract:check</code> passes, or the milestone isn't done.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--spine">Contract</span></span>
+          </li>
+          <li class="lesson lesson--added">
+            <span class="lesson__n">3.7</span>
+            <span>
+              <span class="lesson__t">CI — briefly</span>
+              <p class="lesson__b">Automation of what they already run by hand. A red build blocks a merge instead of being ignored.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
+          </li>
+        </ul>
+      </article>
+    </div>
+
+
     <div class="exam">
       <div class="weeks"><span class="weeks__n">9</span><span class="weeks__l">Week</span></div>
       <div class="exam__bar">Midterm examination</div>
@@ -471,97 +512,45 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
     <!-- ===== Module 4 ===== -->
     <div class="block">
       <div class="weeks">
-        <span class="weeks__n">4 · 7–8</span>
-        <span class="weeks__l">Weeks</span>
+        <span class="weeks__n">11–15</span>
+        <span class="weeks__l">Clinics</span>
       </div>
       <article class="mod">
         <div class="mod__head">
           <span class="mod__n">04</span>
-          <h2 class="mod__t">Backend Development</h2>
-          <span class="status">Outlined</span>
-          <span class="mod__s">Schema, Row Level Security, and the functions that implement the contract.</span>
-          <span class="mod__co">CO4</span>
-          <span class="mod__ms">Milestones 2 · 3</span>
+          <h2 class="mod__t">Frontend Development</h2>
+          <span class="status status--ready">Deck built · 45 slides</span>
+          <span class="mod__s">Auth, the typed request layer, server state, validation, and a deployed application.</span>
+          <span class="mod__co">CO2 · CO5</span>
+          <span class="mod__ms">Milestone 4 · Frontend</span>
         </div>
         <ul class="lessons">
           <li class="lesson lesson--lo">
             <span class="lesson__n">4.1</span>
             <span>
-              <span class="lesson__t">Modeling a relational schema</span>
-              <p class="lesson__b">Tables, keys, relationships, normalization — worked from the group's own specification, §6.</p>
+              <span class="lesson__t">Auth Context + route protection</span>
+              <p class="lesson__b">First real cross-cutting state. Creates the need for a request layer, which is what makes the next lesson land.</p>
             </span>
-            <span class="lesson__tag"><span class="tag tag--lo">LO 4.1</span></span>
-          </li>
-          <li class="lesson lesson--lo">
-            <span class="lesson__n">4.2</span>
-            <span>
-              <span class="lesson__t">Migrations</span>
-              <p class="lesson__b">Schema as versioned, reviewable files — not clicks in a dashboard nobody can diff.</p>
-            </span>
-            <span class="lesson__tag"><span class="tag tag--lo">LO 4.1</span></span>
-          </li>
-          <li class="lesson lesson--lo">
-            <span class="lesson__n">4.3</span>
-            <span>
-              <span class="lesson__t">CRUD endpoints over the schema</span>
-              <p class="lesson__b">PostgREST gives you the endpoints. The work is deciding which ones you are entitled to call.</p>
-            </span>
-            <span class="lesson__tag"><span class="tag tag--lo">LO 4.2</span></span>
-          </li>
-          <li class="lesson lesson--added">
-            <span class="lesson__n">4.4</span>
-            <span>
-              <span class="lesson__t">Row Level Security — briefly</span>
-              <p class="lesson__b">The most important uncovered topic. Every authorization claim in all three specs rests on it. Demonstration: read another user's row with the anon key, watch it come back <em>empty</em> — then disable the policy and watch everything return.</p>
-            </span>
-            <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
-          </li>
-          <li class="lesson lesson--added">
-            <span class="lesson__n">4.5</span>
-            <span>
-              <span class="lesson__t">Constraints and triggers — briefly</span>
-              <p class="lesson__b">Capacity ceilings, zero-gap adviser continuity, cached rollups, append-only audit logs. Why "the frontend validates it" is not an answer to "what stops a bad row."</p>
-            </span>
-            <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
-          </li>
-          <li class="lesson lesson--added">
-            <span class="lesson__n">4.6</span>
-            <span>
-              <span class="lesson__t">Edge Functions — briefly</span>
-              <p class="lesson__b">Where secrets and multi-step writes live. Demonstration: put a key in a <code>VITE_</code> variable, build, and find it in the bundle with devtools.</p>
-            </span>
-            <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 2.1</span></span>
           </li>
           <li class="lesson lesson--spine">
-            <span class="lesson__n">4.7</span>
+            <span class="lesson__n">4.2</span>
             <span>
-              <span class="lesson__t">Implementing the contract</span>
-              <p class="lesson__b">Groups don't design an API here — they were handed one in week 4, by themselves, on top of a model they drew the same afternoon. <code>contract:check</code> passes, or the milestone isn't done.</p>
+              <span class="lesson__t">API wrapper, interception, and server state</span>
+              <p class="lesson__b">Built against the spec, not invented. TanStack Query enters here — server data is a cache of something that lives elsewhere, not component state.</p>
             </span>
             <span class="lesson__tag"><span class="tag tag--spine">Contract</span></span>
           </li>
-        </ul>
-      </article>
-    </div>
-
-    <!-- ===== Module 5 ===== -->
-    <div class="block">
-      <div class="weeks">
-        <span class="weeks__n">8<br>13–15</span>
-        <span class="weeks__l">Weeks</span>
-      </div>
-      <article class="mod">
-        <div class="mod__head">
-          <span class="mod__n">05</span>
-          <h2 class="mod__t">Web Application Integration</h2>
-          <span class="status">Outlined</span>
-          <span class="mod__s">Validation, integration, CI, and a deployed application.</span>
-          <span class="mod__co">CO5</span>
-          <span class="mod__ms">Milestones 3 · 4</span>
-        </div>
-        <ul class="lessons">
+          <li class="lesson lesson--added">
+            <span class="lesson__n">4.3</span>
+            <span>
+              <span class="lesson__t">Data states in practice</span>
+              <p class="lesson__b">Cashes in Module 1's loading / empty / error work against real latency. Responsiveness was attained in 2.1, where the components were built; this adds the states a network puts them through.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
+          </li>
           <li class="lesson lesson--lo">
-            <span class="lesson__n">5.1</span>
+            <span class="lesson__n">4.4</span>
             <span>
               <span class="lesson__t">Two-layer validation</span>
               <p class="lesson__b">Zod on the form is a courtesy; RLS and function checks are the enforcement. Demonstrated by bypassing the form entirely with a REST client.</p>
@@ -569,7 +558,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
             <span class="lesson__tag"><span class="tag tag--lo">LO 5.1</span></span>
           </li>
           <li class="lesson lesson--spine">
-            <span class="lesson__n">5.2</span>
+            <span class="lesson__n">4.5</span>
             <span>
               <span class="lesson__t">Integration day</span>
               <p class="lesson__b">Swap the mock for the real base URL. Anything that breaks is either a contract violation or a contract error — both specific, findable problems.</p>
@@ -577,23 +566,15 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
             <span class="lesson__tag"><span class="tag tag--spine">LO 5.2</span></span>
           </li>
           <li class="lesson lesson--added">
-            <span class="lesson__n">5.3</span>
+            <span class="lesson__n">4.6</span>
             <span>
               <span class="lesson__t">End-to-end testing — briefly</span>
               <p class="lesson__b">Playwright, ~1 session, building on Module 3's Vitest session. Tests must run as an authenticated role so RLS is exercised rather than bypassed.</p>
             </span>
             <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
           </li>
-          <li class="lesson lesson--added">
-            <span class="lesson__n">5.4</span>
-            <span>
-              <span class="lesson__t">CI — briefly</span>
-              <p class="lesson__b">Automation of what they already run by hand. A red build blocks a merge instead of being ignored.</p>
-            </span>
-            <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
-          </li>
           <li class="lesson lesson--lo">
-            <span class="lesson__n">5.5</span>
+            <span class="lesson__n">4.7</span>
             <span>
               <span class="lesson__t">Deployment</span>
               <p class="lesson__b">Static build, the catch-all rewrite that keeps deep links alive, functions deployed separately — and secrets that never touch the host's environment panel.</p>
@@ -601,7 +582,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
             <span class="lesson__tag"><span class="tag tag--lo">LO 5.3</span></span>
           </li>
           <li class="lesson">
-            <span class="lesson__n">5.6</span>
+            <span class="lesson__n">4.8</span>
             <span>
               <span class="lesson__t">Codebase assessment</span>
               <p class="lesson__b">The graded read-through of the repository, alongside the Final Web Project itself.</p>
@@ -666,26 +647,26 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
   <section class="spine">
     <h2>One document, carried across three modules</h2>
     <p style="color:var(--text-2);font-size:0.92rem;max-width:62ch">This is what makes the
-      course hold together rather than being five unrelated units. The same OpenAPI file is
-      written once and returned to twice.</p>
+      course hold together rather than being four unrelated units. The same OpenAPI file is
+      agreed once, implemented once, and consumed once — in that order.</p>
     <div class="spine__flow">
       <table>
         <thead>
           <tr><th style="width:6rem">Module</th><th style="width:8rem">Role</th><th>What happens to it</th></tr>
         </thead>
         <tbody>
-          <tr><td class="num">02</td><td><b>Consume</b></td><td>Typed wrapper and screens, running against a mock. The implementation does not exist yet.</td></tr>
-          <tr><td class="num">04</td><td><b>Implement</b></td><td>Schema, policies, and functions that satisfy the same document.</td></tr>
-          <tr><td class="num">05</td><td><b>Integrate</b></td><td>Swap the mock for the real base URL. Nothing else changes.</td></tr>
+          <tr><td class="num">02</td><td><b>Agree</b></td><td>A data model first, then the document that exposes it, then types generated from it. Screens run against a mock of it.</td></tr>
+          <tr><td class="num">03</td><td><b>Implement</b></td><td>Schema, policies, and functions that satisfy the same document. <code>contract:check</code> is the grader.</td></tr>
+          <tr><td class="num">04</td><td><b>Consume</b></td><td>The typed wrapper, then the real base URL. If the backend satisfies the contract, nothing else changes.</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="note"><b>Known tension, stated in advance.</b> The contract is authored in weeks 4–5,
-      but schema modeling isn't taught until week 7. Groups will commit to request and response
-      shapes before they have learned to model the data behind them, so <b>breaking changes in
-      sprint 1 are expected rather than exceptional</b> — versioning the change and reviewing it is the
-      method, not a failure of it. What would be a failure is silently editing the frontend to
-      match a drifted backend.</p>
+    <p class="note"><b>The tension this order removed.</b> Groups used to author the contract in
+      week 4 and not learn schema modelling until week 7 — committing to request and response
+      shapes before they could model the data behind them. Modelling is now lesson 2.1, taught in
+      the same block as the contract. <b>Contract v2 in sprint 1 is still expected</b>, but as
+      refinement rather than discovery. What would be a failure is silently editing the frontend
+      to match a drifted backend.</p>
   </section>
 
   <!-- ===== added coverage ===== -->
@@ -700,27 +681,27 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
           <tr><th style="width:16rem">Topic</th><th style="width:7rem">Home</th><th style="width:8rem">Size</th><th>Why it can't be skipped</th></tr>
         </thead>
         <tbody>
-          <tr><td><b>Git &amp; GitHub</b></td><td class="num">2.0</td><td class="num">~1 session</td><td>The project is group work in a shared repository.</td></tr>
-          <tr><td><b>Server state — TanStack Query</b></td><td class="num">2.4</td><td class="num">Part of a lesson</td><td>Only makes sense once the request wrapper exists.</td></tr>
-          <tr><td><b>Unit testing — Vitest</b></td><td class="num">3.8</td><td class="num">~1 session</td><td>CI runs it; test-cases-as-issues is a graded workflow.</td></tr>
-          <tr><td><b>Row Level Security</b></td><td class="num">4.4</td><td class="num">~1–2 sessions</td><td>Every authorization claim in all three specs rests on it.</td></tr>
-          <tr><td><b>Constraints &amp; triggers</b></td><td class="num">4.5</td><td class="num">~1 session</td><td>Capacity, continuity, rollups, and audit logs are all trigger-based.</td></tr>
-          <tr><td><b>Edge Functions</b></td><td class="num">4.6</td><td class="num">~1 session</td><td>Every secret and multi-step write lives there.</td></tr>
-          <tr><td><b>End-to-end testing — Playwright</b></td><td class="num">5.3</td><td class="num">~1 session</td><td>The specs' §12 workflow is a deliverable.</td></tr>
-          <tr><td><b>CI — GitHub Actions</b></td><td class="num">5.4</td><td class="num">~1 session</td><td><code>contract:check</code> is what catches drift between the halves.</td></tr>
+          <tr><td><b>Git &amp; GitHub</b></td><td class="num">1.3</td><td class="num">~1 session</td><td>The project is group work in a shared repository.</td></tr>
+          <tr><td><b>Server state — TanStack Query</b></td><td class="num">4.2</td><td class="num">Part of a lesson</td><td>Only makes sense once the request wrapper exists.</td></tr>
+          <tr><td><b>Unit testing — Vitest</b></td><td class="num">2.10</td><td class="num">~1 session</td><td>CI runs it; test-cases-as-issues is a graded workflow.</td></tr>
+          <tr><td><b>Row Level Security</b></td><td class="num">3.3</td><td class="num">~1–2 sessions</td><td>Every authorization claim in all three specs rests on it.</td></tr>
+          <tr><td><b>Constraints &amp; triggers</b></td><td class="num">3.4</td><td class="num">~1 session</td><td>Capacity, continuity, rollups, and audit logs are all trigger-based.</td></tr>
+          <tr><td><b>Edge Functions</b></td><td class="num">3.5</td><td class="num">~1 session</td><td>Every secret and multi-step write lives there.</td></tr>
+          <tr><td><b>End-to-end testing — Playwright</b></td><td class="num">4.6</td><td class="num">~1 session</td><td>The specs' §12 workflow is a deliverable.</td></tr>
+          <tr><td><b>CI — GitHub Actions</b></td><td class="num">3.7</td><td class="num">~1 session</td><td><code>contract:check</code> is what catches drift between the halves.</td></tr>
         </tbody>
       </table>
     </div>
     <p class="note note--violet">React is compressed for the same reason, in the other direction:
-      it was taught in the prior course, so Module 2 treats it as prior knowledge and spends its
-      time on structure rather than syntax. <b>If React is genuinely rusty, that is a week-3
-      self-study gap</b> — say so early rather than discovering it in week 5.</p>
+      it was taught in the prior course, so lesson 1.4 treats it as prior knowledge and spends its
+      time on structure rather than syntax. <b>If React is genuinely rusty, that is a week-2
+      self-study gap</b> — say so early rather than discovering it in week 3.</p>
   </section>
 
   <footer class="foot">
     <span>First semester 2026–2027</span>
     <span>·</span>
-    <span>Module 1 deck built; modules 2–5 outlined in <code>module-N/outline.md</code></span>
+    <span>Four decks built · 219 slides · outlines in <code>module-N/outline.md</code></span>
     <span>·</span>
     <span>Final Activity Project is group work — one system per group</span>
   </footer>

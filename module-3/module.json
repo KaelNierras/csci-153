@@ -1,12 +1,12 @@
 {
   "number": 3,
-  "title": "The Stack, End to End",
-  "subtitle": "Every piece of the toolchain, taught by opening the file it lives in \u2014 types, modules, JSON, the DOM, and how you know a function works.",
-  "weeks": "5 \u2013 6",
-  "milestone": "Milestone 2 \u00b7 Contract",
-  "delivery": "Whole, in weeks 5\u20136. Its three anchor files \u2014 package.json, schema.d.ts, client.ts \u2014 are contract artifacts, which is why it sits here.",
-  "outcome": "CO3",
-  "slides": 49,
+  "title": "Backend Development",
+  "subtitle": "Migrations, Row Level Security, the functions that implement the contract, and the pipeline that guards it.",
+  "weeks": "7 \u2013 8",
+  "milestone": "Milestone 3 \u00b7 Backend",
+  "delivery": "Implement the document agreed in Module 2. Built in sprints 1\u20132; the gate is contract:check passing and another group being unable to read your rows.",
+  "outcome": "CO4",
+  "slides": 42,
   "status": "ready",
   "labs": []
 }

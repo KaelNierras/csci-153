@@ -1,13 +1,13 @@
 # Semester calendar — 8 weeks of lecture, 8 weeks of build
 
-**Decided 2026-08-19, resequenced 2026-09-22.** All five modules are lectured in
+**Decided 2026-08-19, re-cut 2026-09-22.** All four modules are lectured in
 **weeks 1–8**. Weeks **10–17** carry no new lectures except five short clinics: they are
 supervised development of the Final Web Project, run as four two-week sprints.
 
-Since 2026-09-22 the course is sequenced as **four milestones** — UI/UX, Contract,
-Backend, Frontend — in the order a group actually builds a system. The milestones are the
-spine; the modules are the material they draw on. `milestones.md` is the authoritative
-document for that structure and the OBE argument behind it. This file is the week grid.
+Since 2026-09-22 the course is **four modules, each one a milestone** — UI/UX, Contract,
+Backend, Frontend — in the order a group actually builds a system. The five old decks were
+re-cut into these four. `milestones.md` is the authoritative document for that structure,
+the old→new lesson map, and the OBE argument behind it. This file is the week grid.
 
 ---
 
@@ -29,33 +29,35 @@ What is *not* fixed is the week column against each module. Reading it as **"whe
 outcome is attained and assessed"** rather than "when it is lectured" is what makes this
 restructure defensible: every LO, every activity, and both examinations stay exactly where
 the syllabus puts them. Only the lecture input moves — and under the milestone sequence,
-**nothing carrying an LO moves later.** CO2 and the first half of CO4 move *earlier*. The
-full outcome-by-outcome table is in `milestones.md`.
+**nothing carrying an LO moves later.** CO2 and the first half of CO4 move *earlier*.
+
+**Module numbers are no longer CO numbers.** Modules 1 and 2 each carry two COs. The full
+outcome-by-outcome table is in `milestones.md` and is repeated in every module outline.
 
 ### The arithmetic
 
 | | Before | After |
 |---|---|---|
 | Lecture input | 15 weeks, spread thin | **8 weeks, 16 lecture hours** |
-| Supervised build | folded into modules 4–5 | **8 weeks, 40 contact hours** |
+| Supervised build | folded into the old modules 4–5 | **8 weeks, 40 contact hours** |
 | Weeks with new material | 15 | 8, plus five clinics |
 
 ---
 
-## The compression
+## The re-cut
 
-| Module | Was | Now lectured | Milestone it serves |
+Five decks became four. Nothing was discarded except the old Module 2's orientation and
+closing slides, which belonged to a module that no longer exists.
+
+| New module | Weeks | Slides | Built from |
 |---|---|---|---|
-| **1 · UI/UX** | 2–3 | **1–2** | 1 |
-| **2 · Frontend** | 3–5 | **split: W3, W4, clinics W11–12** | 1 (2.0, 2.1) · 2 (2.3) · 4 (2.2, 2.4, 2.5) |
-| **3 · The Stack** | 5–8 | **5–6** | 2 |
-| **4 · Backend** | 10–12 | **W4 (4.1), W7–8 (4.2–4.7)** | 2 (4.1) · 3 (the rest) |
-| **5 · Integration** | 13–17 | **W8 (5.4), clinics W13–15** | 3 (5.4) · 4 (the rest) |
+| **1 · UI/UX** | **1–3** | 65 | old 1.1, 1.2 · old 2.0 → **1.3** · old 2.1 → **1.4** |
+| **2 · The Contract** | **4–6** | 67 | old 4.1 → **2.1** · old 2.3 → **2.2** · old 3.1–3.8 → **2.3–2.10** |
+| **3 · Backend** | **7–8** | 42 | old 4.2–4.7 → **3.1–3.6** · old 5.4 → **3.7** |
+| **4 · Frontend** | **clinics 11–15** | 45 | old 2.2, 2.4, 2.5 → **4.1–4.3** · old 5.1, 5.2, 5.3, 5.5, 5.6 → **4.4–4.8** |
 
-**Module 2 is delivered in three pieces**, which is the one genuinely awkward consequence
-of the resequencing. The deck is not split — you open it three times and run one section
-each time. Which lessons belong to which milestone is in `milestones.md` and repeated at
-the head of `module-2/outline.md`.
+The full old→new lesson map is in `milestones.md`. Lesson numbers in the decks, the
+activity briefs and the reference app's comments all use the **new** numbering.
 
 ---
 
@@ -64,43 +66,43 @@ the head of `module-2/outline.md`.
 Two hours of lecture, three of laboratory. The lab column is where the activities are
 actually done, with you in the room.
 
-| Wk | Milestone | Lecture (2h) | Laboratory (3h) | Due |
+| Wk | Module | Lecture (2h) | Laboratory (3h) | Due |
 |---|---|---|---|---|
-| **1** | **1 · UI/UX** | Orientation · M1.1 Why interface design | **Groups form, systems assigned.** Figma, tokens | — |
-| **2** | 1 | M1.2 States, copy, the 8-point QA, the agentic build | Activity 1 clinic | **A1** UI audit *(individual)* |
-| **3** | 1 | M2.0 Git & GitHub · M2.1 Components from mockups | Repo, branches, first PRs | **A2** Brief → prototype |
-| **4** | **2 · Contract** | M4.1 Modeling the data · M2.3 The API contract (OpenAPI) | ERD and contract authoring clinic | **A3** Prototype → components *(individual)* · **M1 gate** |
-| **5** | 2 | M3.1 The stack, named · M3.2 TypeScript in five ideas · M3.5 JSON, `fetch`, `await` | Generate the types; screens on the Prism mock | **A4** The contract *(group)* |
-| **6** | 2 | M3.3 Iteration · M3.4 Modules and file layout · M3.6 What React does for you · M3.7 Choosing a library · M3.8 Vitest | Code reading · first unit tests | **A5** `package.json` accounting · **A6** First unit tests · **M2 gate** |
-| **7** | **3 · Backend** | M4.2 Migrations · M4.3 CRUD over the schema · M4.4 Row Level Security | Migration clinic on the group's own model | **A7** Schema + migrations |
-| **8** | 3 | M4.5 Constraints & triggers · M4.6 Edge Functions · M4.7 Implementing the contract · M5.4 CI | Sprint 1 planning: issues, milestones, board, CI wired | **A8** RLS policies |
-| **9** | — | **MIDTERM EXAMINATION** — covers all five modules | | |
+| **1** | **1 · UI/UX** | Orientation · 1.1 Why interface design | **Groups form, systems assigned.** Figma, tokens | — |
+| **2** | 1 | 1.2 States, copy, the 8-point QA, the agentic build | Activity 1 clinic | **A1** UI audit *(individual)* |
+| **3** | 1 | 1.3 Git & GitHub · 1.4 Components from mockups | Repo, branches, first PRs | **A2** Brief → prototype |
+| **4** | **2 · Contract** | 2.1 Modelling the data · 2.2 The API contract (OpenAPI) | ERD and contract authoring clinic | **A3** Prototype → components *(individual)* · **M1 gate** |
+| **5** | 2 | 2.3 The stack, named · 2.4 TypeScript in five ideas · 2.5 Arrays, objects, iteration | Generate the types; screens on the Prism mock | **A4** The contract *(group)* |
+| **6** | 2 | 2.6 Functions and modules · 2.7 JSON, `fetch`, `await` · 2.8 What React does for you · 2.9 Choosing a library · 2.10 Does it work? | Code reading · first unit tests | **A5** `package.json` accounting · **A6** First unit tests · **M2 gate** |
+| **7** | **3 · Backend** | 3.1 Migrations · 3.2 CRUD over the schema · 3.3 Row Level Security | Migration clinic on the group's own model | **A7** Schema + migrations |
+| **8** | 3 | 3.4 Constraints & triggers · 3.5 Edge Functions · 3.6 Implementing the contract · 3.7 CI | Sprint 1 planning: issues, milestones, board, CI wired | **A8** RLS policies |
+| **9** | — | **MIDTERM EXAMINATION** — covers all four modules | | |
 
 **Week 4 is the hinge.** Two dense inputs in one block: the data model and the contract
-that exposes it. The normalisation stepper (4.1) and the spec explorer (2.3) are both
+that exposes it. The normalisation stepper (2.1) and the spec explorer (2.2) are both
 interactive, and the three lab hours that afternoon are the ERD-and-contract clinic — so
-the modeling is applied within the hour it is taught, on the group's own system.
+the modelling is applied within the hour it is taught, on the group's own system.
 
-**Week 6 and week 8 are the dense ones.** Five short inputs each, one live demonstration
-apiece and no exercises. The demonstrations are already chosen: the DOM operation counter
-(3.6), the test ceiling broken on purpose (3.8), the anon key reading another user's row
-(4.4), and the `VITE_` secret found in the bundle (4.6).
+**Week 6 and week 8 are the dense ones.** Five and four short inputs, one live
+demonstration apiece and no exercises. The demonstrations are already chosen: the DOM
+operation counter (2.8), the test ceiling broken on purpose (2.10), the anon key reading
+another user's row (3.3), and the `VITE_` secret found in the bundle (3.5).
 
 ### The five clinics
 
 Five topics are **not** taught in weeks 1–8. They are taught in the week they are applied,
 as one input and one demo, straight into using it that afternoon.
 
-| Wk | Clinic | Milestone | ~min | Why not week 8 |
-|---|---|---|---|---|
-| **11** | M2.2 Auth Context + route protection | 4 | 45 | Needs a real session to protect a route with |
-| **12** | M2.4 API wrapper & server state · M2.5 Data states | 4 | 60 | Needs endpoints to wrap and latency to show |
-| **13** | M5.1 Two-layer validation · M5.2 Integration day | 4 | 60 | Needs both layers to exist before you can bypass one |
-| **14** | M5.3 End-to-end testing | 4 | 45 | Needs a working app to drive |
-| **15** | M5.5 Deployment | 4 | 45 | Teaching deployment seven weeks before anyone deploys guarantees it is forgotten |
+| Wk | Clinic | ~min | Why not week 8 |
+|---|---|---|---|
+| **11** | 4.1 Auth Context + route protection | 45 | Needs a real session to protect a route with |
+| **12** | 4.2 API wrapper & server state · 4.3 Data states | 60 | Needs endpoints to wrap and latency to show |
+| **13** | 4.4 Two-layer validation · 4.5 Integration day | 60 | Needs both layers to exist before you can bypass one |
+| **14** | 4.6 End-to-end testing | 45 | Needs a working app to drive |
+| **15** | 4.7 Deployment | 45 | Teaching deployment seven weeks before anyone deploys guarantees it is forgotten |
 
-**M5.4 CI moved the other way** — out of the clinics and into week 8. CI runs `lint`,
-`typecheck`, `test` and `contract:check`, and all four exist by week 8. Wiring it at the
+**CI moved the other way** — out of the clinics and into week 8, as lesson 3.7. It runs
+`lint`, `typecheck`, `test` and `contract:check`, and all four exist by week 8. Wiring it at the
 start of the dev phase rather than in week 13 means every sprint is gated from its first
 pull request instead of its sixth.
 
@@ -112,14 +114,14 @@ Four two-week sprints. No new material except the five clinics.
 
 | Sprint | Wks | Milestone | Goal | Gate at the end |
 |---|---|---|---|---|
-| **1** | 10–11 | **3** | Schema, migrations, and RLS for the group's own system. Contract v2 versioned where week-4 decisions were wrong. *Clinic: auth context (11)* | Another group's account cannot read your rows. Demonstrated, not claimed |
-| **2** | 12–13 | 3 → **4** | CRUD endpoints and Edge Functions. First screens wired to the real backend. *Clinics: wrapper & server state (12), validation & integration (13)* | `contract:check` passes. CI is green and required before merge |
-| **3** | 14–15 | 4 | Remaining screens, validation on both layers, staging deployment. *Clinics: e2e (14), deployment (15)* | The app is reachable at a URL by someone not in the group. **A9** |
+| **1** | 10–11 | **3** | Schema, migrations, and RLS for the group's own system. Contract v2 versioned where week-4 decisions were wrong. *Clinic: 4.1 auth context (11)* | Another group's account cannot read your rows. Demonstrated, not claimed |
+| **2** | 12–13 | 3 → **4** | CRUD endpoints and Edge Functions. First screens wired to the real backend. *Clinics: 4.2/4.3 (12), 4.4/4.5 (13)* | `contract:check` passes. CI is green and required before merge |
+| **3** | 14–15 | 4 | Remaining screens, validation on both layers, staging deployment. *Clinics: 4.6 e2e (14), 4.7 deployment (15)* | The app is reachable at a URL by someone not in the group. **A9** |
 | **4** | 16–17 | 4 | Hardening, test-cases-as-issues cleared, 12-point QA on every screen | **A10** · Codebase Assessment · Final Web Project + demos |
 
 **Integration is now incremental.** Under the old order the frontend met the backend for
 the first time in week 13 and the failure surface was the whole application. Now screens
-are wired one at a time from sprint 2, and M5.2 Integration Day is the session that
+are wired one at a time from sprint 2, and lesson 4.5 Integration Day is the session that
 *explains* what the contract bounded — with the evidence already on their own screens.
 
 ### The weekly ritual
@@ -146,7 +148,7 @@ heard, which is the best possible condition for it.
 
 Unchanged by the resequencing. All ten activities keep their original weeks.
 
-| Assessment | Weight | When | Milestone |
+| Assessment | Weight | When | Module |
 |---|---|---|---|
 | A1 UI audit *(individual)* | 3% | W2 | 1 |
 | A2 Brief → prototype | 3% | W3 | 1 |
@@ -172,7 +174,7 @@ which is the tightest deadline this restructure creates.
 |---|---|
 | **No slack.** One suspended week — and the syllabus names force majeure explicitly — and the lecture block breaks. | The week 6 and week 8 labs are the designated catch-up capacity. Beyond that, overflow goes into sprint 1 and sprint 4 loses hardening time, in that order. |
 | **Groups must form in week 1**, not before week 3. Activity 2 designs a screen of the system the group will ship. | Assign systems in the orientation session. It is a five-minute decision that unblocks four weeks. |
-| **Module 2 is delivered in three pieces across fifteen weeks.** | Each milestone's section of `milestones.md` names the exact lessons it runs, and `module-2/outline.md` repeats the split at its head. |
+| **Module numbers no longer equal CO numbers**, and Modules 1 and 2 each carry two. | The CO table is in `milestones.md` and in every module outline's header; each lesson still carries its own LO tag inside the deck. |
 | **Contract-first is argued, not demonstrated.** The backend is now two weeks behind the contract, not five, so a group could skip the mock and wait. | The Milestone 2 gate is running screens on the Prism mock. A group that waited has nothing to show in week 6. |
 | **A 2–3 week gap** between learning schema/RLS (W7–8) and applying it (W10–11). | The midterm in week 9 sits in that gap and is the recall event. Sprint 1's gate is a demonstration, not a claim, so nobody can defer understanding. |
 | **Front-loaded cognitive load.** Five modules in eight weeks is genuinely hard on a second-year cohort. | The lab hour every week is applied practice on their own system, not exercises. The milestone sequence helps here: every week's lab feeds the same artifact rather than a new one. |
@@ -182,11 +184,12 @@ which is the tightest deadline this restructure creates.
 
 ## Knock-on changes
 
-- [x] `plan/milestones.md` — the milestone spine and the OBE argument
-- [x] `module-N/outline.md` milestone banners and week headers
-- [x] `module-N/module.json` — `milestone` and `taught` fields
-- [x] `plan/index.html` — milestone banners; LO 2.2 retagged from lesson 2.5 to lesson 2.1
-- [x] `index.html` landing page — decks grouped by milestone
+- [x] `plan/milestones.md` — the milestone spine, the old→new lesson map, the OBE argument
+- [x] The five decks re-cut into four; every cross-reference inside the slides remapped
+- [x] `module-N/outline.md` rewritten against the new composition
+- [x] `module-N/module.json` — new titles, weeks, milestones, outcomes, slide counts
+- [x] `plan/index.html` — rebuilt for four modules and the new lesson numbering
+- [x] `index.html` landing page
 - [x] `reference-app/BUILD-PLAN.md` — rewritten against the app as actually built
 - [ ] **Activities 5–10 need writing** — A5–A8 by week 6
 - [x] Assessment weights reconciled with the syllabus table — 3% per activity, Codebase

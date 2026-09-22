@@ -1,8 +1,471 @@
 /* ============================================================
-   CSci 153 — Module 3 widgets
-   The Stack, End to End: dependency auditor, iteration
-   translator, await timeline, DOM-vs-React op counter,
-   and a test runner that can be broken on purpose.
+   CSci 153 — Module 3 widgets · Backend
+
+   Assembled from the widget sets of the pre-milestone modules
+   4, 5, because this deck's slides came from them.
+
+   Every widget is a self-contained IIFE that bails out quietly
+   if its mount point is missing, so carrying a few unused ones
+   costs bytes and nothing else.
+   ============================================================ */
+
+/* ==== from the old module-4.js ==== */
+/* ============================================================
+   CSci 153 — Module 4 widgets
+   Backend Development: normalisation stepper, RLS simulator,
+   constraint tester, and a contract check runner.
+
+   Every widget bails out quietly if its mount point is
+   missing, so a slide can be cut without breaking the deck.
+   ============================================================ */
+(function () {
+  'use strict';
+
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+
+  function el(tag, cls, html) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (html !== undefined) n.innerHTML = html;
+    return n;
+  }
+
+  function table(cap, cols, rows) {
+    var h = '<div class="norm__cap">' + cap + '</div><div class="norm__grid"><table class="norm__t"><thead><tr>';
+    cols.forEach(function (c) { h += '<th>' + c + '</th>'; });
+    h += '</tr></thead><tbody>';
+    rows.forEach(function (r) {
+      h += '<tr>';
+      r.forEach(function (cell) {
+        var cls = '';
+        var v = cell;
+        if (cell && typeof cell === 'object') { cls = ' class="' + cell.cls + '"'; v = cell.v; }
+        h += '<td' + cls + '>' + v + '</td>';
+      });
+      h += '</tr>';
+    });
+    return h + '</tbody></table></div>';
+  }
+
+  /* ============================================================
+     1 · Normalisation stepper
+     One spreadsheet-shaped table, pulled apart in three steps.
+     ============================================================ */
+  (function norm() {
+    var root = $('#norm');
+    if (!root) return;
+
+    var B = function (v) { return { cls: 'bad', v: v }; };
+    var K = function (v) { return { cls: 'key', v: v }; };
+
+    var STEPS = [
+      {
+        label: 'One table',
+        why: '<b>Every fact is stored more than once.</b> Maria&rsquo;s name appears three times, and CSci 153&rsquo;s unit count appears twice. Change either and you have to find every copy.',
+        tables: [{
+          cap: 'enrollments',
+          cols: ['student_no', 'name', 'subject', 'units', 'teacher'],
+          rows: [
+            ['20-1-01234', B('Maria Cruz'), 'CSci 153', B('3'), 'Prof. Reyes'],
+            ['20-1-01234', B('Maria Cruz'), 'CSci 141', '3', 'Prof. Lim'],
+            ['20-1-01234', B('Maria Cruz'), 'Math 111', '5', 'Prof. Diaz'],
+            ['20-1-05678', 'Jose Ramos', 'CSci 153', B('3'), 'Prof. Reyes'],
+            ['20-1-05678', 'Jose Ramos', 'PE 4', '2', 'Coach Uy']
+          ]
+        }]
+      },
+      {
+        label: 'Pull out students',
+        why: 'A student&rsquo;s name now lives in exactly one row. <b>Renaming Maria is a one-row update</b>, and it is impossible for the database to hold two different spellings of her name.',
+        tables: [
+          {
+            cap: 'students',
+            cols: ['id', 'student_no', 'name'],
+            rows: [
+              [K('s1'), '20-1-01234', 'Maria Cruz'],
+              [K('s2'), '20-1-05678', 'Jose Ramos']
+            ]
+          },
+          {
+            cap: 'enrollments · student_id replaces the repeated name',
+            cols: ['student_id', 'subject', 'units', 'teacher'],
+            rows: [
+              [K('s1'), 'CSci 153', B('3'), 'Prof. Reyes'],
+              [K('s1'), 'CSci 141', '3', 'Prof. Lim'],
+              [K('s1'), 'Math 111', '5', 'Prof. Diaz'],
+              [K('s2'), 'CSci 153', B('3'), 'Prof. Reyes'],
+              [K('s2'), 'PE 4', '2', 'Coach Uy']
+            ]
+          }
+        ]
+      },
+      {
+        label: 'Pull out subjects',
+        why: 'Units and teacher are facts about the <em>subject</em>, not about the enrollment. Now a subject can exist <b>before anyone enrolls in it</b> — which the first version could not represent at all.',
+        tables: [
+          {
+            cap: 'subjects',
+            cols: ['id', 'code', 'units', 'teacher'],
+            rows: [
+              [K('u1'), 'CSci 153', '3', 'Prof. Reyes'],
+              [K('u2'), 'CSci 141', '3', 'Prof. Lim'],
+              [K('u3'), 'Math 111', '5', 'Prof. Diaz'],
+              [K('u4'), 'PE 4', '2', 'Coach Uy'],
+              [K('u5'), 'Stat 101', '3', 'Prof. Tan']
+            ]
+          },
+          {
+            cap: 'enrollment_items · nothing but the pairing',
+            cols: ['student_id', 'subject_id'],
+            rows: [
+              [K('s1'), K('u1')],
+              [K('s1'), K('u2')],
+              [K('s1'), K('u3')],
+              [K('s2'), K('u1')],
+              [K('s2'), K('u4')]
+            ]
+          }
+        ]
+      },
+      {
+        label: 'Add the enrollment',
+        why: 'An enrollment is a thing in its own right — it has a status, a term, and a submission time. <b>The items point at it rather than at the student</b>, which is what lets one student enroll again next term.',
+        tables: [
+          {
+            cap: 'enrollments',
+            cols: ['id', 'student_id', 'term', 'status', 'total_units'],
+            rows: [
+              [K('e1'), K('s1'), '2026-1', 'submitted', '11'],
+              [K('e2'), K('s2'), '2026-1', 'draft', '5']
+            ]
+          },
+          {
+            cap: 'enrollment_items · primary key (enrollment_id, subject_id) makes R3 structural',
+            cols: ['enrollment_id', 'subject_id'],
+            rows: [
+              [K('e1'), K('u1')],
+              [K('e1'), K('u2')],
+              [K('e1'), K('u3')],
+              [K('e2'), K('u1')],
+              [K('e2'), K('u4')]
+            ]
+          }
+        ]
+      }
+    ];
+
+    var i = 0;
+
+    root.innerHTML =
+      '<div class="seg"></div>' +
+      '<div class="norm__tables"></div>' +
+      '<div class="norm__why"></div>';
+
+    var seg = $('.seg', root);
+    STEPS.forEach(function (s, n) {
+      var b = el('button', null, (n + 1) + ' · ' + s.label);
+      b.type = 'button';
+      b.addEventListener('click', function () { i = n; render(); });
+      seg.appendChild(b);
+    });
+
+    function render() {
+      Array.prototype.forEach.call(seg.children, function (b, n) {
+        b.setAttribute('aria-pressed', String(n === i));
+      });
+      var step = STEPS[i];
+      $('.norm__tables', root).innerHTML = step.tables.map(function (t) {
+        return '<div>' + table(t.cap, t.cols, t.rows) + '</div>';
+      }).join('');
+      $('.norm__why', root).innerHTML = step.why;
+    }
+    render();
+  })();
+
+  /* ============================================================
+     2 · RLS simulator
+     One query, four identities, policy on or off.
+     ============================================================ */
+  (function rls() {
+    var root = $('#rls');
+    if (!root) return;
+
+    var ROWS = [
+      { id: 'e1', owner: 'Maria Cruz',  ownerId: 'A', adviser: 'X', status: 'submitted' },
+      { id: 'e2', owner: 'Jose Ramos',  ownerId: 'B', adviser: 'X', status: 'draft' },
+      { id: 'e3', owner: 'Ana Villar',  ownerId: 'C', adviser: 'Y', status: 'submitted' },
+      { id: 'e4', owner: 'Ben Lozada',  ownerId: 'D', adviser: 'Y', status: 'approved' },
+      { id: 'e5', owner: 'Cita Mendez', ownerId: 'E', adviser: 'Z', status: 'draft' }
+    ];
+
+    var WHO = [
+      { key: 'A', label: 'Maria (student)', kind: 'student', id: 'A',
+        policy: 'using ( student_id = auth.uid() )',
+        note: 'One row. The policy matched exactly one <code>student_id</code>.' },
+      { key: 'X', label: 'Adviser X', kind: 'adviser', id: 'X',
+        policy: 'using ( exists (select 1 from students s where s.id = enrollments.student_id and s.adviser_id = auth.uid()) )',
+        note: 'Two rows — X&rsquo;s own advisees. Not every submitted enrollment in the system.' },
+      { key: 'anon', label: 'No token (anon)', kind: 'anon', id: null,
+        policy: 'auth.uid() is null, so no policy matches',
+        note: 'Nothing. Not an error — <b>an empty list</b>. This is the case people mistake for a bug.' },
+      { key: 'svc', label: 'service_role key', kind: 'svc', id: null,
+        policy: 'RLS is bypassed entirely for this role',
+        note: 'Everything. <b>Every policy you wrote is skipped.</b> This key must never reach a browser.' }
+    ];
+
+    var who = 'A';
+    var rlsOn = true;
+
+    root.innerHTML =
+      '<div class="col">' +
+        '<div class="ctl"><span class="ctl__label">Who is asking</span></div>' +
+        '<div class="seg who" style="flex-wrap:wrap"></div>' +
+        '<div class="ctl" style="margin-top:var(--s3)"><span class="ctl__label">Policy</span></div>' +
+        '<div class="seg pol">' +
+          '<button type="button" data-on="1" aria-pressed="true">RLS enabled</button>' +
+          '<button type="button" data-on="0" aria-pressed="false">RLS disabled</button>' +
+        '</div>' +
+        '<div class="rls__policy" style="margin-top:var(--s4)"></div>' +
+      '</div>' +
+      '<div class="col">' +
+        '<div class="rls__rows"></div>' +
+        '<div class="rls__verdict"></div>' +
+      '</div>';
+
+    var segWho = $('.who', root);
+    WHO.forEach(function (w) {
+      var b = el('button', null, w.label);
+      b.type = 'button';
+      b.dataset.k = w.key;
+      b.addEventListener('click', function () { who = w.key; render(); });
+      segWho.appendChild(b);
+    });
+    Array.prototype.forEach.call(root.querySelectorAll('.pol button'), function (b) {
+      b.addEventListener('click', function () { rlsOn = b.dataset.on === '1'; render(); });
+    });
+
+    function visible(row, w) {
+      if (!rlsOn) return true;
+      if (w.kind === 'svc') return true;
+      if (w.kind === 'anon') return false;
+      if (w.kind === 'student') return row.ownerId === w.id;
+      return row.adviser === w.id && row.status !== 'draft';
+    }
+
+    function render() {
+      var w = WHO.filter(function (x) { return x.key === who; })[0];
+      Array.prototype.forEach.call(segWho.children, function (b) {
+        b.setAttribute('aria-pressed', String(b.dataset.k === who));
+      });
+      Array.prototype.forEach.call(root.querySelectorAll('.pol button'), function (b) {
+        b.setAttribute('aria-pressed', String((b.dataset.on === '1') === rlsOn));
+      });
+
+      $('.rls__policy', root).innerHTML = rlsOn
+        ? '<span class="dim">the clause Postgres adds:</span><br>' + w.policy
+        : '<span style="color:var(--fail)">No clause is added. Every row is returned to anyone who asks.</span>';
+
+      var out = $('.rls__rows', root);
+      out.innerHTML = '';
+      var shown = 0;
+      ROWS.forEach(function (row) {
+        var ok = visible(row, w);
+        if (ok) shown++;
+        var r = el('div', 'rls__row ' + (ok ? 'is-shown' : 'is-hidden'));
+        r.innerHTML =
+          '<span>' + row.id + ' · ' + row.owner + ' · ' + row.status + '</span>' +
+          '<span class="rls__tag">' + (ok ? 'returned' : 'filtered out') + '</span>';
+        out.appendChild(r);
+      });
+
+      var v = $('.rls__verdict', root);
+      var colour = shown === ROWS.length && (!rlsOn || w.kind === 'svc') ? 'var(--fail)'
+        : shown === 0 ? 'var(--text-3)' : 'var(--pass)';
+      v.innerHTML = '<b style="color:' + colour + '">' + shown + ' of ' + ROWS.length +
+        ' rows</b><br><span class="small">' +
+        (rlsOn ? w.note : 'This is what a table with RLS switched off looks like from the outside. It is also the default state of a new table.') +
+        '</span>';
+    }
+    render();
+  })();
+
+  /* ============================================================
+     3 · Constraint tester
+     Bad writes, and which layer refuses them.
+     ============================================================ */
+  (function con() {
+    var root = $('#con');
+    if (!root) return;
+
+    var CASES = [
+      { label: 'A subject with units = 0',
+        sql: "insert into subjects (code, units, capacity) values ('CSci 999', 0, 30);",
+        result: 'reject', by: 'check constraint units_sane',
+        why: 'The expression <code>units between 1 and 6</code> is false, so the row never lands. No application code was involved.' },
+      { label: 'The same subject twice in one enrollment',
+        sql: "insert into enrollment_items (enrollment_id, subject_id) values ('e1', 'u1');",
+        result: 'reject', by: 'primary key (enrollment_id, subject_id)',
+        why: 'R3 is structural. The duplicate is refused whichever endpoint, function or manual query attempts it.' },
+      { label: 'An item pointing at a subject that does not exist',
+        sql: "insert into enrollment_items (enrollment_id, subject_id) values ('e1', 'nope');",
+        result: 'reject', by: 'foreign key references subjects(id)',
+        why: 'A pointer that would dangle. The database refuses to hold a reference to a row that is not there.' },
+      { label: 'A seventh subject, taking the total to 24 units',
+        sql: "insert into enrollment_items (enrollment_id, subject_id) values ('e1', 'u9');",
+        result: 'reject', by: 'trigger enforce_ceiling',
+        why: 'R2 needs to see every row for the enrollment, which one <code>check</code> cannot. A trigger runs a query and raises.' },
+      { label: 'Deleting a subject that people are enrolled in',
+        sql: "delete from subjects where id = 'u1';",
+        result: 'reject', by: 'on delete restrict',
+        why: 'Deliberate. Removing an offered subject that has enrollments would silently change what those students are taking.' },
+      { label: 'Deleting an enrollment that has items',
+        sql: "delete from enrollments where id = 'e1';",
+        result: 'accept', by: 'on delete cascade — the items go too',
+        why: 'Also deliberate, and the opposite choice. An item has no meaning without its enrollment, so it should not outlive it.' },
+      { label: "A student reading another student's enrollment",
+        sql: "select * from enrollments where id = 'e3';",
+        result: 'reject', by: 'RLS policy — returns empty, not an error',
+        why: 'Not a constraint at all. The row is filtered out of the result, so the client sees an empty list rather than a refusal.' },
+      { label: 'A legitimate add, under every rule',
+        sql: "insert into enrollment_items (enrollment_id, subject_id) values ('e2', 'u2');",
+        result: 'accept', by: 'every constraint, trigger and policy passes',
+        why: 'Worth running too. A test suite that only proves things are refused has not shown the app works.' }
+    ];
+
+    var sel = 0;
+
+    root.innerHTML =
+      '<div class="seg" style="flex-wrap:wrap"></div>' +
+      '<pre class="csql" style="margin-top:var(--s3)"></pre>' +
+      '<div class="con__row"></div>' +
+      '<p class="body cwhy"></p>';
+
+    var seg = $('.seg', root);
+    CASES.forEach(function (c, i) {
+      var b = el('button', null, String(i + 1));
+      b.type = 'button';
+      b.title = c.label;
+      b.addEventListener('click', function () { sel = i; render(); });
+      seg.appendChild(b);
+    });
+
+    function render() {
+      Array.prototype.forEach.call(seg.children, function (b, i) {
+        b.setAttribute('aria-pressed', String(i === sel));
+      });
+      var c = CASES[sel];
+      $('.csql', root).textContent = c.sql;
+      var row = $('.con__row', root);
+      row.dataset.r = c.result;
+      row.innerHTML =
+        '<span class="con__m">' + (c.result === 'reject' ? '✕' : '✓') + '</span>' +
+        '<span><b>' + c.label + '</b>' +
+        '<span class="con__sql">' + (c.result === 'reject' ? 'rejected by ' : 'allowed — ') + c.by + '</span></span>';
+      $('.cwhy', root).innerHTML = c.why;
+    }
+    render();
+  })();
+
+  /* ============================================================
+     4 · Contract check runner
+     Nine operations, checked against the implementation.
+     ============================================================ */
+  (function cc() {
+    var root = $('#cc');
+    if (!root) return;
+
+    var OPS = [
+      { verb: 'GET',    id: 'getCurrentTerm' },
+      { verb: 'GET',    id: 'listSubjects' },
+      { verb: 'GET',    id: 'getStudentEnrollment',
+        fail: 'response has total_units, contract says totalUnits' },
+      { verb: 'POST',   id: 'addEnrollmentItem',
+        fail: '422 UNIT_CEILING documented, implementation returns 500' },
+      { verb: 'DELETE', id: 'removeEnrollmentItem' },
+      { verb: 'POST',   id: 'submitEnrollment',
+        fail: '422 EMPTY_ENROLLMENT documented, never returned' },
+      { verb: 'GET',    id: 'listPendingEnrollments' },
+      { verb: 'POST',   id: 'approveEnrollment' },
+      { verb: 'POST',   id: 'returnEnrollment',
+        fail: 'reason minLength 10 in the contract, unchecked in the function' }
+    ];
+
+    var fixed = false;
+
+    root.innerHTML =
+      '<div class="seg">' +
+        '<button type="button" class="run">Run contract:check</button>' +
+        '<button type="button" class="fix" aria-pressed="false">Apply the fixes</button>' +
+      '</div>' +
+      '<div class="rows" style="display:flex;flex-direction:column;gap:2px;margin-top:var(--s3)"></div>' +
+      '<div class="cc__sum"></div>';
+
+    var rowsEl = $('.rows', root);
+    var sumEl = $('.cc__sum', root);
+    var timer = null;
+
+    function draw(states) {
+      rowsEl.innerHTML = '';
+      OPS.forEach(function (o, i) {
+        var st = states[i];
+        var row = el('div', 'cc__row');
+        row.dataset.s = st;
+        var mark = st === 'pass' ? '✓' : st === 'fail' ? '✕' : '·';
+        row.innerHTML =
+          '<span class="cc__m">' + mark + '</span>' +
+          '<span class="cc__verb">' + o.verb + '</span>' +
+          '<span>' + o.id + '</span>' +
+          '<span class="dim" style="font-size:0.6rem">' + (st === 'pending' ? '' : st) + '</span>';
+        if (st === 'fail' && o.fail) {
+          row.appendChild(el('span', 'cc__msg', '→ ' + o.fail));
+        }
+        rowsEl.appendChild(row);
+      });
+    }
+
+    function run() {
+      if (timer) clearInterval(timer);
+      var states = OPS.map(function () { return 'pending'; });
+      draw(states);
+      sumEl.textContent = 'checking…';
+
+      var i = 0;
+      timer = setInterval(function () {
+        if (i >= OPS.length) {
+          clearInterval(timer);
+          timer = null;
+          var failed = states.filter(function (s) { return s === 'fail'; }).length;
+          sumEl.innerHTML = failed
+            ? '<b style="color:var(--fail)">' + failed + ' of ' + OPS.length + ' operations do not satisfy the contract</b>'
+            : '<b style="color:var(--pass)">All ' + OPS.length + ' operations satisfy the contract</b> — the backend half is done.';
+          return;
+        }
+        states[i] = (OPS[i].fail && !fixed) ? 'fail' : 'pass';
+        i++;
+        draw(states);
+      }, 110);
+    }
+
+    $('.run', root).addEventListener('click', run);
+    $('.fix', root).addEventListener('click', function () {
+      fixed = !fixed;
+      var b = $('.fix', root);
+      b.setAttribute('aria-pressed', String(fixed));
+      b.textContent = fixed ? 'Break it again' : 'Apply the fixes';
+      run();
+    });
+
+    draw(OPS.map(function () { return 'pending'; }));
+    sumEl.textContent = 'not run yet';
+  })();
+})();
+
+
+/* ==== from the old module-5.js ==== */
+/* ============================================================
+   CSci 153 — Module 5 widgets
+   Web Application Integration: the validation bypass, a CI
+   pipeline with a gate, and the deployment map.
 
    Every widget bails out quietly if its mount point is
    missing, so a slide can be cut without breaking the deck.
@@ -20,411 +483,318 @@
   }
 
   /* ============================================================
-     1 · Dependency auditor
-     The real package.json, with one sentence per line.
+     1 · Validation bypass
+     The same bad write, sent by four different callers.
      ============================================================ */
-  (function dep() {
-    var root = $('#dep');
+  (function val() {
+    var root = $('#val');
     if (!root) return;
 
-    var DEPS = [
-      { name: 'react', v: '^19.2.8', kind: 'calls-you', role: 'Framework',
-        breaks: 'Everything. There are no components without it — every screen is a React function.',
-        note: 'It calls your components when it decides they need to render. You never call them yourself.' },
-      { name: 'react-dom', v: '^19.2.8', kind: 'calls-you', role: 'Framework',
-        breaks: 'React would still describe a tree, but nothing would reach the page. This is the part that talks to the DOM.',
-        note: 'React and React DOM are separate packages because React also renders to native mobile, and to strings on a server.' },
-      { name: 'vite', v: '^8.2.0', kind: 'tool', role: 'Build tool',
-        breaks: 'No dev server and no production bundle. Browsers cannot read TypeScript or JSX; Vite is what turns them into JavaScript.',
-        note: 'A build tool, not a runtime dependency — none of it ships to the browser.' },
-      { name: 'typescript', v: '~5.9', kind: 'tool', role: 'Language and typechecker',
-        breaks: 'The app still runs, because types vanish at build time anyway. Every mistake just becomes a runtime surprise instead of a red squiggle.',
-        note: 'Pinned to 5.9 rather than 6, because openapi-typescript declares a peer range of ^5.x. That conflict is the next slide.' },
-      { name: 'tailwindcss', v: '^4.3.3', kind: 'tool', role: 'Styling',
-        breaks: 'Every className becomes meaningless text. The app works and looks like an unstyled 1996 document.',
-        note: 'v4 declares the theme in CSS with @theme, which is why there is no tailwind.config.js in this project.' },
-      { name: 'react-router-dom', v: '^7.18.2', kind: 'calls-you', role: 'Routing',
-        breaks: 'One screen and no URLs. No /subjects, no /advising, no deep links, and nowhere to put a route guard.',
-        note: 'It owns which screen is showing, and calls your component when the URL says to.' },
-      { name: '@tanstack/react-query', v: '^5.101.4', kind: 'you-call', role: 'Server state',
-        breaks: 'You hand-write loading and error state on every screen, refetch manually after every mutation, and fetch the same data twice on two screens.',
-        note: 'You call useQuery; it hands back a cache with isPending, isError, and invalidation already solved.' },
-      { name: 'openapi-fetch', v: '^0.17.0', kind: 'you-call', role: 'Typed HTTP client',
-        breaks: 'Back to plain fetch, and back to checking response.ok by hand in every call — with no compile-time proof the endpoint exists.',
-        note: 'Tiny. Its whole value is the <paths> generic, which wires the contract into the type system.' },
-      { name: 'openapi-typescript', v: '^7.13.0', kind: 'tool', role: 'Code generation',
-        breaks: 'You hand-write the types that mirror the API, and they drift silently the first time the backend changes.',
-        note: 'Runs once per contract change. Its output is committed, and CI fails if what you committed is stale.' },
-      { name: '@stoplight/prism-cli', v: 'dev', kind: 'tool', role: 'Mock server',
-        breaks: 'The app has nothing to talk to until the backend exists. Frontend development stops for five weeks.',
-        note: 'Reads the contract and serves responses that match it. This is the dependency that let the frontend go first.' },
-      { name: 'vitest', v: '^4.1.11', kind: 'tool', role: 'Test runner',
-        breaks: 'Nothing in the app. You simply have no way to know a rule still works after you change it.',
-        note: 'Shares Vite&rsquo;s config, which is why it needed almost no setup of its own.' },
-      { name: '@redocly/cli', v: 'dev', kind: 'tool', role: 'Contract linter',
-        breaks: 'A malformed contract reaches the generator, and you debug a confusing TypeScript type instead of a clear YAML error.',
-        note: 'It caught a real bug in this app: bearer auth was declared, but no 401 was documented anywhere.' }
+    var PATHS = [
+      { key: 'form', label: 'Your form', skips: [],
+        note: 'The happy path. Zod rejects it in the field, no request is made, and the user is told before they wait.' },
+      { key: 'devtools', label: 'Devtools: delete the check', skips: ['zod'],
+        note: 'Two lines in the console removes the client validation. Everything after this point is what actually protects you.' },
+      { key: 'rest', label: 'A REST client', skips: ['zod'],
+        note: 'No form, no React, no client validation at all — just a request. This is the test that matters.' },
+      { key: 'svc', label: 'A REST client + service_role', skips: ['zod', 'rls'],
+        note: 'RLS is bypassed by this key. Only the constraints and triggers are left — which is exactly why a service key must never reach a browser.' }
     ];
 
-    var KIND_LABEL = { 'calls-you': 'calls you', 'you-call': 'you call it', tool: 'tooling' };
-
-    root.innerHTML = '<div class="dep__list"></div><div class="dep__detail"></div>';
-    var list = $('.dep__list', root);
-    var detail = $('.dep__detail', root);
-    var sel = 0;
-
-    DEPS.forEach(function (d, i) {
-      var b = el('button', 'dep__item');
-      b.type = 'button';
-      b.innerHTML = '<span>' + d.name + '</span>' +
-        '<span class="dep__kind" data-k="' + d.kind + '">' + KIND_LABEL[d.kind] + '</span>';
-      b.addEventListener('click', function () { sel = i; render(); });
-      list.appendChild(b);
-    });
-    var items = Array.prototype.slice.call(list.children);
-
-    function render() {
-      items.forEach(function (b, i) { b.setAttribute('aria-selected', String(i === sel)); });
-      var d = DEPS[sel];
-      detail.innerHTML =
-        '<div class="dep__name">' + d.name + '</div>' +
-        '<div class="dep__meta"><span>' + d.role + '</span><span>' + d.v + '</span>' +
-          '<span class="dep__kind" data-k="' + d.kind + '">' + KIND_LABEL[d.kind] + '</span></div>' +
-        '<div class="dep__break"><b style="color:var(--fail)">Remove it and:</b> ' + d.breaks + '</div>' +
-        '<p class="body">' + d.note + '</p>';
-    }
-    render();
-  })();
-
-  /* ============================================================
-     2 · Iteration translator
-     for…of / map / filter / reduce over the same six subjects.
-     ============================================================ */
-  (function iter() {
-    var root = $('#iter');
-    if (!root) return;
-
-    var SUBJECTS = [
-      { code: 'CSci 153', units: 3, full: false },
-      { code: 'CSci 141', units: 3, full: false },
-      { code: 'Math 111', units: 5, full: true  },
-      { code: 'CSci 170', units: 4, full: false },
-      { code: 'PE 4',     units: 2, full: false },
-      { code: 'Stat 101', units: 3, full: true  }
+    var CASES = [
+      { key: 'reason', label: 'Return an enrollment with reason: "no"',
+        layers: { zod: 'blocked', rls: 'passed', edge: 'blocked', db: 'passed' },
+        blockedBy: { zod: 'min(10) — "Say what needs changing"', edge: '422 REASON_REQUIRED, from the function' },
+        survives: false },
+      { key: 'units', label: 'Add a 7th subject, taking the total to 24 units',
+        layers: { zod: 'passed', rls: 'passed', edge: 'passed', db: 'blocked' },
+        blockedBy: { db: 'trigger enforce_ceiling raises UNIT_CEILING' },
+        survives: false },
+      { key: 'other', label: "Write to another student's enrollment",
+        layers: { zod: 'passed', rls: 'blocked', edge: 'passed', db: 'passed' },
+        blockedBy: { rls: 'policy: no row matches student_id = auth.uid()' },
+        survives: false },
+      { key: 'zero', label: 'Create a subject with units: 0',
+        layers: { zod: 'blocked', rls: 'passed', edge: 'passed', db: 'blocked' },
+        blockedBy: { zod: 'z.number().min(1)', db: 'check constraint units_sane' },
+        survives: false },
+      { key: 'nickname', label: 'Set a display name of 400 characters',
+        layers: { zod: 'blocked', rls: 'passed', edge: 'passed', db: 'passed' },
+        blockedBy: { zod: 'max(120)' },
+        survives: true }
     ];
 
-    var FORMS = {
-      forof: {
-        label: 'for…of',
-        code: 'const codes = []\n<b>for (const s of subjects)</b> {\n  codes.push(s.code)\n}',
-        note: 'The plain loop. It works for everything and says nothing about intent — a reader has to look inside the body to find out what it is doing.',
-        rows: function () { return SUBJECTS.map(function (s) { return { txt: s.code, state: 'in' }; }); },
-        out: function () { return 'codes → 6 strings'; }
-      },
-      map: {
-        label: 'map',
-        code: 'const codes = subjects.<b>map</b>(\n  (s) =&gt; s.code\n)',
-        note: 'Six in, six out. map never changes the length — if your output has a different count, you wanted filter.',
-        rows: function () {
-          return SUBJECTS.map(function (s) {
-            return { txt: s.code + '   →   "' + s.code + '"', state: 'in' };
-          });
-        },
-        out: function () { return '6 subjects in, 6 strings out'; }
-      },
-      filter: {
-        label: 'filter',
-        code: 'const open = subjects.<b>filter</b>(\n  (s) =&gt; !s.full\n)',
-        note: 'The same items, fewer of them. The two full subjects are dropped; nothing is transformed, only chosen.',
-        rows: function () {
-          return SUBJECTS.map(function (s) {
-            return { txt: s.code + (s.full ? '   ✕ full' : '   ✓ open'), state: s.full ? 'out' : 'in' };
-          });
-        },
-        out: function () { return 'open → 4 of 6 subjects'; }
-      },
-      reduce: {
-        label: 'reduce',
-        code: 'const total = subjects.<b>reduce</b>(\n  (sum, s) =&gt; sum + s.units,\n  <b>0</b>\n)',
-        note: 'Many to one. The 0 is the starting value — leave it off and an empty array throws instead of giving you 0.',
-        rows: function () {
-          var run = 0;
-          return SUBJECTS.map(function (s) {
-            run += s.units;
-            return { txt: s.code + '   +' + s.units + '   →   sum ' + run, state: 'in' };
-          });
-        },
-        out: function () {
-          return 'total → ' + SUBJECTS.reduce(function (n, s) { return n + s.units; }, 0) + ' units';
-        }
-      }
-    };
+    var LAYERS = [
+      { key: 'zod',  label: 'Zod, in the form',        where: 'browser' },
+      { key: 'rls',  label: 'RLS policy',              where: 'database' },
+      { key: 'edge', label: 'Edge Function check',     where: 'server' },
+      { key: 'db',   label: 'Constraint or trigger',   where: 'database' }
+    ];
 
-    var order = ['forof', 'map', 'filter', 'reduce'];
-    var cur = 'forof';
+    var path = 'form';
+    var kase = 0;
 
     root.innerHTML =
       '<div class="col">' +
-        '<div class="seg"></div>' +
-        '<pre class="ic" style="margin-top:var(--s3)"></pre>' +
-        '<p class="body inote"></p>' +
+        '<div class="ctl"><span class="ctl__label">Sent by</span></div>' +
+        '<div class="seg paths" style="flex-wrap:wrap"></div>' +
+        '<div class="ctl" style="margin-top:var(--s3)"><span class="ctl__label">The bad write</span></div>' +
+        '<div class="seg cases" style="flex-wrap:wrap"></div>' +
+        '<p class="small pnote" style="margin-top:var(--s3)"></p>' +
       '</div>' +
       '<div class="col">' +
-        '<div class="iter__out"></div>' +
-        '<div class="iter__sum"></div>' +
+        '<div class="val__layers"></div>' +
+        '<div class="val__out"></div>' +
       '</div>';
 
-    var seg = $('.seg', root);
-    order.forEach(function (k) {
-      var b = el('button', null, FORMS[k].label);
+    var segP = $('.paths', root);
+    PATHS.forEach(function (p) {
+      var b = el('button', null, p.label);
       b.type = 'button';
-      b.addEventListener('click', function () { cur = k; render(); });
-      seg.appendChild(b);
+      b.dataset.k = p.key;
+      b.addEventListener('click', function () { path = p.key; render(); });
+      segP.appendChild(b);
+    });
+
+    var segC = $('.cases', root);
+    CASES.forEach(function (c, i) {
+      var b = el('button', null, String(i + 1));
+      b.type = 'button';
+      b.title = c.label;
+      b.addEventListener('click', function () { kase = i; render(); });
+      segC.appendChild(b);
     });
 
     function render() {
-      Array.prototype.forEach.call(seg.children, function (b, i) {
-        b.setAttribute('aria-pressed', String(order[i] === cur));
+      var p = PATHS.filter(function (x) { return x.key === path; })[0];
+      var c = CASES[kase];
+
+      Array.prototype.forEach.call(segP.children, function (b) {
+        b.setAttribute('aria-pressed', String(b.dataset.k === path));
       });
-      var f = FORMS[cur];
-      $('.ic', root).innerHTML = f.code;
-      $('.inote', root).textContent = f.note;
-      var out = $('.iter__out', root);
+      Array.prototype.forEach.call(segC.children, function (b, i) {
+        b.setAttribute('aria-pressed', String(i === kase));
+      });
+      $('.pnote', root).innerHTML = '<b>' + c.label + '</b> — ' + p.note;
+
+      var out = $('.val__layers', root);
       out.innerHTML = '';
-      f.rows().forEach(function (r) {
-        out.appendChild(el('div', 'iter__row is-' + r.state, '<span>' + r.txt + '</span>'));
+      var stopped = null;
+
+      LAYERS.forEach(function (L) {
+        var result;
+        if (p.skips.indexOf(L.key) !== -1) result = 'skipped';
+        else if (stopped) result = 'skipped';
+        else {
+          result = c.layers[L.key];
+          if (result === 'blocked') stopped = L;
+        }
+
+        var row = el('div', 'val__layer');
+        row.dataset.r = result;
+        var tag = result === 'blocked' ? 'blocked it'
+          : result === 'skipped' ? 'not reached'
+          : 'let it through';
+        row.innerHTML =
+          '<span>' + L.label + ' <span class="dim">· ' + L.where + '</span></span>' +
+          '<span class="val__tag">' + tag + '</span>';
+        out.appendChild(row);
+
+        if (result === 'blocked' && c.blockedBy[L.key]) {
+          out.appendChild(el('div', 'small',
+            '<span style="color:var(--pass)">↳ ' + c.blockedBy[L.key] + '</span>'));
+        }
       });
-      $('.iter__sum', root).textContent = f.out();
+
+      var v = $('.val__out', root);
+      if (stopped) {
+        v.innerHTML = '<b style="color:var(--pass)">Rejected</b><br>' +
+          '<span class="small">Stopped by <b>' + stopped.label + '</b>, in the ' + stopped.where +
+          '. The bad row never existed.</span>';
+      } else {
+        v.innerHTML = '<b style="color:var(--fail)">The bad row landed</b><br>' +
+          '<span class="small">Nothing on the server had an opinion about this. ' +
+          'The only rule was in the form, and the form was optional.</span>';
+      }
     }
     render();
   })();
 
   /* ============================================================
-     3 · Await timeline
-     Sequential awaits in a loop, against Promise.all.
+     2 · CI pipeline
+     Four checks, and the gate that makes them matter.
      ============================================================ */
-  (function timeline() {
-    var root = $('#tl');
+  (function pipe() {
+    var root = $('#pipe');
     if (!root) return;
 
-    var MS = 300;
-    var N = 3;
-    var mode = 'seq';
-
-    root.innerHTML =
-      '<div class="seg">' +
-        '<button type="button" data-m="seq" aria-pressed="true">await inside the loop</button>' +
-        '<button type="button" data-m="par" aria-pressed="false">Promise.all</button>' +
-      '</div>' +
-      '<pre class="tlc" style="margin-top:var(--s3)"></pre>' +
-      '<div class="tl__track"></div>' +
-      '<div class="tl__track"></div>' +
-      '<div class="tl__track"></div>' +
-      '<div class="tl__scale"><span>0ms</span><span>300</span><span>600</span><span>900ms</span></div>' +
-      '<div class="tl__total"></div>';
-
-    var tracks = Array.prototype.slice.call(root.querySelectorAll('.tl__track'));
-    var btns = Array.prototype.slice.call(root.querySelectorAll('.seg button'));
-    btns.forEach(function (b) {
-      b.addEventListener('click', function () { mode = b.dataset.m; render(); });
-    });
-
-    var CODE = {
-      seq: 'for (const id of ids) {\n  const load = <b>await</b> getLoad(id)   <i>// waits here, every time</i>\n  loads.push(load)\n}',
-      par: 'const loads = <b>await Promise.all</b>(\n  ids.map((id) =&gt; getLoad(id))   <i>// all three start now</i>\n)'
-    };
-
-    function render() {
-      btns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.m === mode)); });
-      $('.tlc', root).innerHTML = CODE[mode];
-
-      tracks.forEach(function (t, i) {
-        t.innerHTML = '';
-        var bar = el('div', 'tl__bar');
-        var startMs = mode === 'seq' ? i * MS : 0;
-        bar.style.left = (startMs / (N * MS) * 100) + '%';
-        bar.style.width = (MS / (N * MS) * 100) + '%';
-        bar.textContent = 'getLoad(' + (i + 1) + ')';
-        t.appendChild(bar);
-      });
-
-      var span = mode === 'seq' ? N * MS : MS;
-      $('.tl__total', root).innerHTML = mode === 'seq'
-        ? 'Total: <b style="color:var(--fail)">' + span + 'ms</b> — three waits, one after another.'
-        : 'Total: <b style="color:var(--pass)">' + span + 'ms</b> — three requests in flight at once.';
-    }
-    render();
-  })();
-
-  /* ============================================================
-     4 · DOM operations counter
-     A by-hand clear-and-rebuild, against React's reconciliation.
-     ============================================================ */
-  (function ops() {
-    var root = $('#ops');
-    if (!root) return;
-
-    var rows = 5;
-    var hand = 0;
-    var react = 0;
-    var log = [];
-
-    root.innerHTML =
-      '<div class="ops__side ops__side--hand">' +
-        '<span class="ops__lbl">By hand · DOM operations</span>' +
-        '<span class="ops__n h">0</span>' +
-        '<span class="small">Every render clears the list and rebuilds every row.</span>' +
-      '</div>' +
-      '<div class="ops__side ops__side--react">' +
-        '<span class="ops__lbl">React · DOM operations</span>' +
-        '<span class="ops__n r">0</span>' +
-        '<span class="small">Only what actually changed reaches the DOM.</span>' +
-      '</div>' +
-      '<div style="grid-column:1/-1;display:flex;flex-direction:column;gap:var(--s3)">' +
-        '<div class="ctl"><span class="ctl__label">Rows on screen <span class="ctl__val"><b class="rn">5</b></span></span></div>' +
-        '<div class="seg">' +
-          '<button type="button" class="a-add">Add a row</button>' +
-          '<button type="button" class="a-rem">Remove one</button>' +
-          '<button type="button" class="a-sort">Re-sort</button>' +
-          '<button type="button" class="a-reset">Reset</button>' +
-        '</div>' +
-        '<div class="ops__log"></div>' +
-      '</div>';
-
-    function paint() {
-      $('.h', root).textContent = hand;
-      $('.r', root).textContent = react;
-      $('.rn', root).textContent = rows;
-      $('.ops__log', root).innerHTML = log.map(function (l) {
-        return '<span>' + l + '</span>';
-      }).join('');
-    }
-
-    function bump(label, h, r) {
-      hand += h;
-      react += r;
-      log.unshift(label + ' — by hand +' + h + ', React +' + r);
-      if (log.length > 8) log.pop();
-      paint();
-    }
-
-    /* By hand, every action is the same: wipe the list, then create and
-       append all of it again. React inserts one node, removes one node,
-       or moves the existing ones. */
-    $('.a-add', root).addEventListener('click', function () {
-      rows++;
-      bump('add a row', rows + 1, 1);
-    });
-    $('.a-rem', root).addEventListener('click', function () {
-      if (rows === 0) return;
-      rows--;
-      bump('remove one', rows + 1, 1);
-    });
-    $('.a-sort', root).addEventListener('click', function () {
-      bump('re-sort', rows + 1, rows);
-    });
-    $('.a-reset', root).addEventListener('click', function () {
-      rows = 5; hand = 0; react = 0; log = [];
-      paint();
-    });
-    paint();
-  })();
-
-  /* ============================================================
-     5 · Test runner
-     The real suite's names, and a rule the class can break.
-     ============================================================ */
-  (function runner() {
-    var root = $('#tr');
-    if (!root) return;
-
-    /* Whatever UNIT_CEILING is set to. 21 is correct. */
-    var ceiling = 21;
-
-    var TESTS = [
-      { name: 'totalUnits · is zero for an empty enrollment' },
-      { name: 'totalUnits · sums the units of every subject' },
-      { name: 'seatsLeft · is capacity minus enrolled' },
-      { name: 'seatsLeft · never goes negative' },
-      { name: 'canAddSubject · allows a normal add' },
-      { name: 'R3 · rejects a subject already enrolled' },
-      { name: 'R4 · rejects a subject with no seats left' },
-      { name: 'R2 · rejects an add past the unit ceiling',
-        needs21: true,
-        msg: 'expected code UNIT_CEILING, got { ok: true } — 24 units is under a ceiling of ' },
-      { name: 'R2 · allows an add landing exactly on the ceiling',
-        needs21: true,
-        msg: 'expected { ok: true } at 21 units, but the ceiling is ' },
-      { name: 'R5 · rejects any add once submitted' },
-      { name: 'R5 · allows edits after an adviser returns it' }
+    var BREAKS = [
+      { key: 'none',    label: 'Nothing broken' },
+      { key: 'lint',    label: 'An unused import', at: 'lint',
+        msg: "'useEffect' is defined but never used" },
+      { key: 'types',   label: 'A renamed field, used in a component', at: 'typecheck',
+        msg: "Property 'total_units' does not exist on type 'Enrollment'" },
+      { key: 'test',    label: 'The unit ceiling changed to 24', at: 'test',
+        msg: '2 failed · R2 rejects an add past the unit ceiling' },
+      { key: 'contract', label: 'Contract edited, types not regenerated', at: 'contract:check',
+        msg: 'contract/generated/schema.d.ts is stale — run npm run contract:types' },
+      { key: 'protect', label: 'Everything green, but checks not required', at: null,
+        msg: null }
     ];
 
-    root.innerHTML =
-      '<div class="seg">' +
-        '<button type="button" class="run">Run the suite</button>' +
-        '<button type="button" class="brk" aria-pressed="false">Break it: ceiling = 24</button>' +
-      '</div>' +
-      '<div class="rows" style="display:flex;flex-direction:column;gap:2px"></div>' +
-      '<div class="tr__sum"></div>';
-
-    var rowsEl = $('.rows', root);
-    var sumEl = $('.tr__sum', root);
-    var runBtn = $('.run', root);
-    var brkBtn = $('.brk', root);
+    var STEPS = ['npm ci', 'lint', 'typecheck', 'test', 'contract:check'];
+    var sel = 0;
     var timer = null;
 
-    function passes(t) { return t.needs21 ? ceiling === 21 : true; }
+    root.innerHTML =
+      '<div class="seg" style="flex-wrap:wrap"></div>' +
+      '<div class="pipe__steps" style="margin-top:var(--s3)"></div>' +
+      '<div class="pipe__gate"></div>';
+
+    var seg = $('.seg', root);
+    BREAKS.forEach(function (b, i) {
+      var btn = el('button', null, b.label);
+      btn.type = 'button';
+      btn.addEventListener('click', function () { sel = i; run(); });
+      seg.appendChild(btn);
+    });
 
     function draw(states) {
-      rowsEl.innerHTML = '';
-      TESTS.forEach(function (t, i) {
+      var b = BREAKS[sel];
+      var wrap = $('.pipe__steps', root);
+      wrap.innerHTML = '';
+      STEPS.forEach(function (s, i) {
         var st = states[i];
-        var row = el('div', 'tr__row');
+        var row = el('div', 'pipe__step');
         row.dataset.s = st;
-        var mark = st === 'pass' ? '✓' : st === 'fail' ? '✕' : '·';
-        row.innerHTML = '<span class="tr__m">' + mark + '</span>' +
-          '<span>' + t.name + '</span>' +
-          '<span class="dim" style="font-size:0.62rem">' + (st === 'pending' ? '' : st) + '</span>';
-        if (st === 'fail' && t.msg) {
-          row.appendChild(el('span', 'tr__msg', '→ ' + t.msg + ceiling));
-        }
-        rowsEl.appendChild(row);
+        var mark = st === 'pass' ? '✓' : st === 'fail' ? '✕' : st === 'run' ? '·' : '–';
+        row.innerHTML = '<span class="pipe__m">' + mark + '</span>' +
+          '<span>' + s + '</span>' +
+          '<span class="dim" style="font-size:0.6rem">' +
+          (st === 'skip' ? 'skipped' : st === 'pending' ? '' : st) + '</span>';
+        if (st === 'fail' && b.msg) row.appendChild(el('span', 'pipe__msg', '→ ' + b.msg));
+        wrap.appendChild(row);
       });
+    }
+
+    function gate(failed) {
+      var b = BREAKS[sel];
+      var g = $('.pipe__gate', root);
+      if (b.key === 'protect') {
+        g.innerHTML = '<b style="color:var(--warn)">Merge allowed</b> — and it would have been ' +
+          'allowed <b>even if this had been red</b>, because status checks are not required. ' +
+          '<span class="small">A check nobody is forced to respect is not a check.</span>';
+      } else if (failed) {
+        g.innerHTML = '<b style="color:var(--fail)">Merge blocked</b> — branch protection ' +
+          'requires these checks to pass. <span class="small">The bug never reaches main, and ' +
+          'nobody had to notice it in review.</span>';
+      } else {
+        g.innerHTML = '<b style="color:var(--pass)">Merge allowed</b> — four checks, on a clean ' +
+          'machine, whether or not anyone remembered to run them.';
+      }
     }
 
     function run() {
       if (timer) clearInterval(timer);
-      var states = TESTS.map(function () { return 'pending'; });
+      Array.prototype.forEach.call(seg.children, function (b, i) {
+        b.setAttribute('aria-pressed', String(i === sel));
+      });
+
+      var b = BREAKS[sel];
+      var states = STEPS.map(function () { return 'pending'; });
       draw(states);
-      sumEl.textContent = 'running…';
-      sumEl.style.color = 'var(--text-3)';
+      $('.pipe__gate', root).textContent = 'running…';
 
       var i = 0;
+      var failedAt = -1;
       timer = setInterval(function () {
-        if (i >= TESTS.length) {
+        if (i >= STEPS.length || failedAt !== -1) {
           clearInterval(timer);
           timer = null;
-          var failed = states.filter(function (s) { return s === 'fail'; }).length;
-          sumEl.innerHTML = failed
-            ? '<b style="color:var(--fail)">' + failed + ' failed</b> &nbsp;·&nbsp; ' + (TESTS.length - failed) + ' passed'
-            : '<b style="color:var(--pass)">' + TESTS.length + ' passed</b> &nbsp;·&nbsp; 0 failed';
+          if (failedAt !== -1) {
+            for (var j = failedAt + 1; j < STEPS.length; j++) states[j] = 'skip';
+            draw(states);
+          }
+          gate(failedAt !== -1);
           return;
         }
-        states[i] = passes(TESTS[i]) ? 'pass' : 'fail';
+        if (b.at && STEPS[i] === b.at) {
+          states[i] = 'fail';
+          failedAt = i;
+        } else {
+          states[i] = 'pass';
+        }
         i++;
         draw(states);
-      }, 90);
+      }, 130);
     }
+    run();
+  })();
 
-    runBtn.addEventListener('click', run);
-    brkBtn.addEventListener('click', function () {
-      ceiling = ceiling === 21 ? 24 : 21;
-      brkBtn.setAttribute('aria-pressed', String(ceiling === 24));
-      brkBtn.textContent = ceiling === 21 ? 'Break it: ceiling = 24' : 'Fix it: ceiling = 21';
-      run();
-    });
+  /* ============================================================
+     3 · Deployment map
+     Three hosts, and which secrets may live where.
+     ============================================================ */
+  (function dep5() {
+    var root = $('#dep5');
+    if (!root) return;
 
-    draw(TESTS.map(function () { return 'pending'; }));
-    sumEl.textContent = 'not run yet';
+    var PLACES = [
+      {
+        key: 'cdn', kind: 'Static host', title: 'Vercel or Netlify',
+        body: 'Your built frontend — HTML, CSS and JavaScript files. No server runs your React code; a CDN hands the same bundle to everyone.',
+        holds: [
+          { ok: 1, t: 'VITE_API_BASE_URL — public by design' },
+          { ok: 1, t: 'The Supabase anon key — public by design' },
+          { ok: 0, t: 'Any service_role key' },
+          { ok: 0, t: 'Any third-party API secret' }
+        ],
+        note: 'Everything here is readable by anyone who opens devtools. Treat the whole bundle as published, because it is.'
+      },
+      {
+        key: 'db', kind: 'Managed Postgres', title: 'Supabase project',
+        body: 'Your migrations applied, your policies enforcing, your seed data present. Reached directly by the browser over PostgREST.',
+        holds: [
+          { ok: 1, t: 'Every table and policy' },
+          { ok: 1, t: 'Database functions' },
+          { ok: 0, t: 'Nothing the browser should not query' }
+        ],
+        note: 'Deployed separately from the frontend, with `supabase db push`. A frontend deploy does not carry migrations with it — forgetting this is the most common broken deploy.'
+      },
+      {
+        key: 'fn', kind: 'Serverless', title: 'Edge Functions',
+        body: 'The code that needs a secret, a privileged write, or several statements that must succeed together.',
+        holds: [
+          { ok: 1, t: 'service_role, from supabase secrets set' },
+          { ok: 1, t: 'Third-party API keys' },
+          { ok: 1, t: 'Anything read with Deno.env.get()' }
+        ],
+        note: 'The only one of the three places a secret may exist. Deployed with `supabase functions deploy`, again separately.'
+      }
+    ];
+
+    var sel = 0;
+
+    function render() {
+      root.innerHTML = '';
+      PLACES.forEach(function (p, i) {
+        var box = el('div', 'dep5__box' + (i === sel ? ' is-hot' : ''));
+        box.innerHTML =
+          '<span class="dep5__k">' + p.kind + '</span>' +
+          '<span class="dep5__t">' + p.title + '</span>' +
+          '<span class="dep5__b">' + p.body + '</span>';
+        if (i === sel) {
+          p.holds.forEach(function (h) {
+            box.appendChild(el('span', 'dep5__secret',
+              (h.ok ? '✓ ' : '✕ ') + h.t)).dataset.ok = String(h.ok);
+          });
+          box.appendChild(el('span', 'small', p.note));
+        }
+        box.addEventListener('click', function () { sel = i; render(); });
+        box.style.cursor = 'pointer';
+        root.appendChild(box);
+      });
+    }
+    render();
   })();
 })();

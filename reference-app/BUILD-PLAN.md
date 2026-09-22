@@ -29,7 +29,7 @@ running app, and talk about why it is the way it is.
 /home/kyle-anthony/Documents/Visayas State University Files/csci-153-enroll
 ```
 
-Local only — no remote yet. It needs pushing to GitHub before week 1, because lesson 2.0
+Local only — no remote yet. It needs pushing to GitHub before week 1, because lesson 1.3
 opens the real commit graph and students are told to read it themselves.
 
 ## Status — all phases built, 2026-09-22
@@ -61,7 +61,7 @@ gaps, all of them things the Final Activity Project specs require of students:
 ### One caveat about the history
 
 **The commit history is build order, not milestone order.** The frontend wiring commits —
-the typed client, `SessionContext`, the data states — were made in Module 2's order and
+the typed client, `SessionContext`, the data states — were made in the old Module 2's order and
 land *before* the backend. The milestone sequence was decided afterwards.
 
 This is worth knowing before you project `git log` in week 7 and the narrative reads
@@ -98,7 +98,7 @@ them, and a token change later means touching every commit that came after.
 - [ ] `contract/openapi.yaml` — **`listSubjects` only**, deliberately incomplete
 - [ ] Prism serving the mock, one screen listing subjects against it
 - [ ] Vitest and Playwright installed but with no tests. Students should see the empty
-      folders in Module 3 and 5 and know they were always part of the plan.
+      folders in Modules 2 and 4 and know they were always part of the plan.
 
 **Explained as:** the "Where this sits" slide stops being a diagram. You open a project
 that runs, show the token file, and show the same three layers arriving in
@@ -114,12 +114,12 @@ to explain.
 
 | Lesson | Build | Explained from |
 |---|---|---|
-| 2.0 Git | real branches, real PRs, one deliberate conflict resolved | Open the actual commit graph. The deck's widget is the model; this is the real thing, with your name on it. |
-| 2.1 Components | `SubjectRow`, `UnitMeter`, `EnrollmentTable`, `EmptyState`, `ErrorState` | The `git log` where `SubjectList.tsx` got split. Show the commit where a boolean prop became `children`. |
-| 2.2 Auth Context | `SessionContext`, `useSession`, `RequireRole`, `/login` | Sign in as a student, then as an adviser; then delete the guard in devtools and land on `/advising` anyway. That is the RLS setup for Module 4. |
-| 2.3 Contract | all 9 operations, error responses, `components.schemas`, Redoc published | Read one operation end to end, then the commit that added its 409. Break the YAML indentation and let `redocly lint` say so. |
-| 2.4 Wrapper | `lib/api/client.ts`, TanStack Query on every screen | Devtools network tab: two screens, one request. Then approve an enrollment and watch the queue key invalidate. |
-| 2.5 Data states | skeletons, the three empties, error + retry, 320px pass | Prism's `--errors` flag and Slow 3G throttling. Every state on the projector without editing a line. |
+| 1.3 Git | real branches, real PRs, one deliberate conflict resolved | Open the actual commit graph. The deck's widget is the model; this is the real thing, with your name on it. |
+| 1.4 Components | `SubjectRow`, `UnitMeter`, `EnrollmentTable`, `EmptyState`, `ErrorState` | The `git log` where `SubjectCatalog.tsx` got split. Show the commit where a boolean prop became `children`. |
+| 4.1 Auth Context | `SessionContext`, `useSession`, `RequireRole`, `/login` | Sign in as a student, then as an adviser; then delete the guard in devtools and land on `/advising` anyway. That is the RLS setup for Module 3. |
+| 2.2 Contract | all 9 operations, error responses, `components.schemas`, Redoc published | Read one operation end to end, then the commit that added its 409. Break the YAML indentation and let `redocly lint` say so. |
+| 4.2 Wrapper | `lib/api/client.ts`, TanStack Query on every screen | Devtools network tab: two screens, one request. Then approve an enrollment and watch the queue key invalidate. |
+| 4.3 Data states | skeletons, the three empties, error + retry, 320px pass | Prism's `--errors` flag and Slow 3G throttling. Every state on the projector without editing a line. |
 
 **Guardrails for this phase**
 
@@ -136,14 +136,14 @@ to explain.
 
 ## Phase 2 · Specimens
 
-Module 3 is a tour of this codebase, so it needs three specimens that exist only to be
+Module 2's back half is a tour of this codebase, so it needs three specimens that exist only to be
 read.
 
 - [ ] `lib/rules/units.ts` — pure functions for R2, R3, R4, with the tests written after
       the class watches the first one fail
 - [ ] `demos/subject-list-vanilla.html` — the same subject list in `createElement` and
-      `addEventListener`, for lesson 3.6
-- [ ] A one-page annotated `package.json` for lesson 3.1: every dependency, one sentence,
+      `addEventListener`, for lesson 2.8
+- [ ] A one-page annotated `package.json` for lesson 2.3: every dependency, one sentence,
       "what breaks if I remove this?"
 
 **Demo value:** every session opens a real file from a running app. That is the whole
@@ -161,7 +161,7 @@ important uncovered topic in the syllabus, and 4.4 is explained entirely from th
 - [ ] RLS policies for R7 and R8, then **demonstrate the bypass being blocked**: sign in
       as student A, request student B's enrollment, get nothing back. Same request the
       deleted route guard let through in week 4 — a three-week callback, tight enough that
-      the class still remembers it. Script this one; it is the best five minutes in Module 4.
+      the class still remembers it. Script this one; it is the best five minutes in Module 3.
 - [ ] Constraints + a trigger for R2, so the unit ceiling is enforced where it counts
 - [ ] An Edge Function for `submitEnrollment`, because it is a multi-table transaction
 - [ ] `supabase gen types typescript` — the second instance of "schema is truth, types
@@ -170,7 +170,7 @@ important uncovered topic in the syllabus, and 4.4 is explained entirely from th
       modeling has been done. Version it properly: `feat(contract)!: …`, a note saying
       who has to change what, and keep v1 in the history.
 
-**Explained as:** the v1 → v2 diff is the best slide in Module 4 and it has to be real.
+**Explained as:** the v1 → v2 diff is the best slide in Module 3 and it has to be real.
 When you write the contract in Phase 1, write it *before* doing the schema work in Phase 3
 and do not go back and improve it. The mistakes are the artifact — and the groups are about
 to make the same ones in sprint 1.
@@ -237,14 +237,14 @@ module.
 
 **Outstanding, before week 1:**
 
-1. **Push to GitHub.** The repo is local-only. Lesson 2.0 opens the real commit graph and
+1. **Push to GitHub.** The repo is local-only. Lesson 1.3 opens the real commit graph and
    tells students to read it themselves, which needs a URL.
 2. **Decide about the history order** — see the caveat under *Status* above. Leave it and
    explain it, or rebase before week 1.
 3. **Run the e2e suite against a seeded database** at least once end to end. It typechecks
    and the shape is right, but it has not been run green against live Supabase, so the
    selectors in `validation.spec.ts` are unverified. Do this before week 14.
-4. **One deliberate merge conflict**, resolved, in the history — lesson 2.0 says to
+4. **One deliberate merge conflict**, resolved, in the history — lesson 1.3 says to
    demonstrate one live, and a real one in the log is better than a staged one.
 
 ## Start here
@@ -254,7 +254,7 @@ module.
 2. Phase 0, then 1, then 2. Those three must exist before week 1, because Modules 1–3 are
    explained entirely from them.
 3. Write `contract/openapi.yaml` with all nine operations **before** any schema work, and
-   then leave it alone. Phase 3 will prove parts of it wrong; that diff is Module 4.7 and
+   then leave it alone. Phase 3 will prove parts of it wrong; that diff is Lesson 3.6 and
    it cannot be manufactured after the fact.
 4. Keep a running `DEMOS.md` as you build. Every time you notice "this would explain X
    well", write it down with the file path and the commit hash. By week 1 that file is

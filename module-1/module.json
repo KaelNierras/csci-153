@@ -1,12 +1,12 @@
 {
   "number": 1,
   "title": "UI/UX Design",
-  "subtitle": "Interface design you can defend, and the agentic workflow that builds it.",
-  "weeks": "1 \u2013 2",
+  "subtitle": "Interface design you can defend, the repository it lives in, and the static components it becomes.",
+  "weeks": "1 \u2013 3",
   "milestone": "Milestone 1 \u00b7 UI/UX",
-  "delivery": "Both lessons in weeks 1\u20132, whole and in order.",
-  "outcome": "CO1",
-  "slides": 49,
+  "delivery": "Design the screen, then build it \u2014 static, responsive, no data. Lessons 1.1\u20131.2 are design; 1.3 is the repo the work is delivered into; 1.4 turns the mockup into components.",
+  "outcome": "CO1 \u00b7 CO2",
+  "slides": 65,
   "status": "ready",
   "labs": [
     [
@@ -16,6 +16,10 @@
     [
       "Activity 2 \u2014 Brief to Prototype",
       "lab/activity-2-brief-to-prototype.md"
+    ],
+    [
+      "Activity 3 \u2014 Prototype to Components",
+      "lab/activity-3-prototype-to-components.md"
     ]
   ]
 }
