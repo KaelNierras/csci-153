@@ -1,12 +1,12 @@
 # Semester calendar — 8 weeks of lecture, 8 weeks of build
 
-**Decided 2026-08-19, re-cut 2026-09-22.** All four modules are lectured in
+**Decided 2026-08-19, re-cut 2026-09-22.** Modules 1–3 are lectured in
 **weeks 1–8**. Weeks **10–17** carry no new lectures except five short clinics: they are
 supervised development of the Final Web Project, run as four two-week sprints.
 
-Since 2026-09-22 the course is **four modules, each one a milestone** — UI/UX, Contract,
-Backend, Frontend — in the order a group actually builds a system. The five old decks were
-re-cut into these four. `milestones.md` is the authoritative document for that structure,
+Since 2026-09-22 the course is **five modules, each one a milestone** — UI/UX, Contract, Backend,
+Frontend, QA — in the order a group actually builds a system. The five old decks were re-cut,
+and a fifth was written for QA and acceptance. `milestones.md` is the authoritative document for that structure,
 the old→new lesson map, and the OBE argument behind it. This file is the week grid.
 
 ---
@@ -54,7 +54,8 @@ closing slides, which belonged to a module that no longer exists.
 | **1 · UI/UX** | **1–3** | 65 | old 1.1, 1.2 · old 2.0 → **1.3** · old 2.1 → **1.4** |
 | **2 · The Contract** | **4–6** | 35 | old 4.1 → **2.1** · old 2.3 → **2.2** · old 3.8 → **2.3** · the rest of old Module 3 **removed** |
 | **3 · Backend** | **7–8** | 42 | old 4.2–4.7 → **3.1–3.6** · old 5.4 → **3.7** |
-| **4 · Frontend** | **clinics 11–15** | 45 | old 2.2, 2.4, 2.5 → **4.1–4.3** · old 5.1, 5.2, 5.3, 5.5, 5.6 → **4.4–4.8** |
+| **4 · Frontend** | **clinics 11–13, 15** | 37 | old 2.2, 2.4, 2.5 → **4.1–4.3** · old 5.1, 5.2, 5.5 → **4.4–4.6** |
+| **5 · QA & Acceptance** | **14 · 16–17** | 21 | old 5.3 → **5.1** · old 5.6 → **5.5** · **5.2, 5.3, 5.4 new** |
 
 The full old→new lesson map is in `milestones.md`. Lesson numbers in the decks, the
 activity briefs and the reference app's comments all use the **new** numbering.
@@ -76,7 +77,7 @@ actually done, with you in the room.
 | **6** | 2 | 2.3 Does it work? — Vitest | Screens on the mock · first unit tests | **A5** Screens on your mock *(group)* · **A6** First unit tests · **M2 gate** |
 | **7** | **3 · Backend** | 3.1 Migrations · 3.2 CRUD over the schema · 3.3 Row Level Security | Migration clinic on the group's own model | **A7** Schema + migrations |
 | **8** | 3 | 3.4 Constraints & triggers · 3.5 Edge Functions · 3.6 Implementing the contract · 3.7 CI | Sprint 1 planning: issues, milestones, board, CI wired | **A8** RLS policies |
-| **9** | — | **MIDTERM EXAMINATION** — covers all four modules | | |
+| **9** | — | **MIDTERM EXAMINATION** — covers modules 1–3 | | |
 
 **Week 4 is the hinge.** Two dense inputs in one block: the data model and the contract
 that exposes it. The normalisation stepper (2.1) and the spec explorer (2.2) are both
@@ -98,8 +99,8 @@ as one input and one demo, straight into using it that afternoon.
 | **11** | 4.1 Auth Context + route protection | 45 | Needs a real session to protect a route with |
 | **12** | 4.2 API wrapper & server state · 4.3 Data states | 60 | Needs endpoints to wrap and latency to show |
 | **13** | 4.4 Two-layer validation · 4.5 Integration day | 60 | Needs both layers to exist before you can bypass one |
-| **14** | 4.6 End-to-end testing | 45 | Needs a working app to drive |
-| **15** | 4.7 Deployment | 45 | Teaching deployment seven weeks before anyone deploys guarantees it is forgotten |
+| **14** | **5.1** End-to-end testing · **5.2** Test cases as issues | 60 | Needs a working app to drive, and a backlog of cases to drive it through |
+| **15** | 4.6 Deployment | 45 | Teaching deployment seven weeks before anyone deploys guarantees it is forgotten |
 
 **CI moved the other way** — out of the clinics and into week 8, as lesson 3.7. It runs
 `lint`, `typecheck`, `test` and `contract:check`, and all four exist by week 8. Wiring it at the
@@ -116,8 +117,8 @@ Four two-week sprints. No new material except the five clinics.
 |---|---|---|---|---|
 | **1** | 10–11 | **3** | Schema, migrations, and RLS for the group's own system. Contract v2 versioned where week-4 decisions were wrong. *Clinic: 4.1 auth context (11)* | Another group's account cannot read your rows. Demonstrated, not claimed |
 | **2** | 12–13 | 3 → **4** | CRUD endpoints and Edge Functions. First screens wired to the real backend. *Clinics: 4.2/4.3 (12), 4.4/4.5 (13)* | `contract:check` passes. CI is green and required before merge |
-| **3** | 14–15 | 4 | Remaining screens, validation on both layers, staging deployment. *Clinics: 4.6 e2e (14), 4.7 deployment (15)* | The app is reachable at a URL by someone not in the group. **A9** |
-| **4** | 16–17 | 4 | Hardening, test-cases-as-issues cleared, 12-point QA on every screen | **A10** · Codebase Assessment · Final Web Project + demos |
+| **3** | 14–15 | 4 | Remaining screens, validation on both layers, staging deployment. *Clinics: 5.1/5.2 e2e and test cases (14), 4.6 deployment (15)* | The app is reachable at a URL by someone not in the group. **A9** |
+| **4** | 16–17 | **5** | **Module 5 is lectured and applied here**: the Day In The Life run (5.3), the 12-point QA on every screen (5.4), test-case issues cleared, hardening | The DITL run completes across every role, driven by another group, with no blocking defect. **A10** · Codebase Assessment · Final Web Project + demos |
 
 **Integration is now incremental.** Under the old order the frontend met the backend for
 the first time in week 13 and the failure surface was the whole application. Now screens
@@ -159,7 +160,7 @@ Unchanged by the resequencing. All ten activities keep their original weeks.
 | A7 Schema + migrations | 3% | W7 | 3 |
 | A8 RLS policies | 3% | W8 | 3 |
 | A9 Deployed staging build | 3% | W15 | 4 — **gate** |
-| A10 E2E tests from issues | 3% | W16 | 4 |
+| A10 E2E tests from issues | 3% | W16 | 5 |
 | **Codebase Assessment** | **20%** | W16–17 | — |
 | **Final Web Project** | **50%** | W17, demos W17–18 | — |
 
@@ -191,7 +192,7 @@ which is the tightest deadline this restructure creates.
 - [x] `plan/index.html` — rebuilt for four modules and the new lesson numbering
 - [x] `index.html` landing page
 - [x] `reference-app/BUILD-PLAN.md` — rewritten against the app as actually built
-- [ ] **Activities 5–10 need writing** — A5–A8 by week 6
+- [ ] **Activities 5–10 need writing** — A5–A8 by week 6; A10's brief now belongs to Module 5
 - [x] **The week-5 prior-knowledge diagnostic** — written, at
       `module-2/lab/week-5-prior-knowledge-diagnostic.md`. Six questions over real reference-app
       code, banded not graded, with a retained cohort summary as the CO3 attainment record. It

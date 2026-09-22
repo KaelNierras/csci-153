@@ -1,6 +1,6 @@
 # Module 4 — Frontend Development · outline
 
-**CSci 153 · Clinics in weeks 11–15 · Milestone 4 · CO2 and CO5**
+**CSci 153 · Clinics in weeks 11–13 and 15 · Milestone 4 · CO2 and CO5**
 Syllabus LOs: **LO 5.1** validate user inputs on client and server layers ·
 **LO 5.2** utilize API endpoints for frontend application ·
 **LO 5.3** deploy a web application to a cloud platform · **LO 3.5** JSON
@@ -8,14 +8,14 @@ serialize/deserialize — relocated here 2026-09-22, met in lesson 4.2 where the
 actually sends and receives it
 *(CO2's LOs — 2.1 and 2.2 — are attained in Module 1, lesson 1.4.)*
 
-Status: **ready** — 45 slides, `module-4/index.html`. Interactive instruments: the
+Status: **ready** — 37 slides, `module-4/index.html`. Interactive instruments: the
 prop-drilling visualiser (4.1), the query cache (4.2), the validation bypass (4.4) — the same
 bad write sent by a form, by devtools, by a REST client, and with a service-role key — and the
-three-place deployment map (4.7).
+three-place deployment map (4.6).
 
 > ## The milestone
 >
-> **Consume the backend that now exists.** Taught as five ~45–60 minute clinics inside the
+> **Consume the backend that now exists.** Taught as four ~45–60 minute clinics inside the
 > development phase, each in the week it is applied, and built across sprints 2–4.
 >
 > This is the same exception the calendar already made for deployment and e2e, extended to the
@@ -33,9 +33,11 @@ three-place deployment map (4.7).
 | 4.3 | **Data states in practice** | *(no LO)* | 6 | **W12** |
 | 4.4 | **Two-layer validation** | 5.1 | 5 | **W13**, ~60 min |
 | 4.5 | **Integration day** | 5.2 | 4 | **W13** |
-| 4.6 | **End-to-end testing — briefly** | *(no LO)* | 4 | **W14**, ~45 min |
-| 4.7 | **Deployment** | 5.3 | 4 | **W15**, ~45 min |
-| 4.8 | **Codebase assessment** | — | 3 | W16–17, the graded read-through |
+| 4.6 | **Deployment** | 5.3 | 4 | **W15**, ~45 min |
+
+**End-to-end testing and the codebase assessment moved to Module 5** on 2026-09-22, along
+with Activity 10. This module builds and ships the frontend; proving it works is a milestone
+of its own. Old 4.6 → 5.1, old 4.8 → 5.5, and old 4.7 Deployment became 4.6.
 
 **Nothing here carries a CO2 outcome.** 4.1, 4.2 and 4.3 were Module 2's lessons 2.2, 2.4 and
 2.5; all three are enrichment. LO 2.1 and LO 2.2 are both attained by lesson 1.4 in week 3 and
@@ -86,19 +88,7 @@ lesson for having less to fix.
 
 ---
 
-## 4.6 · End-to-end testing — the brief version
-
-**No LO**, ~1 session, building on the unit-testing session in 2.10.
-
-Cover: e2e versus unit · Playwright driving a real browser · writing one test for one
-already-written test-case issue · **why e2e tests must run as an authenticated role**, so RLS is
-actually exercised rather than bypassed. The specs' §12 workflow — the Project Manager raises
-test cases as issues, a contributor implements the Playwright test, the PR closes the issue —
-is the deliverable.
-
----
-
-## 4.7 · Deployment
+## 4.6 · Deployment
 
 Cover: a static SPA build versus a server · the catch-all rewrite to `index.html`, and why deep
 links 404 without it · deploying Edge Functions separately from the frontend · environment
@@ -113,7 +103,8 @@ already in 3.5).
 | Activity | Week |
 |---|---|
 | **A9** Deployed staging build | 15 — **the milestone gate** |
-| **A10** E2E tests from issues | 16 |
+
+A10 moved to Module 5 with the end-to-end lesson it depends on.
 
 ---
 
@@ -124,8 +115,10 @@ Milestone 1  UI/UX      design the screen, then build it static
 Milestone 2  Contract   agree the shape of the data
 Milestone 3  Backend    implement that shape
 Milestone 4  Frontend   consume it, validate it, ship it
+Milestone 5  QA         prove it works, then hand it over
 ```
 
 Read it as one sentence: **you cannot agree a contract for data you have not modelled, you
-cannot implement a contract you have not agreed, and you cannot consume an implementation that
-does not exist.** Each milestone hands the next one the artifact it needs.
+cannot implement a contract you have not agreed, you cannot consume an implementation that
+does not exist, and you cannot accept a system you have never run end to end.** Each milestone
+hands the next one the artifact it needs.

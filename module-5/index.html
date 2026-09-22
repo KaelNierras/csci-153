@@ -1,0 +1,830 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The QA Bench</title>
+<link rel="stylesheet" href="../shared/deck.css">
+
+<script type="application/json" id="deck-sections">
+{
+  "names": {
+    "5.1": "Lesson 5.1 — End-to-end testing",
+    "5.2": "Lesson 5.2 — Test cases as issues",
+    "5.3": "Lesson 5.3 — Day In The Life",
+    "5.4": "Lesson 5.4 — The 12-point QA",
+    "5.5": "Lesson 5.5 — Codebase assessment"
+  },
+  "colors": {
+    "5.1": "var(--violet)",
+    "5.2": "var(--violet)",
+    "5.3": "var(--violet)",
+    "5.4": "var(--brass)",
+    "5.5": "var(--violet)"
+  }
+}
+</script>
+
+<style>
+/* A third signal — violet — marks material no syllabus outcome requires
+   but the Final Activity Project does. Same encoding as the semester plan. */
+:root {
+  --violet:     #A38BD1;
+  --violet-lit: #C3AEEA;
+  --violet-dim: #3A2F52;
+  --violet-ink: #150F20;
+}
+</style>
+
+<style>
+/* ---- carried from the old Module 2 ---- */
+/* Module 2 additions to the shared system.
+   A third signal — violet — marks material no syllabus outcome requires
+   but the Final Activity Project does. Same encoding as the semester plan. */
+
+/* section accents ride on the deck element so the rails change too */
+#deck[data-sec="lab"] {
+  --accent: #E7EBF2; --accent-lit: #FFFFFF;
+  --accent-dim: #2B3547; --accent-ink: #0A0D13;
+}
+
+/* progress ticks, grouped by lesson */
+
+/* chip variant for the added-material marker */
+.chip--added { border-color: var(--violet-dim); color: var(--violet); background: rgba(163,139,209,0.10); }
+
+/* ---- module-specific widget styling ---- */
+
+/* prop-drilling visualiser */
+.drill { display: flex; flex-direction: column; gap: var(--s3); }
+.drill__tree { display: flex; flex-direction: column; gap: 2px; font-family: var(--mono); font-size: 0.78rem; }
+.drill__node {
+  display: grid; grid-template-columns: 1fr auto; gap: var(--s3); align-items: center;
+  padding: 0.35rem var(--s3); border: 1px solid var(--line); background: var(--panel-2);
+  transition: background .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease);
+}
+.drill__node[data-carrier="1"] { border-color: var(--fail); color: var(--fail); background: #1B1113; }
+.drill__node[data-user="1"]    { border-color: var(--pass); color: var(--pass); background: #0F1A17; }
+.drill__tag { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.drill__count { font-family: var(--mono); font-size: 0.72rem; color: var(--text-3); }
+.drill__count b { color: var(--fail); }
+
+/* spec explorer */
+.spec { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); align-items: start; }
+@media (max-width: 60rem) { .spec { grid-template-columns: 1fr; } }
+.spec__ops { display: flex; flex-direction: column; gap: 2px; }
+.spec__op {
+  display: grid; grid-template-columns: 3.6rem 1fr; gap: var(--s3); align-items: baseline;
+  text-align: left; background: var(--panel-2); border: 1px solid var(--line);
+  padding: 0.4rem var(--s3); cursor: pointer; font-family: var(--mono); font-size: 0.74rem;
+  color: var(--text-2); transition: background .15s var(--ease), border-color .15s var(--ease);
+}
+.spec__op:hover { background: var(--panel-3); }
+.spec__op[aria-selected="true"] { border-color: var(--accent); background: var(--panel-3); color: var(--text); }
+.spec__verb { font-size: 0.62rem; letter-spacing: 0.08em; text-align: center; padding: 0.1rem 0; }
+.spec__verb[data-v="GET"]    { color: var(--cyan); }
+.spec__verb[data-v="POST"]   { color: var(--pass); }
+.spec__verb[data-v="DELETE"] { color: var(--fail); }
+.spec__detail { display: flex; flex-direction: column; gap: var(--s3); min-height: 16rem; }
+.spec__opid { font-family: var(--mono); font-size: 0.7rem; color: var(--accent); letter-spacing: 0.06em; }
+.spec__sum  { font-size: 0.88rem; color: var(--text-2); }
+
+/* schema → type */
+.s2t { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); align-items: start; }
+@media (max-width: 60rem) { .s2t { grid-template-columns: 1fr; } }
+.s2t__ctl { display: flex; flex-wrap: wrap; gap: var(--s3); }
+.s2t__f {
+  display: flex; align-items: center; gap: var(--s2);
+  font-family: var(--mono); font-size: 0.68rem; color: var(--text-2);
+  border: 1px solid var(--line); background: var(--panel-2); padding: 0.25rem 0.5rem;
+}
+.s2t__f button {
+  background: none; border: 0; cursor: pointer; padding: 0 0.2rem;
+  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em;
+  color: var(--text-4); text-transform: uppercase;
+}
+.s2t__f button[aria-pressed="true"] { color: var(--accent); }
+
+/* contract diff */
+.cdiff { display: flex; flex-direction: column; gap: var(--s3); }
+.cdiff__row {
+  display: grid; grid-template-columns: 1.4rem 1fr auto; gap: var(--s3); align-items: baseline;
+  padding: var(--s3); border: 1px solid var(--line); background: var(--panel-2);
+  font-size: 0.85rem;
+}
+.cdiff__row[data-k="breaking"] { border-left: 2px solid var(--fail); }
+.cdiff__row[data-k="additive"] { border-left: 2px solid var(--pass); }
+.cdiff__m { font-family: var(--mono); font-size: 0.8rem; }
+.cdiff__row[data-k="breaking"] .cdiff__m { color: var(--fail); }
+.cdiff__row[data-k="additive"] .cdiff__m { color: var(--pass); }
+.cdiff__code { font-family: var(--mono); font-size: 0.78rem; color: var(--text); }
+.cdiff__why  { font-size: 0.82rem; color: var(--text-3); margin-top: 0.15rem; }
+.cdiff__verdict {
+  display: flex; align-items: center; gap: var(--s3);
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+}
+
+/* commit graph — GitKraken-style lanes */
+.gg { display: flex; flex-direction: column; gap: var(--s3); padding: var(--s4); }
+.gg__stage {
+  position: relative; overflow-x: auto; overflow-y: hidden;
+  border: 1px solid var(--line); background: var(--sunk);
+}
+.gg__inner { position: relative; min-width: 30rem; }
+.gg__svg { position: absolute; top: 0; left: 0; pointer-events: none; }
+.gg__rows { position: relative; display: flex; flex-direction: column; }
+.gg__row {
+  display: grid; align-items: center; gap: var(--s3);
+  padding-right: var(--s4);
+  font-size: 0.82rem; color: var(--text-2);
+  border-bottom: 1px solid var(--line-soft);
+}
+.gg__row:last-child { border-bottom: 0; }
+.gg__row.is-new { animation: ggIn .32s var(--ease) both; }
+@keyframes ggIn { from { opacity: 0; transform: translateY(-0.35rem); } to { opacity: 1; transform: none; } }
+.gg__msg { display: flex; align-items: center; gap: var(--s3); min-width: 0; }
+.gg__txt { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gg__row.is-merge .gg__txt { color: var(--text); }
+.gg__who {
+  font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.08em;
+  color: var(--text-4); text-transform: uppercase; white-space: nowrap;
+}
+.gg__pill {
+  font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.08em;
+  padding: 0.1rem 0.4rem; border: 1px solid currentColor; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 0.3rem; flex: none;
+}
+.gg__pill::before { content: ""; width: 0.35rem; height: 0.35rem; background: currentColor; border-radius: 50%; }
+.gg__ctl { display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap; }
+.gg__step {
+  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em;
+  color: var(--text-3); font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.gg__note {
+  border-left: 2px solid var(--accent);
+  padding: var(--s3) var(--s4); background: var(--panel);
+  font-size: 0.9rem; color: var(--text-2); min-height: 4.4rem;
+}
+.gg__note b { color: var(--text); }
+.gg__cmd {
+  font-family: var(--mono); font-size: 0.72rem; color: var(--accent-lit);
+  display: block; margin-top: 0.35rem;
+}
+.gg__legend { display: flex; gap: var(--s4); flex-wrap: wrap; font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.gg__legend span { display: inline-flex; align-items: center; gap: var(--s2); color: var(--text-3); }
+.gg__legend i { width: 0.55rem; height: 0.55rem; border-radius: 50%; }
+@media (prefers-reduced-motion: reduce) { .gg__row.is-new { animation: none; } }
+
+/* query cache */
+.qc { display: flex; flex-direction: column; gap: var(--s3); }
+.qc__keys { display: flex; flex-direction: column; gap: 2px; }
+.qc__key {
+  display: grid; grid-template-columns: 1fr 5.5rem; gap: var(--s3); align-items: center;
+  font-family: var(--mono); font-size: 0.75rem;
+  border: 1px solid var(--line); background: var(--panel-2); padding: 0.35rem var(--s3);
+  transition: border-color .25s var(--ease), background .25s var(--ease);
+}
+.qc__state { font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; text-align: right; }
+.qc__key[data-s="fresh"]   { border-color: #2C5C43; }
+.qc__key[data-s="fresh"]   .qc__state { color: var(--pass); }
+.qc__key[data-s="stale"]   { border-color: var(--fail); background: #1B1113; }
+.qc__key[data-s="stale"]   .qc__state { color: var(--fail); }
+.qc__key[data-s="fetching"]{ border-color: var(--accent); }
+.qc__key[data-s="fetching"] .qc__state { color: var(--accent); }
+</style>
+
+<style>
+/* ---- carried from the old Module 5 ---- */
+
+#deck[data-sec="lab"] {
+  --accent: #E7EBF2; --accent-lit: #FFFFFF;
+  --accent-dim: #2B3547; --accent-ink: #0A0D13;
+}
+
+
+.chip--added { border-color: var(--violet-dim); color: var(--violet); background: rgba(163,139,209,0.10); }
+.chip--clinic { border-color: var(--violet-dim); color: var(--violet-lit); background: rgba(163,139,209,0.14); }
+
+.file {
+  display: inline-flex; align-items: center; gap: var(--s2);
+  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.04em;
+  border: 1px solid var(--accent-dim); color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 8%, transparent);
+  padding: 0.15rem 0.5rem;
+}
+.file::before { content: "◆"; font-size: 0.55rem; opacity: 0.8; }
+
+/* ---- validation bypass (5.1) ---- */
+.val { display: grid; grid-template-columns: 1fr 1.1fr; gap: var(--s4); align-items: start; }
+@media (max-width: 60rem) { .val { grid-template-columns: 1fr; } }
+.val__layers { display: flex; flex-direction: column; gap: 2px; }
+.val__layer {
+  display: grid; grid-template-columns: 1fr auto; gap: var(--s3); align-items: center;
+  border: 1px solid var(--line); background: var(--panel-2); padding: 0.45rem var(--s3);
+  font-family: var(--mono); font-size: 0.72rem;
+  transition: border-color .25s var(--ease), opacity .25s var(--ease), background .25s var(--ease);
+}
+.val__layer[data-r="blocked"] { border-color: var(--pass); background: #0F1A17; }
+.val__layer[data-r="passed"]  { border-color: var(--line-loud); }
+.val__layer[data-r="skipped"] { opacity: 0.3; }
+.val__tag { font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.val__layer[data-r="blocked"] .val__tag { color: var(--pass); }
+.val__layer[data-r="skipped"] .val__tag { color: var(--text-4); }
+.val__out {
+  border: 1px solid var(--line); background: var(--sunk);
+  padding: var(--s4); font-family: var(--mono); font-size: 0.76rem;
+}
+.val__out b { font-size: 0.95rem; }
+
+/* ---- pipeline (5.4) ---- */
+.pipe { display: flex; flex-direction: column; gap: var(--s3); }
+.pipe__steps { display: flex; flex-direction: column; gap: 2px; }
+.pipe__step {
+  display: grid; grid-template-columns: 1.3rem 1fr auto; gap: var(--s3); align-items: baseline;
+  border: 1px solid var(--line); background: var(--panel-2); padding: 0.35rem var(--s3);
+  font-family: var(--mono); font-size: 0.74rem;
+}
+.pipe__step[data-s="pass"] { border-left: 2px solid var(--pass); }
+.pipe__step[data-s="fail"] { border-left: 2px solid var(--fail); background: #1B1113; }
+.pipe__step[data-s="skip"] { opacity: 0.35; }
+.pipe__step[data-s="run"]  { border-left: 2px solid var(--accent); }
+.pipe__m { font-size: 0.8rem; }
+.pipe__step[data-s="pass"] .pipe__m { color: var(--pass); }
+.pipe__step[data-s="fail"] .pipe__m { color: var(--fail); }
+.pipe__msg { grid-column: 2 / -1; font-size: 0.66rem; color: var(--fail); }
+.pipe__gate {
+  border: 1px solid var(--line); background: var(--sunk);
+  padding: var(--s3) var(--s4); font-family: var(--mono); font-size: 0.76rem;
+}
+
+/* ---- deployment map (5.5) ---- */
+.dep5 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s3); }
+@media (max-width: 52rem) { .dep5 { grid-template-columns: 1fr; } }
+.dep5__box {
+  border: 1px solid var(--line); background: var(--panel-2); padding: var(--s4);
+  display: flex; flex-direction: column; gap: var(--s2);
+}
+.dep5__box.is-hot { border-color: var(--accent); background: var(--panel-3); }
+.dep5__t { font-size: 0.9rem; font-weight: 600; }
+.dep5__k { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-4); }
+.dep5__b { font-size: 0.82rem; color: var(--text-3); }
+.dep5__secret { font-family: var(--mono); font-size: 0.68rem; }
+.dep5__secret[data-ok="1"] { color: var(--pass); }
+.dep5__secret[data-ok="0"] { color: var(--fail); }
+</style>
+
+<style>
+/* Module 5 · section accents. Violet marks the material no syllabus outcome
+   requires but every project spec does — which is most of this module. */
+#deck[data-sec="5.1"], #deck[data-sec="5.2"], #deck[data-sec="5.3"], #deck[data-sec="5.5"] {
+  --accent: var(--violet); --accent-lit: var(--violet-lit);
+  --accent-dim: var(--violet-dim); --accent-ink: var(--violet-ink);
+}
+#deck[data-sec="5.4"] {
+  --accent: var(--brass); --accent-lit: var(--brass-lit);
+  --accent-dim: var(--brass-dim); --accent-ink: var(--brass-ink);
+}
+#deck[data-sec="lab"] {
+  --accent: #E7EBF2; --accent-lit: #FFFFFF;
+  --accent-dim: #2B3547; --accent-ink: #0A0D13;
+}
+
+.tick[data-sec="5.1"], .tick[data-sec="5.2"], .tick[data-sec="5.3"], .tick[data-sec="5.5"] { background: var(--violet-dim); }
+.tick[data-sec="5.4"] { background: var(--brass-dim); }
+.tick.is-done[data-sec="5.1"], .tick.is-done[data-sec="5.2"], .tick.is-done[data-sec="5.3"], .tick.is-done[data-sec="5.5"] { background: #6A5A8E; }
+.tick.is-done[data-sec="5.4"] { background: #8B6B2E; }
+</style>
+</head>
+<body>
+
+<div id="deck" data-sec="0">
+
+  <!-- ============ top rail ============ -->
+  <header class="rail rail--top">
+    <span class="rail__mark"><i class="rail__dot"></i> Module 05</span>
+    <span class="rail__sep">/</span>
+    <span id="rail-lesson">Orientation</span>
+    <span class="rail__spacer"></span>
+    <span class="rail__course">CSci 153 · Web Systems &amp; Technologies</span>
+    <span class="rail__sep">/</span>
+    <span class="rail__count"><b id="count-now">01</b> <span class="dim">of</span> <span id="count-all">21</span></span>
+  </header>
+
+  <!-- ============ stage ============ -->
+  <main id="stage">
+
+    <section class="slide slide--center" data-sec="0" data-label="Cover" data-rail="Orientation">
+      <div class="col" style="gap:var(--s5);align-items:center">
+        <span class="eyebrow eyebrow--plain">Visayas State University · DCST · Module 05 · Weeks 14 and 16–17 · Milestone 5</span>
+        <h1 class="h1" style="max-width:24ch">Prove it works,<br>then hand it over</h1>
+        <p class="lede" style="text-align:center;margin-inline:auto">
+          Every feature passing on its own is not the same as the system working. This is the
+          module that tells the difference.
+        </p>
+        <div class="row" style="justify-content:center;margin-top:var(--s4)">
+          <span class="chip">Quality assurance &amp; acceptance</span>
+          <span class="chip">Codebase Assessment · 20%</span>
+        </div>
+        <p class="small mono" style="margin-top:var(--s5);letter-spacing:0.12em">
+          PRESS <kbd style="border:1px solid var(--line);padding:0.1em 0.4em">→</kbd> TO START ·
+          <kbd style="border:1px solid var(--line);padding:0.1em 0.4em">O</kbd> FOR THE SLIDE MAP ·
+          <kbd style="border:1px solid var(--line);padding:0.1em 0.4em">?</kbd> FOR KEYS
+        </p>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="0" data-label="How this module runs" data-rail="Orientation">
+      <span class="eyebrow">Different shape again</span>
+      <h2 class="h2">One clinic, then the last two weeks</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th style="width:9rem">When</th><th style="width:15rem">What</th><th>Why then</th></tr></thead>
+          <tbody>
+            <tr style="background:color-mix(in oklab, var(--violet) 8%, transparent)"><td class="num">Week 14</td><td><b>5.1</b> End-to-end testing<br><b>5.2</b> Test cases as issues <span class="chip chip--clinic">clinic</span></td><td>You need a working app to drive, and a backlog of cases to drive it through.</td></tr>
+            <tr><td class="num">Week 16</td><td><b>5.3</b> Day In The Life</td><td>The app is deployed by now. A dress rehearsal is only worth running on the real thing.</td></tr>
+            <tr><td class="num">Week 16</td><td><b>5.4</b> The 12-point QA pass</td><td>Every screen, one last time, against the checklist you have been carrying since Module 1.</td></tr>
+            <tr><td class="num">Weeks 16–17</td><td><b>5.5</b> Codebase assessment</td><td>The graded read-through of your repository. 20% of the course.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="callout">
+        <b>Nothing new is built in this module.</b> Everything here is about finding out
+        whether what you already built actually holds — which is a different skill, and the
+        one that separates a demo from a system.
+      </p>
+    </section>
+
+    <section class="slide" data-sec="0" data-label="Outcomes" data-rail="Orientation">
+      <span class="eyebrow">What this module is for</span>
+      <h2 class="h2">Three questions, and how each one is answered</h2>
+      <div class="grid grid--3">
+        <div class="card"><span class="card__k">Does each flow work?</span><div class="card__t">End to end</div><p class="card__b">Playwright, driving a real browser as a real authenticated role. Cases written by someone other than the person implementing them.</p></div>
+        <div class="card"><span class="card__k">Does the whole thing work?</span><div class="card__t">Day In The Life</div><p class="card__b">One complete cycle across every role, in order, on the deployed app, driven by someone outside the group.</p></div>
+        <div class="card"><span class="card__k">Would anyone else survive it?</span><div class="card__t">The read-through</div><p class="card__b">Somebody opens your repository and asks you about it. The 12-point QA, and 20% of the course.</p></div>
+      </div>
+      <p class="callout">
+        <b>No syllabus outcome requires this module</b>, and every one of the three project
+        specs does. §12 makes test-cases-as-issues a graded workflow, and the Final Web
+        Project is demonstrated, not submitted — a demo is a Day In The Life run with an
+        audience.
+      </p>
+    </section>
+<section class="slide slide--center" data-sec="5.1" data-label="Lesson 5.1 opens" data-rail="End-to-end testing">
+      <div class="col" style="gap:var(--s4);align-items:center">
+        <span class="eyebrow eyebrow--plain">Lesson 5.1 · week 14 clinic · 45 minutes</span>
+        <h2 class="h1" style="max-width:24ch">One test that<br>proves the app works</h2>
+        <p class="lede" style="text-align:center;margin-inline:auto">A real browser, a real backend, a real flow.</p>
+        <span class="chip chip--clinic">Taught in the week you apply it</span>
+      </div>
+    </section><section class="slide" data-sec="5.1" data-label="Unit vs e2e" data-rail="End-to-end testing">
+      <span class="eyebrow">What this adds to Lesson 2.7</span>
+      <h2 class="h2">Different question, different cost</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">A unit test asks…</div>
+          <p class="body">"Does <code>canAddSubject</code> reject a 24-unit load?"</p>
+          <p class="body">Milliseconds. No browser, no server, no database. You run hundreds without noticing.</p>
+          <p class="body"><b>It cannot tell you the button was wired to the wrong handler.</b></p>
+        </div>
+        <div class="panel" style="border-color:var(--violet-dim)">
+          <div class="panel__head" style="color:var(--violet)">An e2e test asks…</div>
+          <p class="body">"Can a student sign in, add three subjects, submit, and see the confirmation?"</p>
+          <p class="body">Tens of seconds. Real browser, real requests, real rows. You keep a handful.</p>
+          <p class="body"><b>It is the only kind that proves the app works.</b></p>
+        </div>
+      </div>
+      <p class="callout">
+        <b>Both, in that ratio.</b> Many cheap tests on the rules, a few expensive ones on the
+        journeys that must never break — sign in, the core flow, and one permission boundary.
+      </p>
+    </section><section class="slide slide--wide" data-sec="5.1" data-label="A real test" data-rail="End-to-end testing">
+      <span class="eyebrow">The one to write first</span>
+      <h2 class="h2">The flow your project exists to do</h2>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">e2e/enrollment.spec.ts</div>
+          <pre>test('a student submits an enrollment', async ({ page }) =&gt; {
+  await <b>loginAs</b>(page, 'student')          <i>// a real session</i>
+
+  await page.goto('/subjects')
+  await page.getByRole('searchbox').fill('CSci')
+  await page.getByRole('button', { name: 'Add' }).first().click()
+
+  await page.goto('/enrollment')
+  await expect(page.getByText('3 units')).toBeVisible()
+
+  await page.getByRole('button', { name: 'Submit' }).click()
+  await expect(page.getByText('Waiting for your adviser')).toBeVisible()
+})</pre>
+          <p class="small"><code>getByRole</code>, not a CSS class. A test that breaks when you restyle a button was testing the wrong thing.</p>
+        </div>
+        <div class="col">
+          <div class="panel" style="border-color:var(--fail)">
+            <div class="panel__head" style="color:var(--fail)">The rule that makes e2e worth doing</div>
+            <p class="body"><b>Run as an authenticated role.</b> A test using the service role bypasses RLS — so it passes while your app is broken for every real user, which is worse than having no test.</p>
+          </div>
+          <div class="panel">
+            <div class="panel__head">And one test for the boundary</div>
+            <pre>test('a student cannot open the adviser queue',
+  async ({ page }) =&gt; {
+    await loginAs(page, 'student')
+    await page.goto('/advising')
+    await expect(page).toHaveURL('/')
+  })</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide slide--center" data-sec="5.2" data-label="Lesson 5.2 opens" data-rail="Test cases as issues">
+      <div class="col" style="gap:var(--s4);align-items:center">
+        <span class="eyebrow eyebrow--plain">Lesson 5.2 · week 14 clinic</span>
+        <h2 class="h1" style="max-width:25ch">A test nobody<br>asked for proves<br>nothing either</h2>
+        <p class="lede" style="text-align:center;margin-inline:auto">Where test cases come from, and why you do not write your own.</p>
+      </div>
+    </section>
+<section class="slide" data-sec="5.2" data-label="Test cases as issues" data-rail="Test cases as issues">
+      <span class="eyebrow">The workflow your spec's §12 requires</span>
+      <h2 class="h2">Whoever writes the case does not write the test</h2>
+      <div class="grid grid--3">
+        <div class="card"><span class="card__k">01 · Project Manager</span><div class="card__t">Files the case as an issue</div><p class="card__b">Scenario, steps, expected result. In words, from the user's side. No code.</p></div>
+        <div class="card"><span class="card__k">02 · A contributor</span><div class="card__t">Writes the Playwright test</div><p class="card__b">On a branch, in a PR that says <code>Closes #47</code>. Merging closes the issue.</p></div>
+        <div class="card"><span class="card__k">03 · Everyone</span><div class="card__t">CI runs it forever</div><p class="card__b">The case stops being a document somebody remembers and becomes a check that cannot be skipped.</p></div>
+      </div>
+      <div class="panel">
+        <div class="panel__head">Why the split is deliberate</div>
+        <p class="body">Someone writing both tends to write the test they know passes. Handing the case to a different person surfaces the ambiguity in the description — and an ambiguous test case is a requirement nobody actually agreed on.</p>
+      </div>
+      <p class="callout"><b>This is graded.</b> Activity 10 is test cases you did not write, implemented as tests that pass.</p>
+    </section>
+    <section class="slide slide--wide" data-sec="5.2" data-label="A case worth implementing" data-rail="Test cases as issues">
+      <span class="eyebrow">What the Project Manager actually writes</span>
+      <h2 class="h2">Two cases for the same rule. Only one can be implemented.</h2>
+      <div class="grid grid--2">
+        <div class="panel" style="border-color:var(--danger)">
+          <div class="panel__head" style="color:var(--danger)">Not implementable</div>
+          <pre>#41 · Unit ceiling should work
+
+The system should stop students from
+enrolling in too many units.</pre>
+          <p class="small">Too many is how many? Stopped where — the button, the request, the database? What does the student see? Three people will write three different tests, and all of them can claim to pass.</p>
+        </div>
+        <div class="panel">
+          <div class="panel__head" style="color:var(--cyan)">Implementable</div>
+          <pre>#41 · A student cannot exceed 21 units
+
+<b>Given</b>  Maria has a draft at 18 units
+<b>When</b>   she adds CSci 153 (6 units)
+<b>Then</b>   the Add button is disabled, and
+       the row says "would put you at 24,
+       the limit is 21"
+<b>And</b>    posting it with a REST client
+       returns 422 UNIT_CEILING</pre>
+          <p class="small">Given / When / Then, in the user's words, with the observable result named. The last line is what makes it a real case rather than a UI check.</p>
+        </div>
+      </div>
+      <p class="callout">
+        <b>Write the case from the specification, not from the screen.</b> A case written by
+        looking at what the app currently does can only ever confirm what it currently does.
+      </p>
+    </section>
+
+    <section class="slide" data-sec="5.2" data-label="The defect report" data-rail="Test cases as issues">
+      <span class="eyebrow">When a case fails, or a DITL run trips</span>
+      <h2 class="h2">A bug report nobody can reproduce is a complaint</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">Five lines, every time</div>
+          <div class="steps">
+            <div class="step"><div><div class="step__t">Steps</div><div class="step__b">Numbered, from signed out. Including which account.</div></div></div>
+            <div class="step"><div><div class="step__t">Expected</div><div class="step__b">What the spec or the contract says should happen.</div></div></div>
+            <div class="step"><div><div class="step__t">Actual</div><div class="step__b">What happened, with the exact message or status code.</div></div></div>
+            <div class="step"><div><div class="step__t">Where</div><div class="step__b">Staging or local, which browser, what time — so the logs can be found.</div></div></div>
+            <div class="step"><div><div class="step__t">Severity</div><div class="step__b">Blocks the cycle, or does not. Only the first kind stops a release.</div></div></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head" style="color:var(--violet)">Triage, in sprint 4</div>
+            <ul class="list">
+              <li><b>Blocker</b> — the DITL run cannot continue. Fix now</li>
+              <li><b>Major</b> — a role cannot finish its job another way. Fix this sprint</li>
+              <li><b>Minor</b> — wrong but survivable. Fix if the blockers are clear</li>
+              <li><b>Won't fix</b> — say so <em>in the issue</em>, with the reason</li>
+            </ul>
+          </div>
+          <p class="callout"><b>"Won't fix" is a legitimate engineering answer</b> and an unanswered issue is not. Closing an issue with a reason is evidence of judgement; letting it rot is evidence of neither.</p>
+        </div>
+      </div>
+    </section>
+    <section class="slide slide--center" data-sec="5.3" data-label="Lesson 5.3 opens" data-rail="Day In The Life">
+      <div class="col" style="gap:var(--s4);align-items:center">
+        <span class="eyebrow eyebrow--plain">Lesson 5.3 · week 16</span>
+        <h2 class="h1" style="max-width:24ch">Every test passes.<br>Does the system<br>actually work?</h2>
+        <p class="lede" style="text-align:center;margin-inline:auto">One full cycle, every role, in order, on the deployed app.</p>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="5.3" data-label="What DITL is" data-rail="Day In The Life">
+      <span class="eyebrow">The gap your test suite cannot see</span>
+      <h2 class="h2">A green suite is not a working system</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">What your tests check</div>
+          <ul class="list list--check">
+            <li>Each function, in isolation — <b>unit</b></li>
+            <li>Each flow, on its own, from a clean state — <b>end to end</b></li>
+          </ul>
+          <p class="small">Every one of them starts from a database you reset and a user you just created. That is what makes them repeatable, and it is also what makes them blind.</p>
+        </div>
+        <div class="panel" style="border-color:var(--violet)">
+          <div class="panel__head" style="color:var(--violet)">What only a Day In The Life run catches</div>
+          <ul class="list list--cross">
+            <li>State the <b>previous</b> step left behind</li>
+            <li>Two roles acting on the same record, in sequence</li>
+            <li>A screen nobody thought to open <em>second</em></li>
+            <li>The step that works but takes four minutes</li>
+            <li>The email, the notification, the thing outside the app</li>
+          </ul>
+        </div>
+      </div>
+      <p class="callout">
+        <b>Day In The Life testing</b> is one complete operational cycle, walked end to end,
+        in the order a real day happens — not feature by feature. It is the last check before
+        a system is accepted, and it is the one that finds the things nobody wrote a case for.
+      </p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="5.3" data-label="The script" data-rail="Day In The Life">
+      <span class="eyebrow">Interactive · one cycle, six moves</span>
+      <h2 class="h2">Write the day down before you walk it</h2>
+      <div data-widget="stepper" class="stepper">
+        <div class="stepper__track">
+          <button class="stepper__btn" type="button" data-step="1"><span class="stepper__n">01</span><span class="stepper__l">Term opens</span></button>
+          <button class="stepper__btn" type="button" data-step="2"><span class="stepper__n">02</span><span class="stepper__l">Student drafts</span></button>
+          <button class="stepper__btn" type="button" data-step="3"><span class="stepper__n">03</span><span class="stepper__l">Submits</span></button>
+          <button class="stepper__btn" type="button" data-step="4"><span class="stepper__n">04</span><span class="stepper__l">Adviser returns</span></button>
+          <button class="stepper__btn" type="button" data-step="5"><span class="stepper__n">05</span><span class="stepper__l">Fixes, resubmits</span></button>
+          <button class="stepper__btn" type="button" data-step="6"><span class="stepper__n">06</span><span class="stepper__l">Approved</span></button>
+        </div>
+
+        <div class="stepper__panel grid grid--2" data-step="1">
+          <div class="panel"><div class="panel__head">Who, and what they do</div><p class="body"><b>Nobody.</b> The term is already open and the subjects are seeded. Start from data that has a history, not an empty database.</p></div>
+          <div class="panel"><div class="panel__head">What this step catches</div><p class="body">Seed data that only works once. If your app needs a fresh reset to behave, say so now — because the real one will not get one.</p></div>
+        </div>
+        <div class="stepper__panel grid grid--2" data-step="2">
+          <div class="panel"><div class="panel__head">Who, and what they do</div><p class="body"><b>Maria, student.</b> Signs in, searches the catalog, adds subjects until she is near the ceiling, leaves the page, comes back.</p></div>
+          <div class="panel"><div class="panel__head">What this step catches</div><p class="body">The draft that did not persist. The unit meter that disagrees with the server after a reload. The search that forgets its filter.</p></div>
+        </div>
+        <div class="stepper__panel grid grid--2" data-step="3">
+          <div class="panel"><div class="panel__head">Who, and what they do</div><p class="body"><b>Maria</b> submits. Then tries to edit the enrollment she has just submitted.</p></div>
+          <div class="panel"><div class="panel__head">What this step catches</div><p class="body">The screen that still offers <em>Add</em> after submission. R5 enforced in the database but not reflected in the UI, so the button 409s instead of being absent.</p></div>
+        </div>
+        <div class="stepper__panel grid grid--2" data-step="4">
+          <div class="panel"><div class="panel__head">Who, and what they do</div><p class="body"><b>Ramon, adviser.</b> Opens his queue, finds Maria, returns it with a reason.</p></div>
+          <div class="panel"><div class="panel__head">What this step catches</div><p class="body">The handover. Does Maria's screen <em>tell</em> her she was returned, and does it show Ramon's reason in his words? This is the step feature tests always skip.</p></div>
+        </div>
+        <div class="stepper__panel grid grid--2" data-step="5">
+          <div class="panel"><div class="panel__head">Who, and what they do</div><p class="body"><b>Maria</b> reads the reason, drops a subject, adds another, resubmits.</p></div>
+          <div class="panel"><div class="panel__head">What this step catches</div><p class="body">The second lap. Most bugs live here — the state machine that only ever ran forwards, the rollup that double-counted, the reason that stayed on screen after it was addressed.</p></div>
+        </div>
+        <div class="stepper__panel grid grid--2" data-step="6">
+          <div class="panel"><div class="panel__head">Who, and what they do</div><p class="body"><b>Ramon</b> approves. <b>Maria</b> refreshes. Both look at the same enrollment.</p></div>
+          <div class="panel"><div class="panel__head">What this step catches</div><p class="body">Two people, one record, two different answers. Stale caches, an unrevalidated query key, a status shown from the client's memory rather than the server's.</p></div>
+        </div>
+      </div>
+      <p class="callout">
+        Your system is not enrollment. <b>Write your own six steps</b> — one cycle of the
+        thing your spec exists to do, with a named person at every step.
+      </p>
+    </section>
+
+    <section class="slide" data-sec="5.3" data-label="Running it" data-rail="Day In The Life">
+      <span class="eyebrow">The rules that make it worth doing</span>
+      <h2 class="h2">Four conditions, and none of them are optional</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head" style="color:var(--cyan)">On the deployed app</div>
+          <p class="body">Staging, at its real URL, with the real database behind it. Not <code>localhost</code>, not the mock. Half of what a DITL run finds is environment, not code.</p>
+        </div>
+        <div class="panel">
+          <div class="panel__head" style="color:var(--cyan)">Driven by someone outside the group</div>
+          <p class="body">Another group, or me. <b>You may not touch the keyboard and you may not explain.</b> Every sentence you want to say out loud is a defect in the interface.</p>
+        </div>
+        <div class="panel">
+          <div class="panel__head" style="color:var(--cyan)">From data with a history</div>
+          <p class="body">Not a fresh reset. A database that has been used, with rows from earlier steps still in it — which is the state every real system is permanently in.</p>
+        </div>
+        <div class="panel">
+          <div class="panel__head" style="color:var(--cyan)">Nothing is fixed during the run</div>
+          <p class="body">You write it down and keep walking. Stopping to patch turns a measurement into a debugging session and you lose the rest of the cycle.</p>
+        </div>
+      </div>
+      <p class="callout">
+        <b>One person scribes.</b> Every hesitation, every wrong turn, every "wait, where is
+        it" — those are findings even when nothing is broken. A user who cannot find the
+        button has met a defect.
+      </p>
+    </section>
+
+    <section class="slide" data-sec="5.3" data-label="What comes out" data-rail="Day In The Life">
+      <span class="eyebrow">A run that produces nothing was not a run</span>
+      <h2 class="h2">Every finding becomes one of three things</h2>
+      <div class="grid grid--3">
+        <div class="card"><span class="card__k">It is broken</span><div class="card__t">A bug issue</div><p class="card__b">Steps, expected, actual, and which DITL step it surfaced in. Fixed in sprint 4, and the fix closes the issue.</p></div>
+        <div class="card"><span class="card__k">It works, but nobody could find it</span><div class="card__t">A UX issue</div><p class="card__b">The 12-point QA is where it gets settled. "The user was confused" is a finding, not an excuse.</p></div>
+        <div class="card"><span class="card__k">It broke and nothing caught it</span><div class="card__t">A missing test case</div><p class="card__b">File the case, implement the Playwright test, and it can never regress silently again. This is how the suite grows honestly.</p></div>
+      </div>
+      <div class="panel">
+        <div class="panel__head">The gate for this module</div>
+        <p class="body">A DITL run completes across every role on the deployed app, driven by someone outside the group, with every finding filed — and <b>the run is repeated until it completes without a blocking defect.</b> That repetition is the point: the first run always fails, and the second one is the one that means something.</p>
+      </div>
+      <p class="callout">
+        This is also your <b>Final Web Project demonstration</b>, rehearsed. The demo is a
+        Day In The Life run with an audience — so if the run is clean, the demo is already
+        written.
+      </p>
+    </section>
+
+    <section class="slide slide--center" data-sec="5.4" data-label="Lesson 5.4 opens" data-rail="The 12-point QA">
+      <div class="col" style="gap:var(--s4);align-items:center">
+        <span class="eyebrow eyebrow--plain">Lesson 5.4 · week 16</span>
+        <h2 class="h1" style="max-width:24ch">The checklist you<br>have been carrying<br>since week 2</h2>
+        <p class="lede" style="text-align:center;margin-inline:auto">Eight points from Module 1, four added once data was real. Every screen, one last time.</p>
+      </div>
+    </section>
+<section class="slide slide--wide" data-sec="5.4" data-label="The 12-point QA" data-rail="Codebase assessment">
+      <span class="eyebrow">Carried from Modules 1 and 2</span>
+      <h2 class="h2">Every screen, one last time</h2>
+      <div class="grid grid--2" style="align-items:start">
+        <div class="panel">
+          <div class="panel__head">Design and accessibility · Module 1</div>
+          <div data-widget="check" data-verdicts="Not shippable|Reviewable|Ship it">
+            <div class="check">
+              <label class="check__item"><input type="checkbox"><span class="check__box">✓</span><span class="check__txt"><b>01 Hierarchy</b>One thing ranks first</span></label>
+              <label class="check__item"><input type="checkbox"><span class="check__box">✓</span><span class="check__txt"><b>02 Tokens</b>No hard-coded values</span></label>
+              <label class="check__item"><input type="checkbox"><span class="check__box">✓</span><span class="check__txt"><b>03 Contrast</b>Measured, passing AA</span></label>
+              <label class="check__item"><input type="checkbox"><span class="check__box">✓</span><span class="check__txt"><b>04 States</b>All seven present</span></label>
+              <label class="check__item"><input type="checkbox"><span class="check__box">✓</span><span class="check__txt"><b>05 Keyboard</b>Operable, focus visible</span></label>
+              <label class="check__item"><input type="checkbox"><span class="check__box">✓</span><span class="check__txt"><b>06 320px</b>No body scroll</span></label>
+              <label class="check__item"><input type="checkbox"><span class="check__box">✓</span><span class="check__txt"><b>07 Real data</b>Longest values fit</span></label>
+              <label class="check__item"><input type="checkbox"><span class="check__box">✓</span><span class="check__txt"><b>08 Copy</b>Specific, not generic</span></label>
+            </div>
+            <div class="meter" style="margin-top:var(--s3)"><span class="meter__fill"></span></div>
+            <div class="check__verdict" style="margin-top:var(--s2)"><span data-verdict></span></div>
+          </div>
+        </div>
+        <div class="panel" style="border-color:var(--cyan-dim)">
+          <div class="panel__head" style="color:var(--cyan)">Data and integration · Module 4</div>
+          <div data-widget="check" data-verdicts="Not shippable|Reviewable|Ship it">
+            <div class="check">
+              <label class="check__item"><input type="checkbox"><span class="check__box">✓</span><span class="check__txt"><b>09 Documented responses</b>404, 409, 429 all render</span></label>
+              <label class="check__item"><input type="checkbox"><span class="check__box">✓</span><span class="check__txt"><b>10 No layout shift</b>Skeleton matches the content</span></label>
+              <label class="check__item"><input type="checkbox"><span class="check__box">✓</span><span class="check__txt"><b>11 Slow 3G</b>Usable, not just survivable</span></label>
+              <label class="check__item"><input type="checkbox"><span class="check__box">✓</span><span class="check__txt"><b>12 No hand-written API shape</b>Types are generated</span></label>
+            </div>
+            <div class="meter" style="margin-top:var(--s3)"><span class="meter__fill"></span></div>
+            <div class="check__verdict" style="margin-top:var(--s2)"><span data-verdict></span></div>
+          </div>
+          <p class="small" style="margin-top:var(--s3)">Twelve points, every screen, since week 3. Nothing new was added for the assessment.</p>
+        </div>
+      </div>
+    </section><section class="slide slide--center" data-sec="5.5" data-label="Lesson 5.5 opens" data-rail="Codebase assessment">
+      <div class="col" style="gap:var(--s4);align-items:center">
+        <span class="eyebrow eyebrow--plain">Weeks 16–17 · 20% of the course</span>
+        <h2 class="h1" style="max-width:24ch">Somebody reads<br>your repository</h2>
+        <p class="lede" style="text-align:center;margin-inline:auto">And asks you about it. Out loud.</p>
+      </div>
+    </section><section class="slide slide--wide" data-sec="5.5" data-label="What is read" data-rail="Codebase assessment">
+      <span class="eyebrow">The 20% nobody prepares for</span>
+      <h2 class="h2">What gets opened, and what it shows</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">The files</div>
+          <ul class="list">
+            <li><b><code>git log</code></b> — did everyone contribute, weekly, with messages that say what changed?</li>
+            <li><b><code>contract/openapi.yaml</code></b> — and whether the implementation still matches it</li>
+            <li><b>Migrations</b> — do they replay from empty, and is every schema change in one?</li>
+            <li><b>Policies</b> — is RLS on every table, with <code>with check</code> on updates?</li>
+            <li><b>A component of our choosing</b> — its states, its props, its tokens</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <div class="panel__head">The questions</div>
+          <ul class="list">
+            <li>"Why is this a component?"</li>
+            <li>"Where does this rule get enforced, and what happens if I post around your form?"</li>
+            <li>"Show me this screen's error state."</li>
+            <li>"Who wrote this, and what were the alternatives?"</li>
+            <li>"This is generated — what regenerates it?"</li>
+          </ul>
+          <p class="small">Individual answers, on group work. This is where individual contribution becomes visible.</p>
+        </div>
+      </div>
+      <p class="callout">
+        <b>You cannot revise for this in week 16.</b> It reads fourteen weeks of habits — which is
+        why the commit convention, the QA checklist, and "never edit a generated file" have been
+        graded since week 3.
+      </p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="lab" data-label="Activity 10" data-rail="Laboratory activities">
+      <span class="eyebrow">Laboratory Activity 10 · Week 16 · A10 · 3%</span>
+      <div class="row" style="gap:var(--s4);align-items:baseline">
+        <h2 class="h2">Somebody else's test cases</h2>
+        <span class="chip chip--accent">Individual</span>
+      </div>
+      <p class="callout"><b>Implement test cases you did not write.</b> Your Project Manager files them as issues; you close them with tests that pass in CI.</p>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">Deliverables</div>
+          <div class="steps">
+            <div class="step"><div><div class="step__t">Three test cases filed as issues</div><div class="step__b">By your PM, not you. Scenario, steps, expected result — in words.</div></div></div>
+            <div class="step"><div><div class="step__t">Three Playwright tests that close them</div><div class="step__b">Each in its own PR, referencing <code>Closes #n</code>.</div></div></div>
+            <div class="step"><div><div class="step__t">One of them a permission boundary</div><div class="step__b">Running as an authenticated role, so RLS is exercised rather than bypassed.</div></div></div>
+            <div class="step"><div><div class="step__t">Green in CI, required before merge</div><div class="step__b">Branch protection on, status checks required.</div></div></div>
+            <div class="step"><div><div class="step__t">One ambiguity you had to resolve</div><div class="step__b">Where the written case did not say enough, and what you and the PM agreed.</div></div></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="panel" style="border-color:var(--violet-dim)">
+            <div class="panel__head" style="color:var(--violet)">Graded on</div>
+            <ul class="list">
+              <li><b>The tests pass, in CI</b> — 30</li>
+              <li><b>Selectors by role, not class</b> — 20</li>
+              <li><b>The permission test is honest</b> — 25</li>
+              <li><b>The ambiguity note</b> — 25</li>
+            </ul>
+          </div>
+          <p class="small">The ambiguity note is worth as much as the code, because finding it is the actual skill.</p>
+        </div>
+      </div>
+    </section>
+    <section class="slide slide--center" data-sec="end" data-label="Ship it" data-rail="Close">
+      <div class="col" style="gap:var(--s5);align-items:center">
+        <span class="eyebrow eyebrow--plain">Milestone 5 · the end of the line</span>
+        <h2 class="h1" style="max-width:26ch">Five milestones,<br>one system,<br>and a URL</h2>
+        <div class="panel" style="max-width:52rem">
+          <div class="panel__head">How you got here</div>
+          <pre>Milestone 1  UI/UX      you designed a screen, then built it static
+Milestone 2  Contract   you modelled the data and wrote down its shape
+Milestone 3  Backend    you implemented that shape, and secured it
+Milestone 4  Frontend   you consumed it, validated it, and shipped it
+Milestone 5  QA         you proved it works, and handed it over</pre>
+        </div>
+        <p class="lede" style="text-align:center;margin-inline:auto;max-width:56ch">
+          Every one of those handed the next one something it could not start without. That
+          is the whole argument of this course, and you have now run it once end to end.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ bottom rail ============ -->
+  <footer class="rail rail--bot">
+    <div class="nav">
+      <button class="nav__btn" id="prev" type="button" aria-label="Previous slide">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <button class="nav__btn" id="next" type="button" aria-label="Next slide">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+    <div class="ticks" id="ticks"></div>
+    <button class="btn btn--ghost" id="open-map" type="button">Map</button>
+    <button class="btn btn--ghost" id="open-help" type="button">?</button>
+  </footer>
+</div>
+
+<!-- ============ overlays ============ -->
+<div class="overlay" id="overview" hidden>
+  <div class="overlay__head">
+    <b>Slide map</b><span>Module 05 · QA &amp; Acceptance</span><span class="spacer"></span>
+    <button class="btn btn--ghost" data-close type="button">Close · Esc</button>
+  </div>
+  <div class="map" id="map"></div>
+</div>
+
+<div class="overlay" id="help" hidden>
+  <div class="overlay__head">
+    <b>Keyboard</b><span class="spacer"></span>
+    <button class="btn btn--ghost" data-close type="button">Close · Esc</button>
+  </div>
+  <div class="keys">
+    <div class="keys__row"><span class="keys__k">→</span><span class="keys__k">Space</span> Next slide</div>
+    <div class="keys__row"><span class="keys__k">←</span> Previous slide</div>
+    <div class="keys__row"><span class="keys__k">Home</span><span class="keys__k">End</span> First / last</div>
+    <div class="keys__row"><span class="keys__k">O</span><span class="keys__k">G</span> Slide map</div>
+    <div class="keys__row"><span class="keys__k">F</span> Fullscreen</div>
+    <div class="keys__row"><span class="keys__k">?</span><span class="keys__k">H</span> This panel</div>
+    <div class="keys__row"><span class="keys__k">Esc</span> Close overlay</div>
+    <div class="keys__row"><span class="keys__k">Ctrl</span>+<span class="keys__k">P</span> Print all slides</div>
+  </div>
+  <p class="small" style="max-width:52ch">Slide numbers are in the URL — <code>#23</code> jumps straight there, so you can bookmark a starting point for the second session.</p>
+</div>
+
+<script src="../shared/deck.js"></script>
+<script src="module-5.js"></script>
+
+</body>
+</html>

@@ -239,8 +239,8 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
     <a class="back" href="../index.html">← All modules</a>
     <span class="eyebrow eyebrow--plain">Visayas State University · Department of Computer Science and Technology</span>
     <h1>CSci 153<br>Semester Plan</h1>
-    <p class="lede">Four modules, each one a build milestone — <b>UI/UX → Contract → Backend →
-      Frontend</b> — across eighteen weeks, with every topic mapped to the
+    <p class="lede">Five modules, each one a build milestone — <b>UI/UX → Contract → Backend →
+      Frontend → QA</b> — across eighteen weeks, with every topic mapped to the
       learning outcome that requires it — and every topic that no outcome requires, but the
       Final Activity Project does.</p>
   </header>
@@ -456,14 +456,14 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
     <!-- ===== Module 4 ===== -->
     <div class="block">
       <div class="weeks">
-        <span class="weeks__n">11–15</span>
+        <span class="weeks__n">11–13<br>15</span>
         <span class="weeks__l">Clinics</span>
       </div>
       <article class="mod">
         <div class="mod__head">
           <span class="mod__n">04</span>
           <h2 class="mod__t">Frontend Development</h2>
-          <span class="status status--ready">Deck built · 45 slides</span>
+          <span class="status status--ready">Deck built · 37 slides</span>
           <span class="mod__s">Auth, the typed request layer, server state, validation, and a deployed application.</span>
           <span class="mod__co">CO2 · CO5</span>
           <span class="mod__ms">Milestone 4 · Frontend</span>
@@ -509,35 +509,79 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
             </span>
             <span class="lesson__tag"><span class="tag tag--spine">LO 5.2</span></span>
           </li>
-          <li class="lesson lesson--added">
-            <span class="lesson__n">4.6</span>
-            <span>
-              <span class="lesson__t">End-to-end testing — briefly</span>
-              <p class="lesson__b">Playwright, ~1 session, building on Module 3's Vitest session. Tests must run as an authenticated role so RLS is exercised rather than bypassed.</p>
-            </span>
-            <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
-          </li>
           <li class="lesson lesson--lo">
-            <span class="lesson__n">4.7</span>
+            <span class="lesson__n">4.6</span>
             <span>
               <span class="lesson__t">Deployment</span>
               <p class="lesson__b">Static build, the catch-all rewrite that keeps deep links alive, functions deployed separately — and secrets that never touch the host's environment panel.</p>
             </span>
             <span class="lesson__tag"><span class="tag tag--lo">LO 5.3</span></span>
           </li>
-          <li class="lesson">
-            <span class="lesson__n">4.8</span>
+        </ul>
+      </article>
+    </div>
+
+        <!-- ===== Module 5 ===== -->
+    <div class="block">
+      <div class="weeks">
+        <span class="weeks__n">14<br>16–17</span>
+        <span class="weeks__l">Weeks</span>
+      </div>
+      <article class="mod">
+        <div class="mod__head">
+          <span class="mod__n">05</span>
+          <h2 class="mod__t">QA &amp; Acceptance</h2>
+          <span class="status status--ready">Deck built · 21 slides</span>
+          <span class="mod__s">End-to-end tests, test cases as issues, a Day In The Life run, and the read-through that grades the repository.</span>
+          <span class="mod__co">No CO</span>
+          <span class="mod__ms">Milestone 5 · QA</span>
+        </div>
+        <ul class="lessons">
+          <li class="lesson lesson--added">
+            <span class="lesson__n">5.1</span>
+            <span>
+              <span class="lesson__t">End-to-end testing</span>
+              <p class="lesson__b">Playwright driving a real browser as a real authenticated role, so RLS is exercised rather than bypassed. Week-14 clinic.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
+          </li>
+          <li class="lesson lesson--added">
+            <span class="lesson__n">5.2</span>
+            <span>
+              <span class="lesson__t">Test cases as issues</span>
+              <p class="lesson__b">The specs' §12 workflow: whoever writes the case does not write the test. A usable case beside a useless one, and the five-line defect report.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
+          </li>
+          <li class="lesson lesson--added">
+            <span class="lesson__n">5.3</span>
+            <span>
+              <span class="lesson__t">Day In The Life</span>
+              <p class="lesson__b">One complete cycle, every role, in order, on the deployed app, driven by someone outside the group. The only thing that catches what a reset database hides.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
+          </li>
+          <li class="lesson lesson--added">
+            <span class="lesson__n">5.4</span>
+            <span>
+              <span class="lesson__t">The 12-point QA pass</span>
+              <p class="lesson__b">Eight points from Module 1, four added once data was real. Every screen, one last time.</p>
+            </span>
+            <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
+          </li>
+          <li class="lesson lesson--added">
+            <span class="lesson__n">5.5</span>
             <span>
               <span class="lesson__t">Codebase assessment</span>
-              <p class="lesson__b">The graded read-through of the repository, alongside the Final Web Project itself.</p>
+              <p class="lesson__b">Somebody opens your repository and asks you about it, out loud. 20% of the course.</p>
             </span>
-            <span class="lesson__tag"><span class="tag tag--lo">FP</span></span>
+            <span class="lesson__tag"><span class="tag tag--added">CA 20%</span></span>
           </li>
         </ul>
       </article>
     </div>
 
-    <!-- ===== development phase ===== -->
+<!-- ===== development phase ===== -->
     <div class="dev">
       <div class="weeks">
         <span class="weeks__n">10–17</span>
@@ -645,7 +689,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
   <footer class="foot">
     <span>First semester 2026–2027</span>
     <span>·</span>
-    <span>Four decks built · 187 slides · outlines in <code>module-N/outline.md</code></span>
+    <span>Five decks built · 200 slides · outlines in <code>module-N/outline.md</code></span>
     <span>·</span>
     <span>Final Activity Project is group work — one system per group</span>
   </footer>

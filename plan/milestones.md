@@ -1,12 +1,12 @@
 # The four milestones
 
-**Decided 2026-09-22.** The course is four modules, and each module is a development
+**Decided 2026-09-22.** The course is five modules, and each module is a development
 milestone, in the order a group actually builds a system:
 
 ```
-1 · UI/UX  →  2 · Contract  →  3 · Backend  →  4 · Frontend
-   design       agree the       implement       consume it,
-   the screen   shape of        the shape       validate, ship
+1 · UI/UX  →  2 · Contract  →  3 · Backend  →  4 · Frontend  →  5 · QA
+   design       agree the       implement       consume it,      prove it works,
+   the screen   shape of        the shape       validate, ship   hand it over
                 the data
 ```
 
@@ -43,14 +43,15 @@ it is what lets Module 2 produce running screens — but its job is now pedagogi
 
 ---
 
-## The four modules
+## The five modules
 
 | # | Module | Taught | Built | Slides | Gate |
 |---|---|---|---|---|---|
 | **1** | **UI/UX** | W1–3 | W2–4 lab | 65 | A clickable static prototype of every screen, passing the 8-point QA |
 | **2** | **The Contract** | W4–6 | W4–6 lab | 35 | `openapi.yaml` with a data model behind it, types generated, screens on the mock |
 | **3** | **Backend** | W7–8 | Sprints 1–2 (W10–13) | 42 | `contract:check` passes, and another group's account cannot read your rows |
-| **4** | **Frontend** | Clinics W11–15 | Sprints 2–4 (W12–17) | 45 | The app runs on its own backend at a URL someone outside the group can open |
+| **4** | **Frontend** | Clinics W11–13, 15 | Sprints 2–3 (W12–15) | 37 | The app runs on its own backend at a URL someone outside the group can open |
+| **5** | **QA & Acceptance** | W14 clinic, W16–17 | Sprint 4 (W16–17) | 21 | A Day In The Life run completes across every role, driven by an outsider, with no blocking defect |
 
 ### Where every old lesson went
 
@@ -83,11 +84,14 @@ generated types were deferred to Modules 3 and 4 where they are actually produce
 | 2.5 | **4.3** | Data states in practice |
 | 5.1 | **4.4** | Two-layer validation |
 | 5.2 | **4.5** | Integration day |
-| 5.3 | **4.6** | End-to-end testing |
-| 5.5 | **4.7** | Deployment |
-| 5.6 | **4.8** | Codebase assessment |
+| 5.5 | **4.6** | Deployment |
+| 5.3 | **5.1** | End-to-end testing |
+| — | **5.2** | Test cases as issues — expanded from one slide |
+| — | **5.3** | **Day In The Life — new** |
+| — | **5.4** | The 12-point QA pass |
+| 5.6 | **5.5** | Codebase assessment |
 
-### The four moves that made it work
+### The five moves that made it work
 
 1. **Old 2.1 (components) moved into Module 1.** Building a screen with no data is the last
    step of designing it. It also stops students spending three weeks in YAML and SQL with
@@ -97,6 +101,10 @@ generated types were deferred to Modules 3 and 4 where they are actually produce
    thing it describes is produced: generated types in Module 3, the typed client in Module 4.
 4. **Old 5.4 (CI) moved up into week 8**, so the development phase is gated from its first
    pull request rather than its sixth.
+5. **QA became its own milestone** (2026-09-22). End-to-end testing and the codebase
+   assessment left Module 4, and **Day In The Life acceptance testing** was written to sit
+   between them. Before this, the course's entire quality story was an appendix to the
+   frontend module.
 
 ---
 
@@ -114,7 +122,9 @@ without strain, because **nothing carrying an LO moved later.**
 | **CO3** | 3.5 | **Module 4**, lesson 4.2, the typed client | A9 (W15) | **relocated** |
 | **CO3** | 3.2, 3.3, 3.4, 3.6, 3.7 | **prior course**, verified W5 | week-5 diagnostic | **not lectured** |
 | **CO4** | 4.1, 4.2 | 4.1 in **W4** (lesson 2.1); 4.2 in W7–8 | A7 (W7), A8 (W8) | LO 4.1 earlier |
-| **CO5** | 5.1, 5.2, 5.3 | W13 and W15 clinics | A9 (W15), A10 (W16) | none |
+| **CO5** | 5.1, 5.2 | W13 clinic | A9 (W15) | none |
+| **CO5** | 5.3 deployment | W15 clinic, lesson 4.6 | A9 (W15) | none |
+| **—** | *Milestone 5 carries no syllabus LO* | W14, W16–17 | A10 (W16), Codebase Assessment | every project spec requires it |
 
 **Module numbers are no longer course-outcome numbers.** That mapping was convenient but it
 was never required — the syllabus attaches outcomes to learning outcomes, not to deck
@@ -147,3 +157,5 @@ LO. **All ten activities keep their original weeks.**
 | **Week 4 carries both data modelling and the contract**, two dense inputs in one 2-hour block. | The normalisation stepper and the spec explorer are the instruments; the lab that week is the ERD-and-contract clinic, so modelling gets three lab hours immediately after. |
 | **Module 4 is entirely clinics**, so a group behind on the backend has no time for it. | The sprint-2 gate is `contract:check`, not screens. Groups that are behind lose hardening time in sprint 4, which is the intended failure mode. |
 | **The reference app's git history is in the old order.** | See `../reference-app/BUILD-PLAN.md`. Explain it in week 7 or rebase before week 1. |
+| **Milestone 5 has no syllabus outcome behind it**, so it is the first thing that gets squeezed if the semester slips. | It carries the Codebase Assessment (20%) and the Final Web Project demonstration, which between them are 70% of the grade. Cutting it is not available. |
+| **The Day In The Life run needs an outsider to drive it**, and week 16 is when every group needs one at the same time. | Groups drive each other's, in pairs, in the week-16 lab. That also makes each group read a system they did not build, which is the Codebase Assessment rehearsed. |
