@@ -23,23 +23,56 @@ running app, and talk about why it is the way it is.
 > coding anyway: it cannot fail in front of the class, it can be read at any pace, and
 > students can `git log` it themselves afterwards.
 
-## Build order
+## Where the app is
 
-The phases below are now **build order, not a calendar** — they all happen before week 1.
-Build in this sequence anyway, because it is the order the modules explain and it is what
-makes the history legible.
+```
+/home/kyle-anthony/Documents/Visayas State University Files/csci-153-enroll
+```
 
-| Phase | Ships | Explained in |
+Local only — no remote yet. It needs pushing to GitHub before week 1, because lesson 2.0
+opens the real commit graph and students are told to read it themselves.
+
+## Status — all phases built, 2026-09-22
+
+| Phase | Ships | Explained in | |
+|---|---|---|---|
+| **0 · Skeleton** | repo, tokens, Tailwind theme | Milestone 1 · W1–3 | ✅ |
+| **1 · Contract & frontend** | 9 operations, generated types, 6 screens | Milestone 2 · W4–6 | ✅ |
+| **2 · Specimens** | unit tests, the vanilla-DOM twin, the dependency accounting | Milestone 2 · W5–6 | ✅ |
+| **3 · Backend** | 5 migrations, RLS, triggers, Edge Function, contract v2 | Milestone 3 · W7–8 | ✅ |
+| **4 · Integration** | Zod + RHF, Playwright, CI, `vercel.json` | Milestone 4 · clinics W11–15 | ✅ |
+| **5 · Frozen** | no new code; the reference groups compare against | the dev phase (10–17) | ← now |
+
+`npm run lint`, `typecheck`, `test` and `contract:check` all pass, which is the same
+sequence `.github/workflows/ci.yml` runs.
+
+### What phase 4 needed, and what closed it
+
+The app was complete through phase 3 but Milestone 4's clinics had nothing to open. Four
+gaps, all of them things the Final Activity Project specs require of students:
+
+| Gap | Closed by | Serves |
 |---|---|---|
-| **0 · Skeleton** ✅ | repo, tokens, Tailwind theme | Module 1–2 opening |
-| **1 · Contract & frontend** ◐ | contract done, 1 of 6 screens on the Prism mock | Module 2 (weeks 3–5) |
-| **2 · Specimens** ◐ | unit tests and the vanilla-DOM twin done; `package.json` notes pending | Module 3 (weeks 5–6) |
-| **3 · Backend** | Supabase, RLS, Edge Function, contract v2 | Module 4 (weeks 7–8) |
-| **4 · Integration** | real base URL, Playwright, CI, deployed | Module 5 (week 8 + clinics) |
-| **5 · Frozen** | no new code; the reference groups compare against | the dev phase (10–17) |
+| No Zod, no React Hook Form | `src/lib/validation/enrollment.ts`, wired into the adviser's return form | 5.1 |
+| `e2e/` empty, no Playwright | `playwright.config.ts`, `e2e/roles.ts` + two specs, `npm run test:e2e` | 5.3 |
+| No CI workflow | `.github/workflows/ci.yml` | 5.4 |
+| No SPA rewrite | `vercel.json`, `DEPLOYMENT.md` | 5.5 |
 
-Roughly **30–40 hours**, all of it before the semester. That is the whole cost, paid once,
-at a time when you are not also teaching.
+### One caveat about the history
+
+**The commit history is build order, not milestone order.** The frontend wiring commits —
+the typed client, `SessionContext`, the data states — were made in Module 2's order and
+land *before* the backend. The milestone sequence was decided afterwards.
+
+This is worth knowing before you project `git log` in week 7 and the narrative reads
+backwards. Two honest options, and the first is recommended:
+
+1. **Leave it.** Say plainly that the app was built the way the course used to be
+   sequenced, and that the reordering is itself the interesting thing — you can point at
+   `feat(contract)!:` and note it should have come earlier. Students are about to make
+   exactly this kind of ordering mistake.
+2. **Rewrite it** with an interactive rebase before week 1. Cleaner log, a few hours, and
+   it is the one artifact where a mistake is expensive because every lesson opens it.
 
 ### What each session actually looks like
 
@@ -182,30 +215,37 @@ the same problem.
 | **Explanation without live coding can slide into reading code aloud.** | The four moves in "What each session actually looks like" are the guard: why it is shaped that way, and what was tried and rejected. If a session has no rejected alternative in it, it is a code review, not a lesson. |
 | **The demo drifts from the deck.** | Both live in git. When a slide changes, check the app; when the app changes, check the slide. The 12-point QA is the shared checklist. |
 | **Students copy it wholesale.** | Different domain from all three project systems, and every rubric grades *justification*, not output. A boundary you cannot defend out loud at the Practical Exam scores nothing. |
-| **The app is not finished by week 1.** | Phases 0–2 are the ones that must exist before teaching starts, because Modules 1–3 are explained entirely from them. Phase 3 has until week 6 and Phase 4 until week 7 without disrupting anything. |
+| **The app is not finished by week 1.** | Resolved — all five phases are built. What remains is pushing it to GitHub and running the e2e suite against a seeded database. |
+| **The history reads in the old order.** | The wiring commits land before the backend, because the app was built before the milestone resequencing. Explain it or rebase it; see *Status* above. |
 
 ---
 
-## Progress · 2026-08-19
+## Progress · 2026-09-22
 
-The repo exists at `../csci-153-enroll` with 14 commits, and everything green: `tsc -b`,
-11 Vitest tests, a production build, and `redocly lint` clean.
+The repo is at `../csci-153-enroll` with 27 commits and everything green: `oxlint`,
+`tsc -b`, 16 Vitest tests, `redocly lint` clean, and `contract:check` showing no drift —
+the same four commands `.github/workflows/ci.yml` runs on every pull request.
 
-**Done:** the contract (9 operations, every one documenting its 401 and its failures),
-generated types, the typed client with auth and error interception, the enrollment rules as
-pure functions, `SessionContext` with the loading branch and the route guard, the shared
-loading/empty/error states, the subject catalog with all four data states reachable against
-the Prism mock, the unit-ceiling tests, the vanilla-DOM twin for 3.6, and `DEMOS.md`.
+**Done — all five phases.** The contract (9 operations, each documenting its 401 and its
+failures), generated types, the typed client with auth and error interception, the
+enrollment rules as pure functions, `SessionContext` signing in against real Supabase auth,
+the route guard, the shared loading/empty/error states, all six screens, the unit-ceiling
+tests, the vanilla-DOM twin for 3.6, five migrations with RLS and triggers, the `enroll`
+Edge Function, Zod validation on the adviser's return form, a Playwright suite that
+authenticates for real, CI, `vercel.json`, `DEPLOYMENT.md`, and `DEMOS.md` covering every
+module.
 
-**Next, in order:**
+**Outstanding, before week 1:**
 
-1. The five remaining screens — my enrollment, enrollment status, adviser queue, adviser
-   review. Each one is a mutation plus a cache invalidation, so they go quickly now that
-   the wrapper and keys exist.
-2. shadcn/ui, for the dialog on adviser return. Not before it is needed.
-3. The annotated `package.json` for lesson 3.1.
-4. Phase 3, the backend. Write no contract changes until the schema work forces them — the
-   v1→v2 diff is Module 4.7 and it cannot be manufactured afterwards.
+1. **Push to GitHub.** The repo is local-only. Lesson 2.0 opens the real commit graph and
+   tells students to read it themselves, which needs a URL.
+2. **Decide about the history order** — see the caveat under *Status* above. Leave it and
+   explain it, or rebase before week 1.
+3. **Run the e2e suite against a seeded database** at least once end to end. It typechecks
+   and the shape is right, but it has not been run green against live Supabase, so the
+   selectors in `validation.spec.ts` are unverified. Do this before week 14.
+4. **One deliberate merge conflict**, resolved, in the history — lesson 2.0 says to
+   demonstrate one live, and a real one in the log is better than a staged one.
 
 ## Start here
 

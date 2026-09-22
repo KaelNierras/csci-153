@@ -84,6 +84,13 @@ body { overflow: auto; }
   text-transform: uppercase; color: var(--text-4);
 }
 
+.mod__ms {
+  font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--accent);
+  border: 1px solid var(--line-loud); padding: 0.25em 0.6em;
+  justify-self: start; white-space: nowrap;
+}
+
 /* ---------- module panel ---------- */
 .mod { border: 1px solid var(--line); background: var(--panel); }
 .mod__head {
@@ -232,14 +239,15 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
     <a class="back" href="../">← All modules</a>
     <span class="eyebrow eyebrow--plain">Visayas State University · Department of Computer Science and Technology</span>
     <h1>CSci 153<br>Semester Plan</h1>
-    <p class="lede">Five modules across eighteen weeks, with every topic mapped to the
+    <p class="lede">Four milestones — <b>UI/UX → Contract → Backend → Frontend</b> — delivered
+      from five modules across eighteen weeks, with every topic mapped to the
       learning outcome that requires it — and every topic that no outcome requires, but the
       Final Activity Project does.</p>
   </header>
 
   <div class="legend">
     <span class="legend__item"><i class="key key--brass"></i> Required by a syllabus learning outcome</span>
-    <span class="legend__item"><i class="key key--cyan"></i> The API contract — the through-line across modules 2, 4, and 5</span>
+    <span class="legend__item"><i class="key key--cyan"></i> The API contract — agreed in Milestone 2, implemented in 3, consumed in 4</span>
     <span class="legend__item"><i class="key key--violet"></i> No outcome covers it; added as a brief segment</span>
   </div>
 
@@ -264,6 +272,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
           <span class="status status--ready">Deck built · 49 slides</span>
           <span class="mod__s">Interface design you can defend, and the agentic workflow that builds it.</span>
           <span class="mod__co">CO1</span>
+          <span class="mod__ms">Milestone 1</span>
         </div>
         <ul class="lessons">
           <li class="lesson lesson--lo">
@@ -305,7 +314,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
     <!-- ===== Module 2 ===== -->
     <div class="block">
       <div class="weeks">
-        <span class="weeks__n">3–5</span>
+        <span class="weeks__n">3 · 4<br>11–12</span>
         <span class="weeks__l">Weeks</span>
       </div>
       <article class="mod">
@@ -315,6 +324,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
           <span class="status">Outlined</span>
           <span class="mod__s">Components, auth context, the API contract, and a typed request layer.</span>
           <span class="mod__co">CO2</span>
+          <span class="mod__ms">Milestones 1 · 2 · 4</span>
         </div>
         <ul class="lessons">
           <li class="lesson lesson--added">
@@ -329,9 +339,9 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
             <span class="lesson__n">2.1</span>
             <span>
               <span class="lesson__t">Components from mockups</span>
-              <p class="lesson__b">A bridge, not an introduction — React itself was taught in the prior course and is not repeated. Module 1's screen becomes components; tokens become the Tailwind theme.</p>
+              <p class="lesson__b">A bridge, not an introduction — React itself was taught in the prior course and is not repeated. Module 1's screen becomes components; tokens become the Tailwind theme, responsive at every breakpoint. Static — no data yet.</p>
             </span>
-            <span class="lesson__tag"><span class="tag tag--lo">LO 2.1</span></span>
+            <span class="lesson__tag"><span class="tag tag--lo">LO 2.1</span> <span class="tag tag--lo">LO 2.2</span></span>
           </li>
           <li class="lesson lesson--lo">
             <span class="lesson__n">2.2</span>
@@ -345,7 +355,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
             <span class="lesson__n">2.3</span>
             <span>
               <span class="lesson__t">The API contract — OpenAPI</span>
-              <p class="lesson__b">The frontend is written against a contract before the backend exists. In this course that is literally true: the backend is two weeks away, and its implementation five.</p>
+              <p class="lesson__b">The contract is agreed before either side is built. Taught in the same block as the data model (4.1), so it describes a model that exists rather than one nobody has drawn yet.</p>
             </span>
             <span class="lesson__tag"><span class="tag tag--spine">Contract</span></span>
           </li>
@@ -357,13 +367,13 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
             </span>
             <span class="lesson__tag"><span class="tag tag--spine">Contract</span></span>
           </li>
-          <li class="lesson lesson--lo">
+          <li class="lesson lesson--added">
             <span class="lesson__n">2.5</span>
             <span>
               <span class="lesson__t">Data states in practice</span>
-              <p class="lesson__b">Cashes in Module 1's loading / empty / error work against real latency, and Tailwind responsiveness across devices.</p>
+              <p class="lesson__b">Cashes in Module 1's loading / empty / error work against real latency. Responsiveness was attained in 2.1, where the components were built; this adds the states a network puts them through.</p>
             </span>
-            <span class="lesson__tag"><span class="tag tag--lo">LO 2.2</span></span>
+            <span class="lesson__tag"><span class="tag tag--added">No LO</span></span>
           </li>
         </ul>
       </article>
@@ -382,6 +392,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
           <span class="status">Outlined</span>
           <span class="mod__s">Every piece of the toolchain, taught by opening the file it lives in — types, modules, JSON, the DOM, and how you know a function works.</span>
           <span class="mod__co">CO3</span>
+          <span class="mod__ms">Milestone 2</span>
         </div>
         <ul class="lessons">
           <li class="lesson lesson--lo">
@@ -420,7 +431,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
             <span class="lesson__n">3.5</span>
             <span>
               <span class="lesson__t">JSON, <code>fetch</code>, and <code>await</code></span>
-              <p class="lesson__b">A retroactive reading of <code>lib/api/client.ts</code>, which they have used since Module 2 without opening. Then the two failure modes, live.</p>
+              <p class="lesson__b">A reading of <code>lib/api/client.ts</code> — the client the week-4 contract generated, opened the week after it was generated. Then the two failure modes, live. Reading it, not building it: that is lesson 2.4, in week 12.</p>
             </span>
             <span class="lesson__tag"><span class="tag tag--lo">LO 3.5</span></span>
           </li>
@@ -460,7 +471,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
     <!-- ===== Module 4 ===== -->
     <div class="block">
       <div class="weeks">
-        <span class="weeks__n">7–8</span>
+        <span class="weeks__n">4 · 7–8</span>
         <span class="weeks__l">Weeks</span>
       </div>
       <article class="mod">
@@ -470,6 +481,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
           <span class="status">Outlined</span>
           <span class="mod__s">Schema, Row Level Security, and the functions that implement the contract.</span>
           <span class="mod__co">CO4</span>
+          <span class="mod__ms">Milestones 2 · 3</span>
         </div>
         <ul class="lessons">
           <li class="lesson lesson--lo">
@@ -524,7 +536,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
             <span class="lesson__n">4.7</span>
             <span>
               <span class="lesson__t">Implementing the contract</span>
-              <p class="lesson__b">Groups don't design an API here — they were handed one in week 3, by themselves. <code>contract:check</code> passes, or the module isn't done.</p>
+              <p class="lesson__b">Groups don't design an API here — they were handed one in week 4, by themselves, on top of a model they drew the same afternoon. <code>contract:check</code> passes, or the milestone isn't done.</p>
             </span>
             <span class="lesson__tag"><span class="tag tag--spine">Contract</span></span>
           </li>
@@ -535,7 +547,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
     <!-- ===== Module 5 ===== -->
     <div class="block">
       <div class="weeks">
-        <span class="weeks__n">8+</span>
+        <span class="weeks__n">8<br>13–15</span>
         <span class="weeks__l">Weeks</span>
       </div>
       <article class="mod">
@@ -545,6 +557,7 @@ section { display: flex; flex-direction: column; gap: var(--s4); }
           <span class="status">Outlined</span>
           <span class="mod__s">Validation, integration, CI, and a deployed application.</span>
           <span class="mod__co">CO5</span>
+          <span class="mod__ms">Milestones 3 · 4</span>
         </div>
         <ul class="lessons">
           <li class="lesson lesson--lo">

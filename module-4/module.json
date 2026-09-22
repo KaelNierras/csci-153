@@ -1,8 +1,10 @@
 {
   "number": 4,
   "title": "Backend Development",
-  "subtitle": "Schema, Row Level Security, and the functions that implement the contract.",
-  "weeks": "7 – 8",
+  "subtitle": "Modeling the data, then the schema, Row Level Security, and the functions that implement the contract.",
+  "weeks": "4 \u00b7 7 \u2013 8",
+  "milestone": "Milestones 2 and 3",
+  "delivery": "Split. 4.1 in week 4, ahead of the contract (Milestone 2) \u00b7 4.2\u20134.7 in weeks 7\u20138 (Milestone 3).",
   "outcome": "CO4",
   "slides": 44,
   "status": "ready",

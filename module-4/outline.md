@@ -1,6 +1,6 @@
 # Module 4 — Backend Development · outline
 
-**CSci 153 · Weeks 7–8 · CO4** — *Create a backend server with RESTful API endpoints
+**CSci 153 · Week 4 (lesson 4.1) and weeks 7–8 (4.2–4.7) · CO4** — *Create a backend server with RESTful API endpoints
 for database operations*
 Syllabus LOs: **LO 4.1** model relational database schemas ·
 **LO 4.2** develop API endpoints for CRUD operations
@@ -16,19 +16,41 @@ that starts red (4.7).
 > produce real CRUD endpoints over it. What changes is that *authorization moves into
 > the database*, which is the single most important idea in this module.
 
+> ## ⬛ Lesson 4.1 moved forward, to the head of the Contract milestone
+>
+> Resequenced 2026-09-22 (`../plan/milestones.md`). **4.1 Modeling the data is taught in
+> week 4**, in the same block as the OpenAPI lesson and three weeks before the rest of this
+> module. 4.2–4.7 stay in weeks 7–8 as Milestone 3.
+>
+> **Why:** groups used to author `openapi.yaml` in week 4 having never modeled a schema, and
+> this outline said so out loud — *"expect breaking changes here, and say so in advance."*
+> Planned rework is still rework. You now model what exists, then write down how it is
+> exposed. The week-4 lab is the ERD-and-contract clinic, so the modeling is applied within
+> the hour it is taught.
+>
+> **This does not eliminate contract v2**, and it should not. A model drawn in week 4 will
+> still be wrong in places. What changes is that the corrections are refinements rather than
+> discoveries, and 4.7's `contract:check` now lands two weeks after the contract instead of
+> five.
+>
+> **One lesson joined this module.** M5.4 CI is taught at the end of week 8, not as a
+> week-13 clinic: `lint`, `typecheck`, `test` and `contract:check` all exist by then, and
+> the dev phase needs a merge gate from its first pull request.
+
 ---
 
 ## Lesson order
 
-| # | Lesson | Syllabus LO | Why it sits here |
-|---|---|---|---|
-| 4.1 | **Modeling a relational schema** | 4.1 | Tables, keys, relationships, normalization — from the group's own spec §6 |
-| 4.2 | **Migrations** | 4.1 | Schema as versioned, reviewable files, not clicks in a dashboard |
-| 4.3 | **CRUD endpoints over the schema** | 4.2 | PostgREST gives you the endpoints; the work is deciding which ones you are entitled to call |
-| 4.4 | **Row Level Security — briefly** | *(no LO)* | ~1–2 sessions. The enforcement layer the whole project rests on |
-| 4.5 | **Constraints and triggers — briefly** | *(no LO)* | ~1 session. Rules the client cannot be trusted with |
-| 4.6 | **Edge Functions — briefly** | *(no LO)* | ~1 session. Where secrets and multi-step writes live |
-| 4.7 | **Implementing the contract** | 4.2 | The acceptance criterion: does it satisfy the Module 2 spec? |
+| # | Lesson | Syllabus LO | Milestone · week | Why it sits here |
+|---|---|---|---|---|
+| 4.1 | **Modeling a relational schema** | 4.1 | **2 · W4** | Tables, keys, relationships, normalization — from the group's own spec §6. **Taught before the contract**, so the contract describes a model that exists |
+| 4.2 | **Migrations** | 4.1 | **3 · W7** | Schema as versioned, reviewable files, not clicks in a dashboard |
+| 4.3 | **CRUD endpoints over the schema** | 4.2 | **3 · W7** | PostgREST gives you the endpoints; the work is deciding which ones you are entitled to call |
+| 4.4 | **Row Level Security — briefly** | *(no LO)* | **3 · W7** | ~1–2 sessions. The enforcement layer the whole project rests on |
+| 4.5 | **Constraints and triggers — briefly** | *(no LO)* | **3 · W8** | ~1 session. Rules the client cannot be trusted with |
+| 4.6 | **Edge Functions — briefly** | *(no LO)* | **3 · W8** | ~1 session. Where secrets and multi-step writes live |
+| 4.7 | **Implementing the contract** | 4.2 | **3 · W8** | The acceptance criterion: does it satisfy the contract agreed in week 4? |
+| 5.4 | **CI — briefly** *(from Module 5)* | *(no LO)* | **3 · W8** | Moved up from a week-13 clinic. Everything it runs exists by now, and the dev phase needs a merge gate from its first PR |
 
 ---
 
@@ -88,22 +110,25 @@ The module's real assessment. Groups do not design an API here — they were han
 in Module 2, by themselves. The question is whether the implementation satisfies it.
 
 ```
-contract/openapi.yaml   written week 3–5, unchanged unless versioned
+data model              drawn week 4, lesson 4.1
+        ↓
+contract/openapi.yaml   written week 4–5, unchanged unless versioned
         ↓
 schema + RLS + Edge Functions   lectured weeks 7–8, built in sprints 1–2 (weeks 10–13)
         ↓
-npm run contract:check   passes, or the module is not done
+npm run contract:check   passes, or the milestone is not done
 ```
 
-**Expect breaking changes here, and say so in advance.** A contract authored in week 4
-by students who had not yet learned schema modeling will have mistakes. That is not a
-failure of the method — versioning the change and reviewing it *is* the method. What
-would be a failure is silently editing the frontend to match a drifted backend.
+**Expect contract v2, and say so in advance** — but expect less of it than before. Since
+2026-09-22 the model is drawn in the same block as the contract (4.1 moved to week 4), so
+the corrections made here are refinements rather than discoveries. Versioning the change
+and reviewing it *is* the method. What would be a failure is silently editing the frontend
+to match a drifted backend.
 
 ---
 
 ## Carried forward
 
-- The contract from Module 2 is the specification; `contract:check` is the grader
+- The contract from Milestone 2 is the specification; `contract:check` is the grader
 - `supabase gen types typescript` is the same principle as `openapi-typescript` in
   Module 2 — schema is truth, types are downstream

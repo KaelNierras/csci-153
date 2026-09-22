@@ -2,17 +2,19 @@
   "number": 1,
   "title": "UI/UX Design",
   "subtitle": "Interface design you can defend, and the agentic workflow that builds it.",
-  "weeks": "1 – 2",
+  "weeks": "1 \u2013 2",
+  "milestone": "Milestone 1 \u00b7 UI/UX",
+  "delivery": "Both lessons in weeks 1\u20132, whole and in order.",
   "outcome": "CO1",
   "slides": 49,
   "status": "ready",
   "labs": [
     [
-      "Activity 1 — UI Audit and Redesign",
+      "Activity 1 \u2014 UI Audit and Redesign",
       "lab/activity-1-ui-audit-and-redesign.md"
     ],
     [
-      "Activity 2 — Brief to Prototype",
+      "Activity 2 \u2014 Brief to Prototype",
       "lab/activity-2-brief-to-prototype.md"
     ]
   ]

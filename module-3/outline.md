@@ -1,6 +1,6 @@
 # Module 3 — The Stack, End to End · outline
 
-**CSci 153 · Weeks 5–6 · CO3** — *Write valid JavaScript utilizing core programming
+**CSci 153 · Weeks 5–6 · CO3 · Milestone 2 · Contract** — *Write valid JavaScript utilizing core programming
 paradigms and DOM manipulation*
 Syllabus LOs: **LO 3.1** types and structures · **LO 3.2** block scoping (`let`/`const`) ·
 **LO 3.3** loop structures · **LO 3.4** functions and arrow expressions ·
@@ -18,7 +18,7 @@ break on purpose (3.8).
 > every session opens a real file from a running codebase and explains the piece of the
 > stack it belongs to. The language topics are still taught and still assessed — they are
 > the *content* of the tour rather than its organising principle. Nobody gets a lecture on
-> `for` loops in the abstract; they meet iteration in the file that renders a subject list.
+> `for` loops in the abstract; they meet iteration in the file that renders the subject catalog.
 >
 > **Why:** students arrive having had JavaScript in a prior course, and what actually
 > blocks them in weeks 10–17 is not syntax — it is not knowing what the twelve things in
@@ -39,6 +39,25 @@ Coverage is unchanged; only the framing moved. Nothing in the OBE syllabus is dr
 | LO 3.6 DOM manipulation | 3.6 — built by hand once, then in React |
 | LO 3.7 JavaScript libraries | 3.1, 3.7 — the app's real dependencies, and how to judge one |
 
+> ## ⬛ This module is the second half of the Contract milestone
+>
+> Resequenced 2026-09-22 (`../plan/milestones.md`). Module 3 is delivered whole, in weeks
+> 5–6, immediately after the contract is authored in week 4 — because **two of its three
+> anchor files are produced by the contract.**
+>
+> | The file it opens | Where it comes from |
+> |---|---|
+> | `contract/generated/schema.d.ts` (3.2) | `openapi-typescript` run against the week-4 spec |
+> | `src/lib/api/client.ts` (3.5) | `openapi-fetch`, typed by that same spec |
+> | `package.json` (3.1, 3.7) | the toolchain that produced both |
+>
+> Teaching generated types in the fortnight they are generated turns 3.2 from a TypeScript
+> lesson into the answer to a question the class has just asked.
+>
+> **3.5 reads the client; it does not build it.** Building the wrapper — interception,
+> retries, server state — is lesson 2.4, a week-12 clinic in Milestone 4. Reading a finished
+> thing and writing one are different sessions.
+
 ---
 
 ## Lesson order
@@ -49,24 +68,47 @@ One and a half weeks of lecture (3.1 lands in week 5, the rest in week 6). Each 
 |---|---|---|---|
 | 3.1 | **The stack, named** | 3.7 | `package.json` |
 | 3.2 | **TypeScript in five ideas** | 3.1, 3.2 | `contract/generated/schema.d.ts` |
-| 3.3 | **Arrays, objects, iteration** | 3.1, 3.3 | `SubjectList.tsx` |
-| 3.4 | **Functions, modules, and where files live** | 3.4 | `src/lib/`, `src/hooks/` |
+| 3.3 | **Arrays, objects, iteration** | 3.1, 3.3 | `SubjectCatalog.tsx` |
+| 3.4 | **Functions, modules, and where files live** | 3.4 | `src/lib/`, `src/features/` |
 | 3.5 | **JSON, `fetch`, and `await`** | 3.5 | `src/lib/api/client.ts` |
 | 3.6 | **What React does for you** | 3.6 | one list, twice — by hand, then in React |
 | 3.7 | **Choosing a library** | 3.7 | the dependency list, judged |
-| 3.8 | **Does it work? — briefly** | *(no LO)* | `units.test.ts` |
+| 3.8 | **Does it work? — briefly** | *(no LO)* | `src/lib/rules/units.test.ts` |
 
 ---
 
 ## 3.1 · The stack, named
 
-Open `package.json` and account for **every line**. Twelve dependencies, each with a
-one-sentence answer to "what breaks if I remove this?" — and, for each, whether it is a
-library you call or a framework that calls you.
+Open `package.json` and account for **every line**. Eight runtime dependencies and
+eighteen dev dependencies, each with a one-sentence answer to "what breaks if I remove
+this?" — and, for each, whether it is a library you call or a framework that calls you.
+
+**The split is the first lesson.** `dependencies` ship to the browser; `devDependencies`
+never leave the build machine. A student who cannot say which list a package belongs in
+cannot reason about bundle size, and will eventually put a secret-bearing tool in the
+first list.
+
+```
+dependencies (8)     react · react-dom · react-router-dom · @tanstack/react-query
+                     openapi-fetch · zod · react-hook-form · @hookform/resolvers
+
+devDependencies (18) vite · typescript · tailwindcss · vitest · @playwright/test
+                     openapi-typescript · @redocly/cli · @stoplight/prism-cli
+                     oxlint · jsdom · testing-library ×2 · types ×3 · plugins ×3
+```
+
+**Two absences are worth as much as the presences**, and both are deliberate choices
+recorded in `PROJECT-CONTEXT.md`:
+
+- **No `@supabase/supabase-js`.** The app talks to Supabase with `fetch` — about seventy
+  readable lines in `src/lib/api/auth.ts`. Ask the class what the library would have
+  saved, and what it would have hidden.
+- **No shadcn/ui package.** shadcn is not a dependency; it copies components into your
+  repo. "Why is there nothing to install?" is the question that teaches what it actually
+  is.
 
 The point is orientation, not depth: after this session, no name in the project is a
-mystery word. Vite, React, TypeScript, Tailwind, shadcn/ui, TanStack Query,
-openapi-fetch, Supabase, Vitest, Playwright, and the two lint tools.
+mystery word.
 
 **The exercise:** each group writes the same accounting for *their own* `package.json`,
 and has to justify anything they installed that the reference app does not have.

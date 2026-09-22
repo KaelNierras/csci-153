@@ -1,6 +1,6 @@
 # Module 5 — Web Application Integration · outline
 
-**CSci 153 · Week 8, plus clinics in the dev phase · CO5** — *Deploy a fully working web application integrating
+**CSci 153 · Week 8 (lesson 5.4) and clinics in weeks 13–15 · CO5** — *Deploy a fully working web application integrating
 frontend, backend, and database components*
 Syllabus LOs: **LO 5.1** validate user inputs on client and server layers ·
 **LO 5.2** utilize API endpoints for frontend application ·
@@ -12,25 +12,49 @@ and with a service-role key — a CI pipeline with a merge gate (5.4), and the t
 deployment map (5.5).
 
 This module was five weeks of mostly supervised build time with short inputs. Under the
-8-week lecture calendar (`plan/semester-calendar.md`) the split is explicit: **5.1 and 5.2
-are lectured in week 8**, and **5.3, 5.4, and 5.5 are ~45-minute clinics inside the
-development phase** — e2e in week 12, CI in week 13, deployment in week 15 — each taught
-in the week it is applied. 5.6 is the graded read-through in weeks 16–17.
+milestone sequence (`../plan/milestones.md`) almost all of it is clinics: **5.4 CI is the
+only lecture**, at the end of week 8, and 5.1, 5.2, 5.3 and 5.5 are ~45–60 minute clinics
+in weeks 13, 14 and 15 — each taught in the week it is applied. 5.6 is the graded
+read-through in weeks 16–17.
 
 The supervised build time did not disappear; it became weeks 10–17.
+
+> ## ⬛ Split between Milestone 3 and Milestone 4
+>
+> Resequenced 2026-09-22 (`../plan/milestones.md`).
+>
+> | Lesson | Milestone | When |
+> |---|---|---|
+> | 5.4 CI — briefly | **3 · Backend** | **Week 8 lecture** — moved up from a week-13 clinic |
+> | 5.1 Two-layer validation | **4 · Frontend** | Week 13 clinic, ~60 min |
+> | 5.2 Integration day | **4 · Frontend** | Week 13 clinic, ~60 min |
+> | 5.3 End-to-end testing | **4 · Frontend** | Week 14 clinic, ~45 min |
+> | 5.5 Deployment | **4 · Frontend** | Week 15 clinic, ~45 min |
+> | 5.6 Codebase assessment | — | Weeks 16–17, graded read-through |
+>
+> **5.4 moved earlier** because everything CI runs exists by week 8. Wiring it at the start
+> of the dev phase gates every sprint from its first pull request instead of its sixth.
+>
+> **5.2 Integration day is no longer a cliff.** Under the old order the frontend met the
+> backend for the first time in week 13, and the failure surface was the whole application.
+> Screens are now wired to the real backend one at a time from sprint 2, so 5.2 became the
+> session that *explains* what the contract bounded — with the evidence already on the
+> students' own screens. It is a better lesson for having less to fix.
 
 ---
 
 ## Lesson order
 
-| # | Lesson | Syllabus LO | Why it sits here |
-|---|---|---|---|
-| 5.1 | **Two-layer validation** | 5.1 | Zod on the form, RLS and function checks on the server — and why the client half is only a courtesy |
-| 5.2 | **Integration day** | 5.2 | Swap the mock for the real base URL. What breaks, and why the contract limits it |
-| 5.3 | **End-to-end testing — briefly** | *(no LO)* | ~1 session. Playwright, and test-cases-as-issues |
-| 5.4 | **CI — briefly** | *(no LO)* | ~1 session. GitHub Actions running what students already run by hand |
-| 5.5 | **Deployment** | 5.3 | Static build to Vercel, functions to Supabase, secrets in neither place at once |
-| 5.6 | **Codebase assessment** | — | The graded read-through of the repository |
+| # | Lesson | Syllabus LO | Milestone · week | Why it sits here |
+|---|---|---|---|---|
+| 5.4 | **CI — briefly** | *(no LO)* | **3 · W8 lecture** | GitHub Actions running what students already run by hand. Taught first, so the whole dev phase is gated |
+| 5.1 | **Two-layer validation** | 5.1 | **4 · W13** | Zod on the form, RLS and function checks on the server — and why the client half is only a courtesy |
+| 5.2 | **Integration day** | 5.2 | **4 · W13** | The screens are already on the real backend. This is the session that explains what the contract bounded |
+| 5.3 | **End-to-end testing — briefly** | *(no LO)* | **4 · W14** | ~1 session. Playwright, and test-cases-as-issues |
+| 5.5 | **Deployment** | 5.3 | **4 · W15** | Static build to Vercel, functions to Supabase, secrets in neither place at once |
+| 5.6 | **Codebase assessment** | — | — · W16–17 | The graded read-through of the repository |
+
+Rows are in **delivery order**. The numbering is kept because the deck refers to it.
 
 ---
 
@@ -109,9 +133,16 @@ bundle (demonstrated already in Module 4.6).
 By this point the semester's through-line should be visible in one slide:
 
 ```
-M1  design the screen         tokens, states, the 8-point QA
-M2  build it, agree the contract   components, Context, OpenAPI, typed client
-M3  the language underneath   JS, JSON, the DOM, unit tests
-M4  implement the contract    schema, RLS, triggers, Edge Functions
-M5  connect and ship          validation, integration, CI, deployment
+Milestone 1  UI/UX      design the screen, then build it static
+                        tokens · states · the 8-point QA · components
+Milestone 2  Contract   agree the shape of the data
+                        the model · OpenAPI · generated types · the stack, named
+Milestone 3  Backend    implement that shape
+                        migrations · RLS · triggers · Edge Functions · CI
+Milestone 4  Frontend   consume it, validate it, ship it
+                        auth · the wrapper · server state · e2e · deployment
 ```
+
+Read it as one sentence: **you cannot agree a contract for data you have not modeled, you
+cannot implement a contract you have not agreed, and you cannot consume an implementation
+that does not exist.** Each milestone hands the next one the artifact it needs.

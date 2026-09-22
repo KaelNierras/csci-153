@@ -1,6 +1,6 @@
 # Module 2 — Frontend Development · outline
 
-**CSci 153 · Weeks 3–5 · CO2** — *Develop responsive web templates using HTML/CSS
+**CSci 153 · Weeks 3 and 4, plus clinics in weeks 11–12 · CO2** — *Develop responsive web templates using HTML/CSS
 frameworks and component libraries*
 Syllabus LOs: **LO 2.1** reusable UI components with React + Tailwind ·
 **LO 2.2** cross-device responsiveness
@@ -25,20 +25,47 @@ its time on *what to build* and *how to structure it*, not on syntax.
 If React is genuinely rusty, that is a self-study gap to close in week 3, not class
 time. Say so early rather than in week 5.
 
+> ## ⬛ Delivery — this module is split across three milestones
+>
+> Resequenced 2026-09-22 (`../plan/milestones.md`). Module 2 is the one deck that is not
+> delivered in one sitting, because its lessons belong to three different stages of a build.
+>
+> | Lesson | Milestone | When |
+> |---|---|---|
+> | 2.0 Git & GitHub | **1 · UI/UX** | Week 3 |
+> | 2.1 Components from mockups | **1 · UI/UX** | Week 3 |
+> | 2.3 The API contract (OpenAPI) | **2 · Contract** | Week 4 |
+> | 2.2 Auth Context + route protection | **4 · Frontend** | Week 11 clinic, ~45 min |
+> | 2.4 API wrapper, interception, server state | **4 · Frontend** | Week 12 clinic, ~60 min |
+> | 2.5 Data states in practice | **4 · Frontend** | Week 12 clinic, ~60 min |
+>
+> **The lesson order below is still the order to read them in** — each lesson still creates
+> the problem the next one solves. What changed is that the gap between 2.1 and 2.2 is now
+> eight weeks of contract and backend work, and by the time 2.2 runs there is a real session
+> to protect a route with.
+>
+> **LO retag.** LO 2.2 (cross-device responsiveness) moved from lesson 2.5 to lesson 2.1,
+> where responsiveness is actually built. Both of CO2's outcomes are therefore attained in
+> week 3 and assessed by A3 in week 4. Everything that moved into the dev phase carries no
+> syllabus LO.
+
 ---
 
 ## Lesson order
 
 The sequence is load-bearing — each lesson creates the problem the next one solves.
 
-| # | Lesson | Why it sits here |
-|---|---|---|
-| 2.0 | **Git & GitHub — briefly** | ~1 session. The group workflow the Final Activity Project runs on |
-| 2.1 | **Components from mockups** | Module 1's screen becomes real components; tokens become the Tailwind theme. React itself is assumed |
-| 2.2 | **Auth Context + route protection** | First real cross-cutting state; creates the need for a request layer |
-| 2.3 | **The API contract (OpenAPI)** | You cannot type the wrapper until you know the contract |
-| 2.4 | **API wrapper, interception, and server state** | Built *against* the spec from 2.3, not invented. TanStack Query enters here |
-| 2.5 | **Data states in practice** | Cashes in Module 1's loading / empty / error work with real latency |
+| # | Lesson | Milestone · week | Why it sits here |
+|---|---|---|---|
+| 2.0 | **Git & GitHub — briefly** | 1 · W3 | ~1 session. The group workflow the Final Activity Project runs on |
+| 2.1 | **Components from mockups** | 1 · W3 | Module 1's screen becomes real components; tokens become the Tailwind theme. React itself is assumed. **LO 2.1 and LO 2.2** |
+| 2.3 | **The API contract (OpenAPI)** | 2 · W4 | Taught the same block as data modeling (4.1) — you model what exists, then write down how it is exposed |
+| 2.2 | **Auth Context + route protection** | 4 · W11 | First real cross-cutting state. Now taught when there is a real session to protect a route with |
+| 2.4 | **API wrapper, interception, and server state** | 4 · W12 | Built *against* the spec, not invented. TanStack Query enters here |
+| 2.5 | **Data states in practice** | 4 · W12 | Cashes in Module 1's loading / empty / error work with real latency |
+
+The rows are in **delivery order**, which is no longer numeric order. The numbering is
+kept because the deck's slides and the activity briefs refer to it.
 
 ---
 
@@ -77,9 +104,14 @@ failure once, on purpose.
 
 ## 2.3 · The API contract — the new segment
 
-**Framing:** the frontend is written against a contract *before the backend exists*.
-That is the real professional workflow, and in this course it is literally true —
-the backend is Module 4, five weeks away.
+**Framing:** the contract is agreed *before either side is built*. That is the real
+professional workflow, and in this course it is literally true — the backend is
+Milestone 3, three weeks away, and the frontend wiring is Milestone 4, seven.
+
+**Say the cost out loud.** The gap used to be five weeks, which made the argument for
+contract-first by itself. It is now shorter, so a group could reasonably ask why they
+should not just wait for the backend. The answer is the week-6 gate: running screens on
+the Prism mock. A group that waited has nothing to show.
 
 ### Slides (~10)
 
@@ -123,13 +155,14 @@ One OpenAPI document, carried across three modules. This is what makes the cours
 hold together rather than being five unrelated units.
 
 ```
-Module 2   consume it     typed wrapper + screens, running against a mock
-Module 4   implement it   CRUD endpoints that satisfy the same document
-Module 5   integrate      swap the mock for the real base URL — nothing else changes
+Milestone 2   agree it       a data model, then openapi.yaml, then generated types
+Milestone 3   implement it   schema, RLS, and endpoints that satisfy that document
+Milestone 4   consume it     typed wrapper and screens, then the real base URL
 ```
 
-Module 4 then has a real acceptance criterion: *does your implementation satisfy the
-contract the frontend was already written against?*
+Milestone 3 then has a real acceptance criterion: *does your implementation satisfy the
+contract you agreed two weeks ago?* — and Milestone 4 has a guarantee: if the backend
+satisfies the contract, the screens the mock was built against will work against it.
 
 **To prepare:** author `enrollment-api.yaml` — 5 or 6 operations (list subjects, get
 load, add subject, remove subject, submit enrollment) with error responses that

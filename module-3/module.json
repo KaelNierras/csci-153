@@ -1,8 +1,10 @@
 {
   "number": 3,
   "title": "The Stack, End to End",
-  "subtitle": "Every piece of the toolchain, taught by opening the file it lives in — types, modules, JSON, the DOM, and how you know a function works.",
-  "weeks": "5 – 6",
+  "subtitle": "Every piece of the toolchain, taught by opening the file it lives in \u2014 types, modules, JSON, the DOM, and how you know a function works.",
+  "weeks": "5 \u2013 6",
+  "milestone": "Milestone 2 \u00b7 Contract",
+  "delivery": "Whole, in weeks 5\u20136. Its three anchor files \u2014 package.json, schema.d.ts, client.ts \u2014 are contract artifacts, which is why it sits here.",
   "outcome": "CO3",
   "slides": 49,
   "status": "ready",

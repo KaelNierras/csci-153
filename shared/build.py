@@ -104,10 +104,15 @@ def card(m: dict) -> str:
         f'<a class="lab" href="{slug}/{href}">{name}</a>'
         for name, href in m.get("labs", [])
     )
-    meta_bits = [f'{m.get("weeks", "")}', f'{m.get("outcome", "")}']
+    meta_bits = [f'Weeks {m.get("weeks", "")}' if m.get("weeks") else "", f'{m.get("outcome", "")}']
     if ready:
         meta_bits.append(f'{m.get("slides", 0)} slides')
     meta_line = " · ".join(b for b in meta_bits if b)
+
+    milestone = m.get("milestone", "")
+    delivery = m.get("delivery", "")
+    ms = f'<span class="mod__ms">{milestone}</span>' if milestone else ""
+    note = f'<p class="mod__d">{delivery}</p>' if delivery else ""
 
     if ready:
         return f"""      <article class="mod">
@@ -120,6 +125,7 @@ def card(m: dict) -> str:
           </span>
           <span class="mod__go">Open deck →</span>
         </a>
+        <div class="mod__ms-row">{ms}{note}</div>
         <div class="mod__foot">
           {labs}
           <span class="spacer"></span>
@@ -137,6 +143,7 @@ def card(m: dict) -> str:
           </span>
           <span class="mod__go mod__go--soon">In preparation</span>
         </div>
+        <div class="mod__ms-row">{ms}{note}</div>
       </article>"""
 
 
@@ -187,9 +194,40 @@ def landing(modules: list) -> str:
     font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em;
     text-transform: uppercase; color: var(--accent); white-space: nowrap;
   }}
+  .spine {{ border: 1px solid var(--line); background: var(--sunk); padding: var(--s5); }}
+  .spine__h {{
+    font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--text-4);
+  }}
+  .spine__l {{
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: var(--s4); margin: var(--s4) 0 0; padding: 0; list-style: none;
+  }}
+  .spine__l li {{
+    display: flex; flex-direction: column; gap: 0.15rem;
+    border-left: 2px solid var(--accent); padding-left: var(--s3);
+    font-size: 0.95rem; font-weight: 600; letter-spacing: -0.01em;
+  }}
+  .spine__l b {{
+    font-family: var(--mono); font-size: 0.7rem; color: var(--accent);
+    font-weight: 400; letter-spacing: 0.1em;
+  }}
+  .spine__l span {{ font-size: 0.8rem; font-weight: 400; color: var(--text-3); }}
+  .spine__n {{ font-size: 0.82rem; color: var(--text-3); margin: var(--s4) 0 0; }}
+  @media (max-width: 40rem) {{ .spine__l {{ grid-template-columns: repeat(2, 1fr); }} }}
   .mod__go--soon {{ color: var(--text-4); }}
   .mod--soon {{ opacity: 0.55; }}
   .mod--soon .mod__n {{ color: var(--text-4); }}
+  .mod__ms-row {{
+    display: flex; align-items: baseline; gap: var(--s4); flex-wrap: wrap;
+    border-top: 1px solid var(--line-soft); padding: var(--s3) var(--s5);
+  }}
+  .mod__ms {{
+    font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent); white-space: nowrap;
+    border: 1px solid var(--line-loud); padding: 0.25em 0.6em;
+  }}
+  .mod__d {{ font-size: 0.82rem; color: var(--text-3); flex: 1; min-width: 14rem; }}
   .mod__foot {{
     display: flex; align-items: center; gap: var(--s4); flex-wrap: wrap;
     border-top: 1px solid var(--line-soft); padding: var(--s3) var(--s5);
@@ -248,6 +286,18 @@ def landing(modules: list) -> str:
         use <kbd>→</kbd> to advance, <kbd>O</kbd> for the slide map, <kbd>F</kbd> for fullscreen.</p>
     </header>
 
+    <section class="spine">
+      <span class="spine__h">The build order</span>
+      <ol class="spine__l">
+        <li><b>1</b> UI/UX<span>design the screen</span></li>
+        <li><b>2</b> Contract<span>agree the shape of the data</span></li>
+        <li><b>3</b> Backend<span>implement the shape</span></li>
+        <li><b>4</b> Frontend<span>consume it, validate, ship</span></li>
+      </ol>
+      <p class="spine__n">Milestones are the sequence a group builds in. The decks below are
+        the material they draw on — two of them are delivered in more than one piece.</p>
+    </section>
+
     <main class="mods">
 {cards}
     </main>
@@ -257,7 +307,8 @@ def landing(modules: list) -> str:
       <span>
         <span class="plan__t">Semester plan</span>
         <span class="plan__s">All five modules and their topics, each mapped to the learning
-          outcome that requires it — and the eight topics no outcome covers.</span>
+          outcome that requires it, the milestone that delivers it, and the eight topics no
+          outcome covers.</span>
       </span>
       <span class="plan__go">Open plan →</span>
     </a>
