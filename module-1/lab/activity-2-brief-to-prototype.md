@@ -13,7 +13,7 @@ Course outcome **CO1** · Learning outcome **LO 1.2**
 > | | Produced by | Why |
 > |---|---|---|
 > | **Design brief** (`brief.md`) | **The group — one copy** | Product, user, stack, constraints, and data shape are facts about *the system*, not about you. Four different answers would mean four different products. |
-> | **Token set** (`tokens.css`) | **The group — one copy** | This becomes the Tailwind theme in Module 2 and every screen shipped in week 17. A project has exactly one design system. |
+> | **Token set** (`tokens.css`) | **The group — one copy** | This becomes the Tailwind theme in Lesson 1.4 and every screen shipped in week 17. A project has exactly one design system. |
 > | **Plan, both screens, QA sheet** | **Each member, individually** | Each of you takes a **different screen** of the same system and runs the full loop yourself. |
 >
 > So the group agrees *what it is building and what it looks like*; each member then
@@ -22,7 +22,7 @@ Course outcome **CO1** · Learning outcome **LO 1.2**
 >
 > This is not busywork framing — it is the actual arithmetic. A four-person group
 > finishes week 3 with **one design system and four reviewed screens**, all of which
-> carry into Module 2. Done individually, you would produce four competing token sets
+> carry into Lesson 1.4. Done individually, you would produce four competing token sets
 > and throw three of them away.
 
 ---
@@ -73,7 +73,7 @@ Lesson 1.2 slide. It must state:
 
 - **Product and user** — who, on what device, in what conditions
 - **The screen's one job** — a single sentence
-- **Stack** — the one you will actually use in Module 2
+- **Stack** — the one you will actually use in Lesson 1.4
 - **Tokens** — pasted in full, not referenced
 - **Constraints** — accessibility, minimum width, no libraries, states required
 - **Real data shape** — including the longest realistic values, not tidy samples
@@ -86,7 +86,7 @@ commented. Your group almost certainly has several candidates already, one per m
 from Activity 1: pick one and refine it together, or merge them. Do not average them
 into mush, and do not let each member keep their own.
 
-This file is the one Module 2 turns into `tailwind.config` theme values, so it is
+This file is the one Lesson 1.4 turns into `tailwind.config` theme values, so it is
 worth the argument now rather than in week 4.
 
 ### 3 · The agent's plan, with your corrections marked (`plan.md`) — **individual**
@@ -163,7 +163,7 @@ past that.
 | **The v1 → final gap** | 25 | The diff shows substantive, principled improvement — not cosmetic tweaks. |
 | **QA sheet honesty and precision** | 20 | Failures identified specifically; corrections written as measurements, not adjectives. |
 | **Final screen quality** | 15 | Token-driven, state-complete, accessible, holds at 320px. |
-| **Craft** | 5 | Reads as one deliberate system, ready to become components in Module 2. |
+| **Craft** | 5 | Reads as one deliberate system, ready to become components in Lesson 1.4. |
 | **Fits the group's system** | — | Not scored separately, but a screen built on different tokens than the group's, or a duplicate of another member's screen, forfeits the Craft points and the Brief row. |
 
 **Automatic deductions**
@@ -178,7 +178,7 @@ past that.
 
 | Feeds into | How |
 |---|---|
-| **Module 2 · Frontend** | Your group arrives with several screens already designed; they become your first real React + Tailwind components, and the shared `tokens.css` becomes the Tailwind theme. |
+| **Lesson 1.4 · Components** | Your group arrives with several screens already designed; they become your first real React + Tailwind components, and the shared `tokens.css` becomes the Tailwind theme. |
 | **Final Web Project (FWP, 50%)** | Group work. The design system your group establishes here carries every screen it ships in week 17. |
 | **Codebase Assessment (CA, 20%)** | Read off the repository in weeks 16–17. You answer for *your* screens — which is why you each run the loop yourself rather than watching someone else run it. |
 

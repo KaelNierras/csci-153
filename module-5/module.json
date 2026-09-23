@@ -1,10 +1,12 @@
 {
   "number": 5,
-  "title": "Web Application Integration",
-  "subtitle": "Validation, integration, CI, and a deployed application.",
-  "weeks": "8 + clinics",
-  "outcome": "CO5",
-  "slides": 32,
+  "title": "QA &amp; Acceptance",
+  "subtitle": "End-to-end tests, test cases as issues, a Day In The Life run, and the read-through that grades the repository.",
+  "weeks": "14 \u00b7 16 \u2013 17",
+  "milestone": "Milestone 5 \u00b7 QA &amp; Acceptance",
+  "delivery": "Nothing new is built here. One clinic in week 14 for Playwright and the test-case workflow, then weeks 16\u201317: the Day In The Life acceptance run, the 12-point QA on every screen, and the Codebase Assessment.",
+  "outcome": "\u2014",
+  "slides": 21,
   "status": "ready",
   "labs": []
 }

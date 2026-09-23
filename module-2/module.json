@@ -1,18 +1,20 @@
 {
   "number": 2,
-  "title": "Frontend Development",
-  "subtitle": "Components, auth context, the API contract, and a typed request layer.",
-  "weeks": "3 – 5",
-  "outcome": "CO2",
-  "slides": 51,
+  "title": "The Contract",
+  "subtitle": "Model the data, then write down how it is exposed \u2014 one document your whole group signs.",
+  "weeks": "4 \u2013 6",
+  "milestone": "Milestone 2 \u00b7 Contract",
+  "delivery": "Two lessons and a testing session. 2.1 models the data, 2.2 specifies the API over it across fifteen slides with four worked examples, 2.3 proves a rule with a unit test. Nothing the previous course already covered is re-taught.",
+  "outcome": "CO4",
+  "slides": 35,
   "status": "ready",
   "labs": [
     [
-      "Activity 3 — Prototype to Components",
-      "lab/activity-3-prototype-to-components.md"
+      "Week 5 \u2014 Prior-knowledge diagnostic",
+      "lab/week-5-prior-knowledge-diagnostic.md"
     ],
     [
-      "Activity 4 — The Contract",
+      "Activity 4 \u2014 The Contract",
       "lab/activity-4-the-contract.md"
     ]
   ]

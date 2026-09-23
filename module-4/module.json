@@ -1,10 +1,12 @@
 {
   "number": 4,
-  "title": "Backend Development",
-  "subtitle": "Schema, Row Level Security, and the functions that implement the contract.",
-  "weeks": "7 – 8",
-  "outcome": "CO4",
-  "slides": 44,
+  "title": "Frontend Development",
+  "subtitle": "Auth, the typed request layer, server state, validation, and a deployed application.",
+  "weeks": "clinics 11 \u2013 15",
+  "milestone": "Milestone 4 \u00b7 Frontend",
+  "delivery": "Consume the backend that now exists. Taught as five ~45\u201360 minute clinics inside the development phase, each in the week it is applied.",
+  "outcome": "CO2 \u00b7 CO5",
+  "slides": 45,
   "status": "ready",
   "labs": []
 }

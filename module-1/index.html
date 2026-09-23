@@ -1,12 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>UI/UX Design Bench</title>
 <link rel="stylesheet" href="../shared/deck.css">
 
 <script type="application/json" id="deck-sections">
 {
-  "names":  { "1.1": "Lesson 1.1 — UI/UX practice", "1.2": "Lesson 1.2 — Agentic design" },
-  "colors": { "1.1": "var(--brass)", "1.2": "var(--cyan)" }
+  "names": {
+    "1.1": "Lesson 1.1 — UI/UX practice",
+    "1.2": "Lesson 1.2 — Agentic design",
+    "1.3": "Lesson 1.3 — Git & GitHub",
+    "1.4": "Lesson 1.4 — Components"
+  },
+  "colors": {
+    "1.1": "var(--brass)",
+    "1.2": "var(--cyan)",
+    "1.3": "var(--violet)",
+    "1.4": "var(--brass)"
+  }
 }
 </script>
+
+<style>
+/* A third signal — violet — marks material no syllabus outcome requires
+   but the Final Activity Project does. Same encoding as the semester plan. */
+:root {
+  --violet:     #A38BD1;
+  --violet-lit: #C3AEEA;
+  --violet-dim: #3A2F52;
+  --violet-ink: #150F20;
+}
+</style>
+
+<style>
+/* ---- carried from the old Module 2 ---- */
+/* Module 2 additions to the shared system.
+   A third signal — violet — marks material no syllabus outcome requires
+   but the Final Activity Project does. Same encoding as the semester plan. */
+
+/* section accents ride on the deck element so the rails change too */
+#deck[data-sec="2.2"], #deck[data-sec="4.2"] {
+  --accent: var(--cyan); --accent-lit: var(--cyan-lit);
+  --accent-dim: var(--cyan-dim); --accent-ink: var(--cyan-ink);
+}
+#deck[data-sec="1.3"] {
+  --accent: var(--violet); --accent-lit: var(--violet-lit);
+  --accent-dim: var(--violet-dim); --accent-ink: var(--violet-ink);
+}
+#deck[data-sec="lab"] {
+  --accent: #E7EBF2; --accent-lit: #FFFFFF;
+  --accent-dim: #2B3547; --accent-ink: #0A0D13;
+}
+
+/* progress ticks, grouped by lesson */
+.tick[data-sec="1.3"] { background: var(--violet-dim); }
+.tick[data-sec="1.4"], .tick[data-sec="4.1"], .tick[data-sec="4.3"] { background: var(--brass-dim); }
+.tick[data-sec="2.2"], .tick[data-sec="4.2"] { background: var(--cyan-dim); }
+.tick.is-done[data-sec="1.3"] { background: #6A5A8E; }
+.tick.is-done[data-sec="1.4"], .tick.is-done[data-sec="4.1"], .tick.is-done[data-sec="4.3"] { background: #8B6B2E; }
+.tick.is-done[data-sec="2.2"], .tick.is-done[data-sec="4.2"] { background: #2F717C; }
+
+/* chip variant for the added-material marker */
+.chip--added { border-color: var(--violet-dim); color: var(--violet); background: rgba(163,139,209,0.10); }
+
+/* ---- module-specific widget styling ---- */
+
+/* prop-drilling visualiser */
+.drill { display: flex; flex-direction: column; gap: var(--s3); }
+.drill__tree { display: flex; flex-direction: column; gap: 2px; font-family: var(--mono); font-size: 0.78rem; }
+.drill__node {
+  display: grid; grid-template-columns: 1fr auto; gap: var(--s3); align-items: center;
+  padding: 0.35rem var(--s3); border: 1px solid var(--line); background: var(--panel-2);
+  transition: background .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease);
+}
+.drill__node[data-carrier="1"] { border-color: var(--fail); color: var(--fail); background: #1B1113; }
+.drill__node[data-user="1"]    { border-color: var(--pass); color: var(--pass); background: #0F1A17; }
+.drill__tag { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.drill__count { font-family: var(--mono); font-size: 0.72rem; color: var(--text-3); }
+.drill__count b { color: var(--fail); }
+
+/* spec explorer */
+.spec { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); align-items: start; }
+@media (max-width: 60rem) { .spec { grid-template-columns: 1fr; } }
+.spec__ops { display: flex; flex-direction: column; gap: 2px; }
+.spec__op {
+  display: grid; grid-template-columns: 3.6rem 1fr; gap: var(--s3); align-items: baseline;
+  text-align: left; background: var(--panel-2); border: 1px solid var(--line);
+  padding: 0.4rem var(--s3); cursor: pointer; font-family: var(--mono); font-size: 0.74rem;
+  color: var(--text-2); transition: background .15s var(--ease), border-color .15s var(--ease);
+}
+.spec__op:hover { background: var(--panel-3); }
+.spec__op[aria-selected="true"] { border-color: var(--accent); background: var(--panel-3); color: var(--text); }
+.spec__verb { font-size: 0.62rem; letter-spacing: 0.08em; text-align: center; padding: 0.1rem 0; }
+.spec__verb[data-v="GET"]    { color: var(--cyan); }
+.spec__verb[data-v="POST"]   { color: var(--pass); }
+.spec__verb[data-v="DELETE"] { color: var(--fail); }
+.spec__detail { display: flex; flex-direction: column; gap: var(--s3); min-height: 16rem; }
+.spec__opid { font-family: var(--mono); font-size: 0.7rem; color: var(--accent); letter-spacing: 0.06em; }
+.spec__sum  { font-size: 0.88rem; color: var(--text-2); }
+
+/* schema → type */
+.s2t { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); align-items: start; }
+@media (max-width: 60rem) { .s2t { grid-template-columns: 1fr; } }
+.s2t__ctl { display: flex; flex-wrap: wrap; gap: var(--s3); }
+.s2t__f {
+  display: flex; align-items: center; gap: var(--s2);
+  font-family: var(--mono); font-size: 0.68rem; color: var(--text-2);
+  border: 1px solid var(--line); background: var(--panel-2); padding: 0.25rem 0.5rem;
+}
+.s2t__f button {
+  background: none; border: 0; cursor: pointer; padding: 0 0.2rem;
+  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em;
+  color: var(--text-4); text-transform: uppercase;
+}
+.s2t__f button[aria-pressed="true"] { color: var(--accent); }
+
+/* contract diff */
+.cdiff { display: flex; flex-direction: column; gap: var(--s3); }
+.cdiff__row {
+  display: grid; grid-template-columns: 1.4rem 1fr auto; gap: var(--s3); align-items: baseline;
+  padding: var(--s3); border: 1px solid var(--line); background: var(--panel-2);
+  font-size: 0.85rem;
+}
+.cdiff__row[data-k="breaking"] { border-left: 2px solid var(--fail); }
+.cdiff__row[data-k="additive"] { border-left: 2px solid var(--pass); }
+.cdiff__m { font-family: var(--mono); font-size: 0.8rem; }
+.cdiff__row[data-k="breaking"] .cdiff__m { color: var(--fail); }
+.cdiff__row[data-k="additive"] .cdiff__m { color: var(--pass); }
+.cdiff__code { font-family: var(--mono); font-size: 0.78rem; color: var(--text); }
+.cdiff__why  { font-size: 0.82rem; color: var(--text-3); margin-top: 0.15rem; }
+.cdiff__verdict {
+  display: flex; align-items: center; gap: var(--s3);
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+}
+
+/* commit graph — GitKraken-style lanes */
+.gg { display: flex; flex-direction: column; gap: var(--s3); padding: var(--s4); }
+.gg__stage {
+  position: relative; overflow-x: auto; overflow-y: hidden;
+  border: 1px solid var(--line); background: var(--sunk);
+}
+.gg__inner { position: relative; min-width: 30rem; }
+.gg__svg { position: absolute; top: 0; left: 0; pointer-events: none; }
+.gg__rows { position: relative; display: flex; flex-direction: column; }
+.gg__row {
+  display: grid; align-items: center; gap: var(--s3);
+  padding-right: var(--s4);
+  font-size: 0.82rem; color: var(--text-2);
+  border-bottom: 1px solid var(--line-soft);
+}
+.gg__row:last-child { border-bottom: 0; }
+.gg__row.is-new { animation: ggIn .32s var(--ease) both; }
+@keyframes ggIn { from { opacity: 0; transform: translateY(-0.35rem); } to { opacity: 1; transform: none; } }
+.gg__msg { display: flex; align-items: center; gap: var(--s3); min-width: 0; }
+.gg__txt { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gg__row.is-merge .gg__txt { color: var(--text); }
+.gg__who {
+  font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.08em;
+  color: var(--text-4); text-transform: uppercase; white-space: nowrap;
+}
+.gg__pill {
+  font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.08em;
+  padding: 0.1rem 0.4rem; border: 1px solid currentColor; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 0.3rem; flex: none;
+}
+.gg__pill::before { content: ""; width: 0.35rem; height: 0.35rem; background: currentColor; border-radius: 50%; }
+.gg__ctl { display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap; }
+.gg__step {
+  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em;
+  color: var(--text-3); font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.gg__note {
+  border-left: 2px solid var(--accent);
+  padding: var(--s3) var(--s4); background: var(--panel);
+  font-size: 0.9rem; color: var(--text-2); min-height: 4.4rem;
+}
+.gg__note b { color: var(--text); }
+.gg__cmd {
+  font-family: var(--mono); font-size: 0.72rem; color: var(--accent-lit);
+  display: block; margin-top: 0.35rem;
+}
+.gg__legend { display: flex; gap: var(--s4); flex-wrap: wrap; font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.gg__legend span { display: inline-flex; align-items: center; gap: var(--s2); color: var(--text-3); }
+.gg__legend i { width: 0.55rem; height: 0.55rem; border-radius: 50%; }
+@media (prefers-reduced-motion: reduce) { .gg__row.is-new { animation: none; } }
+
+/* query cache */
+.qc { display: flex; flex-direction: column; gap: var(--s3); }
+.qc__keys { display: flex; flex-direction: column; gap: 2px; }
+.qc__key {
+  display: grid; grid-template-columns: 1fr 5.5rem; gap: var(--s3); align-items: center;
+  font-family: var(--mono); font-size: 0.75rem;
+  border: 1px solid var(--line); background: var(--panel-2); padding: 0.35rem var(--s3);
+  transition: border-color .25s var(--ease), background .25s var(--ease);
+}
+.qc__state { font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; text-align: right; }
+.qc__key[data-s="fresh"]   { border-color: #2C5C43; }
+.qc__key[data-s="fresh"]   .qc__state { color: var(--pass); }
+.qc__key[data-s="stale"]   { border-color: var(--fail); background: #1B1113; }
+.qc__key[data-s="stale"]   .qc__state { color: var(--fail); }
+.qc__key[data-s="fetching"]{ border-color: var(--accent); }
+.qc__key[data-s="fetching"] .qc__state { color: var(--accent); }
+</style>
+</head>
+<body>
 
 <div id="deck" data-sec="0">
 
@@ -18,28 +217,24 @@
     <span class="rail__spacer"></span>
     <span class="rail__course">CSci 153 · Web Systems &amp; Technologies</span>
     <span class="rail__sep">/</span>
-    <span class="rail__count"><b id="count-now">01</b> <span class="dim">of</span> <span id="count-all">49</span></span>
+    <span class="rail__count"><b id="count-now">01</b> <span class="dim">of</span> <span id="count-all">65</span></span>
   </header>
 
   <!-- ============ stage ============ -->
   <main id="stage">
 
-    <!-- ======================================================
-         ORIENTATION
-         ====================================================== -->
-
     <section class="slide slide--center" data-sec="0" data-label="Cover" data-rail="Orientation">
       <div class="col" style="gap:var(--s5);align-items:center">
-        <span class="eyebrow eyebrow--plain">Visayas State University · DCST · Module 01 · Weeks 1–2</span>
+        <span class="eyebrow eyebrow--plain">Visayas State University · DCST · Module 01 · Weeks 1–3 · Milestone 1</span>
         <h1 class="h1" style="max-width:22ch">Interface design,<br>done with an agent</h1>
         <p class="lede" style="text-align:center;margin-inline:auto">
-          UI/UX practice you can defend, and the agentic workflow that turns it into
-          working screens — without either of us typing every line.
+          UI/UX practice you can defend, the agentic workflow that turns it into working
+          screens, and the repository all of it is delivered into.
         </p>
         <div class="row" style="justify-content:center;margin-top:var(--s4)">
           <span class="chip">CO1 · Design intuitive UI/UX</span>
-          <span class="chip">LO 1.1 · Wireframes &amp; mockups</span>
-          <span class="chip">LO 1.2 · Extract HTML/CSS</span>
+          <span class="chip">CO2 · Reusable components</span>
+          <span class="chip">LO 1.1 · 1.2 · 2.1 · 2.2</span>
         </div>
         <p class="small mono" style="margin-top:var(--s5);letter-spacing:0.12em">
           PRESS <kbd style="border:1px solid var(--line);padding:0.1em 0.4em">→</kbd> TO START ·
@@ -50,30 +245,31 @@
     </section>
 
     <section class="slide" data-sec="0" data-label="Where this sits" data-rail="Orientation">
-      <span class="eyebrow">The semester, in five moves</span>
+      <span class="eyebrow">The semester, in four moves</span>
       <h2 class="h2">You are here</h2>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th style="width:5rem">Weeks</th><th style="width:9rem">Module</th><th>What you walk out able to do</th><th style="width:8rem">Outcome</th></tr>
+            <tr><th style="width:5rem">Weeks</th><th style="width:10rem">Module</th><th>What you walk out able to do</th><th style="width:8rem">Outcome</th></tr>
           </thead>
           <tbody>
             <tr style="background:color-mix(in oklab, var(--brass) 8%, transparent)">
-              <td class="num" style="color:var(--brass)">1 – 2</td>
-              <td><b>01 · UI/UX Design</b></td>
-              <td><b>Design a screen a stranger can use, and drive an agent to build it.</b></td>
-              <td class="num">CO1</td>
+              <td class="num" style="color:var(--brass)">1 – 3</td>
+              <td><b>01 · UI/UX</b></td>
+              <td><b>Design a screen a stranger can use, drive an agent to build it, and ship it as static components.</b></td>
+              <td class="num">CO1 · CO2</td>
             </tr>
-            <tr><td class="num">3 – 5</td><td>02 · Frontend</td><td>Reusable components in React + Tailwind, responsive across devices.</td><td class="num">CO2</td></tr>
-            <tr><td class="num">5 – 6</td><td>03 · The Stack</td><td>Every piece of the toolchain, taught by opening the file it lives in.</td><td class="num">CO3</td></tr>
-            <tr><td class="num">7 – 8</td><td>04 · Backend</td><td>Schema modeling and CRUD endpoints over a real database.</td><td class="num">CO4</td></tr>
-            <tr><td class="num">8 +</td><td>05 · Integration</td><td>Validation, API consumption, deployment to the cloud.</td><td class="num">CO5</td></tr>
+            <tr><td class="num">4 – 6</td><td>02 · Contract</td><td>Model the data your system stores, then write the document that exposes it — one contract your whole group signs.</td><td class="num">CO3 · CO4</td></tr>
+            <tr><td class="num">7 – 8</td><td>03 · Backend</td><td>Migrations, Row Level Security, and endpoints that satisfy the contract.</td><td class="num">CO4</td></tr>
+            <tr><td class="num">11 – 15</td><td>04 · Frontend</td><td>Auth, the typed request layer, validation, and a deployed application.</td><td class="num">CO2 · CO5</td></tr>
           </tbody>
         </table>
       </div>
       <p class="callout">
-        Everything downstream inherits what you decide in these two weeks. A schema can be migrated and an
-        endpoint can be rewritten, but <b>a bad information hierarchy gets rebuilt from zero.</b>
+        <b>Each module hands the next one something it cannot start without.</b> You cannot agree a contract
+        for data you have not modelled, implement a contract you have not agreed, or consume an implementation
+        that does not exist. Everything downstream inherits what you decide in these three weeks — a schema can
+        be migrated and an endpoint rewritten, but <b>a bad information hierarchy gets rebuilt from zero.</b>
       </p>
     </section>
 
@@ -109,7 +305,7 @@
     </section>
 
     <section class="slide" data-sec="0" data-label="Module outcomes" data-rail="Orientation">
-      <span class="eyebrow">Learning outcomes · CO1</span>
+      <span class="eyebrow">Learning outcomes · CO1 · CO2</span>
       <h2 class="h2">By the end of week 3 you can…</h2>
       <div class="grid grid--2">
         <div class="panel">
@@ -129,15 +325,37 @@
             <li>Generate a <b>token set first</b>, then screens that consume it</li>
             <li>Run the <b>agentic loop</b>: context → plan → generate → review → iterate</li>
             <li>Apply an <b>8-point design QA</b> pass to any generated screen</li>
-            <li>Convert a mockup into <b>component-ready markup</b> for Module 02</li>
+            <li>Convert a mockup into <b>component-ready markup</b></li>
           </ul>
         </div>
       </div>
+      <div class="grid grid--2" style="margin-top:var(--s4)">
+        <div class="panel">
+          <div class="panel__head" style="color:var(--brass)">LO 2.1 · Reusable components</div>
+          <ul class="list">
+            <li>Turn the mockup into <b>React components with defensible boundaries</b></li>
+            <li>Treat <b>props as a contract</b>, and know when one has too many</li>
+            <li>Promote your token set into the <b>Tailwind theme</b>, in one place</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <div class="panel__head" style="color:var(--cyan)">LO 2.2 · Responsive across devices</div>
+          <ul class="list">
+            <li>Build to <b>breakpoints that hold at 320px</b>, not just on your laptop</li>
+            <li>Express the seven states as <b>variants</b> rather than branches</li>
+            <li>Deliver it all through a <b>repository with reviewed pull requests</b></li>
+          </ul>
+        </div>
+      </div>
+      <p class="callout">
+        <b>Static only.</b> No <code>fetch</code>, no Context, no query client — those are Module 04, once
+        there is something real to talk to. A screen with nothing behind it is still finished design work.
+      </p>
     </section>
 
     <section class="slide" data-sec="0" data-label="How sessions run" data-rail="Orientation">
       <span class="eyebrow">Ground rules</span>
-      <h2 class="h2">How these two weeks run</h2>
+      <h2 class="h2">How these three weeks run</h2>
       <div class="steps">
         <div class="step">
           <div>
@@ -685,7 +903,7 @@
       <p class="callout">
         This is the single highest-leverage thing you can hand an agent. <b>Give it the token file and it stops
         inventing colors</b> — every screen it generates afterwards is automatically consistent with every other one.
-        You will feel this immediately in Module 02 with Tailwind's <code>theme</code> config.
+        You will feel this immediately in Lesson 1.4 with Tailwind's <code>theme</code> config.
       </p>
     </section>
 
@@ -833,7 +1051,7 @@ go-ahead.</b></pre></div>
             <li>Runs commands: install, build, test, migrate</li>
             <li>Changes land as a diff you review before committing</li>
           </ul>
-          <p class="small">Use it for: Module 02 onward, once there is a repository to work in.</p>
+          <p class="small">Use it for: Lesson 1.3 onward, once there is a repository to work in.</p>
         </div>
       </div>
       <p class="callout">Rule for this module: <b>explore in the browser, commit from the editor.</b> Never paste code you have not read into a project you are graded on.</p>
@@ -1022,7 +1240,7 @@ keyboard operable, no icon lib.</b>
         <div class="panel">
           <div class="panel__head">Rewrite before it enters the repo</div>
           <ul class="list list--cross">
-            <li><b>Repetition</b> — three copies of a card become one component (Module 02)</li>
+            <li><b>Repetition</b> — three copies of a card become one component (Lesson 1.4)</li>
             <li>Hard-coded strings that belong in data</li>
             <li>Magic numbers: <code>margin-top: 37px</code></li>
             <li><code>div</code> soup where a <code>button</code>, <code>ul</code>, or <code>table</code> belongs</li>
@@ -1031,7 +1249,7 @@ keyboard operable, no icon lib.</b>
         </div>
       </div>
       <p class="callout">
-        The handoff to <b>Module 02</b> is exactly this: today's mockup becomes next week's
+        The handoff to <b>Lesson 1.4</b> is exactly this: today's mockup becomes next week's
         <code>&lt;SubjectCard /&gt;</code>. Generated markup is a <em>starting structure</em>, never a component library.
       </p>
     </section>
@@ -1114,6 +1332,505 @@ keyboard operable, no icon lib.</b>
     </section>
 
     <!-- ======================================================
+         LESSON 2.0 — GIT & GITHUB
+         ====================================================== -->
+
+    <section class="slide slide--center" data-sec="1.3" data-label="Lesson 1.3 opens" data-rail="Git & GitHub">
+      <div class="col" style="gap:var(--s4);align-items:center">
+        <span class="eyebrow eyebrow--plain">Lesson 1.3 · one session</span>
+        <h2 class="h1" style="max-width:20ch">Four people,<br>one repository</h2>
+        <p class="lede" style="text-align:center;margin-inline:auto">Enough Git to not step on each other. Not a course in version control.</p>
+        <span class="chip chip--added">No learning outcome requires this</span>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="1.3" data-label="Why version control" data-rail="Git & GitHub">
+      <span class="eyebrow">The problem it solves</span>
+      <h2 class="h2">What happens without it</h2>
+      <div class="compare">
+        <div class="compare__side compare__side--bad">
+          <div class="compare__head">Zipping folders</div>
+          <div class="compare__body">
+            <p><code>final.zip</code>, <code>final2.zip</code>, <code>final_FINAL.zip</code>, <code>final_use_this_one.zip</code></p>
+            <p>Two people edit one file. Somebody's afternoon disappears, and nobody notices until the demo.</p>
+            <p>No answer to "when did this break?"</p>
+            <p>Who wrote what is a matter of memory.</p>
+          </div>
+        </div>
+        <div class="compare__side compare__side--good">
+          <div class="compare__head">One repository</div>
+          <div class="compare__body">
+            <p>Every change is dated, attributed, and reversible.</p>
+            <p>Different files never collide. The same file is <em>detected</em>, not silently lost.</p>
+            <p><code>git log</code> answers "when did this break" in seconds.</p>
+            <p>Contribution is evidence, not recollection.</p>
+          </div>
+        </div>
+      </div>
+      <p class="callout"><b>This is why every member needs commits.</b> The history is the only durable record of who did what.</p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="1.3" data-label="The loop" data-rail="Git & GitHub">
+      <span class="eyebrow">The only loop you need this semester</span>
+      <h2 class="h2">Branch → commit → pull request → merge</h2>
+      <div data-widget="stepper">
+        <div class="stepper__track">
+          <button class="stepper__btn" type="button" data-step="1"><span class="stepper__n">01</span><span class="stepper__l">Branch</span></button>
+          <button class="stepper__btn" type="button" data-step="2"><span class="stepper__n">02</span><span class="stepper__l">Work</span></button>
+          <button class="stepper__btn" type="button" data-step="3"><span class="stepper__n">03</span><span class="stepper__l">Push</span></button>
+          <button class="stepper__btn" type="button" data-step="4"><span class="stepper__n">04</span><span class="stepper__l">Pull request</span></button>
+          <button class="stepper__btn" type="button" data-step="5"><span class="stepper__n">05</span><span class="stepper__l">Merge</span></button>
+        </div>
+
+        <div class="stepper__panel" data-step="1">
+          <div class="grid grid--sidebar">
+            <div class="panel"><div class="panel__head">Start from current main</div>
+              <pre>git checkout main
+git pull
+git checkout -b <b>feature/12-student-card</b></pre></div>
+            <div class="panel"><div class="panel__head">Why</div>
+              <p class="body">A branch is a private workspace. Nothing you do there can break what your group is running — so commit half-finished work freely.</p>
+              <p class="body">Name it after the issue it closes: <code>feature/12-…</code> is issue 12.</p></div>
+          </div>
+        </div>
+
+        <div class="stepper__panel" data-step="2">
+          <div class="grid grid--sidebar">
+            <div class="panel"><div class="panel__head">Commit as you go</div>
+              <pre>git add src/components/StudentCard.tsx
+git commit -m "<b>feat(student-card): add loading and empty states</b>"</pre>
+              <p class="small"><b>Conventional Commits</b>: a type, an optional scope, then what changed. Required in the Final Activity Project.</p></div>
+            <div class="panel"><div class="panel__head">The shape</div>
+              <pre><b>type</b>(<i>scope</i>): <b>what changed</b>
+
+<b>feat</b>(auth): add SessionContext and route guard
+<b>fix</b>(checklist): correct unit total on repeated subjects
+<b>docs</b>(contract): document the 409 response
+<b>refactor</b>(api): extract the error normaliser
+<b>test</b>(rsvp): cover the party-size ceiling
+<b>chore</b>(deps): bump vite to 5.4</pre></div>
+          </div>
+        </div>
+
+        <div class="stepper__panel" data-step="3">
+          <div class="grid grid--sidebar">
+            <div class="panel"><div class="panel__head">Send it to GitHub</div>
+              <pre>git push -u origin feature/12-student-card</pre>
+              <p class="small"><code>-u</code> only the first time on a branch. After that, plain <code>git push</code>.</p></div>
+            <div class="panel"><div class="panel__head">Push often</div>
+              <p class="body">Work only on your laptop is work your group cannot see — and your laptop can lose it.</p></div>
+          </div>
+        </div>
+
+        <div class="stepper__panel" data-step="4">
+          <div class="grid grid--sidebar">
+            <div class="panel"><div class="panel__head">Open a pull request</div>
+              <ul class="list">
+                <li>Say what changed and why</li>
+                <li><code>Closes #12</code> — merging then closes the issue</li>
+                <li>Request a reviewer from your group</li>
+              </ul></div>
+            <div class="panel"><div class="panel__head">One approval required</div>
+              <p class="body">Someone else reads the diff before it lands. That is the only moment a second pair of eyes sees the code.</p>
+              <p class="callout" style="margin-top:var(--s3)">A PR touching <code>contract/openapi.yaml</code> needs approval from <b>the other side</b> of that contract — see 2.3.</p></div>
+          </div>
+        </div>
+
+        <div class="stepper__panel" data-step="5">
+          <div class="grid grid--sidebar">
+            <div class="panel"><div class="panel__head">Merge, then clean up</div>
+              <pre>git checkout main
+git pull
+git branch -d feature/12-student-card</pre></div>
+            <div class="panel"><div class="panel__head">Then start again</div>
+              <p class="body">One task, one trip round this loop. Small branches merge easily; a two-week branch becomes a conflict.</p>
+              <p class="body"><b>Merge early, merge often</b> is conflict avoidance, not a slogan.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="1.3" data-label="Commit messages" data-rail="Git & GitHub">
+      <span class="eyebrow">A convention, not a preference</span>
+      <h2 class="h2">Conventional Commits</h2>
+      <div class="grid grid--rsidebar">
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Every commit message in this course</div>
+            <pre style="font-size:0.9rem"><b>type</b>(<i>optional scope</i>): <b>imperative description</b></pre>
+            <div class="table-wrap" style="margin-top:var(--s3)">
+              <table>
+                <thead><tr><th style="width:6rem">Type</th><th style="width:16rem">Use it when</th><th>Example</th></tr></thead>
+                <tbody>
+                  <tr><td class="mono" style="color:var(--pass)"><b>feat</b></td><td>New behaviour a user could notice</td><td class="mono">feat(rsvp): add headcount request form</td></tr>
+                  <tr><td class="mono" style="color:var(--fail)"><b>fix</b></td><td>Corrects broken behaviour</td><td class="mono">fix(checklist): count repeated units once</td></tr>
+                  <tr><td class="mono"><b>docs</b></td><td>Documentation or the contract's descriptions</td><td class="mono">docs(contract): document the 409 response</td></tr>
+                  <tr><td class="mono"><b>refactor</b></td><td>Restructuring with no behaviour change</td><td class="mono">refactor(api): extract error normaliser</td></tr>
+                  <tr><td class="mono"><b>test</b></td><td>Adding or fixing tests</td><td class="mono">test(auth): cover the signed-out guard</td></tr>
+                  <tr><td class="mono"><b>style</b></td><td>Formatting only — no logic touched</td><td class="mono">style(ui): run prettier on components</td></tr>
+                  <tr><td class="mono"><b>chore</b></td><td>Dependencies, config, tooling</td><td class="mono">chore(deps): bump vite to 5.4</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="compare" style="grid-template-columns:1fr">
+            <div class="compare__side compare__side--bad">
+              <div class="compare__head">Rejected in review</div>
+              <div class="compare__body">
+                <p class="mono">update</p>
+                <p class="mono">fix bug</p>
+                <p class="mono">asdf</p>
+                <p class="mono">final na talaga</p>
+                <p class="mono">feat: changes</p>
+              </div>
+            </div>
+            <div class="compare__side compare__side--good">
+              <div class="compare__head">Accepted</div>
+              <div class="compare__body">
+                <p class="mono">feat(student-card): add loading and empty states</p>
+                <p class="mono">fix(contrast): darken disabled button label to pass AA</p>
+                <p class="mono">docs(contract): add the 429 rate-limit response</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">Why bother</div>
+          <ul class="list">
+            <li><b>The log becomes searchable.</b> <code>git log --oneline --grep="^feat"</code> is every feature you shipped.</li>
+            <li><b>Review gets faster.</b> The type says what kind of diff it is before anyone opens it.</li>
+            <li><b>One change per commit.</b> Cannot pick a type? It should be two commits.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <div class="panel__head">Two rules that catch most mistakes</div>
+          <ul class="list list--check">
+            <li><b>Imperative mood</b> — "add", not "added". Read it as <em>"this commit will…&nbsp;add loading states"</em>.</li>
+            <li><b>Lower case, no full stop</b>, first line under 70 characters. Detail goes in the body.</li>
+          </ul>
+          <p class="callout" style="margin-top:var(--s3)"><b>A breaking change</b> gets a <code>!</code> before the colon &mdash; <code>feat(contract)!: rename load to subjects</code>. Needed in 2.3.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="1.3" data-label="The graph" data-rail="Git & GitHub">
+      <span class="eyebrow">Interactive · one week of a group's history</span>
+      <h2 class="h2">What that loop looks like from above</h2>
+      <div class="grid grid--rsidebar">
+        <div class="panel panel--flush">
+          <div class="gg" data-widget="gitgraph" id="gitgraph"></div>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Reading it</div>
+            <ul class="list">
+              <li>Each <b>lane</b> is a branch. Each <b>dot</b> is a commit.</li>
+              <li>A line leaving a lane is <b>where somebody branched</b>.</li>
+              <li>Two lines joining at one dot is a <b>merge commit</b> — two parents, which no other commit has.</li>
+              <li>The <b>pills</b> are branch names: labels pointing at a commit, nothing more.</li>
+              <li>Your messages follow the convention. <b>Merge rows do not</b> — git writes those.</li>
+            </ul>
+          </div>
+          <p class="callout">
+            Notice what never happens: <b>nobody&rsquo;s work is overwritten.</b> Both commits are
+            still there, with names on them.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="1.3" data-label="Merge conflicts" data-rail="Git & GitHub">
+      <span class="eyebrow">The thing everyone panics about</span>
+      <h2 class="h2">A conflict is a question, not a failure</h2>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">Git is telling you</div>
+          <p class="body">"Two people changed the same lines. I will not guess which one you meant."</p>
+          <p class="body">That is the whole message. Nothing is lost, and nobody did anything wrong.</p>
+          <div class="panel__head" style="margin-top:var(--s3)">What you see</div>
+          <pre>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+<i>  const [subjects, setSubjects] = useState([]);</i>
+=======
+<i>  const [subjects, setSubjects] = useState(null);</i>
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature/12-student-card</pre>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Resolving it</div>
+            <div class="steps">
+              <div class="step"><div><div class="step__t">Read both sides</div><div class="step__b">Above <code>=======</code> is the branch you are merging into. Below is yours.</div></div></div>
+              <div class="step"><div><div class="step__t">Decide, and delete the markers</div><div class="step__b">Keep one, the other, or write a third thing. Delete all three marker lines.</div></div></div>
+              <div class="step"><div><div class="step__t">Run it before you commit</div><div class="step__b">A "resolved" conflict that was never run is a guess.</div></div></div>
+              <div class="step"><div><div class="step__t">Ask the other person</div><div class="step__b">They are sitting right there. A thirty-second conversation, not a research problem.</div></div></div>
+            </div>
+          </div>
+          <p class="callout">We will cause one on purpose today and fix it together — so your first conflict is not on the week-5 deadline.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="1.3" data-label="Issues & milestones" data-rail="Git & GitHub">
+      <span class="eyebrow">The work queue</span>
+      <h2 class="h2">Issues are the to-do list. Milestones group them.</h2>
+      <div class="grid grid--3">
+        <div class="card"><span class="card__k">Issue</span><div class="card__t">One unit of work</div><p class="card__b">"Student card shows nothing when a student has no subjects." One person, one pull request.</p></div>
+        <div class="card"><span class="card__k">Milestone</span><div class="card__t">A phase</div><p class="card__b">"Auth &amp; routing", "Contract v1", "Approval queues". Every issue belongs to one.</p></div>
+        <div class="card"><span class="card__k">Project board</span><div class="card__t">Where things are</div><p class="card__b">Todo → In progress → In review → Done. If the board is wrong, the standup is fiction.</p></div>
+      </div>
+      <div class="panel">
+        <div class="panel__head">Test cases are issues too</div>
+        <p class="body">Your Project Manager files test cases <em>as issues</em> — scenario, steps, expected result. Somebody else writes the Playwright test that closes it, in Module 5.</p>
+      </div>
+      <p class="callout"><b>Skipped on purpose:</b> rebasing, cherry-picking, submodules, git internals. Not needed this semester — ask if yours turns out to need them.</p>
+    </section>
+
+    <!-- ======================================================
+         LESSON 2.1 — COMPONENTS
+         ====================================================== -->
+
+    <section class="slide slide--center" data-sec="1.4" data-label="Lesson 1.4 opens" data-rail="Components">
+      <div class="col" style="gap:var(--s4);align-items:center">
+        <span class="eyebrow eyebrow--plain">Lesson 1.4 · LO 2.1</span>
+        <h2 class="h1" style="max-width:20ch">From one screen<br>to parts that repeat</h2>
+        <p class="lede" style="text-align:center;margin-inline:auto">Your Activity 2 prototype is one long file. Where do the seams go?</p>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="1.4" data-label="Component boundaries" data-rail="Components">
+      <span class="eyebrow">The only question that matters</span>
+      <h2 class="h2">What makes something a component?</h2>
+      <div class="grid grid--2">
+        <div class="panel">
+          <div class="panel__head">Bad reasons to extract</div>
+          <ul class="list list--cross">
+            <li>"The file was getting long"</li>
+            <li>"It is about 50 lines, that feels right"</li>
+            <li>"Every tutorial has a <code>Header</code> component"</li>
+            <li>"It looked like a box"</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <div class="panel__head">Good reasons to extract</div>
+          <ul class="list list--check">
+            <li><b>It appears more than once</b>, now or obviously soon</li>
+            <li><b>It has its own states</b> — loading, empty, error, disabled</li>
+            <li><b>Your group already says its name out loud</b> — "the student card", "the approval row"</li>
+            <li><b>It would be tested on its own</b></li>
+          </ul>
+        </div>
+      </div>
+      <p class="callout">
+        The third is the strongest signal. <b>If your group has a word for it, it is a component</b> —
+        the vocabulary found the boundary for you.
+      </p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="1.4" data-label="Props are a contract" data-rail="Components">
+      <span class="eyebrow">A theme for the whole module</span>
+      <h2 class="h2">Props are a component's contract</h2>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">The prop type is the agreement</div>
+          <pre>type StudentCardProps = {
+  <b>student</b>: { id: string; fullName: string; program: string }
+  <b>status</b>: 'active' | 'pending' | 'inactive'
+  <b>onSelect</b>?: (id: string) =&gt; void
+}</pre>
+          <p class="small">Anyone using it knows exactly what it needs, and TypeScript will not let them forget one.</p>
+        </div>
+        <div class="col">
+          <p class="body">The same idea, at three scales:</p>
+          <div class="steps">
+            <div class="step"><div><div class="step__t">Props</div><div class="step__b">The contract between a parent and a child component.</div></div></div>
+            <div class="step"><div><div class="step__t">Context value</div><div class="step__b">The contract between a provider and everything beneath it.</div></div></div>
+            <div class="step"><div><div class="step__t">OpenAPI</div><div class="step__b">The contract between your whole frontend and your whole backend.</div></div></div>
+          </div>
+          <p class="callout">Same idea each time: <b>write down the shape, then both sides can move independently.</b></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-sec="1.4" data-label="Too many props" data-rail="Components">
+      <span class="eyebrow">A smell worth recognising</span>
+      <h2 class="h2">When a component takes eleven props</h2>
+      <div class="compare">
+        <div class="compare__side compare__side--bad">
+          <div class="compare__head">Configuration</div>
+          <div class="compare__body">
+            <pre>&lt;Card
+  title showBorder padded
+  variant="outlined" size="md"
+  headerRight={…} footer={…}
+  collapsible defaultOpen
+  onToggle={…} /&gt;</pre>
+            <p>Every new use adds a prop. It becomes a small framework nobody understands, and changing it risks four screens.</p>
+          </div>
+        </div>
+        <div class="compare__side compare__side--good">
+          <div class="compare__head">Composition</div>
+          <div class="compare__body">
+            <pre>&lt;Card&gt;
+  &lt;Card.Header&gt;
+    Enrolled subjects
+    &lt;Badge&gt;18 units&lt;/Badge&gt;
+  &lt;/Card.Header&gt;
+  &lt;Card.Body&gt;{children}&lt;/Card.Body&gt;
+&lt;/Card&gt;</pre>
+            <p>The caller arranges the pieces. A new layout needs no new prop.</p>
+          </div>
+        </div>
+      </div>
+      <p class="callout"><b>Rule of thumb:</b> a boolean prop that only shows or hides markup is asking to be <code>children</code>.</p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="1.4" data-label="Tokens → theme" data-rail="Components">
+      <span class="eyebrow">Lesson 1.1's tokens, cashed in</span>
+      <h2 class="h2">Your token set becomes the Tailwind theme</h2>
+      <div class="grid grid--2" style="align-items:start">
+        <div class="panel">
+          <div class="panel__head">Activity 2 · tokens.css</div>
+          <pre id="tok-src">:root {
+  <i>/* neutral ramp */</i>
+  --ground: #0F1216;
+  --surface: #171B21;
+  --text: #E8EAED;
+  --muted: #9BA3AF;
+  <i>/* accent */</i>
+  --accent: #3F7A75;
+  <i>/* semantics */</i>
+  --success: #4B9E6A;
+  --warning: #C08A3E;
+  --danger: #C1554C;
+}</pre>
+        </div>
+        <div class="panel">
+          <div class="panel__head">@theme · the same three layers</div>
+          <pre>@theme inline {
+  --color-ground:  var(--ground);
+  --color-surface: var(--surface);
+  --color-<b>accent</b>:  var(--accent);
+  --color-success: var(--success);
+  --color-danger:  var(--danger);
+}</pre>
+          <p class="small">Tailwind v4 declares the theme in CSS. Older material shows a <code>tailwind.config.js</code> with <code>theme.extend.colors</code> — same three layers, older mechanism.</p>
+          <p class="body" style="margin-top:var(--s3)">Each token becomes a utility: <code>--color-surface</code> makes <code>bg-surface</code> exist. Now that is the <em>only</em> way to write a colour, so a hard-coded hex stands out in review.</p>
+        </div>
+      </div>
+      <p class="callout">
+        Keep the CSS variables underneath instead of pasting hex into the config: one token change
+        repaints the whole app, and dark mode costs you no component edits.
+      </p>
+    </section>
+
+    <section class="slide" data-sec="1.4" data-label="shadcn/ui" data-rail="Components">
+      <span class="eyebrow">The component library question</span>
+      <h2 class="h2">shadcn/ui: you own the code</h2>
+      <div class="grid grid--3">
+        <div class="card"><span class="card__k">Not a dependency</span><div class="card__t">It copies in</div><p class="card__b">The CLI writes the file into <code>src/components/ui/</code>. It is your file now — no package to upgrade.</p></div>
+        <div class="card"><span class="card__k">Accessible by default</span><div class="card__t">Built on Radix</div><p class="card__b">Focus traps, keyboard handling, ARIA — the parts everyone gets wrong by hand.</p></div>
+        <div class="card"><span class="card__k">Themed by your tokens</span><div class="card__t">Not someone else's brand</div><p class="card__b">Styled with Tailwind classes, so your theme applies. No borrowed brand.</p></div>
+      </div>
+      <p class="callout">
+        <b>Use it for the hard, generic things</b> — dialog, dropdown, combobox, toast, tables.
+        <b>Not to avoid designing.</b> Your student card and approval row are yours; that is where your design work shows.
+      </p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="1.4" data-label="States as variants" data-rail="Components">
+      <span class="eyebrow">Lesson 1.1's seven states, in code</span>
+      <h2 class="h2">Every state is a rendering decision, not an afterthought</h2>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">The shape most components end up with</div>
+          <pre>function SubjectList({ query }) {
+  if (query.isPending) return &lt;<b>SubjectListSkeleton</b> /&gt;
+  if (query.isError)   return &lt;<b>ErrorState</b> onRetry={query.refetch} /&gt;
+  if (!query.data.length) return &lt;<b>EmptyState</b> /&gt;
+
+  return (
+    &lt;ul&gt;{query.data.map(s =&gt; &lt;SubjectRow key={s.id} subject={s} /&gt;)}&lt;/ul&gt;
+  )
+}</pre>
+          <p class="small">Four returns, in this order, before the happy path. Only the last one? Unfinished.</p>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">The design QA still applies</div>
+            <ul class="list list--check">
+              <li>Loading has a shape, not a spinner in the void</li>
+              <li>Empty says what to do next, not "No data"</li>
+              <li>Error says what happened and offers a retry</li>
+              <li>Focus is visible on everything interactive</li>
+            </ul>
+          </div>
+          <p class="callout">Lesson 1.2 graded these on a static mockup. From now on: <b>real, variable latency</b> — Lesson 4.3.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide--wide" data-sec="1.4" data-label="Check: boundaries" data-rail="Components">
+      <span class="eyebrow">Check yourself</span>
+      <h2 class="h2">Is that a component?</h2>
+      <div data-widget="quiz" data-src="quiz-components"></div>
+      <script type="application/json" id="quiz-components">
+      [
+        {
+          "scenario": "Your enrollment screen shows a student's name, ID, and program at the top. It appears nowhere else in the app.",
+          "q": "Extract it as a StudentHeader component?",
+          "options": [
+            "Yes — it is a visually distinct block",
+            "Not yet — one use, no states of its own, and no name the group uses",
+            "Yes — every screen should have a header component",
+            "No — never extract anything used once"
+          ],
+          "answer": 1,
+          "why": "One use, no independent states, and no shared vocabulary means there is nothing to gain yet. Extract it the moment a second screen needs it, or the moment it grows a loading state. \"Never extract anything used once\" is too strong — a thing with four states earns its own file immediately."
+        },
+        {
+          "scenario": "An approval row appears in the attendee queue, the headcount-request queue, and the faculty verification queue. In each it shows a title, a subtitle, and approve/reject buttons — but the data behind it differs.",
+          "q": "What is the right boundary?",
+          "options": [
+            "Three separate row components, one per queue",
+            "One row component taking title, subtitle, and callbacks as props",
+            "One row component taking a `queueType` prop and branching inside",
+            "No component — copy the markup three times"
+          ],
+          "answer": 1,
+          "why": "The shape repeats, the data does not. Pass in what differs (title, subtitle, handlers) and keep the component ignorant of which queue it is in. The `queueType` branch version is the configuration trap: every new queue adds a branch to a file three screens depend on."
+        },
+        {
+          "scenario": "A teammate's Card component now takes: title, subtitle, icon, showBorder, padded, variant, size, collapsible, defaultOpen, headerRight, and footer.",
+          "q": "What is the most useful review comment?",
+          "options": [
+            "Rename the props to be shorter",
+            "Add TypeScript types so the props are at least documented",
+            "Several of these are markup slots — let the caller compose children instead",
+            "Split it into eleven components"
+          ],
+          "answer": 2,
+          "why": "Types would help, but they document a problem rather than fix it. Props like headerRight, footer, and title exist only to inject markup — that is what children and composition are for. The component gets smaller and the callers get more freedom at the same time."
+        },
+        {
+          "scenario": "Your group needs a date picker with keyboard navigation and screen-reader support.",
+          "q": "Build or install?",
+          "options": [
+            "Build it — you learn more",
+            "Install shadcn/ui's, then restyle it with your tokens",
+            "Install any npm date picker with the most stars",
+            "Use a plain text input and validate the format"
+          ],
+          "answer": 1,
+          "why": "Accessible date pickers are genuinely hard — focus management, roving tabindex, announcements. That is exactly what shadcn/ui is for, and because the code copies into your repo you can restyle it to your tokens. Save your effort for the components that carry your design."
+        }
+      ]
+      </script>
+    </section>
+
+    <!-- ======================================================
          LABORATORY
          ====================================================== -->
 
@@ -1171,7 +1888,7 @@ keyboard operable, no icon lib.</b>
         <h2 class="h2">Brief → Prototype</h2>
         <span class="chip chip--accent">Group brief + individual screen</span>
       </div>
-      <p class="callout"><b>Your group agrees one brief and one token set; each member takes a different screen.</b> A project has exactly one design system, so that half is shared — but each of you runs the loop yourself. A four-person group ends week 3 with one design system and four reviewed screens, all of which carry into Module 2.</p>
+      <p class="callout"><b>Your group agrees one brief and one token set; each member takes a different screen.</b> A project has exactly one design system, so that half is shared — but each of you runs the loop yourself. A four-person group ends week 3 with one design system and four reviewed screens, all of which carry into every milestone after this one.</p>
       <div class="grid grid--sidebar">
         <div class="panel">
           <div class="panel__head">Scenario</div>
@@ -1179,7 +1896,7 @@ keyboard operable, no icon lib.</b>
           <div class="panel__head" style="margin-top:var(--s3)">Deliverables</div>
           <div class="steps">
             <div class="step"><div><div class="step__t">Design brief <span class="chip" style="margin-left:0.3rem">group</span></div><div class="step__b">Product, user, the screen's one job, stack, tokens, constraints, real data shape. Agreed once by the group; every member submits the same file. Use the builder from this deck.</div></div></div>
-            <div class="step"><div><div class="step__t">Token set <span class="chip" style="margin-left:0.3rem">group</span></div><div class="step__b">One design system per project. Refine or merge the candidates you each built in Activity 1 — this is what becomes your Tailwind theme in Module 2.</div></div></div>
+            <div class="step"><div><div class="step__t">Token set <span class="chip" style="margin-left:0.3rem">group</span></div><div class="step__b">One design system per project. Refine or merge the candidates you each built in Activity 1 — this is what becomes your Tailwind theme in Lesson 1.4.</div></div></div>
             <div class="step"><div><div class="step__t">The agent's plan, with your corrections marked</div><div class="step__b">Show what it proposed and what you changed before allowing it to generate.</div></div></div>
             <div class="step"><div><div class="step__t">Two screens: first generation and final</div><div class="step__b">Both files kept. The diff between them is the actual submission.</div></div></div>
             <div class="step"><div><div class="step__t">Completed 8-point QA sheet</div><div class="step__b">With the failures you found on the first pass written out, and how each was corrected.</div></div></div>
@@ -1193,11 +1910,50 @@ keyboard operable, no icon lib.</b>
           <div class="panel">
             <div class="panel__head">Feeds directly into</div>
             <ul class="list">
-              <li>Module 02 — this screen becomes your first real components</li>
+              <li>Lesson 1.4 — this screen becomes your first real components</li>
               <li>The Final Web Project (FWP, 50%)</li>
               <li>The Codebase Assessment (CA, 20%)</li>
             </ul>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         LABORATORY ACTIVITIES
+         ====================================================== -->
+
+    <section class="slide slide--wide" data-sec="lab" data-label="Activity 3" data-rail="Laboratory activities">
+      <span class="eyebrow">Laboratory Activity 3 · Week 4 · A3 · 3%</span>
+      <div class="row" style="gap:var(--s4);align-items:baseline">
+        <h2 class="h2">Prototype → Components</h2>
+        <span class="chip chip--accent">Individual</span>
+      </div>
+      <p class="callout"><b>Your Activity 2 screen, rebuilt properly.</b> One long HTML file becomes typed components with a session context and a guarded route, running against a mock.</p>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">Deliverables</div>
+          <div class="steps">
+            <div class="step"><div><div class="step__t">The screen, as components</div><div class="step__b">Four or more, each with typed props, plus one sentence justifying each boundary.</div></div></div>
+            <div class="step"><div><div class="step__t">Tailwind theme from your group's tokens</div><div class="step__b">Zero hard-coded colour values.</div></div></div>
+            <div class="step"><div><div class="step__t">SessionContext + a guarded route</div><div class="step__b">Provider, a throwing <code>useSession()</code>, and a redirect when signed out — loading branch included.</div></div></div>
+            <div class="step"><div><div class="step__t">All four data states</div><div class="step__b">Loading, empty, error, content — all reachable in the running app.</div></div></div>
+            <div class="step"><div><div class="step__t">Prompt log</div><div class="step__b">Still graded. At least one agent error you caught.</div></div></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Graded on</div>
+            <ul class="list">
+              <li><b>Boundary judgment</b> — 25</li>
+              <li><b>Props as contracts</b> — 20</li>
+              <li><b>Context correctness</b> — 20</li>
+              <li><b>States + responsiveness</b> — 20</li>
+              <li><b>Token discipline</b> — 10</li>
+              <li><b>Prompt log</b> — 5</li>
+            </ul>
+          </div>
+          <p class="small">Full brief: <code>lab/activity-3-prototype-to-components.md</code></p>
         </div>
       </div>
     </section>
@@ -1242,7 +1998,7 @@ keyboard operable, no icon lib.</b>
       <h2 class="h2">Next: version control, then components</h2>
       <div class="grid grid--3">
         <div class="card"><span class="card__k">Immediately next</span><div class="card__t">Git recap</div><p class="card__b">A short interactive session — branches, history, and why your prompt log and tokens belong in the repository.</p></div>
-        <div class="card"><span class="card__k">Module 02 · weeks 3–5</span><div class="card__t">Frontend</div><p class="card__b">Your mockup becomes real components in React + Tailwind, with the token set from this module as the theme.</p></div>
+        <div class="card"><span class="card__k">Module 02 · weeks 4–6</span><div class="card__t">The Contract</div><p class="card__b">You model the data behind these screens, then write the document that exposes it — the contract Module 3 implements.</p></div>
         <div class="card"><span class="card__k">Carry forward</span><div class="card__t">The 8-point QA</div><p class="card__b">Every generated screen for the rest of the semester goes through it. Keep it open.</p></div>
       </div>
       <div class="panel">
@@ -1256,12 +2012,11 @@ keyboard operable, no icon lib.</b>
           <ul class="list">
             <li><b>Laws of UX</b> — lawsofux.com, one page per law.</li>
             <li><b>web.dev / Learn Accessibility</b> — Google, free and current.</li>
-            <li><b>Tailwind CSS docs · Theme</b> — how tokens land in Module 02.</li>
+            <li><b>Tailwind CSS docs · Theme</b> — how tokens land in Lesson 1.4.</li>
           </ul>
         </div>
       </div>
     </section>
-
   </main>
 
   <!-- ============ bottom rail ============ -->
@@ -1283,7 +2038,7 @@ keyboard operable, no icon lib.</b>
 <!-- ============ overlays ============ -->
 <div class="overlay" id="overview" hidden>
   <div class="overlay__head">
-    <b>Slide map</b><span>Module 01 · UI/UX Design</span><span class="spacer"></span>
+    <b>Slide map</b><span>Module 01 · UI/UX</span><span class="spacer"></span>
     <button class="btn btn--ghost" data-close type="button">Close · Esc</button>
   </div>
   <div class="map" id="map"></div>
@@ -1309,3 +2064,6 @@ keyboard operable, no icon lib.</b>
 
 <script src="../shared/deck.js"></script>
 <script src="module-1.js"></script>
+
+</body>
+</html>

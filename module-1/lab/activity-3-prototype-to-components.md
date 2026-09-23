@@ -1,7 +1,7 @@
 # Laboratory Activity 3 — Prototype to Components
 
 **CSci 153 · Web Systems and Technologies**
-Module 2 · Lessons 2.1–2.2 · Week 4 · Assessment task **CA 3**
+Module 1 · Lesson 1.4 · Week 4 · Assessment task **CA 3**
 Course outcome **CO2** · Learning outcome **LO 2.1**
 
 > ### This one is individual
@@ -43,7 +43,7 @@ npm run dev
 ```
 
 **Commit messages follow [Conventional Commits](https://www.conventionalcommits.org)**,
-as taught in Lesson 2.0 — `type(scope): imperative description`:
+as taught in Lesson 1.3 — `type(scope): imperative description`:
 
 ```
 feat(student-card): add loading and empty states
@@ -78,7 +78,7 @@ At least **four** components with typed props, in `src/components/`.
 
 ### 2 · Boundary justification (`boundaries.md`)
 
-For each component, **one sentence** naming which criterion from Lesson 2.1 justifies
+For each component, **one sentence** naming which criterion from Lesson 1.4 justifies
 its existence:
 
 > `SubjectRow` — appears in the load table and the search results, and has its own
@@ -162,7 +162,8 @@ referred to the integrity policy.
 | Feeds into | How |
 |---|---|
 | **Activity 4 · next week** | These components stop using mock data and start calling your group's typed client, against the contract you will write. |
-| **Module 4 · Backend** | `SessionContext` gets a real Supabase session, and the guard's advisory check gets a real enforcement layer behind it in RLS. |
+| **Module 3 · Backend** | The advisory checks in these components get a real enforcement layer behind them, in RLS. |
+| **Module 4 · Frontend** | `SessionContext`, the typed client, and real data states arrive — and these components stop being static. |
 | **Codebase Assessment (CA, 20%)** | Weeks 16–17. You will defend these boundaries out loud — which is why the justification document exists. |
 
 ---
@@ -170,7 +171,7 @@ referred to the integrity policy.
 ## Checklist before you upload
 
 - [ ] Four or more components, every one with a named props type
-- [ ] `boundaries.md` justifies each against a Lesson 2.1 criterion
+- [ ] `boundaries.md` justifies each against a Lesson 1.4 criterion
 - [ ] Zero hard-coded colour or spacing values in any component
 - [ ] `useSession()` throws outside its provider
 - [ ] Context value is memoised
