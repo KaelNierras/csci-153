@@ -39,7 +39,7 @@ opens the real commit graph and students are told to read it themselves.
 | **0 · Skeleton** | repo, tokens, Tailwind theme | Milestone 1 · W1–3 | ✅ |
 | **1 · Contract & frontend** | 9 operations, generated types, 6 screens | Milestone 2 · W4–6 | ✅ |
 | **2 · Specimens** | unit tests, the vanilla-DOM twin, the dependency accounting | Milestone 2 · W5–6 | ✅ |
-| **3 · Backend** | 5 migrations, RLS, triggers, Edge Function, contract v2 | Milestone 3 · W7–8 | ✅ |
+| **3 · Backend** | 6 migrations, RLS, triggers, one Edge Function in five files, contract v2 | Milestone 3 · W7–8 | ✅ |
 | **4 · Integration** | Zod + RHF, Playwright, CI, `vercel.json` | Milestone 4 · clinics W11–15 | ✅ |
 | **5 · Frozen** | no new code; the reference groups compare against | the dev phase (10–17) | ← now |
 
@@ -163,7 +163,10 @@ important uncovered topic in the syllabus, and 4.4 is explained entirely from th
       deleted route guard let through in week 4 — a three-week callback, tight enough that
       the class still remembers it. Script this one; it is the best five minutes in Module 3.
 - [ ] Constraints + a trigger for R2, so the unit ceiling is enforced where it counts
-- [ ] An Edge Function for `submitEnrollment`, because it is a multi-table transaction
+- [ ] **One Edge Function, `enroll`, serving every contract path.** Not one per operation:
+      the contract defines eleven paths under one base URL, and a function is booted before
+      it can answer. Five files behind one deployment, and `routes.test.ts` asserting that
+      each path calls the SQL function it claims to — that is Lesson 3.5.
 - [ ] `supabase gen types typescript` — the second instance of "schema is truth, types
       are downstream"
 - [ ] **Contract v2.** Expect the week-5 spec to need breaking changes now that real
@@ -210,7 +213,7 @@ the same problem.
 
 | Risk | Mitigation |
 |---|---|
-| **Scope creep.** The app quietly grows into something impressive and unreadable. | The ceiling in `PROJECT-CONTEXT.md` §1 is a hard limit: 9 operations, 6 screens, 2 roles. Cut, do not extend. |
+| **Scope creep.** The app quietly grows into something impressive and unreadable. | The ceiling in `PROJECT-CONTEXT.md` §1 is a hard limit: 11 operations, 6 screens, 2 roles. Cut, do not extend. |
 | **A finished app hides the decisions that made it.** | The git history is the mitigation, and it only works if it is built deliberately: one commit per idea, messages written to be read out loud. A history committed carelessly cannot be un-carelessed later. |
 | **Explanation without live coding can slide into reading code aloud.** | The four moves in "What each session actually looks like" are the guard: why it is shaped that way, and what was tried and rejected. If a session has no rejected alternative in it, it is a code review, not a lesson. |
 | **The demo drifts from the deck.** | Both live in git. When a slide changes, check the app; when the app changes, check the slide. The 12-point QA is the shared checklist. |
@@ -222,16 +225,18 @@ the same problem.
 
 ## Progress · 2026-09-22
 
-The repo is at `../csci-153-enroll` with 27 commits and everything green: `oxlint`,
-`tsc -b`, 16 Vitest tests, `redocly lint` clean, and `contract:check` showing no drift —
-the same four commands `.github/workflows/ci.yml` runs on every pull request.
+The repo is at `../csci-153-enroll` with 43 commits and everything green: `oxlint`,
+`tsc -b`, 57 Vitest tests, 16 Deno tests over the Edge Function's route table,
+`redocly lint` clean, and `contract:check` showing no drift — the same commands
+`.github/workflows/ci.yml` runs on every pull request.
 
-**Done — all five phases.** The contract (9 operations, each documenting its 401 and its
+**Done — all five phases.** The contract (11 operations, each documenting its 401 and its
 failures), generated types, the typed client with auth and error interception, the
 enrollment rules as pure functions, `SessionContext` signing in against real Supabase auth,
 the route guard, the shared loading/empty/error states, all six screens, the unit-ceiling
-tests, the vanilla-DOM twin for 3.6, five migrations with RLS and triggers, the `enroll`
-Edge Function, Zod validation on the adviser's return form, a Playwright suite that
+tests, the vanilla-DOM twin for 3.6, six migrations with RLS and triggers, the `enroll`
+Edge Function in five tested files, a light/dark theme with WCAG contrast as a test,
+Zod validation on the adviser's return form, a Playwright suite that
 authenticates for real, CI, `vercel.json`, `DEPLOYMENT.md`, and `DEMOS.md` covering every
 module.
 

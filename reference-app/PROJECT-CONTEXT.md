@@ -26,7 +26,7 @@ Module 2 is a guided tour of.
   explain why they are shaped that way. There is no live coding in lecture, so the app is
   **finished before the semester starts** and its **git history is a teaching artifact** —
   one commit per idea, messages written to be read out loud on a projector.
-- **Size ceiling:** 10 API operations, 6 screens, 2 roles. If it grows past that, cut
+- **Size ceiling:** 11 API operations, 6 screens, 2 roles. If it grows past that, cut
   something. A demo nobody can read in one sitting has stopped being a teaching tool.
 
 ### The two rules that govern every decision
@@ -66,11 +66,17 @@ draft ──submit──▶ submitted ──approve──▶ approved
                      ◀──return──────── submitted
 ```
 
-Three ways backwards, and **who** may take each one is the design, not a detail:
+Four ways backwards, and **who** may take each one is the design, not a detail:
 
 - `submitted → draft` — the **student**, withdrawing something nobody has ruled on (R10).
+- `returned → draft` — the **student**, reopening what an adviser sent back (R11).
 - `submitted → returned` — the **adviser**, declining to approve it yet (R9).
 - `approved → returned` — the **adviser**, taking their own approval back (R9).
+
+The first two land on the same status and are still two operations, because they answer
+different questions. Withdrawing takes back a decision nobody has made; reopening accepts
+one that was made. A student told "this was never submitted" about an enrollment they
+watched their adviser return has been told their adviser never replied.
 
 A student may never leave `approved` on their own. If they could, R8 would mean nothing:
 an approval a student can undo is not a decision, it is a suggestion. Reverting is not a
@@ -102,6 +108,7 @@ No admin role. Term setup and subject offerings are seed data, not screens.
 | R8 | An adviser may act only on their own advisees | `403 FORBIDDEN` |
 | R9 | Returning **or reverting** an enrollment requires a reason (≥ 10 chars) | `422 REASON_REQUIRED` |
 | R10 | Only a `submitted` enrollment may be withdrawn, and only by its own student | `409 NOT_SUBMITTED` |
+| R11 | Only a `returned` enrollment may be reopened, and only by its own student | `409 NOT_RETURNED` |
 
 **R2, R3, R4 are enforced twice on purpose** — in the UI (Module 4) and in the database
 (Module 3). That duplication is itself a lesson: the client check is for usability, the
@@ -121,7 +128,7 @@ uses this shape for every non-2xx status.
 
 ## 3 · The contract
 
-`contract/openapi.yaml` is the source of truth for the whole app. Ten operations:
+`contract/openapi.yaml` is the source of truth for the whole app. Eleven operations:
 
 | `operationId` | Method & path | Notes |
 |---|---|---|
@@ -134,6 +141,7 @@ uses this shape for every non-2xx status.
 | `listPendingEnrollments` | `GET /advisees/enrollments?status` | adviser, R8 |
 | `approveEnrollment` | `POST /enrollments/{id}/approve` | adviser, R8 |
 | `withdrawEnrollment` | `POST /students/{studentId}/enrollment/withdraw` | R10 — the student's way back |
+| `reopenEnrollment` | `POST /students/{studentId}/enrollment/reopen` | R11 — the student's way back from `returned` |
 | `returnEnrollment` | `POST /enrollments/{id}/return` | adviser, R8, R9 — from `submitted` *or* `approved` |
 
 Rules for the contract:
@@ -184,7 +192,7 @@ students do not need is a dependency that confuses them.
 | HTTP | **openapi-fetch** + `openapi-typescript` | typed against the contract |
 | Mock (M2–M3) | **Prism** for dev, **MSW** for tests | the app runs before the backend exists |
 | Backend (M4) | **Supabase** — Postgres, RLS, Edge Functions | the other side of the contract |
-| Unit tests | **Vitest** | Lesson 2.3 |
+| Unit tests | **Vitest** | Lesson 2.7 |
 | E2E | **Playwright** | Lesson 4.6 |
 | CI | **GitHub Actions** | Lesson 3.7 |
 
@@ -209,7 +217,7 @@ reference-app/
 │  │  ├─ api/client.ts        ← the one wrapper: auth, error normalising, 401
 │  │  └─ rules/units.ts       ← pure functions; the Vitest specimen
 │  ├─ context/SessionContext.tsx
-│  └─ styles/tokens.css       ← Module 1 tokens, one place
+│  └─ styles/tokens.css       ← Module 1 tokens, one place; light and dark
 ├─ demos/
 │  └─ subject-list-vanilla.html  ← retired demo, the by-hand DOM twin
 ├─ supabase/                  ← Module 3: migrations, policies, functions
@@ -222,8 +230,30 @@ Conventions that matter:
 - **One job per file.** A file students cannot summarise in a sentence is too big.
 - `lib/` is framework-free — pure functions and the client. No JSX in `lib/`.
 - Business rules live in `lib/rules/` as pure functions so they are testable and so
-  Lesson 2.3 has something honest to test.
-- **No hard-coded colour anywhere.** `bg-surface`, `text-accent`, never a hex.
+  Lesson 2.7 has something honest to test.
+- **No hard-coded colour anywhere.** `bg-surface`, `text-accent`, never a hex. This is
+  what made light mode a change to one file: the semantic layer of `tokens.css` is
+  redefined under `:root[data-theme='light']` and no component knew a theme existed.
+  A hex in a component is a screen that stays dark when the rest of the app turns light.
+- **Contrast is a test, not a promise.** `styles/tokens.contrast.test.ts` reads `tokens.css`
+  and does the WCAG arithmetic on every text token against every surface, in both themes —
+  4.5:1 for text, 3:1 for a control edge and the focus ring. A colour nudged for taste
+  fails the suite. Every contrast claim before it lived in a commit message, which is to
+  say it was true once.
+- **The theme is resolved before the first paint**, by an inline script in `index.html` —
+  after the bundle loads is after the browser has painted the default. The preference is
+  `system` unless somebody pins one, so the default overrides nobody's OS setting.
+- **One Edge Function, several files.** Supabase recommends "few large functions, rather
+  than many small functions" — a function is booted before it can answer, so eleven
+  functions would mean eleven cold starts and the rarely-called ones would be cold almost
+  every time. The contract settles it regardless: it defines eleven paths under one URL, and
+  `VITE_API_BASE_URL` is one variable. Deploying as one function is not the same as
+  reading as one file, so `functions/enroll/` is split by job like everything else.
+- **The route table is tested, in Deno.** `npm run functions:test` asserts that each
+  contract path calls the SQL function it claims to, carrying the *caller's* token — the
+  property RLS depends on. Vitest cannot see this code, which is how eleven routes reached
+  production with nothing checking any of them. It is in CI because it needs no database;
+  that is the same rule that keeps the e2e suite out.
 - Query keys are `[operationId, ...params]` — derived from the contract, never invented.
 
 ---
@@ -240,7 +270,7 @@ point in the history*. > **Caveat, since the 2026-09-22 re-cut.** The commit his
 |---|---|---|
 | **1 · UI/UX** | W1–3 | tokens and the Tailwind theme, static components, the repository and its commit conventions |
 | **2 · Contract** | W4–6 | `contract/openapi.yaml`, the generated types, the typed client *read but not written*, and the specimens — `demos/subject-list-vanilla.html`, the annotated `package.json`, the first Vitest tests |
-| **3 · Backend** | W7–8 | Supabase schema + migrations, RLS policies, constraints and triggers for R2–R6 and R9–R10, the Edge Function serving all nine operations, generated DB types, and `.github/workflows/ci.yml` |
+| **3 · Backend** | W7–8 | Supabase schema + migrations, RLS policies, constraints and triggers for R2–R6 and R9–R10, the Edge Function serving all eleven operations, generated DB types, and `.github/workflows/ci.yml` |
 | **4 · Frontend** | clinics W11–15 | `SessionContext` and the route guard, the API wrapper and TanStack Query, the data states, Zod validation, mock → real base URL, Playwright, deployment |
 | — | W10–17 | **nothing.** The app is frozen and serves as the reference groups compare against |
 
@@ -257,12 +287,20 @@ Since the milestone re-cut, modelling is taught in lesson 2.1, immediately befor
 contract, so the changes that land here are **refinements rather than discoveries**. Expect
 fewer of them, and say so.
 
-Two such changes have already landed, and they are different in a way worth showing:
+Three such changes have already landed, and they are different in a way worth showing:
 
 - **`withdrawEnrollment` (contract 1.1.0).** A missing state transition, found by asking
   "what does a student do if they change their mind?" — a question the original nine
   operations had no answer to. Additive, so the version is 1.1.0 and nothing that worked
   against 1.0.0 broke.
+- **`reopenEnrollment` (contract 1.2.0).** Not a missing transition — the state machine
+  drew `returned ──edit──▶ draft` from the start and the database has always accepted it —
+  but a transition with no operation that performed it. The gap was invisible in every
+  layer read on its own: the diagram had the edge, the trigger had the arm, row level
+  security allowed the update, and the contract had nine operations none of which was it.
+  It surfaced as a button that navigated to a screen with no controls on it. Worth showing
+  as the failure mode of a rule enforced in one layer and reached through another: check
+  that each edge you draw has something a client can call.
 - **No operation for "who am I".** The app needs a name and a role before it can call
   anything else, so `src/lib/api/auth.ts` reads `profiles` from PostgREST directly — the
   one call in the app that bypasses the contract. Still open, deliberately: closing it is
