@@ -477,15 +477,15 @@
 
     <section class="slide" data-sec="0" data-label="The app" data-rail="Orientation">
       <span class="eyebrow">The contract you are about to read</span>
-      <h2 class="h2">Enroll — one system, nine operations, one document</h2>
+      <h2 class="h2">Enroll — one system, eleven operations, one document</h2>
       <div class="grid grid--3">
-        <div class="card"><span class="card__k">What it does</span><div class="card__t">Nine operations</div><p class="card__b">A student builds a draft enrollment, submits it, an adviser approves or returns it. Six screens, two roles.</p></div>
-        <div class="card"><span class="card__k">Why it is small</span><div class="card__t">Readable in one sitting</div><p class="card__b">Nine operations is not a limitation, it is the target. Yours should be about this size — see it before you write yours.</p></div>
+        <div class="card"><span class="card__k">What it does</span><div class="card__t">Eleven operations</div><p class="card__b">A student builds a draft enrollment, submits it, an adviser approves or returns it — and either side can undo. Six screens, two roles.</p></div>
+        <div class="card"><span class="card__k">Why it is small</span><div class="card__t">Readable in one sitting</div><p class="card__b">Eleven operations is not a limitation, it is the target. Yours should be about this size — see it before you write yours.</p></div>
         <div class="card"><span class="card__k">Why not your system</span><div class="card__t">A different domain</div><p class="card__b">Close enough that every pattern transfers. Far enough that none of it can be submitted.</p></div>
       </div>
       <div class="panel">
         <div class="panel__head">Its whole API surface is one file</div>
-        <pre>contract/openapi.yaml   <i># every request and response, 9 operations</i>
+        <pre>contract/openapi.yaml   <i># every request and response, 11 operations</i>
 
 npm run contract:lint   <i># it has to be valid before anyone builds on it</i>
 npm run mock            <i># Prism serves it — no backend, no database</i></pre>
@@ -884,7 +884,7 @@ Content-Type: application/json
       totalUnits: { type: integer }
       <i>status:     { type: string }</i>   <i># forgot 'returned'
                             # over here</i></pre>
-          <p class="small">Nine operations return an Enrollment. Change one field and you edit nine places — and miss one.</p>
+          <p class="small">Eight operations return an Enrollment. Change one field and you edit eight places — and miss one.</p>
         </div>
         <div class="panel">
           <div class="panel__head" style="color:var(--cyan)">Defined once, referenced everywhere</div>
@@ -904,7 +904,7 @@ Content-Type: application/json
 '200':
   schema:
     <b>$ref</b>: '#/components/schemas/Enrollment'</pre>
-          <p class="small">One edit. Nine operations. The generated TypeScript follows automatically.</p>
+          <p class="small">One edit. Eight operations. The generated TypeScript follows automatically.</p>
         </div>
       </div>
       <p class="callout">
