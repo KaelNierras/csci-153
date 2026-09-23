@@ -976,73 +976,100 @@ create trigger enforce_ceiling
       <div class="col" style="gap:var(--s4);align-items:center">
         <span class="eyebrow eyebrow--plain">Lesson 3.5 · one session</span>
         <h2 class="h1" style="max-width:24ch">Where the secrets<br>and the transactions<br>live</h2>
-        <p class="lede" style="text-align:center;margin-inline:auto">Everything PostgREST cannot safely do for you.</p>
+        <p class="lede" style="text-align:center;margin-inline:auto">Everything PostgREST cannot safely do for you — and the paths it cannot serve at all.</p>
         <span class="chip chip--added">No learning outcome requires this</span>
       </div>
     </section>
 
-    <section class="slide" data-sec="3.5" data-label="The decision rule" data-rail="Edge Functions">
+    <section class="slide slide--wide" data-sec="3.5" data-label="The decision rule" data-rail="Edge Functions">
       <span class="eyebrow">When to write one, and when not to</span>
-      <h2 class="h2">Three reasons, and no others</h2>
-      <div class="grid grid--3">
+      <h2 class="h2">Four reasons, and no others</h2>
+      <div class="grid grid--4">
         <div class="card"><span class="card__k">Reason 01</span><div class="card__t">A secret is involved</div><p class="card__b">An API key, the service role, a signing secret. Anything that must never reach a browser has to run somewhere the browser cannot see.</p></div>
         <div class="card"><span class="card__k">Reason 02</span><div class="card__t">Several writes must agree</div><p class="card__b">Submitting an enrollment sets a status, stamps a time, and locks the items. All three, or none — a client doing them in sequence can stop halfway.</p></div>
         <div class="card"><span class="card__k">Reason 03</span><div class="card__t">A privileged action</div><p class="card__b">Something the caller is allowed to <em>request</em> but not to <em>do</em> directly, so it needs code checking the request first.</p></div>
+        <div class="card" style="border-color:var(--cyan-dim)"><span class="card__k" style="color:var(--cyan)">Reason 04</span><div class="card__t">The contract named a path</div><p class="card__b"><code>POST /students/{id}/enrollment/submit</code> is not a table and not a filter. PostgREST serves tables and RPCs — it cannot serve that path under any configuration.</p></div>
       </div>
       <div class="panel">
         <div class="panel__head">Otherwise: use PostgREST</div>
         <p class="body">A plain read, or a single-row write the caller is entitled to make, goes straight to the generated endpoint. Wrapping it in a function adds a deploy step, a cold start, and one more place for a bug — and buys nothing.</p>
       </div>
-      <p class="callout"><b>The rule, sayable in one line:</b> plain read or single-row write → PostgREST. Secret, multi-step, or privileged → a function.</p>
+      <p class="callout"><b>The rule, sayable in one line:</b> plain read or single-row write → PostgREST. Secret, multi-step, privileged, or <b>a path your contract promised</b> → a function.</p>
+    </section>
+
+    <section class="slide slide--wide" data-sec="3.5" data-label="One function" data-rail="Edge Functions">
+      <span class="eyebrow">Reason 04, applied to a whole contract at once</span>
+      <h2 class="h2">One function, not eleven</h2>
+      <div class="grid grid--sidebar">
+        <div class="panel">
+          <div class="panel__head">supabase/functions/enroll/</div>
+          <pre>index.ts    <i>the gate every request passes through</i>
+routes.ts   <i>the route table — 11 paths, 11 SQL functions</i>
+rpc.ts      <i>calls the database, forwards the caller's token</i>
+errors.ts   <i>Postgres error  →  the contract's error shape</i>
+http.ts     <i>the error shape, and how a response is sent</i></pre>
+          <p class="small">Five files, <b>one deployment.</b> <code>supabase functions deploy enroll</code> bundles whatever the entrypoint imports — deploying as one function does not mean reading as one file.</p>
+          <p class="small"><b>Four scripts, the same shape as the database ones:</b> <code>functions:check</code> · <code>functions:test</code> · <code>functions:serve</code> · <code>functions:deploy</code>.</p>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">Why not one function per operation</div>
+            <p class="body"><b>Cold starts.</b> A function is booted before it can answer. Eleven functions means eleven things to boot, and <code>removeEnrollmentItem</code> — called rarely — would be cold almost every time.</p>
+            <p class="body"><b>And the contract settles it anyway.</b> It defines eleven paths under <em>one</em> base URL, and <code>VITE_API_BASE_URL</code> is one variable. A function per operation deploys eleven URLs that are not the ones the document describes.</p>
+          </div>
+          <p class="callout">
+            Supabase's own guidance is to <b>"develop few large functions, rather than many small
+            functions."</b> Your project should end up with one, or a few named after domains — not one
+            per endpoint.
+          </p>
+        </div>
+      </div>
     </section>
 
     <section class="slide slide--wide" data-sec="3.5" data-label="A real function" data-rail="Edge Functions">
-      <span class="eyebrow">submitEnrollment, because it is all three reasons at once</span>
+      <span class="eyebrow">The two files to read out loud, from the app you already have open</span>
       <h2 class="h2">What one actually looks like</h2>
       <div class="grid grid--sidebar">
-        <div class="panel">
-          <div class="panel__head">supabase/functions/submit-enrollment/index.ts</div>
-          <pre>Deno.serve(async (req) =&gt; {
-  const auth = req.headers.get('Authorization')
-  if (!auth) return err(401, 'UNAUTHORIZED', 'Sign in first.')
-
-  <i>// the caller's token — so RLS still applies to reads</i>
-  const client = createClient(URL, ANON, {
-    global: { headers: { Authorization: auth } }
-  })
-
-  const { data: user } = await client.auth.getUser()
-  if (!user) return err(401, 'UNAUTHORIZED', 'Sign in first.')
-
-  <i>// R6 · nothing to submit</i>
-  const { data: items } = await client
-    .from('enrollment_items').select('subject_id')
-  if (!items?.length)
-    return err(422, 'EMPTY_ENROLLMENT',
-               'Add at least one subject before submitting.')
-
-  <i>// one statement, so it succeeds or fails whole</i>
-  const { error } = await client.rpc('submit_enrollment', {
-    p_term: body.term
-  })
-  if (error) return err(409, 'NOT_EDITABLE',
-                        'This enrollment was already submitted.')
-
-  return json(200, updated)
+        <div class="col">
+          <div class="panel">
+            <div class="panel__head">routes.ts — nothing in here decides anything</div>
+            <pre><i>// POST /students/{studentId}/enrollment/submit</i>
+if (method === 'POST' &amp;&amp; segments[3] === 'submit') {
+  return respond(await rpc(
+    'submit_enrollment',
+    { p_student_id: studentId, p_term: body.term },
+    token,
+  ))
+}</pre>
+          </div>
+          <div class="panel">
+            <div class="panel__head">rpc.ts — the line the security model rests on</div>
+            <pre>await fetch(`${SUPABASE_URL}/rest/v1/rpc/${name}`, {
+  method: 'POST',
+  headers: {
+    apikey: SERVICE_KEY,       <i>// named for what it is not:</i>
+                               <i>// it reads SUPABASE_ANON_KEY,</i>
+                               <i>// and only gets past the gateway</i>
+    <b>Authorization: token,</b>     <i>// this decides who you are</i>
+  },
+  body: JSON.stringify(args),
 })</pre>
+          </div>
         </div>
         <div class="col">
           <div class="panel">
             <div class="panel__head">Three things to notice</div>
             <ul class="list list--check">
-              <li><b>It forwards the caller's token</b> rather than using the service role. RLS still applies, so the function cannot accidentally act on someone else's data.</li>
-              <li><b>It returns the contract's error shape</b> — <code>code</code>, <code>message</code> — with the documented status. The client has one error path, not two.</li>
-              <li><b>The multi-table write is one <code>rpc</code> call</b> to a database function, which is what makes it atomic.</li>
+              <li><b>It forwards the caller's token</b> rather than swapping it for the service role. Every policy from Lesson 3.3 still applies — swap it and enforcement moves silently back to client-side code.</li>
+              <li><b>Every rule is one migration down.</b> The route reads its arguments and calls one SQL function. If you are looking for a rule, it is not in this file.</li>
+              <li><b>One error shape, in one place.</b> <code>errors.ts</code> renames Postgres' <code>hint</code> and <code>detail</code> into the contract's <code>code</code>, <code>message</code> and <code>details</code>. The alternative is eleven <code>catch</code> blocks in <code>src/</code>.</li>
             </ul>
           </div>
           <p class="callout">
-            <b>A function that returns a different error shape than PostgREST</b> forces every
-            screen to handle two formats. Match the contract, always.
+            <b>The route table is the part worth testing.</b> It is the only place the contract's paths and the
+            database's function names are claimed to line up, and <code>npm run functions:test</code> asserts
+            that each path calls the function it says it does — carrying the caller's token. It runs in Deno,
+            because Vitest cannot see this code at all.
           </p>
         </div>
       </div>
@@ -1131,7 +1158,7 @@ schema + RLS + functions
 
     <section class="slide slide--wide" data-sec="3.6" data-label="Contract check" data-rail="Implementing the contract">
       <span class="eyebrow">Interactive · running it for the first time</span>
-      <h2 class="h2">Nine operations, checked one by one</h2>
+      <h2 class="h2">Eleven operations, checked one by one</h2>
       <div class="panel panel--sunk">
         <div class="panel__head">npm run contract:check <span class="spacer"></span><span class="dim">this is what week 7 actually looks like</span></div>
         <div class="cc" data-widget="cc" id="cc"></div>

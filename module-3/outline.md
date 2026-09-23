@@ -7,7 +7,7 @@ structures — relocated here 2026-09-22, met in *Generated types, again* (lesso
 `supabase gen types` produces a real type file to read
 *(LO 4.1, schema modelling, is taught in Module 2 — see below.)*
 
-Status: **ready** — 42 slides, `module-3/index.html`. Interactive instruments: the RLS
+Status: **ready** — 43 slides, `module-3/index.html`. Interactive instruments: the RLS
 simulator (3.3) — four identities against one query, with the policy switchable — the
 constraint tester (3.4), a `contract:check` runner that starts red (3.6), and a CI pipeline
 with a merge gate (3.7).
@@ -34,7 +34,7 @@ with a merge gate (3.7).
 | 3.2 | **CRUD endpoints over the schema** | 4.2 | 4 | PostgREST gives you the endpoints; the work is deciding which you are entitled to call |
 | 3.3 | **Row Level Security — briefly** | *(no LO)* | 8 | The enforcement layer the whole project rests on |
 | 3.4 | **Constraints and triggers — briefly** | *(no LO)* | 5 | Rules the client cannot be trusted with |
-| 3.5 | **Edge Functions — briefly** | *(no LO)* | 4 | Where secrets and multi-step writes live |
+| 3.5 | **Edge Functions — briefly** | *(no LO)* | 5 | Where secrets and multi-step writes live, and the paths PostgREST cannot serve |
 | 3.6 | **Implementing the contract** | 4.2 | 5 | The acceptance criterion: does it satisfy Module 2's document? |
 | 3.7 | **CI — briefly** | *(no LO)* | 4 | Moved up from a week-13 clinic; the dev phase needs a merge gate from its first PR |
 
@@ -79,8 +79,25 @@ answer to "what stops a bad row."
 
 ## 3.5 · Edge Functions — the brief version
 
-**No LO**, ~1 session. The decision rule: *plain read or single-row write goes to PostgREST;
-secret, privileged write, or multi-step goes to a function.*
+**No LO**, ~1 session. The decision rule has **four** reasons, not three: *plain read or
+single-row write goes to PostgREST; secret, privileged write, multi-step, **or a path the
+contract promised** goes to a function.*
+
+The fourth reason is the one that explains the reference app. `POST /students/{id}/enrollment/submit`
+is neither a table nor a filter, so PostgREST cannot serve it under any configuration — which
+is why `csci-153-enroll` routes **all eleven operations** through a single Edge Function.
+
+**One function, not eleven**, and the argument is worth saying out loud because groups reach
+for one function per endpoint: a function is booted before it can answer, so eleven functions
+means eleven cold starts; and the contract defines eleven paths under *one* base URL, which
+`VITE_API_BASE_URL` is. Deploying as one function is not the same as reading as one file —
+`supabase/functions/enroll/` is five files behind one `functions:deploy`.
+
+Read from the app: `routes.ts` (nothing decides anything — each path calls one SQL function),
+`rpc.ts` (the caller's token is forwarded, not swapped for the service role — that is why RLS
+still applies), `errors.ts` (Postgres `hint`/`detail` → the contract's `code`/`message`/`details`,
+in one place). `npm run functions:test` runs in Deno and asserts each path calls the function it
+claims to; Vitest cannot see this code at all.
 
 The demonstration: put an API key in a `VITE_` variable, build, and find it in the bundle with
 devtools. It reframes "keep secrets on the server" from a rule into an observation.
@@ -94,7 +111,7 @@ data model              drawn week 4, lesson 2.1
         ↓
 contract/openapi.yaml   written week 4–5, unchanged unless versioned
         ↓
-schema + RLS + Edge Functions   lectured weeks 7–8, built in sprints 1–2
+schema + RLS + one Edge Function  lectured weeks 7–8, built in sprints 1–2
         ↓
 npm run contract:check   passes, or the milestone is not done
 ```

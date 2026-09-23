@@ -368,7 +368,7 @@
 
   /* ============================================================
      4 · Contract check runner
-     Nine operations, checked against the implementation.
+     Eleven operations, checked against the implementation.
      ============================================================ */
   (function cc() {
     var root = $('#cc');
@@ -384,6 +384,9 @@
       { verb: 'DELETE', id: 'removeEnrollmentItem' },
       { verb: 'POST',   id: 'submitEnrollment',
         fail: '422 EMPTY_ENROLLMENT documented, never returned' },
+      { verb: 'POST',   id: 'withdrawEnrollment' },
+      { verb: 'POST',   id: 'reopenEnrollment',
+        fail: '409 NOT_RETURNED documented, a draft reopens happily' },
       { verb: 'GET',    id: 'listPendingEnrollments' },
       { verb: 'POST',   id: 'approveEnrollment' },
       { verb: 'POST',   id: 'returnEnrollment',
